@@ -1,6 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-page-header
+      v-if="maker"
       :title="maker.name"
       :avatar="{
         props: {
@@ -45,10 +46,10 @@
         </a>
       </template>
 
-      <!-- <a-spin :spinning="loading"> -->
+      <a-spin :spinning="pending">
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
-            v-for="sculpt in sculpts"
+            v-for="sculpt in maker.sculpts"
             :key="sculpt.id"
             :xs="12"
             :sm="12"
@@ -56,7 +57,7 @@
             :lg="6"
             :xl="4"
           >
-            <nuxt-link :to="`/artisans/maker/${makerId}/${sculpt.slug}`">
+            <nuxt-link :to="`/artisans/maker/${maker.slug}/${sculpt.slug}`">
               <a-card hoverable :title="sculpt.name" :size="size">
                 <template #cover>
                   <img
@@ -69,7 +70,7 @@
             </nuxt-link>
           </a-col>
         </a-row>
-      <!-- </a-spin> -->
+      </a-spin>
 
       <!-- <a-modal
         v-model="showEditMaker"
@@ -84,24 +85,9 @@
 </template>
 
 <script setup>
-const maker = await fetch('https://raw.githubusercontent.com/keycap-archivist/database/master/db/trmk.json').then(res => res.json())
-
-import { keyBy, sample, sortBy } from 'lodash'
-import slugify from 'slugify'
-
-const makerId = 'trmk'
-
-let { sculpts } = maker
-
-sculpts = sculpts.map((sculpt) => {
-  const random = sample(sculpt.colorways)
-
-  return {
-    ...sculpt,
-    slug: slugify(sculpt.name, { lower: true }),
-    preview: random.img,
-  }
-})
-
-sculpts = keyBy(sortBy(sculpts, 'name'), 'slug')
+const {
+  data: maker,
+  pending,
+  refresh,
+} = await useAsyncData(() => $fetch("/api/maker/goldenstar-keycap"));
 </script>

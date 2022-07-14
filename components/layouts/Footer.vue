@@ -8,7 +8,7 @@
         :href="link.link"
         target="_blank"
       >
-        <a-icon v-if="link.icon" :type="link.icon" style="font-size: 24px" />
+        <github-outlined v-if="link.icon === 'github'" style="font-size: 24px" />
         {{ link.title }}
       </a>
     </div>
