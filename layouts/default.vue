@@ -61,7 +61,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 .logo {
   height: 100%;
   font-size: 24px;
@@ -71,17 +71,20 @@ export default {
 }
 
 .ant-layout-header {
-	 display: flex;
-	 align-items: center;
-	 padding: 0 24px !important;
-}
- .ant-layout-header.mobile {
-	 justify-content: space-between;
-}
- .ant-layout-header.mobile .logo {
-	 margin-right: 0;
-}
- .ant-layout-header .ant-menu {
-	 flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 24px !important;
+
+  &.mobile {
+    justify-content: space-between;
+
+    .logo {
+      margin-right: 0;
+    }
+  }
+
+  .ant-menu {
+    flex: 1;
+  }
 }
 </style>

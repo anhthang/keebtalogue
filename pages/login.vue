@@ -8,8 +8,11 @@
 </template>
 
 <script>
+definePageMeta({
+  layout: "login"
+})
+
 export default {
-  layout: 'login',
   middleware({ store, redirect }) {
     // If the user is not authenticated
     if (store.state.user.emailVerified) {
