@@ -12,7 +12,7 @@
 
     <a-sub-menu key="2">
       <template #title>
-        <a-icon :component="KeyboardSvg" class="custom-icon" /> Keebs
+        <insert-row-above-outlined /> Keebs
       </template>
       <a-menu-item key="3">
         <nuxt-link to="/keebs"> <forward-outlined /> Live GBs </nuxt-link>

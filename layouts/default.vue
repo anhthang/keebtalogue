@@ -5,10 +5,14 @@
         v-if="isMobile"
         type="link"
         ghost
-        :icon="collapsed ? 'menu-unfold' : 'menu-fold'"
         class="sidebar-toggle"
         @click="sidebarToogle"
-      />
+      >
+        <template #icon>
+          <menu-unfold v-if="collapsed" />
+          <menu-fold v-else />
+        </template>
+      </a-button>
 
       <nuxt-link to="/">
         <div class="logo">Keeb Catalogue</div>
@@ -40,8 +44,8 @@
 </template>
 
 <script>
-import LayoutFooter from '~/components/layouts/Footer.vue'
-import MenuTree from '~/components/layouts/MenuTree.vue'
+import LayoutFooter from "~/components/layouts/Footer.vue";
+import MenuTree from "~/components/layouts/MenuTree.vue";
 // import RightHeader from '~/components/layouts/RightHeader.vue'
 
 export default {
@@ -51,14 +55,14 @@ export default {
       // isMobile: this.$device.isMobile,
       isMobile: false,
       collapsed: true,
-    }
+    };
   },
   methods: {
     sidebarToogle() {
-      this.collapsed = !this.collapsed
+      this.collapsed = !this.collapsed;
     },
   },
-}
+};
 </script>
 
 <style lang="less">

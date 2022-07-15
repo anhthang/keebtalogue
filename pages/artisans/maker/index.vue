@@ -1,5 +1,5 @@
 <template>
-  <div class="container maker-container">
+  <div class="container maker-container" v-if="!pending">
     <a-page-header title="Artisan Makers">
       <template #extra>
         <a-button
@@ -27,7 +27,7 @@
 
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
-              v-for="maker in favorite"
+              v-for="maker in data.result"
               :key="maker.id"
               :xs="12"
               :sm="12"
@@ -63,5 +63,6 @@
 </template>
 
 <script setup>
-const makers = ["trmk", "artkey", "goldenstar-keycap"]
+const { data, pending, refresh } = await useAsyncData(() => $fetch('/api/firestore/query?col=artisan-makers'))
+
 </script>

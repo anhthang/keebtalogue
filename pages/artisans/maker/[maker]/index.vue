@@ -35,8 +35,7 @@
         </a>
         <a v-if="maker.discord" :href="maker.discord" target="_blank">
           <a-button key="1">
-            <a-icon :component="DiscordSvg" class="custom-icon" />
-            Discord
+            <aliwangwang-outlined /> Discord
           </a-button>
         </a>
         <a :href="maker.src" target="_blank">
@@ -85,9 +84,11 @@
 </template>
 
 <script setup>
+const route = useRoute()
+
 const {
   data: maker,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch("/api/maker/goldenstar-keycap"));
+} = await useAsyncData(() => $fetch(`/api/maker/${route.params.maker}`));
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header :title="sculpt.name">
+    <a-page-header :title="sculpt.name" v-if="sculpt">
       <template #extra>
         <a-button key="1" disabled type="primary">
           <file-add-outlined /> Submit new Colorway
@@ -16,7 +16,7 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button :icon="sortIcon"> Sort By </a-button>
+          <a-button><sort-ascending-outlined /> Sort By </a-button>
         </a-dropdown>
       </template>
 
@@ -47,7 +47,7 @@
             </template>
 
             <template #actions>
-              <a-dropdown :trigger="['click']" placement="topCenter">
+              <a-dropdown :trigger="['click']" placement="top">
                 <div><save-outlined /> Add to Collection</div>
                 <template #overlay>
                   <a-menu>
@@ -63,11 +63,10 @@
                 </template>
               </a-dropdown>
             </template>
-            <a-card-meta v-if="colorway.releaseDate">
-              <template #description>
-                {{ colorway.releaseDate }}
-              </template>
-            </a-card-meta>
+            <a-card-meta
+              v-if="colorway.releaseDate"
+              :description="colorway.releaseDate"
+            />
           </a-card>
         </a-col>
       </a-row>
@@ -79,10 +78,17 @@
 </template>
 
 <script setup>
-const { sculpts } = await fetch(
-  "https://raw.githubusercontent.com/keycap-archivist/database/master/db/goldenstar-keycap.json"
-).then((res) => res.json());
-const sculpt = sculpts.find((s) => s.name === "Velites");
+const route = useRoute();
+
+const {
+  data: sculpt,
+  pending,
+  refresh,
+} = await useAsyncData(() =>
+  $fetch(`/api/maker/${route.params.maker}`).then((data) => {
+    return data.sculpts[route.params.sculpt];
+  })
+);
 
 const size = "default";
 </script>
