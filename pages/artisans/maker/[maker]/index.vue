@@ -94,4 +94,6 @@ watch(
   () => route.params.maker,
   () => refresh()
 );
+
+const size = "default";
 </script>

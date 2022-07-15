@@ -2,10 +2,7 @@
   <div class="container maker-container" v-if="!pending">
     <a-page-header title="Artisan Makers">
       <template #extra>
-        <a-button
-          type="primary"
-          @click="showModal"
-        >
+        <a-button type="primary" @click="showModal">
           <user-add-outlined /> Add
         </a-button>
       </template>
@@ -16,18 +13,16 @@
         :confirm-loading="confirmLoading"
         @ok="addMaker"
       >
-        <maker-form ref="artisanMaker" />
+        <!-- <maker-form ref="artisanMaker" /> -->
       </a-modal>
 
       <a-tabs :default-active-key="defaultTab">
         <a-tab-pane key="favorite">
-          <template #tab>
-            <star-outlined /> Favorite
-          </template>
+          <template #tab> <star-outlined /> Favorite </template>
 
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
-              v-for="maker in data.result"
+              v-for="maker in favorite"
               :key="maker.id"
               :xs="12"
               :sm="12"
@@ -40,9 +35,7 @@
           </a-row>
         </a-tab-pane>
         <a-tab-pane key="makers">
-          <template #tab>
-            <usergroup-add-outlined /> Makers
-          </template>
+          <template #tab> <usergroup-add-outlined /> Makers </template>
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
               v-for="maker in otherMakers"
@@ -63,6 +56,45 @@
 </template>
 
 <script setup>
-const { data, pending, refresh } = await useAsyncData(() => $fetch('/api/firestore/query?col=artisan-makers'))
+useHead({
+  title: "Artisan Makers | Keeb Archivist"
+})
 
+const { data, pending, refresh } = await useAsyncData(() =>
+  $fetch("/api/firestore/query?col=artisan-makers")
+);
+
+const favoriteMakers = ["artkey", "goldenstar-keycap", "trmk", "t-lab"];
+
+const favorite = data.value.result.filter((m) => favoriteMakers.includes(m.id));
+const otherMakers = data.value.result.filter(
+  (m) => !favoriteMakers.includes(m.id)
+);
+const defaultTab = favoriteMakers.length ? "favorite" : "makers";
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      visible: false,
+      confirmLoading: false,
+    };
+  },
+  methods: {
+    showModal() {
+      this.visible = true;
+    },
+    async addMaker() {
+      this.confirmLoading = true;
+
+      // await this.$refs.artisanMaker.addMaker();
+
+      this.confirmLoading = false;
+      this.visible = false;
+
+      this.$fetch();
+    },
+  },
+};
 </script>

@@ -20,12 +20,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    onPanelChange(value, mode) {
-      // console.log(value, mode)
-    },
-  },
-}
+<script setup>
+useHead({
+  title: "Keeb Archivist",
+});
+
+const onPanelChange = (value, mode) => {
+  // nothing to do
+};
 </script>

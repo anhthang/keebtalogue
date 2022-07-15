@@ -9,35 +9,35 @@
 
 <script>
 definePageMeta({
-  layout: "login"
-})
+  layout: "login",
+});
 
 export default {
   middleware({ store, redirect }) {
     // If the user is not authenticated
     if (store.state.user.emailVerified) {
-      return redirect('/')
+      return redirect("/");
     }
   },
   methods: {
     async loginWithGoogle() {
-      const google = new this.$fireModule.auth.GoogleAuthProvider()
+      const google = new this.$fireModule.auth.GoogleAuthProvider();
       await this.$fireModule
         .auth()
         .signInWithPopup(google)
         .then(({ user }) => {
           this.$message.success(
             `Hello, ${user.displayName}. You successfully logged into this website.`
-          )
+          );
 
-          this.$router.back()
+          this.$router.back();
         })
         .catch((err) => {
-          this.$message.warning(err.message)
-        })
+          this.$message.warning(err.message);
+        });
     },
   },
-}
+};
 </script>
 
 <style lang="less">

@@ -11,9 +11,7 @@
     </a-menu-item>
 
     <a-sub-menu key="2">
-      <template #title>
-        <insert-row-above-outlined /> Keebs
-      </template>
+      <template #title> <insert-row-above-outlined /> Keebs </template>
       <a-menu-item key="3">
         <nuxt-link to="/keebs"> <forward-outlined /> Live GBs </nuxt-link>
       </a-menu-item>
@@ -55,8 +53,6 @@
 </template>
 
 <script>
-// import KeyboardSvg from '@/components/icons/KeyboardSvg'
-
 export default {
   props: {
     mode: {
@@ -64,17 +60,12 @@ export default {
       required: true,
     },
   },
-  // data() {
-  //   return {
-  //     KeyboardSvg,
-  //   }
-  // },
-  // methods: {
-  //   onChangeMenu() {
-  //     if (this.$device.isMobile) {
-  //       this.$emit('click')
-  //     }
-  //   },
-  // },
+  methods: {
+    onChangeMenu() {
+      // if (this.$device.isMobile) {
+      //   this.$emit('click')
+      // }
+    },
+  },
 };
 </script>
