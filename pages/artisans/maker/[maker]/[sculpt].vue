@@ -90,6 +90,11 @@ const {
   })
 );
 
+watch(
+  () => route.params.sculpt,
+  () => refresh()
+);
+
 const size = "default";
 </script>
 

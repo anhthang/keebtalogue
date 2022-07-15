@@ -9,13 +9,13 @@
         },
       }"
     >
-      <template #subTitle>
+      <!-- <template #subTitle>
         <country-flag
           v-if="maker.nationality"
           :country="maker.nationality"
           size="small"
         />
-      </template>
+      </template> -->
 
       <template #extra>
         <!-- <a-button
@@ -34,9 +34,7 @@
           <a-button key="2"><instagram-outlined /> Instagram </a-button>
         </a>
         <a v-if="maker.discord" :href="maker.discord" target="_blank">
-          <a-button key="1">
-            <aliwangwang-outlined /> Discord
-          </a-button>
+          <a-button key="1"> <aliwangwang-outlined /> Discord </a-button>
         </a>
         <a :href="maker.src" target="_blank">
           <a-button v-if="maker.src" key="0">
@@ -84,11 +82,16 @@
 </template>
 
 <script setup>
-const route = useRoute()
+const route = useRoute();
 
 const {
   data: maker,
   pending,
   refresh,
 } = await useAsyncData(() => $fetch(`/api/maker/${route.params.maker}`));
+
+watch(
+  () => route.params.maker,
+  () => refresh()
+);
 </script>

@@ -9,8 +9,8 @@
         @click="sidebarToogle"
       >
         <template #icon>
-          <menu-unfold v-if="collapsed" />
-          <menu-fold v-else />
+          <menu-unfold-outlined v-if="collapsed" />
+          <menu-fold-outlined v-else />
         </template>
       </a-button>
 
