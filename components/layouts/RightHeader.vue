@@ -12,12 +12,12 @@
         <a-menu>
           <a-menu-item>
             <span @click="gotoSettings"
-              ><a-icon type="setting" /> Settings
+              ><setting-outlined /> Settings
             </span>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item>
-            <span @click="logout"><a-icon type="logout" /> Logout </span>
+            <span @click="logout"><logout-outlined /> Logout </span>
           </a-menu-item>
         </a-menu>
       </template>
@@ -33,7 +33,7 @@
         <a-menu>
           <a-menu-item>
             <span @click="loginWithGoogle">
-              <a-icon type="google" /> Login with Google
+              <google-outlined /> Login with Google
             </span>
           </a-menu-item>
         </a-menu>

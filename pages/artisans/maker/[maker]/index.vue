@@ -93,9 +93,11 @@ watch(
   () => refresh()
 );
 
+const size = "default";
+
 const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;
 };
 
-const size = "default";
+const updateArtisanMaker = () => {};
 </script>

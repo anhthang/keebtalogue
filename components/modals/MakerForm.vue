@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <a-form layout="vertical">
     <a-form-item label="Name">
       <a-input
         v-model:value="maker.name"
@@ -34,7 +34,7 @@
         <template #prefix><aliwangwang-outlined /></template>
       </a-input>
     </a-form-item>
-  </div>
+  </a-form>
 </template>
 
 <script setup>

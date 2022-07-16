@@ -1,8 +1,8 @@
 <template>
   <div class="container login-container">
     <h1>Keeb Catalogue</h1>
-    <a-button icon="google" type="primary" @click="loginWithGoogle">
-      Login with Google
+    <a-button type="primary" @click="loginWithGoogle">
+      <google-outlined /> Login with Google
     </a-button>
   </div>
 </template>
