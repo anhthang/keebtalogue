@@ -6,7 +6,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 export default defineNuxtConfig({
   css: ['@/assets/main.less'],
 
-  modules: ['@nuxtjs/color-mode'],
+  modules: ['@pinia/nuxt', '@nuxtjs/color-mode'],
 
   vite: {
     plugins: [

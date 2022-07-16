@@ -9,13 +9,9 @@
         },
       }"
     >
-      <!-- <template #subTitle>
-        <country-flag
-          v-if="maker.nationality"
-          :country="maker.nationality"
-          size="small"
-        />
-      </template> -->
+      <template v-if="maker.nationality" #subTitle>
+        {{ getFlagEmoji(maker.nationality) }}
+      </template>
 
       <template #extra>
         <a-button key="edit" type="primary" @click="showEditMakerModal">
@@ -100,4 +96,24 @@ const showEditMakerModal = () => {
 };
 
 const updateArtisanMaker = () => {};
+
+const getFlagEmoji = (isoCode) => {
+  if (isoCode === "GB-ENG") {
+    return "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+  }
+  if (isoCode === "GB-WLS") {
+    return "🏴󠁧󠁢󠁷󠁬󠁳󠁿";
+  }
+  if (isoCode === "GB-SCT") {
+    return "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
+  }
+  if (isoCode === "GB-NIR") {
+    // The only official flag in Northern Ireland is the Union Flag of the United Kingdom.
+    return "🇬🇧";
+  }
+
+  return isoCode
+    .toUpperCase()
+    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
+};
 </script>

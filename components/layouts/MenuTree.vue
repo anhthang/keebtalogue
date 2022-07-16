@@ -10,7 +10,7 @@
       <nuxt-link to="/"><calendar-outlined /> Calendar </nuxt-link>
     </a-menu-item>
 
-    <a-sub-menu key="2">
+    <!-- <a-sub-menu key="2">
       <template #title> <insert-row-above-outlined /> Keebs </template>
       <a-menu-item key="3">
         <nuxt-link to="/keebs"> <forward-outlined /> Live GBs </nuxt-link>
@@ -29,7 +29,7 @@
       <a-menu-item key="2.1">
         <nuxt-link to="/keebs/maker"> <user-add-outlined /> Makers </nuxt-link>
       </a-menu-item>
-    </a-sub-menu>
+    </a-sub-menu> -->
 
     <a-sub-menu key="6">
       <template #title><user-outlined /> Artisans </template>

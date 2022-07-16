@@ -16,11 +16,7 @@ useHead({
   title: "Login | Keeb Archivist",
 });
 
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { message } from "ant-design-vue";
 
 const auth = getAuth();

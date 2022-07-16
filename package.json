@@ -17,6 +17,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@nuxtjs/firebase": "^8.2.2",
+    "@pinia/nuxt": "^0.3.0",
     "ant-design-vue": "^3.2.10",
     "crc": "3",
     "firebase": "^9.9.0",
@@ -25,6 +26,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.sortby": "^4.7.0",
+    "pinia": "^2.0.16",
     "slugify": "^1.6.5",
     "unplugin-vue-components": "^0.21.1"
   },

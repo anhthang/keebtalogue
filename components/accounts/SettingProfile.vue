@@ -12,7 +12,10 @@
             <a-input v-model:value="user.email" disabled>
               <template #prefix><mail-outlined /></template>
               <template #suffix>
-                <check-circle-outlined v-if="user.emailVerified" class="email-verified" />
+                <check-circle-outlined
+                  v-if="user.emailVerified"
+                  class="email-verified"
+                />
               </template>
             </a-input>
           </a-form-item>
@@ -27,12 +30,18 @@
       <a-col :xs="24" :sm="16">
         <a-form :layout="layout">
           <a-form-item label="Reddit">
-            <a-input v-model:value="settings.social.reddit" placeholder="u/username">
+            <a-input
+              v-model:value="settings.social.reddit"
+              placeholder="u/username"
+            >
               <template #prefix><reddit-outlined /></template>
             </a-input>
           </a-form-item>
           <a-form-item label="Discord">
-            <a-input v-model:value="settings.social.discord" placeholder="Discord#0000">
+            <a-input
+              v-model:value="settings.social.discord"
+              placeholder="Discord#0000"
+            >
               <template #prefix><aliwangwang-outlined /></template>
             </a-input>
           </a-form-item>
@@ -56,45 +65,49 @@
   </a-card>
 </template>
 
+<script setup>
+import { useUserStore } from "~~/stores/user";
+import { storeToRefs } from "pinia";
+
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
+const layout = "vertical";
+</script>
+
 <script>
 export default {
   data() {
     return {
-      layout: "vertical",
-      user: {
-        emailVerified: true,
-        photoURL: "https://lh3.googleusercontent.com/a-/AOh14GgrOLp5igi5JC6Kx6_jc6sDfWChTDx4g_08IVHeWw=s96-c",
-        displayName: "Bui Anh Thang"
-      },
       loading: false,
       settings: {
         social: {},
       },
-    }
+    };
   },
   // beforeMount() {
   //   this.settings.social = this.user.social
   // },
   methods: {
     saveSettings(type) {
-      this.loading = true
+      this.loading = true;
       this.$fire.firestore
-        .collection('users')
+        .collection("users")
         .doc(this.user.uid)
         .update({
           [type]: this.settings[type],
         })
         .then(() => {
-          this.$message.success('Settings updated successfully.')
-          this.loading = false
+          this.$message.success("Settings updated successfully.");
+          this.loading = false;
         })
         .catch((e) => {
-          this.$message.success(e.message)
-          this.loading = false
-        })
+          this.$message.success(e.message);
+          this.loading = false;
+        });
     },
   },
-}
+};
 </script>
 
 <style lang="less">

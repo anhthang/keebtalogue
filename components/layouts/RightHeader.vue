@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {
   getAuth,
   GoogleAuthProvider,
@@ -49,44 +49,47 @@ import {
 } from "firebase/auth";
 import { message } from "ant-design-vue";
 
+const router = useRouter();
+
+const isMobile = false;
+
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
-const router = useRouter()
+import { useUserStore } from "~~/stores/user";
+import { storeToRefs } from "pinia";
 
-export default {
-  data() {
-    return {
-      isMobile: false,
-      user: {},
-    };
-  },
-  methods: {
-    loginWithGoogle() {
-      signInWithPopup(auth, provider)
-        .then(({ credential, user }) => {
-          this.user = user;
-          message.success(
-            `Hello, ${user.displayName}. You successfully logged into this website.`
-          );
-        })
-        .catch((err) => {
-          message.warning(err.message);
-        });
-    },
-    logout() {
-      signOut(auth)
-        .then(() => {
-          message.success("You have been logged out successfully.");
-          router.push("/");
-        })
-        .catch((err) => {
-          message.error(err.message);
-        });
-    },
-    gotoSettings() {
-      router.push("/account/settings");
-    },
-  },
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
+const loginWithGoogle = async () => {
+  await signInWithPopup(auth, provider)
+    .then(({ credential, user }) => {
+      userStore.$patch({ user });
+
+      message.success(
+        `Hello, ${user.displayName}. You successfully logged into this website.`
+      );
+    })
+    .catch((err) => {
+      message.warning(err.message);
+    });
+};
+
+const logout = async () => {
+  await signOut(auth)
+    .then(() => {
+      userStore.$patch({ user: {} });
+
+      message.success("You have been logged out successfully.");
+      this.$router.push("/");
+    })
+    .catch((err) => {
+      message.error(err.message);
+    });
+};
+
+const gotoSettings = () => {
+  router.push("/account/settings");
 };
 </script>
