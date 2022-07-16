@@ -20,7 +20,7 @@
 
       <menu-tree v-if="!isMobile" mode="horizontal" />
 
-      <!-- <right-header /> -->
+      <right-header />
     </a-layout-header>
 
     <a-layout>
@@ -46,10 +46,10 @@
 <script>
 import LayoutFooter from "~/components/layouts/Footer.vue";
 import MenuTree from "~/components/layouts/MenuTree.vue";
-// import RightHeader from '~/components/layouts/RightHeader.vue'
+import RightHeader from '~/components/layouts/RightHeader.vue'
 
 export default {
-  components: { MenuTree, LayoutFooter },
+  components: { MenuTree, LayoutFooter, RightHeader },
   data() {
     return {
       // isMobile: this.$device.isMobile,
