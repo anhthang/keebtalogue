@@ -7,37 +7,49 @@
   </div>
 </template>
 
-<script>
+<script setup>
 definePageMeta({
   layout: "login",
 });
 
-export default {
-  middleware({ store, redirect }) {
-    // If the user is not authenticated
-    if (store.state.user.emailVerified) {
-      return redirect("/");
-    }
-  },
-  methods: {
-    async loginWithGoogle() {
-      const google = new this.$fireModule.auth.GoogleAuthProvider();
-      await this.$fireModule
-        .auth()
-        .signInWithPopup(google)
-        .then(({ user }) => {
-          this.$message.success(
-            `Hello, ${user.displayName}. You successfully logged into this website.`
-          );
+useHead({
+  title: "Login | Keeb Archivist",
+});
 
-          this.$router.back();
-        })
-        .catch((err) => {
-          this.$message.warning(err.message);
-        });
-    },
-  },
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { message } from "ant-design-vue";
+
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+const router = useRouter();
+
+const loginWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .then(({ user }) => {
+      message.success(
+        `Hello, ${user.displayName}. You successfully logged into this website.`
+      );
+
+      router.back();
+    })
+    .catch((err) => {
+      message.warning(err.message);
+    });
 };
+
+// export default {
+//   middleware({ store, redirect }) {
+//     // If the user is not authenticated
+//     if (store.state.user.emailVerified) {
+//       return redirect("/");
+//     }
+//   },
+// };
 </script>
 
 <style lang="less">

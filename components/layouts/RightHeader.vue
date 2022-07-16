@@ -11,9 +11,7 @@
       <template #overlay>
         <a-menu>
           <a-menu-item>
-            <span @click="gotoSettings"
-              ><setting-outlined /> Settings
-            </span>
+            <span @click="gotoSettings"><setting-outlined /> Settings </span>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item>
@@ -43,45 +41,51 @@
 </template>
 
 <script>
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { message } from "ant-design-vue";
+
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+
+const router = useRouter()
+
 export default {
   data() {
     return {
       isMobile: false,
-      user: {
-        emailVerified: true,
-        photoURL: "https://lh3.googleusercontent.com/a-/AOh14GgrOLp5igi5JC6Kx6_jc6sDfWChTDx4g_08IVHeWw=s96-c",
-        displayName: "Bui Anh Thang"
-      },
+      user: {},
     };
   },
   methods: {
-    async loginWithGoogle() {
-      const google = new this.$fireModule.auth.GoogleAuthProvider();
-      await this.$fireModule
-        .auth()
-        .signInWithPopup(google)
+    loginWithGoogle() {
+      signInWithPopup(auth, provider)
         .then(({ credential, user }) => {
-          this.$message.success(
+          this.user = user;
+          message.success(
             `Hello, ${user.displayName}. You successfully logged into this website.`
           );
         })
         .catch((err) => {
-          this.$message.warning(err.message);
+          message.warning(err.message);
         });
     },
-    async logout() {
-      await this.$fire.auth
-        .signOut()
+    logout() {
+      signOut(auth)
         .then(() => {
-          this.$message.success("You have been logged out successfully.");
-          this.$router.push("/");
+          message.success("You have been logged out successfully.");
+          router.push("/");
         })
         .catch((err) => {
-          this.$message.error(err.message);
+          message.error(err.message);
         });
     },
     gotoSettings() {
-      this.$router.push("/account/settings");
+      router.push("/account/settings");
     },
   },
 };

@@ -13,8 +13,7 @@ import {
 } from 'firebase/firestore'
 import { firestoreDb } from './firebase'
 
-export const queryByCollection = async (col: string) => {
-    // @ts-ignore
+export const getCollection = async (col: string) => {
     const colRef = collection(firestoreDb, col)
 
     const snapshot = await getDocs(colRef)
@@ -27,6 +26,13 @@ export const queryByCollection = async (col: string) => {
     })
 
     return docs
+}
+
+export const getDocument = async (col: string, docId: string) => {
+    const docRef = doc(firestoreDb, col, docId)
+    const docSnap = await getDoc(docRef)
+
+    return docSnap
 }
 
 export const set = async (col: string, document: Object) => {

@@ -76,8 +76,8 @@ const defaultTab = favoriteMakers.length ? "favorite" : "makers";
 
 const visible = ref(false);
 const showModal = () => {
-  visible.value = !visible.value
-}
+  visible.value = !visible.value;
+};
 </script>
 
 <script>
