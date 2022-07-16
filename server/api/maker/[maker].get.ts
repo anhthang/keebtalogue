@@ -12,6 +12,11 @@ export default defineEventHandler((event) => {
             let sculpts = maker.sculpts.map((sculpt) => {
                 const random = sample(sculpt.colorways)
 
+                sculpt.colorways = sculpt.colorways.map((c, idx) => {
+                    c.order = idx
+                    return c
+                })
+
                 return {
                     ...sculpt,
                     slug: slugify(sculpt.name, { lower: true }),

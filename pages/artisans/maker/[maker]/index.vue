@@ -18,15 +18,10 @@
       </template> -->
 
       <template #extra>
-        <!-- <a-button
-          v-if="user.isEditor"
-          key="edit"
-          type="primary"
-          icon="edit"
-          @click="showEditMakerModal"
-        >
+        <a-button key="edit" type="primary" @click="showEditMakerModal">
+          <template #icon><edit-outlined /></template>
           Edit Maker
-        </a-button> -->
+        </a-button>
         <a v-if="maker.website" :href="maker.website" target="_blank">
           <a-button key="3"><global-outlined /> Website </a-button>
         </a>
@@ -34,7 +29,7 @@
           <a-button key="2"><instagram-outlined /> Instagram </a-button>
         </a>
         <a v-if="maker.discord" :href="maker.discord" target="_blank">
-          <a-button key="1"> <aliwangwang-outlined /> Discord </a-button>
+          <a-button key="1"><aliwangwang-outlined /> Discord </a-button>
         </a>
         <a :href="maker.src" target="_blank">
           <a-button v-if="maker.src" key="0">
@@ -69,20 +64,23 @@
         </a-row>
       </a-spin>
 
-      <!-- <a-modal
-        v-model="showEditMaker"
+      <a-modal
+        v-model:visible="showEditMaker"
         title="Edit Maker"
         destroy-on-close
         @ok="updateArtisanMaker"
       >
         <maker-form ref="artisanMaker" :is-edit="true" :metadata="maker" />
-      </a-modal> -->
+      </a-modal>
     </a-page-header>
   </div>
 </template>
 
 <script setup>
+import MakerForm from "~~/components/modals/MakerForm.vue";
+
 const route = useRoute();
+const showEditMaker = ref(false);
 
 const {
   data: maker,
@@ -94,6 +92,10 @@ watch(
   () => route.params.maker,
   () => refresh()
 );
+
+const showEditMakerModal = () => {
+  showEditMaker.value = !showEditMaker.value;
+};
 
 const size = "default";
 </script>

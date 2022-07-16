@@ -7,18 +7,18 @@
         </a-button>
       </template>
       <a-modal
-        v-model="visible"
+        v-model:visible="visible"
         title="New Maker"
         destroy-on-close
         :confirm-loading="confirmLoading"
         @ok="addMaker"
       >
-        <!-- <maker-form ref="artisanMaker" /> -->
+        <maker-form ref="artisanMaker" />
       </a-modal>
 
       <a-tabs :default-active-key="defaultTab">
         <a-tab-pane key="favorite">
-          <template #tab> <star-outlined /> Favorite </template>
+          <template #tab><star-outlined />Favorite</template>
 
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
@@ -35,7 +35,7 @@
           </a-row>
         </a-tab-pane>
         <a-tab-pane key="makers">
-          <template #tab> <usergroup-add-outlined /> Makers </template>
+          <template #tab><usergroup-add-outlined />Makers</template>
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
               v-for="maker in otherMakers"
@@ -56,9 +56,11 @@
 </template>
 
 <script setup>
+import MakerForm from "~~/components/modals/MakerForm.vue";
+
 useHead({
-  title: "Artisan Makers | Keeb Archivist"
-})
+  title: "Artisan Makers | Keeb Archivist",
+});
 
 const { data, pending, refresh } = await useAsyncData(() =>
   $fetch("/api/firestore/query?col=artisan-makers")
@@ -71,30 +73,37 @@ const otherMakers = data.value.result.filter(
   (m) => !favoriteMakers.includes(m.id)
 );
 const defaultTab = favoriteMakers.length ? "favorite" : "makers";
+
+const visible = ref(false);
+const showModal = () => {
+  visible.value = !visible.value
+}
 </script>
 
 <script>
 export default {
   data() {
     return {
-      visible: false,
       confirmLoading: false,
     };
   },
   methods: {
-    showModal() {
-      this.visible = true;
-    },
     async addMaker() {
       this.confirmLoading = true;
 
-      // await this.$refs.artisanMaker.addMaker();
+      await this.$refs.artisanMaker.addMaker();
 
       this.confirmLoading = false;
       this.visible = false;
 
-      this.$fetch();
+      // this.$fetch();
     },
   },
 };
 </script>
+
+<style lang="less">
+.favorite-maker {
+  color: #eb2f96 !important;
+}
+</style>

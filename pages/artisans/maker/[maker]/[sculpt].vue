@@ -9,14 +9,17 @@
           <template #overlay>
             <a-menu @click="onChangeSortType">
               <a-menu-item key="name">
-                <sort-ascending-outlined /> Sort by Name
+                <sort-ascending-outlined /> Name
               </a-menu-item>
-              <a-menu-item key="date">
-                <clock-circle-outlined /> Sort by Date
+              <a-menu-item key="order">
+                <ordered-list-outlined /> Order
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button><sort-ascending-outlined /> Sort By </a-button>
+          <a-button>
+            <sort-ascending-outlined v-if="sort === 'name'" />
+            <ordered-list-outlined v-else /> Sort
+          </a-button>
         </a-dropdown>
       </template>
 
@@ -37,7 +40,7 @@
                 v-if="colorway.commissioned"
                 class="commissioned"
               />
-              <gift-outlined
+              <gift-filled
                 v-if="colorway.name.toLowerCase().includes('giveaway')"
                 class="giveaway"
               />
@@ -78,6 +81,8 @@
 </template>
 
 <script setup>
+import { sortBy } from "lodash";
+
 const route = useRoute();
 
 const {
@@ -96,6 +101,12 @@ watch(
 );
 
 const size = "default";
+let sort = ref("order");
+
+const onChangeSortType = (e) => {
+  sort.value = e.key;
+  sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key);
+};
 </script>
 
 <style lang="less">
