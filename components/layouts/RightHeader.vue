@@ -65,8 +65,7 @@ const { user } = storeToRefs(userStore);
 const loginWithGoogle = async () => {
   await signInWithPopup(auth, provider)
     .then(({ credential, user }) => {
-      userStore.$patch({ user });
-
+      userStore.setCurrentUser(user);
       userStore.getUserDocument(user.uid);
 
       message.success(

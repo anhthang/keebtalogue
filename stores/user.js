@@ -8,6 +8,10 @@ export const useUserStore = defineStore('user', {
         social: {},
     }),
     actions: {
+        setCurrentUser(authUser) {
+            const { uid, email, emailVerified, displayName, photoURL } = authUser
+            this.user = { uid, email, emailVerified, displayName, photoURL }
+        },
         async getUserDocument(uid) {
             const doc = await $fetch('/api/firestore/query', {
                 params: {

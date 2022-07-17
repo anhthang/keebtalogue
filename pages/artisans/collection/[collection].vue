@@ -131,7 +131,13 @@ watch(
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
 const removeCap = (clw) => {
-  // TODO: remove cap
+  $fetch("/api/firestore/del", {
+    params: {
+      col: `users/${user.value.uid}/collections`,
+      doc: route.params.collection,
+      field: clw.id,
+    },
+  });
 };
 
 const deleteCollection = () => {

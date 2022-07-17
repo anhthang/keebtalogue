@@ -43,25 +43,15 @@
   </a-layout>
 </template>
 
-<script>
-import LayoutFooter from "~/components/layouts/Footer.vue";
-import MenuTree from "~/components/layouts/MenuTree.vue";
-import RightHeader from "~/components/layouts/RightHeader.vue";
+<script setup>
+import LayoutFooter from "~~/components/layouts/Footer.vue";
+import MenuTree from "~~/components/layouts/MenuTree.vue";
+import RightHeader from "~~/components/layouts/RightHeader.vue";
 
-export default {
-  components: { MenuTree, LayoutFooter, RightHeader },
-  data() {
-    return {
-      // isMobile: this.$device.isMobile,
-      isMobile: false,
-      collapsed: true,
-    };
-  },
-  methods: {
-    sidebarToogle() {
-      this.collapsed = !this.collapsed;
-    },
-  },
+const isMobile = false;
+const collapsed = ref(true);
+const sidebarToogle = () => {
+  collapsed.value = !collapsed.value;
 };
 </script>
 

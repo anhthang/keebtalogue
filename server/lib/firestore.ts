@@ -4,6 +4,7 @@ import {
     getDoc,
     addDoc,
     deleteDoc,
+    deleteField,
     doc,
     query,
     where,
@@ -11,7 +12,7 @@ import {
     collectionGroup,
     Timestamp,
     updateDoc,
-    FieldValue
+    FieldValue,
 } from 'firebase/firestore'
 import { firestoreDb } from './firebase'
 
@@ -39,12 +40,22 @@ export const getDocument = async (col: string, docId: string) => {
     }
 }
 
-export const addDocument = async (col: string, docId: string, document: Object) => {
-    await setDoc(doc(collection(firestoreDb, col), docId), document, { merge: true })
+export const addDocument = async (
+    col: string,
+    docId: string,
+    document: Object
+) => {
+    await setDoc(doc(collection(firestoreDb, col), docId), document, {
+        merge: true,
+    })
 }
 
-export const updateDocument = async (col: string, docId: string, key: string, value: any) => {
-    await updateDoc(doc(collection(firestoreDb, col), docId), key, value)
+export const updateDocument = async (
+    col: string,
+    docId: string,
+    document: { [x: string]: any }
+) => {
+    await updateDoc(doc(firestoreDb, col, docId), document)
 }
 
 export const add = async (col: string, document: Object) => {
@@ -55,7 +66,9 @@ export const add = async (col: string, document: Object) => {
     return docRef
 }
 
-export const del = async (col, id) => {
-    const docRef = doc(firestoreDb, col, id)
-    return await deleteDoc(docRef)
+export const del = async (col, docId, field) => {
+    const docRef = doc(firestoreDb, col, docId)
+    return field
+        ? await updateDoc(docRef, { [field]: deleteField() })
+        : await deleteDoc(docRef)
 }
