@@ -56,20 +56,22 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from "pinia";
 import MakerForm from "~~/components/modals/MakerForm.vue";
-import { useUserStore } from '~~/stores/user';
+import { useUserStore } from "~~/stores/user";
 
 useHead({
   title: "Artisan Makers | Keeb Archivist",
 });
 
-const { data: makers, pending, refresh } = await useAsyncData(() =>
-  $fetch("/api/firestore/query?col=artisan-makers")
-);
+const {
+  data: makers,
+  pending,
+  refresh,
+} = await useAsyncData(() => $fetch("/api/firestore/query?col=artisan-makers"));
 
-const userStore = useUserStore()
-const { user, favorites } = storeToRefs(userStore)
+const userStore = useUserStore();
+const { user, favorites } = storeToRefs(userStore);
 
 const visible = ref(false);
 const showModal = () => {
@@ -77,17 +79,20 @@ const showModal = () => {
 };
 
 const confirmLoading = ref(false);
-const defaultTab = ref("makers")
-watch(() => favorites.value.length, () => {
-  defaultTab.value = "favorite"
-})
+const defaultTab = ref("makers");
+watch(
+  () => favorites.value.length,
+  () => {
+    defaultTab.value = "favorite";
+  }
+);
 
 const favoriteMakers = computed(() => {
-  return makers.value.filter(m => favorites.value.includes(m.id))
-})
+  return makers.value.filter((m) => favorites.value.includes(m.id));
+});
 const otherMakers = computed(() => {
-  return makers.value.filter(m => !favorites.value.includes(m.id))
-})
+  return makers.value.filter((m) => !favorites.value.includes(m.id));
+});
 </script>
 
 <script>

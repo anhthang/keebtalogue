@@ -20,12 +20,26 @@ export const useUserStore = defineStore('user', {
             this.favorites = doc.makers
             this.social = doc.social
         },
+        updateUserCollections() {
+            $fetch('/api/firestore/put', {
+                method: 'post',
+                params: {
+                    col: 'users',
+                    doc: this.user.uid,
+                },
+                body: {
+                    collections: this.collections,
+                },
+            })
+        },
         addCollection(name, slug) {
             this.collections.push({ name, slug })
+            this.updateUserCollections()
         },
         removeCollection(slug) {
             const collections = this.collections.filter((c) => c.slug !== slug)
             this.collections = collections
+            this.updateUserCollections()
         },
     },
 })

@@ -31,24 +31,19 @@
       </a-menu-item>
     </a-sub-menu> -->
 
-    <a-sub-menu key="6">
-      <template #title><user-outlined /> Artisans </template>
-      <a-menu-item key="7">
-        <nuxt-link to="/artisans/maker">
-          <user-add-outlined /> Makers
-        </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="8">
-        <nuxt-link to="/artisans/collection">
-          <book-outlined /> Collection
-        </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="9">
-        <nuxt-link to="/artisans/wishlist">
-          <shopping-cart-outlined /> Wishlist
-        </nuxt-link>
-      </a-menu-item>
-    </a-sub-menu>
+    <a-menu-item key="7">
+      <nuxt-link to="/artisans/maker"> <user-add-outlined /> Makers </nuxt-link>
+    </a-menu-item>
+    <a-menu-item key="8">
+      <nuxt-link to="/artisans/collection">
+        <book-outlined /> Collection
+      </nuxt-link>
+    </a-menu-item>
+    <a-menu-item key="9">
+      <nuxt-link to="/artisans/wishlist">
+        <shopping-cart-outlined /> Wishlist
+      </nuxt-link>
+    </a-menu-item>
   </a-menu>
 </template>
 

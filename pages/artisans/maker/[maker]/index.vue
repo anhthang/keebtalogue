@@ -89,6 +89,10 @@ watch(
   () => refresh()
 );
 
+useHead({
+  title: pending ? "Keeb Archivist" : `${maker.value.name} | Keeb Archivist`,
+});
+
 const size = "default";
 
 const showEditMakerModal = () => {

@@ -17,7 +17,7 @@
       <a-row v-if="!user.emailVerified" type="flex">
         <a-alert
           class="collection-alert"
-          message="You must log in to sync the collections across devices. The current saved ones in local will not be synced."
+          message="You must log in to use this feature and sync the collections across your devices."
           banner
         />
       </a-row>

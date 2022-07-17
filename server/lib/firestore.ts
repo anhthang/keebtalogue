@@ -10,6 +10,8 @@ import {
     setDoc,
     collectionGroup,
     Timestamp,
+    updateDoc,
+    FieldValue
 } from 'firebase/firestore'
 import { firestoreDb } from './firebase'
 
@@ -39,6 +41,10 @@ export const getDocument = async (col: string, docId: string) => {
 
 export const addDocument = async (col: string, docId: string, document: Object) => {
     await setDoc(doc(collection(firestoreDb, col), docId), document, { merge: true })
+}
+
+export const updateDocument = async (col: string, docId: string, key: string, value: any) => {
+    await updateDoc(doc(collection(firestoreDb, col), docId), key, value)
 }
 
 export const add = async (col: string, document: Object) => {

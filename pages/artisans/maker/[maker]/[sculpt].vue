@@ -23,7 +23,6 @@
         </a-dropdown>
       </template>
 
-      <!-- <a-spin :spinning="loading"> -->
       <a-row :gutter="[8, 8]" type="flex">
         <a-col
           v-for="colorway in sculpt.colorways"
@@ -49,7 +48,7 @@
               <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
             </template>
 
-            <template #actions>
+            <template v-if="collections.length" #actions>
               <a-dropdown :trigger="['click']" placement="top">
                 <div><save-outlined /> Add to Collection</div>
                 <template #overlay>
@@ -73,8 +72,6 @@
           </a-card>
         </a-col>
       </a-row>
-      <!-- </a-spin> -->
-
     </a-page-header>
   </div>
 </template>
@@ -99,6 +96,9 @@ watch(
   () => refresh()
 );
 
+useHead({
+  title: `${sculpt.value.name} | Keeb Archivist`,
+});
 
 import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();

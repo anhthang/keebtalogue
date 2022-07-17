@@ -8,7 +8,10 @@
         :href="link.link"
         target="_blank"
       >
-        <github-outlined v-if="link.icon === 'github'" style="font-size: 24px" />
+        <github-outlined
+          v-if="link.icon === 'github'"
+          style="font-size: 24px"
+        />
         {{ link.title }}
       </a>
     </div>
@@ -22,22 +25,22 @@ export default {
     return {
       links: [
         {
-          title: 'Keeb Catalogue',
-          link: 'https://keeb-catalogue.web.app',
+          title: "Keeb Archivist",
+          link: "https://keeb-catalogue.web.app",
         },
         {
-          title: '',
-          icon: 'github',
-          link: 'https://github.com/anhthang/keeb-catalogue',
+          title: "",
+          icon: "github",
+          link: "https://github.com/anhthang/keeb-catalogue",
         },
         {
-          title: 'Anh Thang',
-          link: 'https://anhthang.org',
+          title: "Anh Thang",
+          link: "https://anhthang.org",
         },
       ],
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="less">

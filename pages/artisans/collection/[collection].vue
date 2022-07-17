@@ -76,6 +76,9 @@
 <script setup>
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
+import crc32 from "crc/crc32";
+import { sortBy } from "lodash";
+import { message } from "ant-design-vue";
 
 const userStore = useUserStore();
 const { user, collections } = storeToRefs(userStore);
@@ -86,6 +89,10 @@ const sortedCollections = ref([]);
 
 const collection =
   collections.value.find((c) => c.slug === route.params.collection) || {};
+
+useHead({
+  title: `${collection.name} | Collection`,
+});
 
 const isPublic = route.params.collection.startsWith("p_");
 const col = isPublic
@@ -128,7 +135,7 @@ const removeCap = (clw) => {
 };
 
 const deleteCollection = () => {
-  userStore.removeCollection(route.params.collection)
+  userStore.removeCollection(route.params.collection);
 
   $fetch("/api/firestore/del", {
     params: {
@@ -153,25 +160,24 @@ const delPublishedCollection = () => {
 const publishCollection = () => {
   // TODO: publish collection
 };
+
+const publishId = computed(() => {
+  const id = crc32(`${user.uid}__${collection.name}`).toString(16);
+
+  return `p_${id}`;
+});
+
+const config = useRuntimeConfig();
+
+const href = computed(() => {
+  return `${config.public.baseUrl}/artisans/collection/${publishId.value}`;
+});
 </script>
 
-<script>
-import { keyBy, sortBy } from "lodash";
-import crc32 from "crc/crc32";
-import { message } from "ant-design-vue";
-
-export default {
-  computed: {
-    publishId() {
-      const id = crc32(`${this.user.uid}__${this.collection.name}`).toString(
-        16
-      );
-
-      return `p_${id}`;
-    },
-    // href() {
-    //   return `${process.env.appUrl}/artisans/collection/${this.publishId}`;
-    // },
-  },
-};
-</script>
+<style lang="less">
+.anticon-delete:hover {
+  svg {
+    fill: #f5222d;
+  }
+}
+</style>

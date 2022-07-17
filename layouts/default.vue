@@ -15,7 +15,7 @@
       </a-button>
 
       <nuxt-link to="/">
-        <div class="logo">Keeb Catalogue</div>
+        <div class="logo">Keeb Archivist</div>
       </nuxt-link>
 
       <menu-tree v-if="!isMobile" mode="horizontal" />
@@ -46,7 +46,7 @@
 <script>
 import LayoutFooter from "~/components/layouts/Footer.vue";
 import MenuTree from "~/components/layouts/MenuTree.vue";
-import RightHeader from '~/components/layouts/RightHeader.vue'
+import RightHeader from "~/components/layouts/RightHeader.vue";
 
 export default {
   components: { MenuTree, LayoutFooter, RightHeader },
