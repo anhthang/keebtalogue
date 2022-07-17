@@ -31,7 +31,7 @@
         <a-form :layout="layout">
           <a-form-item label="Reddit">
             <a-input
-              v-model:value="settings.social.reddit"
+              v-model:value="social.reddit"
               placeholder="u/username"
             >
               <template #prefix><reddit-outlined /></template>
@@ -39,14 +39,14 @@
           </a-form-item>
           <a-form-item label="Discord">
             <a-input
-              v-model:value="settings.social.discord"
+              v-model:value="social.discord"
               placeholder="Discord#0000"
             >
               <template #prefix><aliwangwang-outlined /></template>
             </a-input>
           </a-form-item>
           <a-form-item label="QQ">
-            <a-input v-model:value="settings.social.qq" placeholder="00000000">
+            <a-input v-model:value="social.qq" placeholder="00000000">
               <template #prefix><qq-outlined /></template>
             </a-input>
           </a-form-item>
@@ -70,24 +70,13 @@ import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const { user, social } = storeToRefs(userStore);
 
 const layout = "vertical";
 </script>
 
 <script>
 export default {
-  data() {
-    return {
-      loading: false,
-      settings: {
-        social: {},
-      },
-    };
-  },
-  // beforeMount() {
-  //   this.settings.social = this.user.social
-  // },
   methods: {
     saveSettings(type) {
       this.loading = true;
