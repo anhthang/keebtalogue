@@ -52,7 +52,7 @@ import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const { user, collections } = storeToRefs(userStore);
 
 const visible = ref(false);
 const showModal = () => {

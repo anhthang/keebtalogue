@@ -67,6 +67,8 @@ const loginWithGoogle = async () => {
     .then(({ credential, user }) => {
       userStore.$patch({ user });
 
+      userStore.getUserDocument(user.uid);
+
       message.success(
         `Hello, ${user.displayName}. You successfully logged into this website.`
       );

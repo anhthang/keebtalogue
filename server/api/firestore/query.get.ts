@@ -9,8 +9,8 @@ export default defineEventHandler(async (event) => {
             ? await getDocument(query.col as string, query.doc as string)
             : await getCollection(query.col as string)
 
-        return { result: docs }
+        return docs
     } catch (error) {
-        return { result: [], error: error.message }
+        return { error: error.message }
     }
 })

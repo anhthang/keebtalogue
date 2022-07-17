@@ -32,7 +32,9 @@ export const getDocument = async (col: string, docId: string) => {
     const docRef = doc(firestoreDb, col, docId)
     const docSnap = await getDoc(docRef)
 
-    return docSnap
+    return {
+        ...docSnap.data(),
+    }
 }
 
 export const set = async (col: string, document: Object) => {
