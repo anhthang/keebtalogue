@@ -75,7 +75,6 @@
       </a-row>
       <!-- </a-spin> -->
 
-      <!-- <conflict-sync-modal /> -->
     </a-page-header>
   </div>
 </template>
@@ -99,6 +98,11 @@ watch(
   () => route.params.sculpt,
   () => refresh()
 );
+
+
+import { useUserStore } from "~~/stores/user";
+const userStore = useUserStore();
+const { collections } = userStore;
 
 const size = "default";
 let sort = ref("order");

@@ -14,8 +14,6 @@
         <a-input v-model:value="collectionName" placeholder="Collection Name" />
       </a-modal>
 
-      <conflict-sync-modal />
-
       <a-row v-if="!user.emailVerified" type="flex">
         <a-alert
           class="collection-alert"
@@ -50,6 +48,8 @@ useHead({
 
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
+import slugify from "slugify";
+import { message } from "ant-design-vue";
 
 const userStore = useUserStore();
 const { user, collections } = storeToRefs(userStore);
@@ -58,48 +58,36 @@ const visible = ref(false);
 const showModal = () => {
   visible.value = !visible.value;
 };
-</script>
 
-<script>
-import slugify from "slugify";
-export default {
-  data() {
-    return {
-      collectionName: undefined,
-    };
-  },
-  methods: {
-    addCollection() {
-      const slug = slugify(this.collectionName, { lower: true });
+const collectionName = ref("");
+const addCollection = async () => {
+  const slug = slugify(collectionName.value, { lower: true });
 
-      const isExist = this.collections.some((c) => c.slug === slug);
-      if (isExist) {
-        this.$message.error("Collection already exist.");
-        return;
-      }
+  const isExist = collections.value.find((c) => c.slug === slug);
+  if (isExist) {
+    message.error("Collection already exist.");
+    return;
+  }
 
-      this.$store.dispatch("artisans/addCollection", {
-        name: this.collectionName,
-        slug,
-      });
+  userStore.addCollection(collectionName.value, slug);
 
-      this.$fire.firestore.collection("users").doc(this.user.uid).update({
-        collections: this.collections,
-      });
+  // TODO: save new collection to the user document here also
 
-      this.$fire.firestore
-        .collection(`users/${this.user.uid}/collections`)
-        .doc(slug)
-        .set({})
-        .then(() => {
-          this.$message.success("Collection successfully added!");
-          this.visible = false;
-        })
-        .catch((error) => {
-          this.$message.error("Error adding collection: ", error.message);
-        });
+  $fetch("/api/firestore/add", {
+    method: "post",
+    params: {
+      col: `users/${user.value.uid}/collections`,
+      doc: slug,
     },
-  },
+    body: {},
+  })
+    .then(() => {
+      message.success("Added new collection");
+      showModal();
+    })
+    .catch((error) => {
+      message.error(error.message);
+    });
 };
 </script>
 

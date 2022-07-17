@@ -16,7 +16,7 @@
         <maker-form ref="artisanMaker" />
       </a-modal>
 
-      <a-tabs :default-active-key="defaultTab">
+      <a-tabs v-model:activeKey="defaultTab">
         <a-tab-pane key="favorite">
           <template #tab><star-outlined />Favorite</template>
 
@@ -77,22 +77,21 @@ const showModal = () => {
 };
 
 const confirmLoading = ref(false);
+const defaultTab = ref("makers")
+watch(() => favorites.value.length, () => {
+  defaultTab.value = "favorite"
+})
+
+const favoriteMakers = computed(() => {
+  return makers.value.filter(m => favorites.value.includes(m.id))
+})
+const otherMakers = computed(() => {
+  return makers.value.filter(m => !favorites.value.includes(m.id))
+})
 </script>
 
 <script>
 export default {
-  computed: {
-    defaultTab() {
-      // FIXME: dont know why it's not changing tab
-      return this.favorites.length ? "favorite" : "makers"
-    },
-    favoriteMakers() {
-      return this.makers.filter(m => this.favorites.includes(m.id))
-    },
-    otherMakers() {
-      return this.makers.filter(m => !this.favorites.includes(m.id))
-    }
-  },
   methods: {
     async addMaker() {
       this.confirmLoading = true;

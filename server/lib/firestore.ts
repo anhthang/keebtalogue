@@ -37,8 +37,8 @@ export const getDocument = async (col: string, docId: string) => {
     }
 }
 
-export const set = async (col: string, document: Object) => {
-    await setDoc(doc(collection(firestoreDb, col)), document, { merge: true })
+export const addDocument = async (col: string, docId: string, document: Object) => {
+    await setDoc(doc(collection(firestoreDb, col), docId), document, { merge: true })
 }
 
 export const add = async (col: string, document: Object) => {
