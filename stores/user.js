@@ -6,10 +6,27 @@ export const useUserStore = defineStore('user', {
         collections: [],
         favorites: [],
         social: {},
+        wishlishConfig: {
+            trade: {
+                collection: '',
+                title: 'WTT',
+            },
+            wish: {
+                collection: '',
+                title: 'WTB',
+            },
+            social: {
+                discord: '',
+                reddit: '',
+                qq: '',
+            },
+            want_to: 'buy',
+        },
     }),
     actions: {
         setCurrentUser(authUser) {
-            const { uid, email, emailVerified, displayName, photoURL } = authUser
+            const { uid, email, emailVerified, displayName, photoURL } =
+                authUser
             this.user = { uid, email, emailVerified, displayName, photoURL }
         },
         async getUserDocument(uid) {
@@ -44,6 +61,9 @@ export const useUserStore = defineStore('user', {
             const collections = this.collections.filter((c) => c.slug !== slug)
             this.collections = collections
             this.updateUserCollections()
+        },
+        setWishlistConfig(config) {
+            this.wishlishConfig = config
         },
     },
 })

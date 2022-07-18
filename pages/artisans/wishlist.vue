@@ -14,6 +14,9 @@
 </template>
 
 <script setup>
+import WishlistPreview from "~~/components/WishlistPreview.vue";
+import WishlistSettings from "~~/components/WishlistSettings.vue";
+
 useHead({
   title: "Wishlist | Keeb Archivist",
 });
