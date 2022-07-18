@@ -84,10 +84,7 @@ const {
   refresh,
 } = await useAsyncData(() => $fetch(`/api/maker/${route.params.maker}`));
 
-watch(
-  () => route.params.maker,
-  () => refresh()
-);
+watch(route.params.maker, refresh())
 
 useHead({
   title: pending ? "Keeb Archivist" : `${maker.value.name} | Keeb Archivist`,

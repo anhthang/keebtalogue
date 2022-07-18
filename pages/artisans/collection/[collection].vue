@@ -105,12 +105,11 @@ const { data, pending, refresh } = await useAsyncData(() =>
   })
 );
 
-sortedCollections.value = Object.values(data.value);
+watch(route.params.collection, refresh());
 
-watch(
-  () => route.params.collection,
-  () => refresh()
-);
+watch(pending, () => {
+  sortedCollections.value = Object.values(data.value);
+});
 
 const size = "default";
 

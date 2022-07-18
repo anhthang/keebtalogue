@@ -1,5 +1,5 @@
 <template>
-  <div class="container maker-container" v-if="!pending">
+  <div class="container maker-container">
     <a-page-header title="Artisan Makers">
       <template #extra>
         <a-button type="primary" @click="showModal">

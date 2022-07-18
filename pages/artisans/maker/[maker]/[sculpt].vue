@@ -23,55 +23,57 @@
         </a-dropdown>
       </template>
 
-      <a-row :gutter="[8, 8]" type="flex">
-        <a-col
-          v-for="colorway in sculpt.colorways"
-          :key="colorway.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <a-card hoverable :title="colorway.name || '-'" :size="size">
-            <template #extra>
-              <bg-colors-outlined
-                v-if="colorway.commissioned"
-                class="commissioned"
-              />
-              <gift-filled
-                v-if="colorway.name.toLowerCase().includes('giveaway')"
-                class="giveaway"
-              />
-            </template>
-            <template #cover>
-              <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
-            </template>
+      <a-spin :spinning="pending">
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col
+            v-for="colorway in sculpt.colorways"
+            :key="colorway.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :xl="4"
+          >
+            <a-card hoverable :title="colorway.name || '-'" :size="size">
+              <template #extra>
+                <bg-colors-outlined
+                  v-if="colorway.commissioned"
+                  class="commissioned"
+                />
+                <gift-filled
+                  v-if="colorway.name.toLowerCase().includes('giveaway')"
+                  class="giveaway"
+                />
+              </template>
+              <template #cover>
+                <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
+              </template>
 
-            <template v-if="collections.length" #actions>
-              <a-dropdown :trigger="['click']" placement="top">
-                <div><save-outlined /> Add to Collection</div>
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item
-                      v-for="collection in collections"
-                      :key="collection.slug"
-                      :disabled="!collections.length"
-                      @click="addToCollection(collection, colorway)"
-                    >
-                      {{ collection.name }}
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-              </a-dropdown>
-            </template>
-            <a-card-meta
-              v-if="colorway.releaseDate"
-              :description="colorway.releaseDate"
-            />
-          </a-card>
-        </a-col>
-      </a-row>
+              <template v-if="collections.length" #actions>
+                <a-dropdown :trigger="['click']" placement="top">
+                  <div><save-outlined /> Add to Collection</div>
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item
+                        v-for="collection in collections"
+                        :key="collection.slug"
+                        :disabled="!collections.length"
+                        @click="addToCollection(collection, colorway)"
+                      >
+                        {{ collection.name }}
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                </a-dropdown>
+              </template>
+              <a-card-meta
+                v-if="colorway.releaseDate"
+                :description="colorway.releaseDate"
+              />
+            </a-card>
+          </a-col>
+        </a-row>
+      </a-spin>
     </a-page-header>
   </div>
 </template>
@@ -91,10 +93,7 @@ const {
   })
 );
 
-watch(
-  () => route.params.sculpt,
-  () => refresh()
-);
+watch(route.params.sculpt, refresh());
 
 useHead({
   title: `${sculpt.value.name} | Keeb Archivist`,
