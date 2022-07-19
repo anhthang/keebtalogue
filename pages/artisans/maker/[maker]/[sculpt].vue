@@ -119,10 +119,10 @@ const addToCollection = (collection, colorway) => {
     name: colorway.name,
     img: colorway.img,
     sculpt_name: sculpt.value.name,
-    // maker_name: maker.name,
+    maker_name: route.params.maker,
   };
 
-  if (authenticated) {
+  if (authenticated.value) {
     $fetch("/api/firestore/put", {
       method: "post",
       params: {
@@ -140,7 +140,18 @@ const addToCollection = (collection, colorway) => {
         message.error(error.message);
       });
   } else {
-    // TODO: insert to localstorage
+    const collectionMap =
+      JSON.parse(localStorage.getItem(`KeebCatalogue_${collection.slug}`)) ||
+      {};
+
+    collectionMap[clw.id] = colorway;
+
+    localStorage.setItem(
+      `KeebCatalogue_${collection.slug}`,
+      JSON.stringify(collectionMap)
+    );
+
+    message.success(`Added ${clw.name} to ${collection.name}`);
   }
 };
 </script>

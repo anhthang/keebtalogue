@@ -83,7 +83,7 @@ const logout = async () => {
       userStore.$patch({ user: {} });
 
       message.success("You have been logged out successfully.");
-      this.$router.push("/");
+      navigateTo("/");
     })
     .catch((err) => {
       message.error(err.message);

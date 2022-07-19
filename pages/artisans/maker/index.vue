@@ -17,9 +17,8 @@
       </a-modal>
 
       <a-tabs v-model:activeKey="defaultTab">
-        <a-tab-pane key="favorite">
+        <a-tab-pane :disabled="!authenticated" key="favorite">
           <template #tab><star-outlined />Favorite</template>
-
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
               v-for="maker in favoriteMakers"
@@ -79,7 +78,7 @@ const showModal = () => {
 };
 
 const confirmLoading = ref(false);
-const defaultTab = ref(favorites.length ? "favorite" : "makers");
+const defaultTab = ref(favorites.value.length ? "favorite" : "makers");
 watch(
   () => favorites.value.length,
   () => {

@@ -84,7 +84,7 @@ import { keyBy, sortBy } from "lodash";
 import { message, Modal } from "ant-design-vue";
 
 const userStore = useUserStore();
-const { user, collections } = storeToRefs(userStore);
+const { authenticated, collections, user } = storeToRefs(userStore);
 
 const route = useRoute();
 const router = useRouter();
@@ -102,10 +102,20 @@ const col = isPublic
   ? "public-collections"
   : `users/${user.value.uid}/collections`;
 
+// const { data, pending, refresh } = await useAsyncData(() =>
+//   $fetch("/api/firestore/query", {
+//     params: { col, doc: route.params.collection },
+//   })
+// );
+
 const { data, pending, refresh } = await useAsyncData(() =>
-  $fetch("/api/firestore/query", {
-    params: { col, doc: route.params.collection },
-  })
+  authenticated.value
+    ? $fetch("/api/firestore/query", {
+        params: { col, doc: route.params.collection },
+      })
+    : JSON.parse(
+        localStorage.getItem(`KeebCatalogue_${route.params.collection}`) || "{}"
+      )
 );
 
 watch(route.params.collection, refresh());
@@ -134,20 +144,32 @@ watch(
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
 const removeCap = (clw) => {
-  $fetch("/api/firestore/del", {
-    params: {
-      col: `users/${user.value.uid}/collections`,
-      doc: route.params.collection,
-      field: clw.id,
-    },
-  })
-    .then(() => {
-      refresh();
-      message.success(`${cardTitle(clw)} released from the collection.`);
+  if (authenticated.value) {
+    $fetch("/api/firestore/del", {
+      params: {
+        col: `users/${user.value.uid}/collections`,
+        doc: route.params.collection,
+        field: clw.id,
+      },
     })
-    .catch((error) => {
-      message.error(error.message);
-    });
+      .then(() => {
+        refresh();
+        message.success(`${cardTitle(clw)} removed from the collection.`);
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
+  } else {
+    sortedCollections.value = sortedCollections.value.filter(
+      (c) => c.id !== clw.id
+    );
+    localStorage.setItem(
+      `KeebCatalogue_${route.params.collection}`,
+      JSON.stringify(keyBy(sortedCollections.value, "id"))
+    );
+
+    message.success(`${cardTitle(clw)} removed from the collection.`);
+  }
 };
 
 const deleteCollection = () => {
@@ -240,7 +262,7 @@ const publishCollection = () => {
 };
 
 const publishId = computed(() => {
-  const id = crc32(`${user.uid}__${collection.name}`).toString(16);
+  const id = crc32(`${user.value.uid}__${collection.name}`).toString(16);
 
   return `p_${id}`;
 });
