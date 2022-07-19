@@ -85,7 +85,7 @@ export const useUserStore = defineStore('user', {
                     doc: this.user.uid
                 },
                 body: {
-                    favorites: this.favorites
+                    makers: this.favorites
                 }
             })
         },

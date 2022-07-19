@@ -1,6 +1,9 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header :title="collection.name || 'Colllection'">
+    <a-page-header
+      :title="collection.name || 'Colllection'"
+      :sub-title="sortedCollections.length"
+    >
       <template #extra>
         <a-dropdown placement="bottomRight">
           <template #overlay>
@@ -77,8 +80,8 @@
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 import crc32 from "crc/crc32";
-import { sortBy } from "lodash";
-import { message } from "ant-design-vue";
+import { keyBy, sortBy } from "lodash";
+import { message, Modal } from "ant-design-vue";
 
 const userStore = useUserStore();
 const { user, collections } = storeToRefs(userStore);
@@ -107,13 +110,14 @@ const { data, pending, refresh } = await useAsyncData(() =>
 
 watch(route.params.collection, refresh());
 
+const sort = ref("");
 watch(pending, () => {
   sortedCollections.value = Object.values(data.value);
+  sort.value = "sculpt_name";
 });
 
 const size = "default";
 
-const sort = ref("sculpt_name");
 const onChangeSortType = (e) => {
   sort.value = e.key;
 };
@@ -147,30 +151,92 @@ const removeCap = (clw) => {
 };
 
 const deleteCollection = () => {
-  userStore.removeCollection(route.params.collection);
+  Modal.confirm({
+    title: "Are you sure to delete this collection?",
+    okText: "Delete",
+    onOk() {
+      userStore.removeCollection(route.params.collection);
 
-  $fetch("/api/firestore/del", {
-    params: {
-      col: `users/${user.value.uid}/collections`,
-      doc: route.params.collection,
+      $fetch("/api/firestore/del", {
+        params: {
+          col: `users/${user.value.uid}/collections`,
+          doc: route.params.collection,
+        },
+      })
+        .then(() => {
+          message.success("Collection successfully deleted!");
+
+          router.go(-1);
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
     },
-  })
-    .then(() => {
-      message.success("Collection successfully deleted!");
-
-      router.go(-1);
-    })
-    .catch((error) => {
-      message.error(error.message);
-    });
+  });
 };
 
 const delPublishedCollection = () => {
-  // TODO: delete published collection
+  Modal.confirm({
+    title: "Are you sure to unpublish this collection?",
+    onOk() {
+      $fetch("/api/firestore/del", {
+        params: {
+          col: "public-collections",
+          doc: publishId.value,
+        },
+      })
+        .then(() => {
+          message.success("Collection unpublished");
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    },
+  });
 };
 
 const publishCollection = () => {
-  // TODO: publish collection
+  Modal.confirm({
+    title: "Do you want to publish this collection?",
+    okText: "Publish",
+    onOk() {
+      $fetch("/api/firestore/add", {
+        method: "post",
+        params: {
+          col: "public-collections",
+          doc: publishId.value,
+        },
+        body: keyBy(sortedCollections, "id"),
+      })
+        .then(() => {
+          const updatedCollections = collections.map((c) => {
+            if (c.slug === route.params.collection) {
+              Object.assign(c, {
+                published: true,
+                public_id: publishId.value,
+              });
+              return c;
+            }
+          });
+
+          $fetch("/api/firestore/put", {
+            method: "post",
+            params: {
+              col: "users",
+              doc: user.value.uid,
+            },
+            body: {
+              collections: updatedCollections,
+            },
+          }).then(() => {
+            message.success("Collection published");
+          });
+        })
+        .catch((error) => {
+          message.error(error.message);
+        });
+    },
+  });
 };
 
 const publishId = computed(() => {

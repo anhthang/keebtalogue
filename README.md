@@ -1,4 +1,15 @@
-# Nuxt 3 Minimal Starter
+# Keeb Archivist
+The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Vue 3
+
+## Migration
+- Add/Edit maker
+- Generate wishlish
+- Dark mode
+
+## TODO
+- Sales in calendar
+
+# Development
 
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
 
