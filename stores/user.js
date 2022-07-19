@@ -3,7 +3,11 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
     state: () => ({
         user: {},
-        collections: [],
+        authenticated: false,
+        collections: [
+            { name: 'Wish', slug: 'wish' },
+            { name: 'Trade', slug: 'trade' },
+        ],
         favorites: [],
         social: {},
         wishlishConfig: {
@@ -28,6 +32,7 @@ export const useUserStore = defineStore('user', {
             const { uid, email, emailVerified, displayName, photoURL } =
                 authUser
             this.user = { uid, email, emailVerified, displayName, photoURL }
+            this.authenticated = emailVerified
         },
         async getUserDocument(uid) {
             const doc = await $fetch('/api/firestore/query', {
@@ -64,6 +69,25 @@ export const useUserStore = defineStore('user', {
         },
         setWishlistConfig(config) {
             this.wishlishConfig = config
+        },
+        updateFavoriteMakers(name) {
+            if (this.favorites.includes(name)) {
+                this.favorites = this.favorites.filter((m) => m !== name)
+            } else {
+                this.favorites.push(name)
+            }
+
+            // update firestore
+            $fetch("/api/firestore/put", {
+                method: "post",
+                params: {
+                    col: 'users',
+                    doc: this.user.uid
+                },
+                body: {
+                    favorites: this.favorites
+                }
+            })
         },
     },
 })

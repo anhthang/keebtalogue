@@ -39,6 +39,7 @@
 
 <script setup>
 import crc32 from "crc/crc32";
+import slugify from "slugify";
 
 const { metadata, isKeeb, isEdit } = defineProps({
   metadata: Object,
@@ -57,25 +58,25 @@ watch(
     }
   }
 );
+
+const makerId = computed(() => {
+  return isKeeb
+    ? slugify(maker.value.name, { lower: true })
+    : maker.value.name // make it same as keycap-archivist
+        .replaceAll(" ", "-")
+        .replaceAll(".", "-")
+        .toLowerCase();
+});
+
+const collectionName = computed(() =>
+  isKeeb ? "keyboard-makers" : "artisan-makers"
+);
 </script>
 
 <script>
-import slugify from "slugify";
+
 
 export default {
-  computed: {
-    makerId() {
-      return this.isKeeb
-        ? slugify(this.maker.name, { lower: true })
-        : this.maker.name // make it same as keycap-archivist
-            .replaceAll(" ", "-")
-            .replaceAll(".", "-")
-            .toLowerCase();
-    },
-    collectionName() {
-      return this.isKeeb ? "keyboard-makers" : "artisan-makers";
-    },
-  },
   created() {
     if (this.metadata && Object.keys(this.metadata).length) {
       this.maker = { ...this.metadata };

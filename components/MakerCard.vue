@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="`/artisans/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :size="size">
-      <template #extra>
+      <template v-if="authenticated" #extra>
         <star-filled
           v-if="favorite"
           class="favorite-maker"
@@ -30,6 +30,9 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
+import { useUserStore } from "~~/stores/user";
+
 const size = "default";
 const nologo = "https://i.imgur.com/wYMcZiI.png";
 
@@ -37,4 +40,11 @@ const { maker, favorite } = defineProps({
   maker: Object,
   favorite: Boolean,
 });
+
+const userStore = useUserStore();
+const { authenticated } = storeToRefs(userStore);
+
+const addFavoriteMaker = (id) => {
+  userStore.updateFavoriteMakers(id);
+};
 </script>

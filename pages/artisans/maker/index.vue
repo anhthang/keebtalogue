@@ -1,7 +1,7 @@
 <template>
   <div class="container maker-container">
     <a-page-header title="Artisan Makers">
-      <template #extra>
+      <template v-if="authenticated" #extra>
         <a-button type="primary" @click="showModal">
           <user-add-outlined /> Add
         </a-button>
@@ -71,7 +71,7 @@ const {
 } = await useAsyncData(() => $fetch("/api/firestore/query?col=artisan-makers"));
 
 const userStore = useUserStore();
-const { user, favorites } = storeToRefs(userStore);
+const { authenticated, user, favorites } = storeToRefs(userStore);
 
 const visible = ref(false);
 const showModal = () => {
@@ -79,7 +79,7 @@ const showModal = () => {
 };
 
 const confirmLoading = ref(false);
-const defaultTab = ref("makers");
+const defaultTab = ref(favorites.length ? "favorite" : "makers");
 watch(
   () => favorites.value.length,
   () => {

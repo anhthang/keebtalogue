@@ -71,8 +71,6 @@ const addCollection = async () => {
 
   userStore.addCollection(collectionName.value, slug);
 
-  // TODO: save new collection to the user document here also
-
   $fetch("/api/firestore/add", {
     method: "post",
     params: {

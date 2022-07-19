@@ -136,7 +136,14 @@ const removeCap = (clw) => {
       doc: route.params.collection,
       field: clw.id,
     },
-  });
+  })
+    .then(() => {
+      refresh();
+      message.success(`${cardTitle(clw)} released from the collection.`);
+    })
+    .catch((error) => {
+      message.error(error.message);
+    });
 };
 
 const deleteCollection = () => {

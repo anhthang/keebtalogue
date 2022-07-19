@@ -14,7 +14,12 @@
       </template>
 
       <template #extra>
-        <a-button key="edit" type="primary" @click="showEditMakerModal">
+        <a-button
+          v-if="authenticated"
+          key="edit"
+          type="primary"
+          @click="showEditMakerModal"
+        >
           <template #icon><edit-outlined /></template>
           Edit Maker
         </a-button>
@@ -73,7 +78,12 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
 import MakerForm from "~~/components/modals/MakerForm.vue";
+import { useUserStore } from "~~/stores/user";
+
+const userStore = useUserStore();
+const { authenticated } = storeToRefs(userStore);
 
 const route = useRoute();
 const showEditMaker = ref(false);
@@ -84,7 +94,7 @@ const {
   refresh,
 } = await useAsyncData(() => $fetch(`/api/maker/${route.params.maker}`));
 
-watch(route.params.maker, refresh())
+watch(route.params.maker, refresh());
 
 useHead({
   title: pending ? "Keeb Archivist" : `${maker.value.name} | Keeb Archivist`,

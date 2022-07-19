@@ -79,7 +79,9 @@
 </template>
 
 <script setup>
+import { message } from "ant-design-vue";
 import { sortBy } from "lodash";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 
@@ -101,7 +103,7 @@ useHead({
 
 import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();
-const { collections } = userStore;
+const { authenticated, collections, user } = storeToRefs(userStore);
 
 const size = "default";
 let sort = ref("order");
@@ -109,6 +111,37 @@ let sort = ref("order");
 const onChangeSortType = (e) => {
   sort.value = e.key;
   sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key);
+};
+
+const addToCollection = (collection, colorway) => {
+  const clw = {
+    id: colorway.id,
+    name: colorway.name,
+    img: colorway.img,
+    sculpt_name: sculpt.value.name,
+    // maker_name: maker.name,
+  };
+
+  if (authenticated) {
+    $fetch("/api/firestore/put", {
+      method: "post",
+      params: {
+        col: `users/${user.value.uid}/collections`,
+        doc: collection.slug,
+      },
+      body: {
+        [colorway.id]: clw,
+      },
+    })
+      .then(() => {
+        message.success(`Added ${colorway.name} to ${collection.name}`);
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
+  } else {
+    // TODO: insert to localstorage
+  }
 };
 </script>
 
