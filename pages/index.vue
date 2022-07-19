@@ -15,17 +15,57 @@
           </nuxt-link>
         </template>
       </a-result> -->
-      <a-calendar @panelChange="onPanelChange" />
+      <a-calendar>
+        <template #dateCellRender="{ current }">
+          <a-badge
+            v-for="sale in salesOnDay(current)"
+            :key="sale.maker"
+            :status="sale.type"
+            :text="`${sale.maker} - ${sale.sculpt}`"
+          />
+        </template>
+      </a-calendar>
     </a-page-header>
   </div>
 </template>
 
 <script setup>
+import { message } from "ant-design-vue";
+
 useHead({
   title: "Keeb Archivist",
 });
 
-const onPanelChange = (value, mode) => {
-  // nothing to do
+const { data: sales, pending } = await useAsyncData(() =>
+  $fetch("/api/firestore/query", {
+    params: {
+      col: "artisan-sales",
+    },
+  })
+    .then(() => {
+      return [];
+    })
+    .catch((error) => {
+      message.error(error.message);
+    })
+);
+
+const salesOnDay = (day) => {
+  const today = new Date().getDate();
+
+  return sales.value
+    .filter((d) => d.date === day.format("YYYY-MM-DD"))
+    .map((d) => {
+      const cellDate = day.date();
+      let type;
+      if (cellDate < today) {
+        type = "success";
+      } else if (cellDate === today) {
+        type = "processing";
+      } else {
+        type = "warning";
+      }
+      return Object.assign(d, { type });
+    });
 };
 </script>
