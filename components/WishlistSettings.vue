@@ -1,7 +1,7 @@
 <template>
   <a-card title="Settings" size="small" class="wishlist-settings">
     <template #extra>
-      <a-radio-group v-model:value="wishlishConfig.want_to" button-style="solid">
+      <a-radio-group v-model:value="wishlistConfig.want_to" button-style="solid">
         <a-radio-button value="buy"> Buy </a-radio-button>
         <a-radio-button value="sell"> Sell </a-radio-button>
         <a-radio-button value="trade"> Trade </a-radio-button>
@@ -10,12 +10,12 @@
 
     <a-form layout="vertical">
       <a-form-item :label="wantToTrade ? 'Want Title' : 'Title'">
-        <a-input v-model:value="wishlishConfig.wish.title">
+        <a-input v-model:value="wishlistConfig.wish.title">
           <font-size-outlined />
         </a-input>
       </a-form-item>
       <a-form-item :label="wantToTrade ? 'Want Collection' : 'Collection'">
-        <a-select v-model:value="wishlishConfig.wish.collection">
+        <a-select v-model:value="wishlistConfig.wish.collection">
           <a-select-option
             v-for="collection in collections"
             :key="collection.slug"
@@ -27,12 +27,12 @@
       </a-form-item>
 
       <a-form-item v-if="wantToTrade" label="Have Title">
-        <a-input v-model:value="wishlishConfig.trade.title">
+        <a-input v-model:value="wishlistConfig.trade.title">
           <font-size-outlined />
         </a-input>
       </a-form-item>
       <a-form-item v-if="wantToTrade" label="Have Collection">
-        <a-select v-model:value="wishlishConfig.trade.collection">
+        <a-select v-model:value="wishlistConfig.trade.collection">
           <a-select-option
             v-for="collection in collections"
             :key="collection.slug"
@@ -44,7 +44,7 @@
       </a-form-item>
       <a-form-item label="Reddit">
         <a-input
-          v-model:value="wishlishConfig.social.reddit"
+          v-model:value="wishlistConfig.social.reddit"
           placeholder="u/username"
         >
           <reddit-outlined />
@@ -52,14 +52,14 @@
       </a-form-item>
       <a-form-item label="Discord">
         <a-input
-          v-model:value="wishlishConfig.social.discord"
+          v-model:value="wishlistConfig.social.discord"
           placeholder="Discord#0000"
         >
           <aliwangwang-outlined />
         </a-input>
       </a-form-item>
       <a-form-item label="QQ">
-        <a-input v-model:value="wishlishConfig.social.qq" placeholder="00000000">
+        <a-input v-model:value="wishlistConfig.social.qq" placeholder="00000000">
           <qq-outlined />
         </a-input>
       </a-form-item>
@@ -72,15 +72,15 @@ import { storeToRefs } from "pinia";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
-const { collections, social, wishlishConfig } = storeToRefs(userStore);
+const { collections, social, wishlistConfig } = storeToRefs(userStore);
 
 const wantToTrade = computed(() => {
-  return wishlishConfig.value.want_to === "trade";
+  return wishlistConfig.value.want_to === "trade";
 });
 
-watch(wishlishConfig.value, () => {
+watch(wishlistConfig.value, () => {
   userStore.$patch({
-    wishlishConfig: wishlishConfig.value
+    wishlistConfig: wishlistConfig.value
   })
 })
 </script>

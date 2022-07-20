@@ -9,14 +9,9 @@
       >
         Copy Text
       </a-button> -->
-      <!-- <a-button
-        :loading="loading"
-        type="primary"
-        icon="download"
-        @click="generateImg"
-      >
-        Download
-      </a-button> -->
+      <a-button :loading="loading" type="primary" @click="generateImg">
+        <download-outlined /> Download
+      </a-button>
     </template>
 
     <div v-if="base64Img && !isDesktop" class="preview-img">
@@ -29,60 +24,58 @@
     <div class="artisan-container">
       <a-descriptions title="Information">
         <a-descriptions-item label="Discord">
-          {{ wishlishConfig.social.discord }}
+          {{ wishlistConfig.social.discord }}
         </a-descriptions-item>
         <a-descriptions-item label="Reddit">
-          {{ wishlishConfig.social.reddit }}
+          {{ wishlistConfig.social.reddit }}
         </a-descriptions-item>
       </a-descriptions>
 
       <a-divider v-if="draggableWishList.length">
-        {{ wishlishConfig.wish.title }}
+        {{ wishlistConfig.wish.title }}
       </a-divider>
 
-      <draggable :list="draggableWishList" itemKey="id" group="group">
+      <draggable
+        :list="draggableWishList"
+        itemKey="id"
+        group="group"
+        class="ant-row draggable-row"
+      >
         <template #item="{ element }">
-          <a-row :gutter="[8, 8]">
-            <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-              <a-card
-                :title="cardTitle(element)"
-                size="small"
-                :bordered="false"
-              >
-                <template #cover>
-                  <img loading="lazy" :alt="element.name" :src="element.img" />
-                </template>
-                <template #extra>
-                  <delete-outlined @click="removeCap(element, 'wish')" />
-                </template>
-              </a-card>
-            </a-col>
-          </a-row>
+          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+            <a-card :title="cardTitle(element)" size="small" :bordered="false">
+              <template #cover>
+                <img loading="lazy" :alt="element.name" :src="element.img" />
+              </template>
+              <template #extra>
+                <delete-outlined @click="removeCap(element, 'wish')" />
+              </template>
+            </a-card>
+          </a-col>
         </template>
       </draggable>
 
       <a-divider v-if="draggableTradeList.length && wantToTrade">
-        {{ wishlishConfig.trade.title }}
+        {{ wishlistConfig.trade.title }}
       </a-divider>
 
-      <draggable :list="draggableTradeList" itemKey="id" group="group">
+      <draggable
+        :list="draggableTradeList"
+        itemKey="id"
+        group="group"
+        class="ant-row draggable-row"
+      >
         <template #item="{ element }">
-          <a-row v-if="wantToTrade" :gutter="[8, 8]">
-            <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-              <a-card
-                :title="cardTitle(element)"
-                size="small"
-                :bordered="false"
-              >
-                <template #cover>
-                  <img loading="lazy" :alt="element.name" :src="element.img" />
-                </template>
-                <template #extra>
-                  <delete-outlined @click="removeCap(element, 'trade')" />
-                </template>
-              </a-card>
-            </a-col>
-          </a-row>
+          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+            <a-card :title="cardTitle(element)" size="small" :bordered="false">
+              <template #cover>
+                <img loading="lazy" :alt="element.name" :src="element.img" />
+              </template>
+              <template #extra>
+                <delete-outlined @click="removeCap(element, 'trade')" />
+              </template>
+            </a-card>
+          </a-col>
         </template>
       </draggable>
     </div>
@@ -90,21 +83,22 @@
 </template>
 
 <script setup>
+import { message } from "ant-design-vue";
+import cloneDeep from "lodash.clonedeep";
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
-const { social, user, wishlishConfig } = storeToRefs(userStore);
+const { user, wishlistConfig } = storeToRefs(userStore);
 
 const draggableWishList = ref([]);
 const draggableTradeList = ref([]);
-const base64Img = ref();
 const isDesktop = true;
 
 const { data: collections, pending } = await useAsyncData(() =>
   $fetch("/api/firestore/query", {
-    params: { col: `users/${user.uid}/collections` },
+    params: { col: `users/${user.value.uid}/collections` },
   }).then((data) => {
     return data.reduce((out, cur) => {
       const { id, ...rest } = cur;
@@ -114,54 +108,59 @@ const { data: collections, pending } = await useAsyncData(() =>
   })
 );
 
-// watch(pending, () => {
-//   draggableWishList.value =
-//     collections.value[wishlishConfig.value.wish.collection];
-// });
+// clone deep can watch nested object
+watch(
+  () => cloneDeep(wishlistConfig.value),
+  () => {
+    draggableWishList.value =
+      collections.value[wishlistConfig.value.wish.collection];
+    if (wishlistConfig.value.trade.collection) {
+      draggableTradeList.value =
+        collections.value[wishlistConfig.value.trade.collection];
+    }
+  }
+);
 
 const wantToTrade = computed(() => {
-  return wishlishConfig.value.want_to === "trade";
+  return wishlistConfig.value.want_to === "trade";
 });
 
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
+const base64Img = ref();
+const loading = ref(false);
+const generateImg = async () => {
+  loading.value = true;
+
+  // this.saveSettings()
+
+  await $fetch("/api/wishlist", {
+    method: "post",
+    body: {
+      settings: wishlistConfig.value,
+      wishlist: draggableWishList.value,
+      tradelist: wantToTrade.value ? draggableTradeList.value : [],
+    },
+  })
+    .then((response) => {
+      base64Img.value = response.Body;
+    })
+    .catch((error) => {
+      message.error(error.message);
+    });
+
+  // if (isDesktop) {
+  //   const link = document.createElement("a");
+  //   link.setAttribute("download", "wishlist.png");
+  //   link.setAttribute("href", `data:image/png;base64,${base64Img}`);
+  //   link.click();
+  // }
+
+  loading.value = false;
+};
+
 // export default {
 //   computed: {
-//     kaSettings() {
-//       return {
-//         capsPerLine: this.wishlistSettings.caps_per_line,
-//         priority: {
-//           color: "DarkGoldenRod",
-//           font: "RedRock",
-//         },
-//         legends: {
-//           color: "Orchid",
-//           font: "Roboto",
-//         },
-//         title: {
-//           color: "Crimson",
-//           font: "RedRock",
-//           text: this.wishlistSettings.wish.title,
-//         },
-//         tradeTitle: {
-//           color: "Orchid",
-//           font: "RedRock",
-//           text: this.wishlistSettings.trade.title,
-//         },
-//         extraText: {
-//           color: "Turquoise",
-//           font: "Roboto",
-//           text: "Willing to topup if needed",
-//         },
-//         background: {
-//           color: "Black",
-//         },
-//         social: {
-//           reddit: this.wishlistSettings.social.reddit,
-//           discord: this.wishlistSettings.social.discord,
-//         },
-//       };
-//     },
 //     wishlistToText() {
 //       let text =
 //         `**${this.wishlistSettings.wish.title}**\n` +
@@ -179,19 +178,6 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 //       }
 
 //       return text;
-//     },
-//   },
-//   watch: {
-//     wishlistSettings: {
-//       handler(after, before) {
-//         if (after.wish.collection !== before.wish.collection) {
-//           this.draggableWishList = this.collection[after.wish.collection];
-//         }
-//         if (after.trade.collection !== before.trade.collection) {
-//           this.draggableTradeList = this.collection[after.trade.collection];
-//         }
-//       },
-//       deep: true,
 //     },
 //   },
 //   methods: {
@@ -237,48 +223,6 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 //         },
 //       });
 //     },
-//     async generateImg() {
-//       this.loading = true;
-
-//       // this.saveSettings()
-
-//       const json = {
-//         settings: this.kaSettings,
-//         caps: this.draggableWishList.map((i) => ({
-//           id: i.id,
-//           isPriority: false,
-//           legendColor: "Crimson",
-//         })),
-//         tradeCaps: this.wantToTrade
-//           ? this.draggableTradeList.map((i) => ({
-//               id: i.id,
-//               isPriority: false,
-//               legendColor: "Orchid",
-//             }))
-//           : [],
-//       };
-
-//       this.base64Img = await this.$axios
-//         .post("https://app.keycap-archivist.com/api/v2/wishlist", json, {
-//           responseType: "arraybuffer",
-//         })
-//         .then((response) => {
-//           this.loading = false;
-//           return Buffer.from(response.data, "binary").toString("base64");
-//         })
-//         .catch((e) => {
-//           this.loading = false;
-//         });
-
-//       if (this.$device.isDesktop) {
-//         const link = document.createElement("a");
-//         link.setAttribute("download", "wishlist.png");
-//         link.setAttribute("href", `data:image/png;base64,${this.base64Img}`);
-//         link.click();
-//       }
-
-//       this.loading = false;
-//     },
 //   },
 // };
 </script>
@@ -307,5 +251,11 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
     width: 100%;
     margin-top: 12px;
   }
+}
+
+.draggable-row {
+  margin-left: -4px;
+  margin-right: -4px;
+  row-gap: 8px;
 }
 </style>

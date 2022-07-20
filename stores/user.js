@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
         ],
         favorites: [],
         social: {},
-        wishlishConfig: {
+        wishlistConfig: {
             trade: {
                 collection: '',
                 title: 'WTT',
@@ -45,6 +45,7 @@ export const useUserStore = defineStore('user', {
             this.collections = doc.collections
             this.favorites = doc.makers
             this.social = doc.social
+            this.wishlistConfig.social = doc.social
         },
         updateUserCollections() {
             $fetch('/api/firestore/put', {
@@ -68,7 +69,7 @@ export const useUserStore = defineStore('user', {
             this.updateUserCollections()
         },
         setWishlistConfig(config) {
-            this.wishlishConfig = config
+            this.wishlistConfig = config
         },
         updateFavoriteMakers(name) {
             if (this.favorites.includes(name)) {
