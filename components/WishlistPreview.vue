@@ -1,18 +1,22 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
-      <!-- <a-button
-        v-clipboard:copy="wishlistToText"
-        v-clipboard:success="onCopy"
-        type="primary"
-        icon="copy"
-      >
-        Copy Text
-      </a-button> -->
+      <a-radio-group v-model:value="showTextToCopy" button-style="solid">
+        <a-radio-button :value="true"> <eye-outlined /> Show </a-radio-button>
+        <a-radio-button :value="false">
+          <eye-invisible-outlined /> Hide
+        </a-radio-button>
+      </a-radio-group>
       <a-button :loading="loading" type="primary" @click="generateImg">
         <download-outlined /> Download
       </a-button>
     </template>
+
+    <a-textarea
+      v-if="showTextToCopy"
+      v-model:value="wishlistToText"
+      auto-size
+    />
 
     <div v-if="base64Img && !isDesktop" class="preview-img">
       <a-card-meta
@@ -83,20 +87,25 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import cloneDeep from "lodash.clonedeep";
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
-const { user, wishlistConfig } = storeToRefs(userStore);
+const { authenticated, user, wishlistConfig } = storeToRefs(userStore);
 
 const draggableWishList = ref([]);
 const draggableTradeList = ref([]);
+const showTextToCopy = ref(false);
 const isDesktop = true;
 
-const { data: collections, pending } = await useAsyncData(() =>
+const {
+  data: collections,
+  pending,
+  refresh,
+} = await useAsyncData(() =>
   $fetch("/api/firestore/query", {
     params: { col: `users/${user.value.uid}/collections` },
   }).then((data) => {
@@ -120,6 +129,8 @@ watch(
     }
   }
 );
+
+watch(authenticated, () => refresh());
 
 const wantToTrade = computed(() => {
   return wishlistConfig.value.want_to === "trade";
@@ -159,72 +170,41 @@ const generateImg = async () => {
   loading.value = false;
 };
 
-// export default {
-//   computed: {
-//     wishlistToText() {
-//       let text =
-//         `**${this.wishlistSettings.wish.title}**\n` +
-//         `${this.draggableWishList
-//           .map((c) => `- ${c.name} ${c.sculpt_name}`)
-//           .join("\n")}`;
+const wishlistToText = computed(() => {
+  let text =
+    `**${wishlistConfig.value.wish.title}**\n` +
+    `${draggableWishList.value
+      .map((c) => `- ${c.name} ${c.sculpt_name}`)
+      .join("\n")}`;
 
-//       if (this.wantToTrade) {
-//         text +=
-//           `\n\n` +
-//           `**${this.wishlistSettings.trade.title}**\n` +
-//           `${this.draggableTradeList
-//             .map((c) => `- ${c.name} ${c.sculpt_name}`)
-//             .join("\n")}`;
-//       }
+  if (wantToTrade.value) {
+    text +=
+      `\n\n` +
+      `**${wishlistConfig.value.trade.title}**\n` +
+      `${draggableTradeList.value
+        .map((c) => `- ${c.name} ${c.sculpt_name}`)
+        .join("\n")}`;
+  }
 
-//       return text;
-//     },
-//   },
-//   methods: {
-//     onCopy() {
-//       this.$message.success("Wishlist text copied!");
-//     },
-//     async getUserCollections() {
-//       if (this.user.emailVerified) {
-//         await this.$fire.firestore
-//           .collection(`users/${this.user.uid}/collections`)
-//           .get()
-//           .then((doc) => {
-//             doc.docs.forEach((d) => {
-//               this.collection[d.id] = Object.values(d.data()).filter(
-//                 (c) => !c.gotcha
-//               );
-//             });
-//           });
-//       } else {
-//         const wish = JSON.parse(localStorage.getItem(`KeebCatalogue_wish`));
-//         const trade = JSON.parse(localStorage.getItem(`KeebCatalogue_trade`));
-//         this.collection = {
-//           wish: Object.values(wish || {}).filter((c) => !c.gotcha),
-//           trade: Object.values(trade || {}).filter((c) => !c.gotcha),
-//         };
-//       }
-//     },
-//     removeCap(colorway, type) {
-//       const vm = this;
-//       this.$confirm({
-//         title: "Do you want to remove this keycap?",
-//         content: "Once confirmed, this action cannot be undone.",
-//         onOk() {
-//           if (type === "wish") {
-//             vm.draggableWishList = vm.draggableWishList.filter(
-//               (i) => i.id !== colorway.id
-//             );
-//           } else {
-//             vm.draggableTradeList = vm.draggableTradeList.filter(
-//               (i) => i.id !== colorway.id
-//             );
-//           }
-//         },
-//       });
-//     },
-//   },
-// };
+  return text;
+});
+
+const removeCap = (colorway, type) => {
+  Modal.confirm({
+    title: "Do you want to remove?",
+    onOk() {
+      if (type === "wish") {
+        draggableWishList.value = draggableWishList.value.filter(
+          (c) => c.id !== colorway.id
+        );
+      } else {
+        draggableTradeList.value = draggableTradeList.value.filter(
+          (c) => c.id !== colorway.id
+        );
+      }
+    },
+  });
+};
 </script>
 
 <style lang="less">
