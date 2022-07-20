@@ -1,6 +1,6 @@
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
     // @ts-ignore
-    const { settings, wishlist, tradelist } = useBody(event.req)
+    const { settings, wishlist, tradelist } = await useBody(event.req)
 
     const body = {
         settings: {
@@ -49,9 +49,13 @@ export default defineEventHandler((event) => {
         })),
     }
 
+    /**
+     * TODO: this is working for newly added keycap only
+     * Some old caps will fail when generating wishlist
+     * even though the image url is still working
+     */
     return $fetch('https://api.keycap-archivist.com/wishlist/generate', {
         method: 'post',
         body,
-        responseType: 'arrayBuffer',
     })
 })

@@ -3,7 +3,6 @@ The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue)
 
 ## Migration
 - Add/Edit maker
-- Generate wishlish
 - Dark mode
 
 ## TODO
