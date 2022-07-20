@@ -34,6 +34,14 @@
         <template #prefix><aliwangwang-outlined /></template>
       </a-input>
     </a-form-item>
+    <a-form-item label="Nationality">
+      <a-input v-model:value="maker.nationality">
+        <template #prefix><flag-outlined /></template>
+      </a-input>
+    </a-form-item>
+    <a-form-item label="Introduce">
+      <a-textarea v-model:value="maker.intro" auto-size />
+    </a-form-item>
   </a-form>
 </template>
 
@@ -74,8 +82,6 @@ const collectionName = computed(() =>
 </script>
 
 <script>
-
-
 export default {
   created() {
     if (this.metadata && Object.keys(this.metadata).length) {

@@ -23,21 +23,44 @@
           <template #icon><edit-outlined /></template>
           Edit Maker
         </a-button>
+      </template>
+
+      <div v-if="maker.intro">
+        <p>
+          {{ maker.intro }}
+        </p>
+      </div>
+
+      <a-row :gutter="[8, 8]" type="flex">
         <a v-if="maker.website" :href="maker.website" target="_blank">
-          <a-button key="3"><global-outlined /> Website </a-button>
+          <a-button key="3" type="link"><global-outlined /> Website </a-button>
         </a>
         <a v-if="maker.instagram" :href="maker.instagram" target="_blank">
-          <a-button key="2"><instagram-outlined /> Instagram </a-button>
+          <a-button key="2" type="link"
+            ><instagram-outlined /> Instagram
+          </a-button>
         </a>
         <a v-if="maker.discord" :href="maker.discord" target="_blank">
-          <a-button key="1"><aliwangwang-outlined /> Discord </a-button>
+          <a-button key="1" type="link"
+            ><aliwangwang-outlined /> Discord
+          </a-button>
+        </a>
+        <a
+          v-if="maker.artisan_collector"
+          :href="maker.artisan_collector"
+          target="_blank"
+        >
+          <a-button key="0" type="link">
+            <file-word-outlined /> Artisan Collector
+          </a-button>
         </a>
         <a :href="maker.src" target="_blank">
-          <a-button v-if="maker.src" key="0">
+          <a-button v-if="maker.src" key="0" type="link">
             <file-word-outlined /> Catalog
           </a-button>
         </a>
-      </template>
+      </a-row>
+      <br />
 
       <a-spin :spinning="pending">
         <a-row :gutter="[8, 8]" type="flex">
@@ -92,7 +115,21 @@ const {
   data: maker,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch(`/api/maker/${route.params.maker}`));
+} = await useAsyncData(() =>
+  Promise.all([
+    $fetch(`/api/maker/${route.params.maker}`),
+    $fetch("/api/firestore/query", {
+      params: { col: "artisan-makers", doc: route.params.maker },
+    }),
+  ]).then(([maker, profile]) => {
+    return {
+      ...profile,
+      nationality: maker.nationality,
+      artisan_collector: maker.artisanCollector,
+      sculpts: maker.sculpts,
+    };
+  })
+);
 
 watch(route.params.maker, refresh());
 
