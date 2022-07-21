@@ -21,7 +21,7 @@
             v-for="sale in salesOnDay(current)"
             :key="sale.maker"
             :status="sale.type"
-            :text="`${sale.maker} - ${sale.sculpt}`"
+            :text="`${sale.maker} - ${sale.sculpt} - ${sale.title}`"
           />
         </template>
       </a-calendar>
@@ -36,19 +36,19 @@ useHead({
   title: "Keeb Archivist",
 });
 
-const { data: sales, pending } = await useAsyncData(() =>
-  $fetch("/api/firestore/query", {
-    params: {
-      col: "artisan-sales",
-    },
+const {
+  data: sales,
+  pending,
+  refresh,
+} = await useAsyncData(() =>
+  $fetch("/api/firestore/query?col=artisan-sales").catch((error) => {
+    return [];
   })
-    .then(() => {
-      return [];
-    })
-    .catch((error) => {
-      message.error(error.message);
-    })
 );
+
+onMounted(() => {
+  refresh();
+});
 
 const salesOnDay = (day) => {
   const today = new Date().getDate();

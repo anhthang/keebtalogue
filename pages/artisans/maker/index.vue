@@ -18,7 +18,9 @@
 
       <a-tabs v-model:activeKey="defaultTab">
         <a-tab-pane :disabled="!authenticated" key="favorite">
-          <template #tab><star-outlined />Favorite</template>
+          <template #tab>
+            <star-outlined />Favorite ({{ favoriteMakers.length }})
+          </template>
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
               v-for="maker in favoriteMakers"
@@ -34,7 +36,9 @@
           </a-row>
         </a-tab-pane>
         <a-tab-pane key="makers">
-          <template #tab><usergroup-add-outlined />Makers</template>
+          <template #tab>
+            <usergroup-add-outlined />Makers ({{ otherMakers.length }})
+          </template>
           <a-row :gutter="[8, 8]" type="flex">
             <a-col
               v-for="maker in otherMakers"
@@ -92,15 +96,15 @@ const otherMakers = computed(() => {
   return makers.value.filter((m) => !favorites.value.includes(m.id));
 });
 
-const makerForm = ref()
+const makerForm = ref();
 const confirmLoading = ref(false);
 const addMaker = async () => {
-  confirmLoading.value = true
+  confirmLoading.value = true;
 
-  await makerForm.value.addMaker()
-  
-  confirmLoading.value = false
-}
+  await makerForm.value.addMaker();
+
+  confirmLoading.value = false;
+};
 </script>
 
 <style lang="less">

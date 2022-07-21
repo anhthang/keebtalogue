@@ -121,6 +121,7 @@ const {
   ]).then(([maker, profile]) => {
     return {
       ...profile,
+      slug: route.params.maker,
       nationality: maker.nationality,
       artisan_collector: maker.artisanCollector,
       sculpts: maker.sculpts,
