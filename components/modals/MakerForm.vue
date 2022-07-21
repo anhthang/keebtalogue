@@ -46,6 +46,7 @@
 </template>
 
 <script setup>
+import { message } from "ant-design-vue";
 import crc32 from "crc/crc32";
 import slugify from "slugify";
 
@@ -76,34 +77,41 @@ const makerId = computed(() => {
         .toLowerCase();
 });
 
+onBeforeMount(() => {
+  if (metadata && Object.keys(metadata).length) {
+    maker.value = { ...metadata };
+  }
+});
+
 const collectionName = computed(() =>
   isKeeb ? "keyboard-makers" : "artisan-makers"
 );
-</script>
 
-<script>
-export default {
-  created() {
-    if (this.metadata && Object.keys(this.metadata).length) {
-      this.maker = { ...this.metadata };
-    }
-  },
-  methods: {
-    addMaker() {
-      // do not save sculpts into firestore
-      delete this.maker.sculpts;
+const addMaker = () => {
+  const { sculpts, ...rest } = maker.value;
+  const endpoint = isEdit ? "/api/firestore/put" : "/api/firestore/add";
 
-      // this.$fire.firestore
-      //   .collection(this.collectionName)
-      //   .doc(this.makerId)
-      //   .set(this.maker)
-      //   .then(() => {
-      //     this.$message.success('Successfully added new maker.')
-      //   })
-      //   .catch((e) => {
-      //     this.$message.error(e.message)
-      //   })
+  $fetch(endpoint, {
+    method: "post",
+    params: {
+      col: "artisan-makers",
+      doc: makerId.value,
     },
-  },
+    body: rest,
+  })
+    .then(() => {
+      if (isEdit) {
+        message.success("Maker profile updated succesful");
+      } else {
+        message.success("Successfully added new maker");
+      }
+    })
+    .catch((error) => {
+      message.error(error.message);
+    });
 };
+
+defineExpose({
+  addMaker,
+});
 </script>

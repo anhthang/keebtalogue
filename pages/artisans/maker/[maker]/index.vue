@@ -3,11 +3,7 @@
     <a-page-header
       v-if="maker"
       :title="maker.name"
-      :avatar="{
-        props: {
-          src: maker.img,
-        },
-      }"
+      :avatar="{ src: maker.img }"
     >
       <template v-if="maker.nationality" #subTitle>
         {{ getFlagEmoji(maker.nationality) }}
@@ -21,7 +17,7 @@
           @click="showEditMakerModal"
         >
           <template #icon><edit-outlined /></template>
-          Edit Maker
+          Edit
         </a-button>
       </template>
 
@@ -51,7 +47,7 @@
           target="_blank"
         >
           <a-button key="0" type="link">
-            <file-word-outlined /> Artisan Collector
+            <link-outlined /> Artisan Collector
           </a-button>
         </a>
         <a :href="maker.src" target="_blank">
@@ -92,9 +88,10 @@
         v-model:visible="showEditMaker"
         title="Edit Maker"
         destroy-on-close
-        @ok="updateArtisanMaker"
+        :confirm-loading="confirmLoading"
+        @ok="updateMakerProfile"
       >
-        <maker-form ref="artisanMaker" :is-edit="true" :metadata="maker" />
+        <maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
       </a-modal>
     </a-page-header>
   </div>
@@ -143,7 +140,15 @@ const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;
 };
 
-const updateArtisanMaker = () => {};
+const makerForm = ref();
+const confirmLoading = ref(false);
+const updateMakerProfile = async () => {
+  confirmLoading.value = true;
+
+  await makerForm.value.addMaker();
+
+  confirmLoading.value = false;
+};
 
 const getFlagEmoji = (isoCode) => {
   if (isoCode === "GB-ENG") {

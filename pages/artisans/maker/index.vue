@@ -13,7 +13,7 @@
         :confirm-loading="confirmLoading"
         @ok="addMaker"
       >
-        <maker-form ref="artisanMaker" />
+        <maker-form ref="makerForm" />
       </a-modal>
 
       <a-tabs v-model:activeKey="defaultTab">
@@ -77,7 +77,6 @@ const showModal = () => {
   visible.value = !visible.value;
 };
 
-const confirmLoading = ref(false);
 const defaultTab = ref(favorites.value.length ? "favorite" : "makers");
 watch(
   () => favorites.value.length,
@@ -92,23 +91,16 @@ const favoriteMakers = computed(() => {
 const otherMakers = computed(() => {
   return makers.value.filter((m) => !favorites.value.includes(m.id));
 });
-</script>
 
-<script>
-export default {
-  methods: {
-    async addMaker() {
-      this.confirmLoading = true;
+const makerForm = ref()
+const confirmLoading = ref(false);
+const addMaker = async () => {
+  confirmLoading.value = true
 
-      await this.$refs.artisanMaker.addMaker();
-
-      this.confirmLoading = false;
-      this.visible = false;
-
-      // this.$fetch();
-    },
-  },
-};
+  await makerForm.value.addMaker()
+  
+  confirmLoading.value = false
+}
 </script>
 
 <style lang="less">
