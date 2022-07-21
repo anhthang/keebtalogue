@@ -42,8 +42,8 @@
           </a-button>
         </a>
         <a
-          v-if="maker.artisan_collector"
-          :href="maker.artisan_collector"
+          v-if="maker.artisancollector"
+          :href="maker.artisancollector"
           target="_blank"
         >
           <a-button key="0" type="link">
@@ -122,8 +122,6 @@ const {
     return {
       ...profile,
       slug: route.params.maker,
-      nationality: maker.nationality,
-      artisan_collector: maker.artisanCollector,
       sculpts: maker.sculpts,
     };
   })

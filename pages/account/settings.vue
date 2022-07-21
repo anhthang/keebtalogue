@@ -16,13 +16,13 @@
 </template>
 
 <script setup>
-import SettingAppearance from '~~/components/accounts/SettingAppearance.vue'
-import SettingProfile from '~~/components/accounts/SettingProfile.vue'
+import SettingAppearance from "~~/components/accounts/SettingAppearance.vue";
+import SettingProfile from "~~/components/accounts/SettingProfile.vue";
 
 useHead({
-  title: "Account Setting | Keeb Archivist"
-})
+  title: "Account Setting | Keeb Archivist",
+});
 
-const tabPosition = 'top'
-const activeKey = ref("profile")
+const tabPosition = "left";
+const activeKey = ref("profile");
 </script>

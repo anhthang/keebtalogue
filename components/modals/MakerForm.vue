@@ -35,7 +35,7 @@
       </a-input>
     </a-form-item>
     <a-form-item label="Nationality">
-      <a-input v-model:value="maker.nationality">
+      <a-input v-model:value="maker.nationality" :maxlength="2">
         <template #prefix><flag-outlined /></template>
       </a-input>
     </a-form-item>
