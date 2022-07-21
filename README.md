@@ -2,11 +2,10 @@
 The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Vue 3
 
 ## Migration
-- Add/Edit maker
 - Dark mode
 
 ## TODO
-- Sales in calendar
+- Sculpt story
 
 # Development
 

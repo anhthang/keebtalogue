@@ -144,7 +144,7 @@ const addToCollection = (collection, colorway) => {
       JSON.parse(localStorage.getItem(`KeebCatalogue_${collection.slug}`)) ||
       {};
 
-    collectionMap[clw.id] = colorway;
+    collectionMap[clw.id] = clw;
 
     localStorage.setItem(
       `KeebCatalogue_${collection.slug}`,

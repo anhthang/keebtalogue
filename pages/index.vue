@@ -36,19 +36,11 @@ useHead({
   title: "Keeb Archivist",
 });
 
-const {
-  data: sales,
-  pending,
-  refresh,
-} = await useAsyncData(() =>
+const { data: sales, pending } = await useAsyncData(() =>
   $fetch("/api/firestore/query?col=artisan-sales").catch((error) => {
     return [];
   })
 );
-
-onMounted(() => {
-  refresh();
-});
 
 const salesOnDay = (day) => {
   const today = new Date().getDate();

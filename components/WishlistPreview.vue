@@ -105,17 +105,29 @@ const {
   data: collections,
   pending,
   refresh,
-} = await useAsyncData(() =>
-  $fetch("/api/firestore/query", {
-    params: { col: `users/${user.value.uid}/collections` },
-  }).then((data) => {
-    return data.reduce((out, cur) => {
-      const { id, ...rest } = cur;
-      out[id] = Object.values(rest);
-      return out;
-    }, {});
-  })
-);
+} = await useAsyncData(() => {
+  if (authenticated.value) {
+    return $fetch("/api/firestore/query", {
+      params: { col: `users/${user.value.uid}/collections` },
+    }).then((data) => {
+      return data.reduce((out, cur) => {
+        const { id, ...rest } = cur;
+        out[id] = Object.values(rest);
+        return out;
+      }, {});
+    });
+  } else {
+    const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
+    const trade = JSON.parse(
+      localStorage.getItem("KeebCatalogue_trade") || "{}"
+    );
+
+    return {
+      wish: Object.values(wish),
+      trade: Object.values(trade),
+    };
+  }
+});
 
 // clone deep can watch nested object
 watch(
