@@ -1,15 +1,14 @@
 <template>
   <div class="right-header">
     <a-dropdown v-if="user.emailVerified">
-      <div v-if="isMobile">
-        <a-avatar :src="user.photoURL" />
-      </div>
-      <div v-else>
-        <a-avatar :src="user.photoURL" />
-        {{ user.displayName }}
-      </div>
+      <a-avatar :src="user.photoURL" />
+
       <template #overlay>
         <a-menu>
+          <a-menu-item v-if="authenticated">
+            👋 <strong>{{ user.displayName }}</strong>
+          </a-menu-item>
+          <a-menu-divider />
           <a-menu-item>
             <span @click="gotoSettings"><setting-outlined /> Settings </span>
           </a-menu-item>
@@ -60,7 +59,7 @@ import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const { authenticated, user } = storeToRefs(userStore);
 
 const loginWithGoogle = async () => {
   await signInWithPopup(auth, provider)

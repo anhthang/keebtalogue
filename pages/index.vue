@@ -61,3 +61,10 @@ const salesOnDay = (day) => {
     });
 };
 </script>
+
+<style lang="less">
+.ant-picker-calendar,
+.ant-picker-panel {
+  background: transparent !important;
+}
+</style>
