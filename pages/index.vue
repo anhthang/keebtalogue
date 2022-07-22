@@ -32,10 +32,6 @@
 <script setup>
 import { message } from "ant-design-vue";
 
-useHead({
-  title: "Keeb Archivist",
-});
-
 const { data: sales, pending } = await useAsyncData(() =>
   $fetch("/api/firestore/query?col=artisan-sales").catch((error) => {
     return [];

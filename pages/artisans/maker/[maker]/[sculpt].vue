@@ -85,21 +85,23 @@ import { storeToRefs } from "pinia";
 
 const route = useRoute();
 
+const title = ref();
+useHead({ title });
+
 const {
   data: sculpt,
   pending,
   refresh,
 } = await useAsyncData(() =>
   $fetch(`/api/maker/${route.params.maker}`).then((data) => {
-    return data.sculpts[route.params.sculpt];
+    const sculpt = data.sculpts[route.params.sculpt];
+    title.value = `${sculpt.name} • ${data.name}`;
+
+    return sculpt;
   })
 );
 
 watch(route.params.sculpt, refresh());
-
-useHead({
-  title: `${sculpt.value.name} | Keeb Archivist`,
-});
 
 import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();

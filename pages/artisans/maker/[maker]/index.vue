@@ -108,6 +108,8 @@ const { authenticated } = storeToRefs(userStore);
 const route = useRoute();
 const showEditMaker = ref(false);
 
+const title = ref();
+useHead({ title });
 const {
   data: maker,
   pending,
@@ -119,6 +121,8 @@ const {
       params: { col: "artisan-makers", doc: route.params.maker },
     }),
   ]).then(([maker, profile]) => {
+    title.value = maker.name;
+
     return {
       ...profile,
       slug: route.params.maker,
@@ -128,10 +132,6 @@ const {
 );
 
 watch(route.params.maker, refresh());
-
-useHead({
-  title: pending ? "Keeb Archivist" : `${maker.value.name} | Keeb Archivist`,
-});
 
 const size = "default";
 

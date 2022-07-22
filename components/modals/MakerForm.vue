@@ -39,6 +39,11 @@
         <template #prefix><flag-outlined /></template>
       </a-input>
     </a-form-item>
+    <a-form-item label="Artisan Collector">
+      <a-input v-model:value="maker.artisancollector">
+        <template #prefix><link-outlined /></template>
+      </a-input>
+    </a-form-item>
     <a-form-item label="Introduce">
       <a-textarea v-model:value="maker.intro" auto-size />
     </a-form-item>

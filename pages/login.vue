@@ -1,6 +1,6 @@
 <template>
   <div class="container login-container">
-    <h1>Keeb Archivist</h1>
+    <h1>{{ config.public.appName }}</h1>
     <a-button type="primary" @click="loginWithGoogle">
       <google-outlined /> Login with Google
     </a-button>
@@ -13,7 +13,7 @@ definePageMeta({
 });
 
 useHead({
-  title: "Login | Keeb Archivist",
+  title: "Login",
 });
 
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -37,6 +37,8 @@ const loginWithGoogle = () => {
       message.warning(err.message);
     });
 };
+
+const config = useRuntimeConfig();
 
 // export default {
 //   middleware({ store, redirect }) {

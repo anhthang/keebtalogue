@@ -20,7 +20,7 @@ import SettingAppearance from "~~/components/accounts/SettingAppearance.vue";
 import SettingProfile from "~~/components/accounts/SettingProfile.vue";
 
 useHead({
-  title: "Account Setting | Keeb Archivist",
+  title: "Account Settings",
 });
 
 const tabPosition = "left";

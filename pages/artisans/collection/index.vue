@@ -43,7 +43,7 @@
 
 <script setup>
 useHead({
-  title: "Collection | Keeb Archivist",
+  title: "Collection",
 });
 
 import { useUserStore } from "~~/stores/user";

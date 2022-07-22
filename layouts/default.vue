@@ -15,7 +15,7 @@
       </a-button>
 
       <nuxt-link to="/">
-        <div class="logo">Keeb Archivist</div>
+        <div class="logo">{{ config.public.appName }}</div>
       </nuxt-link>
 
       <menu-tree v-if="!isMobile" mode="horizontal" />
@@ -53,6 +53,8 @@ const collapsed = ref(true);
 const sidebarToogle = () => {
   collapsed.value = !collapsed.value;
 };
+
+const config = useRuntimeConfig();
 </script>
 
 <style lang="less">

@@ -94,7 +94,7 @@ const collection =
   collections.value.find((c) => c.slug === route.params.collection) || {};
 
 useHead({
-  title: `${collection.name} | Collection`,
+  title: `${collection.name} • Collection`,
 });
 
 const isPublic = route.params.collection.startsWith("p_");

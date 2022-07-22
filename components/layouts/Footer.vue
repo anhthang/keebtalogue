@@ -19,28 +19,24 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      links: [
-        {
-          title: "Keeb Archivist",
-          link: "https://keeb-catalogue.web.app",
-        },
-        {
-          title: "",
-          icon: "github",
-          link: "https://github.com/anhthang/keeb-catalogue",
-        },
-        {
-          title: "Anh Thang",
-          link: "https://anhthang.org",
-        },
-      ],
-    };
+<script setup>
+const config = useRuntimeConfig();
+
+const links = [
+  {
+    title: config.public.appName,
+    link: "https://keeb-catalogue.web.app",
   },
-};
+  {
+    title: "",
+    icon: "github",
+    link: "https://github.com/anhthang/keeb-catalogue",
+  },
+  {
+    title: "Anh Thang",
+    link: "https://anhthang.org",
+  },
+];
 </script>
 
 <style lang="less">

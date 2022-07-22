@@ -64,7 +64,7 @@ import MakerForm from "~~/components/modals/MakerForm.vue";
 import { useUserStore } from "~~/stores/user";
 
 useHead({
-  title: "Artisan Makers | Keeb Archivist",
+  title: "Artisan Makers",
 });
 
 const {
