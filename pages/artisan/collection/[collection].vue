@@ -102,12 +102,6 @@ const col = isPublic
   ? "public-collections"
   : `users/${user.value.uid}/collections`;
 
-// const { data, pending, refresh } = await useAsyncData(() =>
-//   $fetch("/api/firestore/query", {
-//     params: { col, doc: route.params.collection },
-//   })
-// );
-
 const { data, pending, refresh } = await useAsyncData(() =>
   authenticated.value
     ? $fetch("/api/firestore/query", {
@@ -270,7 +264,7 @@ const publishId = computed(() => {
 const config = useRuntimeConfig();
 
 const href = computed(() => {
-  return `${config.public.baseUrl}/artisans/collection/${publishId.value}`;
+  return `${config.public.baseUrl}/artisan/collection/${publishId.value}`;
 });
 </script>
 

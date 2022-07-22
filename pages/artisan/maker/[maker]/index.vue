@@ -69,7 +69,7 @@
             :lg="6"
             :xl="4"
           >
-            <nuxt-link :to="`/artisans/maker/${maker.slug}/${sculpt.slug}`">
+            <nuxt-link :to="`/artisan/maker/${maker.slug}/${sculpt.slug}`">
               <a-card hoverable :title="sculpt.name" :size="size">
                 <template #cover>
                   <img

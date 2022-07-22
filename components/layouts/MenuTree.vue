@@ -32,15 +32,15 @@
     </a-sub-menu> -->
 
     <a-menu-item key="7">
-      <nuxt-link to="/artisans/maker"> <user-add-outlined /> Makers </nuxt-link>
+      <nuxt-link to="/artisan/maker"> <user-add-outlined /> Makers </nuxt-link>
     </a-menu-item>
     <a-menu-item key="8">
-      <nuxt-link to="/artisans/collection">
+      <nuxt-link to="/artisan/collection">
         <book-outlined /> Collection
       </nuxt-link>
     </a-menu-item>
     <a-menu-item key="9">
-      <nuxt-link to="/artisans/wishlist">
+      <nuxt-link to="/artisan/wishlist">
         <shopping-cart-outlined /> Wishlist
       </nuxt-link>
     </a-menu-item>

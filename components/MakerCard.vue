@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/artisans/maker/${maker.id}`">
+  <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :size="size">
       <template v-if="authenticated" #extra>
         <star-filled

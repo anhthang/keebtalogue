@@ -32,7 +32,7 @@
           :lg="6"
           :xl="4"
         >
-          <nuxt-link :to="`/artisans/collection/${collection.slug}`">
+          <nuxt-link :to="`/artisan/collection/${collection.slug}`">
             <a-card hoverable :title="collection.name" />
           </nuxt-link>
         </a-col>

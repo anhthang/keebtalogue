@@ -10,7 +10,7 @@
           <nuxt-link to="/keebs">
             <a-button type="primary"> Go Keebs </a-button>
           </nuxt-link>
-          <nuxt-link to="/artisans/maker">
+          <nuxt-link to="/artisan/maker">
             <a-button type="primary"> Go Artisans </a-button>
           </nuxt-link>
         </template>
