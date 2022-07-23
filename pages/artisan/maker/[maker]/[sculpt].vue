@@ -2,9 +2,6 @@
   <div class="container artisan-container">
     <a-page-header :title="sculpt.name" v-if="sculpt">
       <template #extra>
-        <a-button key="1" disabled type="primary">
-          <file-add-outlined /> Submit new Colorway
-        </a-button>
         <a-dropdown placement="bottomRight">
           <template #overlay>
             <a-menu @click="onChangeSortType">

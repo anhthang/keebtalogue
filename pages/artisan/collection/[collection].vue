@@ -1,9 +1,6 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header
-      :title="collection.name || 'Colllection'"
-      :sub-title="sortedCollections.length"
-    >
+    <a-page-header :title="collection.name || 'Colllection'">
       <template #extra>
         <a-dropdown placement="bottomRight">
           <template #overlay>
@@ -19,7 +16,7 @@
           type="primary"
           @click="publishCollection"
         >
-          <export-outlined />
+          <cloud-upload-outlined />
           {{ collection.published ? "Republish" : "Publish" }}
         </a-button>
 
@@ -28,7 +25,7 @@
           type="danger"
           @click="delPublishedCollection"
         >
-          <import-outlined /> Unpublish
+          <cloud-download-outlined /> Unpublish
         </a-button>
 
         <a-button
@@ -225,14 +222,15 @@ const publishCollection = () => {
         body: keyBy(sortedCollections, "id"),
       })
         .then(() => {
-          const updatedCollections = collections.map((c) => {
+          const updatedCollections = collections.value.map((c) => {
             if (c.slug === route.params.collection) {
               Object.assign(c, {
                 published: true,
                 public_id: publishId.value,
               });
-              return c;
             }
+
+            return c;
           });
 
           $fetch("/api/firestore/put", {
