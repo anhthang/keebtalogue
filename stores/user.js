@@ -33,6 +33,8 @@ export const useUserStore = defineStore('user', {
                 authUser
             this.user = { uid, email, emailVerified, displayName, photoURL }
             this.authenticated = emailVerified
+
+            this.getUserDocument(authUser.uid)
         },
         async getUserDocument(uid) {
             const doc = await $fetch('/api/firestore/query', {
@@ -79,15 +81,15 @@ export const useUserStore = defineStore('user', {
             }
 
             // update firestore
-            $fetch("/api/firestore/put", {
-                method: "post",
+            $fetch('/api/firestore/put', {
+                method: 'post',
                 params: {
                     col: 'users',
-                    doc: this.user.uid
+                    doc: this.user.uid,
                 },
                 body: {
-                    makers: this.favorites
-                }
+                    makers: this.favorites,
+                },
             })
         },
     },
