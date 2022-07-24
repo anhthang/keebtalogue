@@ -109,7 +109,7 @@ const { data, pending, refresh } = await useAsyncData(() =>
       )
 );
 
-watch(route.params.collection, refresh());
+watchEffect(() => route.params.collection, refresh());
 
 const sort = ref("");
 watch(pending, () => {
@@ -122,15 +122,12 @@ const size = "default";
 const onChangeSortType = (e) => {
   sort.value = e.key;
 };
-watch(
-  () => sort.value,
-  () => {
-    sortedCollections.value = sortBy(sortedCollections.value, [
-      "maker_name",
-      sort.value,
-    ]);
-  }
-);
+watch(sort, () => {
+  sortedCollections.value = sortBy(sortedCollections.value, [
+    "maker_name",
+    sort.value,
+  ]);
+});
 
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 

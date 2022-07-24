@@ -110,6 +110,7 @@ const showEditMaker = ref(false);
 
 const title = ref();
 useHead({ title });
+
 const {
   data: maker,
   pending,
@@ -131,7 +132,7 @@ const {
   })
 );
 
-watch(route.params.maker, refresh());
+watchEffect(() => route.params.maker, refresh());
 
 const size = "default";
 

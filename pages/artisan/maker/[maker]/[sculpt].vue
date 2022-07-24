@@ -98,7 +98,7 @@ const {
   })
 );
 
-watch(route.params.sculpt, refresh());
+watchEffect(() => route.params.sculpt, refresh());
 
 import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();

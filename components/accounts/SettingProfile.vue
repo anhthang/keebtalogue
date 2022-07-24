@@ -30,18 +30,12 @@
       <a-col :xs="24" :sm="16">
         <a-form :layout="layout">
           <a-form-item label="Reddit">
-            <a-input
-              v-model:value="social.reddit"
-              placeholder="u/username"
-            >
+            <a-input v-model:value="social.reddit" placeholder="u/username">
               <template #prefix><reddit-outlined /></template>
             </a-input>
           </a-form-item>
           <a-form-item label="Discord">
-            <a-input
-              v-model:value="social.discord"
-              placeholder="Discord#0000"
-            >
+            <a-input v-model:value="social.discord" placeholder="Discord#0000">
               <template #prefix><aliwangwang-outlined /></template>
             </a-input>
           </a-form-item>
@@ -67,35 +61,35 @@
 
 <script setup>
 import { useUserStore } from "~~/stores/user";
+import { message } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
 const { user, social } = storeToRefs(userStore);
 
 const layout = "vertical";
-</script>
 
-<script>
-export default {
-  methods: {
-    saveSettings(type) {
-      this.loading = true;
-      this.$fire.firestore
-        .collection("users")
-        .doc(this.user.uid)
-        .update({
-          [type]: this.settings[type],
-        })
-        .then(() => {
-          this.$message.success("Settings updated successfully.");
-          this.loading = false;
-        })
-        .catch((e) => {
-          this.$message.success(e.message);
-          this.loading = false;
-        });
+const loading = ref(false);
+const saveSettings = (key) => {
+  loading.value = true;
+  $fetch("/api/firestore/put", {
+    method: "post",
+    params: {
+      col: "users",
+      doc: user.value.uid,
     },
-  },
+    body: {
+      [key]: social.value,
+    },
+  })
+    .then(() => {
+      message.success("Setting updated sucessfully");
+      loading.value = false;
+    })
+    .catch((error) => {
+      message.error(error.message);
+      loading.value = false;
+    });
 };
 </script>
 
