@@ -79,9 +79,13 @@ const loginWithGoogle = async () => {
 const logout = async () => {
   await signOut(auth)
     .then(() => {
-      userStore.$patch({ user: {} });
+      userStore.$reset();
+
+      // FIXME: this my cause issue with other websites/tabs using firebase auth login
+      indexedDB.deleteDatabase("firebaseLocalStorageDb");
 
       message.success("You have been logged out successfully.");
+
       navigateTo("/");
     })
     .catch((err) => {

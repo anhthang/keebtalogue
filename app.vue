@@ -21,7 +21,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     userStore.setCurrentUser(user);
   } else {
-    // User is signed out or not logged in
+    userStore.$reset();
   }
 });
 

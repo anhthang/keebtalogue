@@ -88,7 +88,6 @@
 
 <script setup>
 import { message, Modal } from "ant-design-vue";
-import cloneDeep from "lodash.clonedeep";
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";
@@ -131,7 +130,7 @@ const {
 
 // clone deep can watch nested object
 watch(
-  () => cloneDeep(wishlistConfig.value),
+  wishlistConfig,
   () => {
     draggableWishList.value =
       collections.value[wishlistConfig.value.wish.collection];
@@ -139,7 +138,8 @@ watch(
       draggableTradeList.value =
         collections.value[wishlistConfig.value.trade.collection];
     }
-  }
+  },
+  { deep: true }
 );
 
 watch(authenticated, () => refresh());
