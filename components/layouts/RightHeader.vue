@@ -20,12 +20,10 @@
       </template>
     </a-dropdown>
     <a-dropdown v-else>
-      <div>
-        <a-avatar
-          src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-        />
-        Login
-      </div>
+      <a-avatar
+        src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+      />
+
       <template #overlay>
         <a-menu>
           <a-menu-item>

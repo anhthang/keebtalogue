@@ -1,5 +1,6 @@
 <template>
   <div class="container login-container">
+    <img src="/icon.png" alt="logo" class="logo-icon">
     <h1>{{ config.public.appName }}</h1>
     <a-button type="primary" @click="loginWithGoogle">
       <google-outlined /> Login with Google
@@ -39,15 +40,6 @@ const loginWithGoogle = () => {
 };
 
 const config = useRuntimeConfig();
-
-// export default {
-//   middleware({ store, redirect }) {
-//     // If the user is not authenticated
-//     if (store.state.user.emailVerified) {
-//       return redirect("/");
-//     }
-//   },
-// };
 </script>
 
 <style lang="less">
@@ -62,5 +54,9 @@ const config = useRuntimeConfig();
   button {
     margin-bottom: 8px;
   }
+}
+
+.logo-icon {
+  width: 128px;
 }
 </style>

@@ -1,64 +1,65 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header
-      v-if="maker"
-      :title="maker.name"
-      :avatar="{ src: maker.img }"
-    >
-      <template v-if="maker.nationality" #subTitle>
-        {{ getFlagEmoji(maker.nationality) }}
-      </template>
+    <a-spin :spinning="pending">
+      <a-page-header
+        :title="maker.name"
+        :avatar="{ src: maker.img }"
+      >
+        <template v-if="maker.nationality" #subTitle>
+          {{ getFlagEmoji(maker.nationality) }}
+        </template>
 
-      <template #extra>
-        <a-button
-          v-if="authenticated"
-          key="edit"
-          type="primary"
-          @click="showEditMakerModal"
-        >
-          <template #icon><edit-outlined /></template>
-          Edit
-        </a-button>
-      </template>
+        <template #extra>
+          <a-button
+            v-if="authenticated"
+            key="edit"
+            type="primary"
+            @click="showEditMakerModal"
+          >
+            <template #icon><edit-outlined /></template>
+            Edit
+          </a-button>
+        </template>
 
-      <div v-if="maker.intro">
-        <p>
-          {{ maker.intro }}
-        </p>
-      </div>
+        <div v-if="maker.intro">
+          <p>
+            {{ maker.intro }}
+          </p>
+        </div>
 
-      <a-row :gutter="[8, 8]" type="flex">
-        <a v-if="maker.website" :href="maker.website" target="_blank">
-          <a-button key="3" type="link"><global-outlined /> Website </a-button>
-        </a>
-        <a v-if="maker.instagram" :href="maker.instagram" target="_blank">
-          <a-button key="2" type="link"
-            ><instagram-outlined /> Instagram
-          </a-button>
-        </a>
-        <a v-if="maker.discord" :href="maker.discord" target="_blank">
-          <a-button key="1" type="link"
-            ><aliwangwang-outlined /> Discord
-          </a-button>
-        </a>
-        <a
-          v-if="maker.artisancollector"
-          :href="maker.artisancollector"
-          target="_blank"
-        >
-          <a-button key="0" type="link">
-            <link-outlined /> Artisan Collector
-          </a-button>
-        </a>
-        <a :href="maker.src" target="_blank">
-          <a-button v-if="maker.src" key="0" type="link">
-            <file-word-outlined /> Catalog
-          </a-button>
-        </a>
-      </a-row>
-      <br />
+        <a-row :gutter="[8, 8]" type="flex">
+          <a v-if="maker.website" :href="maker.website" target="_blank">
+            <a-button key="3" type="link"
+              ><global-outlined /> Website
+            </a-button>
+          </a>
+          <a v-if="maker.instagram" :href="maker.instagram" target="_blank">
+            <a-button key="2" type="link"
+              ><instagram-outlined /> Instagram
+            </a-button>
+          </a>
+          <a v-if="maker.discord" :href="maker.discord" target="_blank">
+            <a-button key="1" type="link"
+              ><aliwangwang-outlined /> Discord
+            </a-button>
+          </a>
+          <a
+            v-if="maker.artisancollector"
+            :href="maker.artisancollector"
+            target="_blank"
+          >
+            <a-button key="0" type="link">
+              <link-outlined /> Artisan Collector
+            </a-button>
+          </a>
+          <a :href="maker.src" target="_blank">
+            <a-button v-if="maker.src" key="0" type="link">
+              <file-word-outlined /> Catalog
+            </a-button>
+          </a>
+        </a-row>
+        <br />
 
-      <a-spin :spinning="pending">
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="sculpt in maker.sculpts"
@@ -82,18 +83,18 @@
             </nuxt-link>
           </a-col>
         </a-row>
-      </a-spin>
 
-      <a-modal
-        v-model:visible="showEditMaker"
-        title="Edit Maker"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        @ok="updateMakerProfile"
-      >
-        <maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
-      </a-modal>
-    </a-page-header>
+        <a-modal
+          v-model:visible="showEditMaker"
+          title="Edit Maker"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="updateMakerProfile"
+        >
+          <maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
+        </a-modal>
+      </a-page-header>
+    </a-spin>
   </div>
 </template>
 

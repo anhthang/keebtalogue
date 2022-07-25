@@ -1,43 +1,43 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header :title="collection.name || 'Colllection'">
-      <template #extra>
-        <a-dropdown placement="bottomRight">
-          <template #overlay>
-            <a-menu @click="onChangeSortType">
-              <a-menu-item key="sculpt_name"> Sort by Sculpt </a-menu-item>
-              <a-menu-item key="name"> Sort by Colorway </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button><sort-ascending-outlined /> Sort</a-button>
-        </a-dropdown>
-        <a-button
-          v-if="user.emailVerified"
-          type="primary"
-          @click="publishCollection"
-        >
-          <cloud-upload-outlined />
-          {{ collection.published ? "Republish" : "Publish" }}
-        </a-button>
+    <a-spin :spinning="pending">
+      <a-page-header :title="collection.name || 'Colllection'">
+        <template #extra>
+          <a-dropdown placement="bottomRight">
+            <template #overlay>
+              <a-menu @click="onChangeSortType">
+                <a-menu-item key="sculpt_name"> Sort by Sculpt </a-menu-item>
+                <a-menu-item key="name"> Sort by Colorway </a-menu-item>
+              </a-menu>
+            </template>
+            <a-button><sort-ascending-outlined /> Sort</a-button>
+          </a-dropdown>
+          <a-button
+            v-if="user.emailVerified"
+            type="primary"
+            @click="publishCollection"
+          >
+            <cloud-upload-outlined />
+            {{ collection.published ? "Republish" : "Publish" }}
+          </a-button>
 
-        <a-button
-          v-if="user.emailVerified && collection.published"
-          type="danger"
-          @click="delPublishedCollection"
-        >
-          <cloud-download-outlined /> Unpublish
-        </a-button>
+          <a-button
+            v-if="user.emailVerified && collection.published"
+            type="danger"
+            @click="delPublishedCollection"
+          >
+            <cloud-download-outlined /> Unpublish
+          </a-button>
 
-        <a-button
-          v-if="user.emailVerified"
-          type="danger"
-          @click="deleteCollection"
-        >
-          <delete-outlined /> Delete
-        </a-button>
-      </template>
+          <a-button
+            v-if="user.emailVerified"
+            type="danger"
+            @click="deleteCollection"
+          >
+            <delete-outlined /> Delete
+          </a-button>
+        </template>
 
-      <a-spin :spinning="pending">
         <a-row
           v-if="collection.published && !isPublic"
           :gutter="[8, 8]"
@@ -68,8 +68,8 @@
             </a-card>
           </a-col>
         </a-row>
-      </a-spin>
-    </a-page-header>
+      </a-page-header>
+    </a-spin>
   </div>
 </template>
 
@@ -216,7 +216,7 @@ const publishCollection = () => {
           col: "public-collections",
           doc: publishId.value,
         },
-        body: keyBy(sortedCollections, "id"),
+        body: keyBy(sortedCollections.value, "id"),
       })
         .then(() => {
           const updatedCollections = collections.value.map((c) => {

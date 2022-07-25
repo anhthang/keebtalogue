@@ -15,7 +15,10 @@
       </a-button>
 
       <nuxt-link to="/">
-        <div class="logo">{{ config.public.appName }}</div>
+        <div class="logo">
+          <img src="/icon.png" alt="logo" class="logo-icon" />
+          {{ config.public.appName }}
+        </div>
       </nuxt-link>
 
       <menu-tree v-if="!isMobile" mode="horizontal" />
@@ -64,6 +67,11 @@ const config = useRuntimeConfig();
   /* color: @text-color-dark; */
   margin-right: 24px;
   font-weight: 700;
+
+  img {
+    width: 48px;
+    margin-right: 16px;
+  }
 }
 
 .ant-layout-header {

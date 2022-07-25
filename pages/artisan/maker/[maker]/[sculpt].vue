@@ -1,26 +1,26 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header :title="sculpt.name" v-if="sculpt">
-      <template #extra>
-        <a-dropdown placement="bottomRight">
-          <template #overlay>
-            <a-menu @click="onChangeSortType">
-              <a-menu-item key="name">
-                <sort-ascending-outlined /> Name
-              </a-menu-item>
-              <a-menu-item key="order">
-                <ordered-list-outlined /> Order
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button>
-            <sort-ascending-outlined v-if="sort === 'name'" />
-            <ordered-list-outlined v-else /> Sort
-          </a-button>
-        </a-dropdown>
-      </template>
+    <a-spin :spinning="pending">
+      <a-page-header :title="sculpt.name">
+        <template #extra>
+          <a-dropdown placement="bottomRight">
+            <template #overlay>
+              <a-menu @click="onChangeSortType">
+                <a-menu-item key="name">
+                  <sort-ascending-outlined /> Name
+                </a-menu-item>
+                <a-menu-item key="order">
+                  <ordered-list-outlined /> Order
+                </a-menu-item>
+              </a-menu>
+            </template>
+            <a-button>
+              <sort-ascending-outlined v-if="sort === 'name'" />
+              <ordered-list-outlined v-else /> Sort
+            </a-button>
+          </a-dropdown>
+        </template>
 
-      <a-spin :spinning="pending">
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="colorway in sculpt.colorways"
@@ -70,8 +70,8 @@
             </a-card>
           </a-col>
         </a-row>
-      </a-spin>
-    </a-page-header>
+      </a-page-header>
+    </a-spin>
   </div>
 </template>
 

@@ -1,3 +1,4 @@
+import sortBy from 'lodash.sortby'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
@@ -44,7 +45,7 @@ export const useUserStore = defineStore('user', {
                 },
             })
 
-            this.collections = doc.collections
+            this.collections = sortBy(doc.collections, 'name')
             this.favorites = doc.makers
             this.social = doc.social
             this.wishlistConfig.social = doc.social
