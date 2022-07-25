@@ -116,19 +116,20 @@ const {
       }, {});
     });
   } else {
-    const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
-    const trade = JSON.parse(
-      localStorage.getItem("KeebCatalogue_trade") || "{}"
-    );
-
-    return {
-      wish: Object.values(wish),
-      trade: Object.values(trade),
-    };
+    return {};
   }
 });
 
-// clone deep can watch nested object
+onMounted(() => {
+  const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
+  const trade = JSON.parse(localStorage.getItem("KeebCatalogue_trade") || "{}");
+
+  collections.value = {
+    wish: Object.values(wish),
+    trade: Object.values(trade),
+  };
+});
+
 watch(
   wishlistConfig,
   () => {

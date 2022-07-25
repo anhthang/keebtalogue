@@ -104,10 +104,14 @@ const { data, pending, refresh } = await useAsyncData(() =>
     ? $fetch("/api/firestore/query", {
         params: { col, doc: route.params.collection },
       })
-    : JSON.parse(
-        localStorage.getItem(`KeebCatalogue_${route.params.collection}`) || "{}"
-      )
+    : {}
 );
+
+onMounted(() => {
+  data.value = JSON.parse(
+    localStorage.getItem(`KeebCatalogue_${route.params.collection}`) || "{}"
+  );
+});
 
 watchEffect(() => route.params.collection, refresh());
 
