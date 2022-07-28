@@ -6,7 +6,13 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 export default defineNuxtConfig({
   css: ['@/assets/main.less'],
 
-  modules: ['@pinia/nuxt', '@nuxtjs/color-mode'],
+  modules: ['@pinia/nuxt', '@nuxtjs/color-mode', '@nuxtjs/google-fonts'],
+
+  googleFonts: {
+    families: {
+      Nunito: true,
+    }
+  },
 
   vite: {
     plugins: [
