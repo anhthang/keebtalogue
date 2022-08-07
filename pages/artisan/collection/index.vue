@@ -42,14 +42,14 @@
 </template>
 
 <script setup>
-useHead({
-  title: "Collection",
-});
-
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 import slugify from "slugify";
 import { message } from "ant-design-vue";
+
+useHead({
+  title: "Collection",
+});
 
 const userStore = useUserStore();
 const { user, collections } = storeToRefs(userStore);

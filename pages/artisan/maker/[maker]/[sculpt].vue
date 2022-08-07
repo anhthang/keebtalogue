@@ -79,6 +79,7 @@
 import { message } from "ant-design-vue";
 import { sortBy } from "lodash";
 import { storeToRefs } from "pinia";
+import { useUserStore } from "~~/stores/user";
 
 const route = useRoute();
 
@@ -100,7 +101,6 @@ const {
 
 watchEffect(() => route.params.sculpt, refresh());
 
-import { useUserStore } from "~~/stores/user";
 const userStore = useUserStore();
 const { authenticated, collections, user } = storeToRefs(userStore);
 

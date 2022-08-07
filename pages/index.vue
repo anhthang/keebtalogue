@@ -1,20 +1,6 @@
 <template>
   <div class="container">
     <a-page-header title="Calendar">
-      <!-- <a-result
-        v-if="$device.isMobile"
-        status="warning"
-        sub-title="Calendar is not compatible for mobile. Please use tablet or desktop."
-      >
-        <template #extra>
-          <nuxt-link to="/keebs">
-            <a-button type="primary"> Go Keebs </a-button>
-          </nuxt-link>
-          <nuxt-link to="/artisan/maker">
-            <a-button type="primary"> Go Artisans </a-button>
-          </nuxt-link>
-        </template>
-      </a-result> -->
       <a-calendar>
         <template #dateCellRender="{ current }">
           <a-badge
@@ -30,8 +16,6 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
-
 const { data: sales, pending } = await useAsyncData(() =>
   $fetch("/api/firestore/query?col=artisan-sales").catch((error) => {
     return [];

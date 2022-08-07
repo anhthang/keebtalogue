@@ -1,6 +1,6 @@
 <template>
   <div class="container login-container">
-    <img src="/icon.png" alt="logo" class="logo-icon">
+    <img src="/icon.png" alt="logo" class="logo-icon" />
     <h1>{{ config.public.appName }}</h1>
     <a-button type="primary" @click="loginWithGoogle">
       <google-outlined /> Login with Google
@@ -9,6 +9,9 @@
 </template>
 
 <script setup>
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { message } from "ant-design-vue";
+
 definePageMeta({
   layout: "login",
 });
@@ -16,9 +19,6 @@ definePageMeta({
 useHead({
   title: "Login",
 });
-
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { message } from "ant-design-vue";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
