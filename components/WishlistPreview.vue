@@ -220,11 +220,11 @@ const removeCap = (colorway, type) => {
 };
 </script>
 
-<style lang="less">
+<style>
 .wishlist-preview {
   height: 100%;
 
-  .ant-card-cover {
+  /* .ant-card-cover {
     @media (max-width: 1200px) {
       height: 220px;
     }
@@ -236,14 +236,12 @@ const removeCap = (colorway, type) => {
 
   @media (max-width: 576px) {
     margin-top: 12px;
-  }
+  } */
 }
 
-.preview-img {
-  img {
-    width: 100%;
-    margin-top: 12px;
-  }
+.preview-img img {
+  width: 100%;
+  margin-top: 12px;
 }
 
 .draggable-row {

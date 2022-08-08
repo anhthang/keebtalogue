@@ -84,11 +84,3 @@ watch(wishlistConfig.value, () => {
   })
 })
 </script>
-
-<style lang="less">
-.wishlist-settings {
-  .ant-select {
-    width: 100%;
-  }
-}
-</style>

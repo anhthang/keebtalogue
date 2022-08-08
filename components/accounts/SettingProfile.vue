@@ -93,10 +93,8 @@ const saveSettings = (key) => {
 };
 </script>
 
-<style lang="less">
+<style lang="postcss" scoped>
 .avatar {
-  margin: 0 auto;
-  border-radius: 50%;
-  display: block;
+  @apply mx-auto my-0 rounded-full block
 }
 </style>

@@ -267,10 +267,8 @@ const href = computed(() => {
 });
 </script>
 
-<style lang="less">
-.anticon-delete:hover {
-  svg {
-    fill: #f5222d;
-  }
+<style>
+.anticon-delete:hover svg {
+  fill: #f5222d;
 }
 </style>

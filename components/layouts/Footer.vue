@@ -39,7 +39,7 @@ const links = [
 ];
 </script>
 
-<style lang="less">
+<style>
 .global-footer {
   display: flex;
   flex-direction: column;
@@ -51,8 +51,8 @@ const links = [
   text-align: center;
   margin-bottom: 8px;
 
-  a:not(:last-child) {
+  /* a:not(:last-child) {
     margin-right: 40px;
-  }
+  } */
 }
 </style>

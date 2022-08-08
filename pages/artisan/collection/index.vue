@@ -89,7 +89,7 @@ const addCollection = async () => {
 };
 </script>
 
-<style lang="less">
+<style>
 .collection-alert {
   margin: 0 auto;
   margin-bottom: 16px;

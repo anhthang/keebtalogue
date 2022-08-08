@@ -42,7 +42,7 @@ const salesOnDay = (day) => {
 };
 </script>
 
-<style lang="less">
+<style>
 .ant-picker-calendar,
 .ant-picker-panel {
   background: transparent !important;

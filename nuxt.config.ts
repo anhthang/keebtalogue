@@ -7,9 +7,9 @@ export default defineNuxtConfig({
   ssr: false,
   target: "static",
 
-  css: ['@/assets/main.less'],
+  css: ['ant-design-vue/dist/antd.css', 'ant-design-vue/dist/antd.dark.css'],
 
-  modules: ['@pinia/nuxt', '@nuxtjs/color-mode', '@nuxtjs/google-fonts'],
+  modules: ['@pinia/nuxt', '@nuxtjs/color-mode', '@nuxtjs/google-fonts', '@nuxtjs/tailwindcss'],
 
   googleFonts: {
     families: {
@@ -44,16 +44,5 @@ export default defineNuxtConfig({
         measurementId: process.env.FIREBASE_MEASUREMENT_ID,
       }
     }
-  },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    loaders: {
-      less: {
-        lessOptions: {
-          javascriptEnabled: true,
-        },
-      },
-    },
   },
 })

@@ -27,16 +27,10 @@
   </a-card>
 </template>
 
-<style lang="less">
+<style lang="postcss" scoped>
 .color-mode-radio {
   .ant-radio-wrapper {
-    display: block;
-    height: 30px;
-    line-height: 30px;
+    @apply block h-8 leading-8
   }
-}
-
-.appearance-meta {
-  margin-bottom: 8px;
 }
 </style>

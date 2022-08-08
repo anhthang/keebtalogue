@@ -155,7 +155,7 @@ const addToCollection = (collection, colorway) => {
 };
 </script>
 
-<style lang="less">
+<style>
 .commissioned {
   color: palevioletred !important;
 }

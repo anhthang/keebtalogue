@@ -60,35 +60,17 @@ const sidebarToogle = () => {
 const config = useRuntimeConfig();
 </script>
 
-<style lang="less">
+<style>
 .logo {
   height: 100%;
   font-size: 24px;
   /* color: @text-color-dark; */
   margin-right: 24px;
   font-weight: 700;
-
-  img {
-    width: 48px;
-    margin-right: 16px;
-  }
 }
 
-.ant-layout-header {
-  display: flex;
-  align-items: center;
-  padding: 0 24px !important;
-
-  &.mobile {
-    justify-content: space-between;
-
-    .logo {
-      margin-right: 0;
-    }
-  }
-
-  .ant-menu {
-    flex: 1;
-  }
+.logo img {
+  width: 48px;
+  margin-right: 16px;
 }
 </style>

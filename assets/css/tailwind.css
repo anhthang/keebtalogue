@@ -1,0 +1,70 @@
+body {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 1600px;
+}
+
+.maker-container .ant-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.maker-container .ant-card-cover {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background: white;
+}
+
+.maker-container .ant-card-head-title {
+  text-align: center;
+}
+
+.artisan-container .ant-card-head-title,
+.artisan-container .ant-card-meta-description {
+    text-align: center;
+  }
+
+.artisan-container .ant-card-cover {
+  height: 250px;
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    height: 150px;
+  }
+}
+
+.artisan-container .ant-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ant-spin-nested-loading {
+  min-height: 300px;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  padding: 0 24px !important;
+
+  /* &.mobile {
+    justify-content: space-between;
+
+    .logo {
+      margin-right: 0;
+    }
+  } */
+}
+
+.ant-layout-header .ant-menu {
+  flex: 1;
+}

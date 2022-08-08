@@ -42,7 +42,7 @@ const loginWithGoogle = () => {
 const config = useRuntimeConfig();
 </script>
 
-<style lang="less">
+<style>
 .login-container {
   background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
   background-repeat: no-repeat;
@@ -50,10 +50,10 @@ const config = useRuntimeConfig();
   background-size: 100%;
   align-items: center;
   justify-content: center;
+}
 
-  button {
-    margin-bottom: 8px;
-  }
+.login-container button {
+  margin-bottom: 8px;
 }
 
 .logo-icon {
