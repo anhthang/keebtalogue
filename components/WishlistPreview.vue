@@ -1,12 +1,12 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
-      <a-radio-group v-model:value="showTextToCopy" button-style="solid">
+      <!-- <a-radio-group v-model:value="showTextToCopy" button-style="solid">
         <a-radio-button :value="true"> <eye-outlined /> Show </a-radio-button>
         <a-radio-button :value="false">
           <eye-invisible-outlined /> Hide
         </a-radio-button>
-      </a-radio-group>
+      </a-radio-group> -->
       <a-button :loading="loading" type="primary" @click="generateImg">
         <download-outlined /> Download
       </a-button>
@@ -121,13 +121,17 @@ const {
 });
 
 onMounted(() => {
-  const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
-  const trade = JSON.parse(localStorage.getItem("KeebCatalogue_trade") || "{}");
+  if (!authenticated.value) {
+    const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
+    const trade = JSON.parse(
+      localStorage.getItem("KeebCatalogue_trade") || "{}"
+    );
 
-  collections.value = {
-    wish: Object.values(wish),
-    trade: Object.values(trade),
-  };
+    collections.value = {
+      wish: Object.values(wish),
+      trade: Object.values(trade),
+    };
+  }
 });
 
 watch(

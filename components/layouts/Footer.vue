@@ -25,12 +25,12 @@ const config = useRuntimeConfig();
 const links = [
   {
     title: config.public.appName,
-    link: "https://keeb-catalogue.web.app",
+    link: config.public.baseUrl,
   },
   {
     title: "",
     icon: "github",
-    link: "https://github.com/anhthang/keeb-catalogue",
+    link: "https://github.com/anhthang/archivist",
   },
   {
     title: "Anh Thang",
@@ -39,20 +39,16 @@ const links = [
 ];
 </script>
 
-<style>
+<style lang="postcss" scoped>
 .global-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col items-center
 }
 
 .footer-links {
-  display: flex;
-  text-align: center;
-  margin-bottom: 8px;
+  @apply flex text-center mb-2
+}
 
-  /* a:not(:last-child) {
-    margin-right: 40px;
-  } */
+.footer-links a:not(:last-child) {
+  @apply mr-10
 }
 </style>

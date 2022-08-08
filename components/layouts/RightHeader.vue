@@ -45,6 +45,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { message } from "ant-design-vue";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "~~/stores/user";
 
 const router = useRouter();
 
@@ -52,9 +54,6 @@ const isMobile = false;
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
-
-import { useUserStore } from "~~/stores/user";
-import { storeToRefs } from "pinia";
 
 const userStore = useUserStore();
 const { authenticated, user } = storeToRefs(userStore);

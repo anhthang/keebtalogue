@@ -109,6 +109,6 @@ const addMaker = async () => {
 
 <style>
 .favorite-maker {
-  color: #eb2f96 !important;
+  color: #eb2f96;
 }
 </style>

@@ -42,21 +42,16 @@ const loginWithGoogle = () => {
 const config = useRuntimeConfig();
 </script>
 
-<style>
+<style lang="postcss" scoped>
 .login-container {
-  background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 100%;
-  align-items: center;
-  justify-content: center;
+  @apply bg-[url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg')] bg-no-repeat bg-center bg-auto items-center justify-center
 }
 
 .login-container button {
-  margin-bottom: 8px;
+  @apply mb-2
 }
 
 .logo-icon {
-  width: 128px;
+  @apply w-32
 }
 </style>

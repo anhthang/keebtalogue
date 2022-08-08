@@ -157,9 +157,9 @@ const addToCollection = (collection, colorway) => {
 
 <style>
 .commissioned {
-  color: palevioletred !important;
+  color: palevioletred;
 }
 .giveaway {
-  color: orange !important;
+  color: orange;
 }
 </style>
