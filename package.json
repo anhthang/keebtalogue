@@ -17,15 +17,14 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@pinia/nuxt": "^0.3.1",
-    "ant-design-vue": "^3.2.10",
-    "crc": "3.8.0",
-    "firebase": "^9.9.1",
+    "ant-design-vue": "^3.2.11",
+    "crc": "4.1.1",
+    "firebase": "^9.9.2",
     "lodash.keyby": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.sortby": "^4.7.0",
     "pinia": "^2.0.17",
     "slugify": "^1.6.5",
-    "unplugin-vue-components": "^0.21.2",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
@@ -35,6 +34,7 @@
     "@types/lodash.keyby": "^4.6.7",
     "@types/lodash.sample": "^4.2.7",
     "@types/lodash.sortby": "^4.7.7",
-    "nuxt": "3.0.0-rc.6"
+    "nuxt": "3.0.0-rc.6",
+    "unplugin-vue-components": "^0.22.4"
   }
 }
