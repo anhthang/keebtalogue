@@ -94,14 +94,10 @@ const collectionName = computed(() =>
 
 const addMaker = () => {
   const { sculpts, ...rest } = maker.value;
-  const endpoint = isEdit ? "/api/firestore/put" : "/api/firestore/add";
+  const endpoint = isEdit ? `/api/makers/${makerId.value}` : "/api/makers";
 
   $fetch(endpoint, {
     method: "post",
-    params: {
-      col: "artisan-makers",
-      doc: makerId.value,
-    },
     body: rest,
   })
     .then(() => {

@@ -119,9 +119,7 @@ const {
 } = await useAsyncData(() =>
   Promise.all([
     $fetch(`/api/maker/${route.params.maker}`),
-    $fetch("/api/firestore/query", {
-      params: { col: "artisan-makers", doc: route.params.maker },
-    }),
+    $fetch(`/api/makers/${route.params.maker}`),
   ]).then(([maker, profile]) => {
     title.value = maker.name;
 

@@ -71,7 +71,7 @@ const {
   data: makers,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch("/api/firestore/query?col=artisan-makers"));
+} = await useAsyncData(() => $fetch("/api/makers"));
 
 const userStore = useUserStore();
 const { authenticated, user, favorites } = storeToRefs(userStore);

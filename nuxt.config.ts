@@ -9,7 +9,13 @@ export default defineNuxtConfig({
 
   css: ['ant-design-vue/dist/antd.css', 'ant-design-vue/dist/antd.dark.css'],
 
-  modules: ['@pinia/nuxt', '@nuxtjs/color-mode', '@nuxtjs/google-fonts', '@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxtjs/supabase',
+    '@pinia/nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/google-fonts',
+    '@nuxtjs/tailwindcss'
+  ],
 
   googleFonts: {
     families: {
