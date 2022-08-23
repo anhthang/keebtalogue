@@ -30,25 +30,28 @@ export const useUserStore = defineStore('user', {
     }),
     actions: {
         setCurrentUser(authUser) {
-            const { uid, email, emailVerified, displayName, photoURL } =
-                authUser
-            this.user = { uid, email, emailVerified, displayName, photoURL }
-            this.authenticated = emailVerified
+            const { id, user_metadata } = authUser
+            this.user = {
+                uid: id,
+                email: user_metadata.email,
+                emailVerified: user_metadata.email_verified,
+                displayName: user_metadata.full_name,
+                photoURL: user_metadata.picture,
+            }
+            this.authenticated = user_metadata.email_verified
 
-            this.getUserDocument(authUser.uid)
+            this.getUserDocument(id)
         },
         async getUserDocument(uid) {
-            const doc = await $fetch('/api/firestore/query', {
-                params: {
-                    col: 'users',
-                    doc: uid,
-                },
-            })
+            const { data, error } = await $fetch(`/api/users/${uid}`)
 
-            this.collections = sortBy(doc.collections, 'name')
-            this.favorites = doc.makers
-            this.social = doc.social
-            this.wishlistConfig.social = doc.social
+            // this.collections = sortBy(doc.collections, 'name')
+            this.favorites = data.favorite_makers
+            this.social = {
+                discord: data.discord,
+                reddit: data.reddit,
+            }
+            this.wishlistConfig.social = this.social
         },
         updateUserCollections() {
             $fetch('/api/firestore/put', {

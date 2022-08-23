@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { message } from "ant-design-vue";
 
 definePageMeta({
@@ -20,23 +19,20 @@ useHead({
   title: "Login",
 });
 
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
-
 const router = useRouter();
 
-const loginWithGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then(({ user }) => {
-      message.success(
-        `Hello, ${user.displayName}. You successfully logged into this website.`
-      );
+const client = useSupabaseClient();
+const loginWithGoogle = async () => {
+  const { user, error } = await client.auth.signIn({ provider: "google" });
+  if (error) {
+    message.warning(err.message);
+  } else {
+    message.success(
+      `Hello, ${user.displayName}. You successfully logged into this website.`
+    );
 
-      router.back();
-    })
-    .catch((err) => {
-      message.warning(err.message);
-    });
+    router.back();
+  }
 };
 
 const config = useRuntimeConfig();
@@ -44,14 +40,14 @@ const config = useRuntimeConfig();
 
 <style lang="postcss" scoped>
 .login-container {
-  @apply bg-[url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg')] bg-no-repeat bg-center bg-auto items-center justify-center
+  @apply bg-[url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg')] bg-no-repeat bg-center bg-auto items-center justify-center;
 }
 
 .login-container button {
-  @apply mb-2
+  @apply mb-2;
 }
 
 .logo-icon {
-  @apply w-32
+  @apply w-32;
 }
 </style>

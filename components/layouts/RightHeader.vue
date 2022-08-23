@@ -38,12 +38,6 @@
 </template>
 
 <script setup>
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
 import { message } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~~/stores/user";
@@ -52,42 +46,36 @@ const router = useRouter();
 
 const isMobile = false;
 
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
-
 const userStore = useUserStore();
 const { authenticated, user } = storeToRefs(userStore);
 
+const client = useSupabaseClient();
 const loginWithGoogle = async () => {
-  await signInWithPopup(auth, provider)
-    .then(({ credential, user }) => {
-      userStore.setCurrentUser(user);
-      userStore.getUserDocument(user.uid);
+  const { user: authUser, error } = await client.auth.signIn({
+    provider: "google",
+  });
+  if (error) {
+    message.warning(error.message);
+  } else if (authUser) {
+    userStore.setCurrentUser(authUser);
+    userStore.getUserDocument(authUser.id);
 
-      message.success(
-        `Hello, ${user.displayName}. You successfully logged into this website.`
-      );
-    })
-    .catch((err) => {
-      message.warning(err.message);
-    });
+    message.success(
+      `Hello, ${user.displayName}. You successfully logged into this website.`
+    );
+  }
 };
 
 const logout = async () => {
-  await signOut(auth)
-    .then(() => {
-      userStore.$reset();
+  const { error } = await client.auth.signOut();
+  if (error) {
+    message.error(error.message);
+  } else {
+    userStore.$reset();
+    message.success("You have been logged out successfully.");
 
-      // FIXME: this my cause issue with other websites/tabs using firebase auth login
-      indexedDB.deleteDatabase("firebaseLocalStorageDb");
-
-      message.success("You have been logged out successfully.");
-
-      navigateTo("/");
-    })
-    .catch((err) => {
-      message.error(err.message);
-    });
+    navigateTo("/");
+  }
 };
 
 const gotoSettings = () => {
