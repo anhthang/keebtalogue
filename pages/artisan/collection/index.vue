@@ -2,7 +2,7 @@
   <div class="container artisan-container">
     <a-page-header title="Collection">
       <template #extra>
-        <a-button v-if="user.emailVerified" type="primary" @click="showModal">
+        <a-button v-if="user.email_verified" type="primary" @click="showModal">
           <file-add-outlined /> Add
         </a-button>
       </template>
@@ -14,7 +14,7 @@
         <a-input v-model:value="collectionName" placeholder="Collection Name" />
       </a-modal>
 
-      <a-row v-if="!user.emailVerified" type="flex">
+      <a-row v-if="!user.email_verified" type="flex">
         <a-alert
           class="collection-alert"
           message="You must log in to use this feature and sync the collections across your devices."

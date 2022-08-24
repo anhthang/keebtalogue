@@ -1,12 +1,12 @@
 <template>
   <div class="right-header">
-    <a-dropdown v-if="user.emailVerified">
-      <a-avatar :src="user.photoURL" />
+    <a-dropdown v-if="user.email_verified">
+      <a-avatar :src="user.picture" />
 
       <template #overlay>
         <a-menu>
           <a-menu-item v-if="authenticated">
-            👋 <strong>{{ user.displayName }}</strong>
+            👋 <strong>{{ user.full_name }}</strong>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item>
@@ -61,7 +61,7 @@ const loginWithGoogle = async () => {
     userStore.getUserDocument(authUser.id);
 
     message.success(
-      `Hello, ${user.displayName}. You successfully logged into this website.`
+      `Hello, ${user.full_name}. You successfully logged into this website.`
     );
   }
 };

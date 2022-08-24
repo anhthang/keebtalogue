@@ -29,7 +29,7 @@ const loginWithGoogle = async () => {
     message.warning(err.message);
   } else {
     message.success(
-      `Hello, ${user.displayName}. You successfully logged into this website.`
+      `Hello, ${user.full_name}. You successfully logged into this website.`
     );
 
     router.back();

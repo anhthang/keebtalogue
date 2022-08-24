@@ -4,7 +4,7 @@
       <a-col :xs="24" :sm="16">
         <a-form :layout="layout">
           <a-form-item label="Name">
-            <a-input v-model:value="user.displayName" disabled>
+            <a-input v-model:value="user.full_name" disabled>
               <template #prefix><user-outlined /></template>
             </a-input>
           </a-form-item>
@@ -13,7 +13,7 @@
               <template #prefix><mail-outlined /></template>
               <template #suffix>
                 <check-circle-outlined
-                  v-if="user.emailVerified"
+                  v-if="user.email_verified"
                   class="email-verified"
                 />
               </template>
@@ -22,7 +22,7 @@
         </a-form>
       </a-col>
       <a-col :xs="0" :sm="8">
-        <img class="avatar" :src="user.photoURL" />
+        <img class="avatar" :src="user.picture" />
       </a-col>
     </a-row>
 

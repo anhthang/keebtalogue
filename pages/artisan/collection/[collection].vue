@@ -22,7 +22,7 @@
           </a-dropdown>
 
           <a-button
-            v-if="user.emailVerified && !collection.published"
+            v-if="user.email_verified && !collection.published"
             type="primary"
             @click="publishCollection"
           >
@@ -30,7 +30,7 @@
           </a-button>
 
           <a-button
-            v-if="user.emailVerified && collection.published"
+            v-if="user.email_verified && collection.published"
             type="danger"
             @click="delPublishedCollection"
           >
@@ -38,7 +38,7 @@
           </a-button>
 
           <a-button
-            v-if="user.emailVerified"
+            v-if="user.email_verified"
             type="danger"
             @click="deleteCollection"
           >
