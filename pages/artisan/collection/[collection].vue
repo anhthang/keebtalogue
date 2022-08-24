@@ -87,6 +87,9 @@ const route = useRoute();
 const router = useRouter();
 const sortedCollections = ref([]);
 
+const sort = ref("sculpt_name");
+const size = "default";
+
 const collection =
   collections.value.find((c) => c.id === route.params.collection) || {};
 
@@ -104,24 +107,23 @@ const { data, pending, refresh } = await useAsyncData(() =>
     ? $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}/items`
       )
-    : {}
+    : []
 );
 
 onMounted(() => {
   data.value = JSON.parse(
-    localStorage.getItem(`KeebCatalogue_${route.params.collection}`) || "{}"
+    localStorage.getItem(`KeebArchivist_${route.params.collection}`) || "[]"
   );
 });
 
-watchEffect(() => route.params.collection, refresh());
-
-const sort = ref("");
-watch(pending, () => {
-  sortedCollections.value = Object.values(data.value);
-  sort.value = "sculpt_name";
+watch(data, () => {
+  sortedCollections.value = sortBy(data.value, [
+    "maker_name",
+    sort.value,
+  ]);
 });
 
-const size = "default";
+watchEffect(() => route.params.collection, refresh());
 
 const onChangeSortType = (e) => {
   sort.value = e.key;
@@ -138,7 +140,8 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 const removeCap = (clw) => {
   if (authenticated.value) {
     $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`
+      `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
+      { method: "delete" }
     )
       .then(() => {
         refresh();
@@ -149,11 +152,11 @@ const removeCap = (clw) => {
       });
   } else {
     sortedCollections.value = sortedCollections.value.filter(
-      (c) => c.id !== clw.id
+      (c) => c.colorway_id !== clw.colorway_id
     );
     localStorage.setItem(
-      `KeebCatalogue_${route.params.collection}`,
-      JSON.stringify(keyBy(sortedCollections.value, "id"))
+      `KeebArchivist_${route.params.collection}`,
+      JSON.stringify(sortedCollections.value)
     );
 
     message.success(`${cardTitle(clw)} removed from the collection.`);

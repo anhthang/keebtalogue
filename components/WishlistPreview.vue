@@ -88,6 +88,7 @@
 
 <script setup>
 import { message, Modal } from "ant-design-vue";
+import { groupBy } from "lodash";
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";
@@ -106,25 +107,19 @@ const {
   refresh,
 } = await useAsyncData(() => {
   if (authenticated.value) {
-    return $fetch("/api/firestore/query", {
-      params: { col: `users/${user.value.uid}/collections` },
-    }).then((data) => {
-      return data.reduce((out, cur) => {
-        const { id, ...rest } = cur;
-        out[id] = Object.values(rest);
-        return out;
-      }, {});
-    });
+    return $fetch(`/api/users/${user.value.uid}/collection-items`).then(
+      (data) => groupBy(data, "collection_id")
+    );
   } else {
-    return {};
+    return [];
   }
 });
 
 onMounted(() => {
   if (!authenticated.value) {
-    const wish = JSON.parse(localStorage.getItem("KeebCatalogue_wish") || "{}");
+    const wish = JSON.parse(localStorage.getItem("KeebArchivist_wish") || "[]");
     const trade = JSON.parse(
-      localStorage.getItem("KeebCatalogue_trade") || "{}"
+      localStorage.getItem("KeebArchivist_trade") || "[]"
     );
 
     collections.value = {

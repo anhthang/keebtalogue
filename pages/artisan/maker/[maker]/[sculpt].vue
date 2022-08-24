@@ -136,13 +136,13 @@ const addToCollection = (collection, colorway) => {
       });
   } else {
     const collectionMap =
-      JSON.parse(localStorage.getItem(`KeebCatalogue_${collection.slug}`)) ||
-      {};
+      JSON.parse(localStorage.getItem(`KeebArchivist_${collection.id}`)) ||
+      [];
 
-    collectionMap[clw.id] = clw;
+    collectionMap.push(clw);
 
     localStorage.setItem(
-      `KeebCatalogue_${collection.slug}`,
+      `KeebArchivist_${collection.id}`,
       JSON.stringify(collectionMap)
     );
 

@@ -60,8 +60,6 @@ const showModal = () => {
 
 const collectionName = ref("");
 const addCollection = async () => {
-  userStore.addCollection(collectionName.value, slug);
-
   $fetch(`/api/users/${user.value.uid}/collections`, {
     method: "post",
     body: {

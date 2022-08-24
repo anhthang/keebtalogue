@@ -2,13 +2,10 @@ import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-
-    const { data, error } = await client
+    const { data } = await client
         .from('user_collection_items')
-        .delete()
-        .eq('id', event.context.params.item)
+        .select()
         .eq('uid', event.context.params.id)
-        .eq('collection_id', event.context.params.collection)
 
     return data
 })
