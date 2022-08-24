@@ -7,12 +7,9 @@
 </template>
 
 <script setup>
-import { initializeApp } from "@firebase/app";
 import { useUserStore } from "./stores/user";
 
 const config = useRuntimeConfig();
-initializeApp(config.public.firebase);
-
 const userStore = useUserStore();
 
 const client = useSupabaseClient();

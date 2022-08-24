@@ -72,15 +72,9 @@ const layout = "vertical";
 const loading = ref(false);
 const saveSettings = (key) => {
   loading.value = true;
-  $fetch("/api/firestore/put", {
+  $fetch(`/api/users/${user.value.uid}`, {
     method: "post",
-    params: {
-      col: "users",
-      doc: user.value.uid,
-    },
-    body: {
-      [key]: social.value,
-    },
+    body: social.value,
   })
     .then(() => {
       message.success("Setting updated sucessfully");
@@ -95,6 +89,6 @@ const saveSettings = (key) => {
 
 <style lang="postcss" scoped>
 .avatar {
-  @apply mx-auto my-0 rounded-full block
+  @apply mx-auto my-0 rounded-full block;
 }
 </style>

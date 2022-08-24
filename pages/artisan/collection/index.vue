@@ -25,14 +25,14 @@
       <a-row :gutter="[8, 8]" type="flex">
         <a-col
           v-for="collection in collections"
-          :key="collection.slug"
+          :key="collection.id"
           :xs="12"
           :sm="12"
           :md="8"
           :lg="6"
           :xl="4"
         >
-          <nuxt-link :to="`/artisan/collection/${collection.slug}`">
+          <nuxt-link :to="`/artisan/collection/${collection.id}`">
             <a-card hoverable :title="collection.name" />
           </nuxt-link>
         </a-col>
@@ -44,7 +44,6 @@
 <script setup>
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
-import slugify from "slugify";
 import { message } from "ant-design-vue";
 
 useHead({
@@ -61,23 +60,14 @@ const showModal = () => {
 
 const collectionName = ref("");
 const addCollection = async () => {
-  const slug = slugify(collectionName.value, { lower: true });
-
-  const isExist = collections.value.find((c) => c.slug === slug);
-  if (isExist) {
-    message.error("Collection already exist.");
-    return;
-  }
-
   userStore.addCollection(collectionName.value, slug);
 
-  $fetch("/api/firestore/add", {
+  $fetch(`/api/users/${user.value.uid}/collections`, {
     method: "post",
-    params: {
-      col: `users/${user.value.uid}/collections`,
-      doc: slug,
+    body: {
+      name: collectionName.value,
+      uid: user.value.uid,
     },
-    body: {},
   })
     .then(() => {
       message.success("Added new collection");
@@ -91,6 +81,6 @@ const addCollection = async () => {
 
 <style lang="postcss" scoped>
 .collection-alert {
-  @apply mx-auto mb-4
+  @apply mx-auto mb-4;
 }
 </style>

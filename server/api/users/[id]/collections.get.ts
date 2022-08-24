@@ -1,0 +1,12 @@
+import { serverSupabaseClient } from '#supabase/server'
+import sortBy from 'lodash.sortby'
+
+export default defineEventHandler(async (event) => {
+    const client = serverSupabaseClient(event)
+    const { data } = await client
+        .from('user_collections')
+        .select('id, name')
+        .eq('uid', event.context.params.id)
+
+    return sortBy(data, 'name')
+})

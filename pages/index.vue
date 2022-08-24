@@ -16,11 +16,7 @@
 </template>
 
 <script setup>
-const { data: sales, pending } = await useAsyncData(() =>
-  $fetch("/api/firestore/query?col=artisan-sales").catch((error) => {
-    return [];
-  })
-);
+const sales = ref([])
 
 const salesOnDay = (day) => {
   const today = new Date().getDate();

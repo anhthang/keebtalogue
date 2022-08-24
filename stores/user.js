@@ -45,34 +45,22 @@ export const useUserStore = defineStore('user', {
         async getUserDocument(uid) {
             const { data, error } = await $fetch(`/api/users/${uid}`)
 
-            // this.collections = sortBy(doc.collections, 'name')
             this.favorites = data.favorite_makers
             this.social = {
                 discord: data.discord,
                 reddit: data.reddit,
             }
             this.wishlistConfig.social = this.social
-        },
-        updateUserCollections() {
-            $fetch('/api/firestore/put', {
-                method: 'post',
-                params: {
-                    col: 'users',
-                    doc: this.user.uid,
-                },
-                body: {
-                    collections: this.collections,
-                },
-            })
-        },
-        addCollection(name, slug) {
-            this.collections.push({ name, slug })
-            this.updateUserCollections()
-        },
-        removeCollection(slug) {
-            const collections = this.collections.filter((c) => c.slug !== slug)
+
+            const collections = await $fetch(`/api/users/${uid}/collections`)
             this.collections = collections
-            this.updateUserCollections()
+        },
+        addCollection(name, id) {
+            this.collections.push({ name, id })
+        },
+        removeCollection(id) {
+            const collections = this.collections.filter((c) => c.id !== id)
+            this.collections = collections
         },
         setWishlistConfig(config) {
             this.wishlistConfig = config
@@ -84,15 +72,10 @@ export const useUserStore = defineStore('user', {
                 this.favorites.push(name)
             }
 
-            // update firestore
-            $fetch('/api/firestore/put', {
+            $fetch(`/api/users/${this.user.uid}`, {
                 method: 'post',
-                params: {
-                    col: 'users',
-                    doc: this.user.uid,
-                },
                 body: {
-                    makers: this.favorites,
+                    favorite_makers: this.favorites,
                 },
             })
         },

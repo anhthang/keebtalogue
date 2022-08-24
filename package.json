@@ -19,7 +19,6 @@
     "@pinia/nuxt": "^0.3.1",
     "ant-design-vue": "^3.2.11",
     "crc": "4.1.1",
-    "firebase": "^9.9.2",
     "lodash.keyby": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.sortby": "^4.7.0",

@@ -53,7 +53,7 @@
                     <a-menu>
                       <a-menu-item
                         v-for="collection in collections"
-                        :key="collection.slug"
+                        :key="collection.id"
                         :disabled="!collections.length"
                         @click="addToCollection(collection, colorway)"
                       >
@@ -114,23 +114,19 @@ const onChangeSortType = (e) => {
 
 const addToCollection = (collection, colorway) => {
   const clw = {
-    id: colorway.id,
+    colorway_id: colorway.id,
     name: colorway.name,
     img: colorway.img,
     sculpt_name: sculpt.value.name,
     maker_name: route.params.maker,
+    uid: user.value.uid,
+    collection_id: collection.id,
   };
 
   if (authenticated.value) {
-    $fetch("/api/firestore/put", {
+    $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
       method: "post",
-      params: {
-        col: `users/${user.value.uid}/collections`,
-        doc: collection.slug,
-      },
-      body: {
-        [colorway.id]: clw,
-      },
+      body: clw,
     })
       .then(() => {
         message.success(`Added ${colorway.name} to ${collection.name}`);

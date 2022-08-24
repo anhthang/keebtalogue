@@ -18,8 +18,8 @@
         <a-select v-model:value="wishlistConfig.wish.collection">
           <a-select-option
             v-for="collection in collections"
-            :key="collection.slug"
-            :value="collection.slug"
+            :key="collection.id"
+            :value="collection.id"
           >
             {{ collection.name }}
           </a-select-option>
@@ -35,8 +35,8 @@
         <a-select v-model:value="wishlistConfig.trade.collection">
           <a-select-option
             v-for="collection in collections"
-            :key="collection.slug"
-            :value="collection.slug"
+            :key="collection.id"
+            :value="collection.id"
           >
             {{ collection.name }}
           </a-select-option>

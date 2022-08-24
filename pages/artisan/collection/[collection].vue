@@ -88,7 +88,7 @@ const router = useRouter();
 const sortedCollections = ref([]);
 
 const collection =
-  collections.value.find((c) => c.slug === route.params.collection) || {};
+  collections.value.find((c) => c.id === route.params.collection) || {};
 
 useHead({
   title: `${collection.name} • Collection`,
@@ -101,9 +101,9 @@ const col = isPublic
 
 const { data, pending, refresh } = await useAsyncData(() =>
   authenticated.value
-    ? $fetch("/api/firestore/query", {
-        params: { col, doc: route.params.collection },
-      })
+    ? $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items`
+      )
     : {}
 );
 
@@ -137,13 +137,9 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
 const removeCap = (clw) => {
   if (authenticated.value) {
-    $fetch("/api/firestore/del", {
-      params: {
-        col: `users/${user.value.uid}/collections`,
-        doc: route.params.collection,
-        field: clw.id,
-      },
-    })
+    $fetch(
+      `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`
+    )
       .then(() => {
         refresh();
         message.success(`${cardTitle(clw)} removed from the collection.`);
@@ -171,12 +167,12 @@ const deleteCollection = () => {
     onOk() {
       userStore.removeCollection(route.params.collection);
 
-      $fetch("/api/firestore/del", {
-        params: {
-          col: `users/${user.value.uid}/collections`,
-          doc: route.params.collection,
-        },
-      })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
+        {
+          method: "delete",
+        }
+      )
         .then(() => {
           message.success("Collection successfully deleted!");
 
@@ -224,7 +220,7 @@ const publishCollection = () => {
       })
         .then(() => {
           const updatedCollections = collections.value.map((c) => {
-            if (c.slug === route.params.collection) {
+            if (c.id === route.params.collection) {
               Object.assign(c, {
                 published: true,
                 public_id: publishId.value,
