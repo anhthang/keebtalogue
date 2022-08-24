@@ -3,6 +3,14 @@
     <a-spin :spinning="pending">
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
+          <a
+            v-if="collection.published"
+            :href="$route.fullPath"
+            target="_blank"
+          >
+            <a-button type="link"><link-outlined /> Share URL </a-button>
+          </a>
+
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu @click="onChangeSortType">
@@ -12,13 +20,13 @@
             </template>
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
+
           <a-button
-            v-if="user.emailVerified"
+            v-if="user.emailVerified && !collection.published"
             type="primary"
             @click="publishCollection"
           >
-            <cloud-upload-outlined />
-            {{ collection.published ? "Republish" : "Publish" }}
+            <cloud-upload-outlined /> Publish
           </a-button>
 
           <a-button
@@ -38,12 +46,6 @@
           </a-button>
         </template>
 
-        <a-row v-if="collection.published" :gutter="[8, 8]" type="flex">
-          <p>
-            This collection is published at:
-            <a :href="href" target="_blank">{{ $route.fullPath }}</a>
-          </p>
-        </a-row>
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="colorway in sortedCollections"
@@ -72,8 +74,7 @@
 <script setup>
 import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
-import crc32 from "crc/crc32";
-import { keyBy, sortBy } from "lodash";
+import { sortBy } from "lodash";
 import { message, Modal } from "ant-design-vue";
 
 const userStore = useUserStore();
@@ -90,7 +91,7 @@ const collection =
   collections.value.find((c) => c.id === route.params.collection) || {};
 
 useHead({
-  title: `${collection.name} • Collection`,
+  title: collection.name ? `${collection.name} • Collection` : "Collection",
 });
 
 const { data, pending, refresh } = await useAsyncData(() => {
@@ -197,6 +198,7 @@ const delPublishedCollection = () => {
         }
       )
         .then(() => {
+          collection.published = false;
           message.success("Collection unpublished");
         })
         .catch((error) => {
@@ -221,6 +223,7 @@ const publishCollection = () => {
         }
       )
         .then(() => {
+          collection.published = true;
           message.success("Collection published");
         })
         .catch((error) => {
