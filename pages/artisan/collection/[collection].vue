@@ -38,14 +38,10 @@
           </a-button>
         </template>
 
-        <a-row
-          v-if="collection.published && !isPublic"
-          :gutter="[8, 8]"
-          type="flex"
-        >
+        <a-row v-if="collection.published" :gutter="[8, 8]" type="flex">
           <p>
             This collection is published at:
-            <a :href="href" target="_blank">{{ href }}</a>
+            <a :href="href" target="_blank">{{ $route.fullPath }}</a>
           </p>
         </a-row>
         <a-row :gutter="[8, 8]" type="flex">
@@ -62,7 +58,7 @@
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
               </template>
-              <template v-if="!isPublic" #extra>
+              <template v-if="authenticated" #extra>
                 <delete-outlined @click="removeCap(colorway)" />
               </template>
             </a-card>
@@ -97,18 +93,20 @@ useHead({
   title: `${collection.name} • Collection`,
 });
 
-const isPublic = route.params.collection.startsWith("p_");
-const col = isPublic
-  ? "public-collections"
-  : `users/${user.value.uid}/collections`;
-
-const { data, pending, refresh } = await useAsyncData(() =>
-  authenticated.value
-    ? $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}/items`
-      )
-    : []
-);
+const { data, pending, refresh } = await useAsyncData(() => {
+  if (authenticated.value) {
+    return $fetch(
+      `/api/users/${user.value.uid}/collections/${route.params.collection}/items`
+    );
+  } else if (
+    route.params.collection === "wish" ||
+    route.params.collection === "trade"
+  ) {
+    return [];
+  } else {
+    return $fetch(`/api/collections/${route.params.collection}`);
+  }
+});
 
 onMounted(() => {
   data.value = JSON.parse(
@@ -117,10 +115,7 @@ onMounted(() => {
 });
 
 watch(data, () => {
-  sortedCollections.value = sortBy(data.value, [
-    "maker_name",
-    sort.value,
-  ]);
+  sortedCollections.value = sortBy(data.value, ["maker_name", sort.value]);
 });
 
 watchEffect(() => route.params.collection, refresh());
@@ -192,12 +187,15 @@ const delPublishedCollection = () => {
   Modal.confirm({
     title: "Are you sure to unpublish this collection?",
     onOk() {
-      $fetch("/api/firestore/del", {
-        params: {
-          col: "public-collections",
-          doc: publishId.value,
-        },
-      })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
+        {
+          method: "post",
+          body: {
+            published: false,
+          },
+        }
+      )
         .then(() => {
           message.success("Collection unpublished");
         })
@@ -213,38 +211,17 @@ const publishCollection = () => {
     title: "Do you want to publish this collection?",
     okText: "Publish",
     onOk() {
-      $fetch("/api/firestore/add", {
-        method: "post",
-        params: {
-          col: "public-collections",
-          doc: publishId.value,
-        },
-        body: keyBy(sortedCollections.value, "id"),
-      })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
+        {
+          method: "post",
+          body: {
+            published: true,
+          },
+        }
+      )
         .then(() => {
-          const updatedCollections = collections.value.map((c) => {
-            if (c.id === route.params.collection) {
-              Object.assign(c, {
-                published: true,
-                public_id: publishId.value,
-              });
-            }
-
-            return c;
-          });
-
-          $fetch("/api/firestore/put", {
-            method: "post",
-            params: {
-              col: "users",
-              doc: user.value.uid,
-            },
-            body: {
-              collections: updatedCollections,
-            },
-          }).then(() => {
-            message.success("Collection published");
-          });
+          message.success("Collection published");
         })
         .catch((error) => {
           message.error(error.message);
@@ -252,18 +229,6 @@ const publishCollection = () => {
     },
   });
 };
-
-const publishId = computed(() => {
-  const id = crc32(`${user.value.uid}__${collection.name}`).toString(16);
-
-  return `p_${id}`;
-});
-
-const config = useRuntimeConfig();
-
-const href = computed(() => {
-  return `${config.public.baseUrl}/artisan/collection/${publishId.value}`;
-});
 </script>
 
 <style>

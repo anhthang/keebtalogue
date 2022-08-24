@@ -69,6 +69,7 @@ const addCollection = async () => {
   })
     .then(() => {
       message.success("Added new collection");
+      userStore.getUserDocument();
       showModal();
     })
     .catch((error) => {

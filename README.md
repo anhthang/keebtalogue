@@ -6,6 +6,8 @@ The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue)
 
 ## TODO
 - Sculpt story
+- Sign in with popup (Supabase is not supported at the moment)
+- Self managed maker archivist
 
 # Development
 
