@@ -23,6 +23,10 @@ useHead({
   title: "Account Settings",
 });
 
+definePageMeta({
+  middleware: "auth",
+});
+
 const tabPosition = "left";
 const activeKey = ref("profile");
 </script>

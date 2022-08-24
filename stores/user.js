@@ -49,6 +49,7 @@ export const useUserStore = defineStore('user', {
             this.social = {
                 discord: data.discord,
                 reddit: data.reddit,
+                qq: data.qq,
             }
             this.wishlistConfig.social = this.social
 

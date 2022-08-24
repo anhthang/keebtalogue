@@ -13,6 +13,7 @@ import { message } from "ant-design-vue";
 
 definePageMeta({
   layout: "login",
+  middleware: "auth",
 });
 
 useHead({
