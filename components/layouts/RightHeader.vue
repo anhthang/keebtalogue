@@ -62,7 +62,7 @@ const loginWithGoogle = async () => {
     userStore.getUserDocument(authUser.id);
 
     message.success(
-      `Hello, ${user.full_name}. You successfully logged into this website.`
+      `Hello, ${authUser.app_metadata.full_name}. You successfully logged into this website.`
     );
   }
 };

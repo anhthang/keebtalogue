@@ -4,8 +4,13 @@ import sortBy from 'lodash.sortby'
 import slugify from 'slugify'
 
 export default defineEventHandler((event) => {
+    const filename =
+        event.context.params.maker === 'gaias-creature'
+            ? 'gaia%E2%80%99s-creature'
+            : event.context.params.maker
+
     return fetch(
-        `https://raw.githubusercontent.com/keycap-archivist/database/master/db/${event.context.params.maker}.json`
+        `https://raw.githubusercontent.com/keycap-archivist/database/master/db/${filename}.json`
     )
         .then((res) => res.json())
         .then((maker) => {
