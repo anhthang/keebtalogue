@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
 
             this.authenticated = email_verified
 
-            this.getUserDocument(id)
+            this.getUserDocument(uid)
         },
         async getUserDocument(uid) {
             const { data, error } = await $fetch(`/api/users/${uid}`)

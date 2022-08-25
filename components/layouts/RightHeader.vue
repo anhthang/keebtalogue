@@ -51,9 +51,10 @@ const { authenticated, user } = storeToRefs(userStore);
 
 const client = useSupabaseClient();
 const loginWithGoogle = async () => {
-  const { user: authUser, error } = await client.auth.signIn({
-    provider: "google",
-  });
+  const { user: authUser, error } = await client.auth.signIn(
+    { provider: "google" },
+    { redirectTo: window.location.origin }
+  );
   if (error) {
     message.warning(error.message);
   } else if (authUser) {

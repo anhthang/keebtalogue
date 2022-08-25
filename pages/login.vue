@@ -24,7 +24,10 @@ const router = useRouter();
 
 const client = useSupabaseClient();
 const loginWithGoogle = async () => {
-  const { user, error } = await client.auth.signIn({ provider: "google" });
+  const { user, error } = await client.auth.signIn(
+    { provider: "google" },
+    { redirectTo: window.location.origin }
+  );
   if (error) {
     message.warning(err.message);
   } else {
