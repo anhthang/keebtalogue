@@ -22,7 +22,7 @@
         </template>
 
         <a-descriptions>
-          <a-descriptions-item v-if="sculpt.releaseDate" label="Release Date">
+          <a-descriptions-item v-if="sculpt.releaseDate" label="Release">
             {{ sculpt.releaseDate }}
           </a-descriptions-item>
           <a-descriptions-item v-if="sculpt.profile" label="Profile">
@@ -46,7 +46,7 @@
             :lg="6"
             :xl="4"
           >
-            <a-card hoverable :title="colorway.name || '-'" :size="size">
+            <a-card hoverable :title="colorway.name || '-'" :size="size" class="sculpt-card">
               <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
@@ -78,10 +78,16 @@
                   </template>
                 </a-dropdown>
               </template>
-              <a-card-meta
-                v-if="colorway.releaseDate"
-                :description="colorway.releaseDate"
-              />
+              <a-card-meta v-if="isShowDescription">
+                <template #description>
+                  <a-list-item>
+                    <span>
+                      <calendar-outlined /> {{ colorway.releaseDate }}
+                    </span>
+                    <span><number-outlined /> {{ colorway.totalCount }}</span>
+                  </a-list-item>
+                </template>
+              </a-card-meta>
             </a-card>
           </a-col>
         </a-row>
@@ -163,6 +169,13 @@ const addToCollection = (collection, colorway) => {
     message.success(`Added ${clw.name} to ${collection.name}`);
   }
 };
+
+const isShowDescription = computed(() => {
+  const release = sculpt.value.colorways.filter((c) => c.releaseDate).length;
+  const count = sculpt.value.colorways.filter((c) => c.totalCount).length;
+
+  return release || count;
+});
 </script>
 
 <style>
@@ -171,5 +184,9 @@ const addToCollection = (collection, colorway) => {
 }
 .giveaway {
   color: orange;
+}
+
+.sculpt-card .ant-card-body {
+  padding: 12px 24px;
 }
 </style>

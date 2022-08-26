@@ -24,11 +24,11 @@
           </p>
         </div>
 
-        <a-descriptions>
+        <!-- <a-descriptions>
           <a-descriptions-item label="Catalog Last Updated">
             {{ maker.last_updated }}
           </a-descriptions-item>
-        </a-descriptions>
+        </a-descriptions> -->
 
         <a-row :gutter="[8, 8]" type="flex">
           <a v-if="maker.website" :href="maker.website" target="_blank">
@@ -128,7 +128,6 @@ const {
 
     return {
       ...profile,
-      last_updated: new Date(maker.last_updated).toString(),
       slug: route.params.maker,
       sculpts: maker.sculpts,
     };
