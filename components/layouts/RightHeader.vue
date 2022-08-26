@@ -27,7 +27,7 @@
       <template #overlay>
         <a-menu>
           <a-menu-item>
-            <span @click="loginWithGoogle">
+            <span @click="login('google')">
               <google-outlined /> Login with Google
             </span>
           </a-menu-item>
@@ -50,9 +50,9 @@ const userStore = useUserStore();
 const { authenticated, user } = storeToRefs(userStore);
 
 const client = useSupabaseClient();
-const loginWithGoogle = async () => {
+const login = async (provider) => {
   const { user: authUser, error } = await client.auth.signIn(
-    { provider: "google" },
+    { provider },
     { redirectTo: window.location.origin }
   );
   if (error) {

@@ -1,10 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header
-        :title="maker.name"
-        :avatar="{ src: maker.img }"
-      >
+      <a-page-header :title="maker.name" :avatar="{ src: maker.img }">
         <template v-if="maker.nationality" #subTitle>
           {{ getFlagEmoji(maker.nationality) }}
         </template>
@@ -26,6 +23,12 @@
             {{ maker.intro }}
           </p>
         </div>
+
+        <a-descriptions>
+          <a-descriptions-item label="Catalog Last Updated">
+            {{ maker.last_updated }}
+          </a-descriptions-item>
+        </a-descriptions>
 
         <a-row :gutter="[8, 8]" type="flex">
           <a v-if="maker.website" :href="maker.website" target="_blank">
@@ -125,6 +128,7 @@ const {
 
     return {
       ...profile,
+      last_updated: new Date(maker.last_updated).toString(),
       slug: route.params.maker,
       sculpts: maker.sculpts,
     };

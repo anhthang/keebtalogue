@@ -21,6 +21,21 @@
           </a-dropdown>
         </template>
 
+        <a-descriptions>
+          <a-descriptions-item v-if="sculpt.releaseDate" label="Release Date">
+            {{ sculpt.releaseDate }}
+          </a-descriptions-item>
+          <a-descriptions-item v-if="sculpt.profile" label="Profile">
+            {{ sculpt.profile }}
+          </a-descriptions-item>
+          <a-descriptions-item v-if="sculpt.design" label="Design">
+            {{ sculpt.design }}
+          </a-descriptions-item>
+          <a-descriptions-item v-if="sculpt.cast" label="Cast">
+            {{ sculpt.cast }}
+          </a-descriptions-item>
+        </a-descriptions>
+
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="colorway in sculpt.colorways"
@@ -136,8 +151,7 @@ const addToCollection = (collection, colorway) => {
       });
   } else {
     const collectionMap =
-      JSON.parse(localStorage.getItem(`KeebArchivist_${collection.id}`)) ||
-      [];
+      JSON.parse(localStorage.getItem(`KeebArchivist_${collection.id}`)) || [];
 
     collectionMap.push(clw);
 

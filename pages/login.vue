@@ -2,7 +2,7 @@
   <div class="container login-container">
     <img src="/icon.png" alt="logo" class="logo-icon" />
     <h1>{{ config.public.appName }}</h1>
-    <a-button type="primary" @click="loginWithGoogle">
+    <a-button type="primary" @click="login('google')">
       <google-outlined /> Login with Google
     </a-button>
   </div>
@@ -23,9 +23,9 @@ useHead({
 const router = useRouter();
 
 const client = useSupabaseClient();
-const loginWithGoogle = async () => {
+const login = async (provider) => {
   const { user, error } = await client.auth.signIn(
-    { provider: "google" },
+    { provider },
     { redirectTo: window.location.origin }
   );
   if (error) {

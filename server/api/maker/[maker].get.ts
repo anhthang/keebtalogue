@@ -3,11 +3,19 @@ import sample from 'lodash.sample'
 import sortBy from 'lodash.sortby'
 import slugify from 'slugify'
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
     const filename =
         event.context.params.maker === 'gaias-creature'
             ? 'gaia%E2%80%99s-creature'
             : event.context.params.maker
+
+    const last_updated = await fetch(
+        `https://api.github.com/repos/keycap-archivist/database/commits?path=db%2F${filename}.json&page=1&per_page=1`
+    )
+        .then((res) => res.json())
+        .then(([log]) => {
+            return log.commit.author.date
+        })
 
     return fetch(
         `https://raw.githubusercontent.com/keycap-archivist/database/master/db/${filename}.json`
@@ -33,6 +41,7 @@ export default defineEventHandler((event) => {
 
             return {
                 ...maker,
+                last_updated,
                 sculpts,
                 slug: slugify(maker.name, { lower: true }),
             }
