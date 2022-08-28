@@ -3,6 +3,9 @@
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
         <template #extra>
+          <a v-if="sculpt.href" :href="sculpt.href" target="_blank">
+            <a-button type="link"><link-outlined /> About </a-button>
+          </a>
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu @click="onChangeSortType">
@@ -20,6 +23,12 @@
             </a-button>
           </a-dropdown>
         </template>
+
+        <div v-if="sculpt.story">
+          <p>
+            {{ sculpt.story }}
+          </p>
+        </div>
 
         <a-descriptions>
           <a-descriptions-item v-if="sculpt.releaseDate" label="Release">
@@ -46,7 +55,12 @@
             :lg="6"
             :xl="4"
           >
-            <a-card hoverable :title="colorway.name || '-'" :size="size" class="sculpt-card">
+            <a-card
+              hoverable
+              :title="colorway.name || '-'"
+              :size="size"
+              class="sculpt-card"
+            >
               <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
@@ -112,7 +126,7 @@ const {
   pending,
   refresh,
 } = await useAsyncData(() =>
-  $fetch(`/api/maker/${route.params.maker}`).then((data) => {
+  $fetch(`/api/makers/${route.params.maker}`).then((data) => {
     const sculpt = data.sculpts[route.params.sculpt];
     title.value = `${sculpt.name} • ${data.name}`;
 

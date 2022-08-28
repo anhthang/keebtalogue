@@ -1,4 +1,3 @@
-import sortBy from 'lodash.sortby'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {

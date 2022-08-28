@@ -119,20 +119,7 @@ const {
   data: maker,
   pending,
   refresh,
-} = await useAsyncData(() =>
-  Promise.all([
-    $fetch(`/api/maker/${route.params.maker}`),
-    $fetch(`/api/makers/${route.params.maker}`),
-  ]).then(([maker, profile]) => {
-    title.value = maker.name;
-
-    return {
-      ...profile,
-      slug: route.params.maker,
-      sculpts: maker.sculpts,
-    };
-  })
-);
+} = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`));
 
 watchEffect(() => route.params.maker, refresh());
 
@@ -149,6 +136,7 @@ const updateMakerProfile = async () => {
 
   await makerForm.value.addMaker();
 
+  showEditMakerModal();
   confirmLoading.value = false;
 };
 
