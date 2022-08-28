@@ -10,15 +10,9 @@ export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
     const { data: profile, error } = await client
         .from('makers')
-        .select()
+        .select('*, sculpts (*)')
         .eq('id', makerId)
         .single()
-
-    const { data } = await client
-        .from('storylines')
-        .select()
-        .eq('maker_id', makerId)
-    const sculptMap = keyBy(data, 'sculpt_id')
 
     const filename =
         makerId === 'gaias-creature' ? 'gaia%E2%80%99s-creature' : makerId
@@ -29,6 +23,8 @@ export default defineEventHandler(async (event) => {
     )
         .then((res) => res.json())
         .then((maker) => {
+            const sculptMap = keyBy(profile.sculpts, 'sculpt_id')
+
             let sculpts = maker.sculpts.map((sculpt) => {
                 const random = sample(sculpt.colorways)
 

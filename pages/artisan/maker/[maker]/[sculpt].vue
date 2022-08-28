@@ -3,9 +3,6 @@
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
         <template #extra>
-          <a v-if="sculpt.href" :href="sculpt.href" target="_blank">
-            <a-button type="link"><link-outlined /> About </a-button>
-          </a>
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu @click="onChangeSortType">
@@ -27,6 +24,8 @@
         <div v-if="sculpt.story">
           <p>
             {{ sculpt.story }}
+            <br />
+            <a v-if="sculpt.href" :href="sculpt.href" target="_blank"> Read more </a>
           </p>
         </div>
 
