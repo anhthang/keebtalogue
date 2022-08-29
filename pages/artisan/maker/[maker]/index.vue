@@ -121,6 +121,9 @@ const {
   refresh,
 } = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`));
 
+watch(pending, () => {
+  title.value = maker.value.name;
+});
 watchEffect(() => route.params.maker, refresh());
 
 const size = "default";

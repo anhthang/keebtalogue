@@ -2,12 +2,13 @@ import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-    const { slug, ...rest } = await useBody(event.req)
+    const body = await useBody(event.req)
 
     const { data, error } = await client
-        .from('makers')
-        .update([rest])
-        .eq('id', event.context.params.maker)
+        .from('sculpts')
+        .upsert([body])
+        .eq('maker_id', body.maker_id)
+        .eq('sculpt_id', body.sculpt_id)
 
     if (error) {
         return error

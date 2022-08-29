@@ -19,13 +19,25 @@
               <ordered-list-outlined v-else /> Sort
             </a-button>
           </a-dropdown>
+
+          <a-button
+            v-if="authenticated"
+            key="edit"
+            type="primary"
+            @click="showEditSculptModal"
+          >
+            <template #icon><edit-outlined /></template>
+            Edit
+          </a-button>
         </template>
 
         <div v-if="sculpt.story">
           <p>
             {{ sculpt.story }}
             <br />
-            <a v-if="sculpt.href" :href="sculpt.href" target="_blank"> Read more </a>
+            <a v-if="sculpt.href" :href="sculpt.href" target="_blank">
+              Read more
+            </a>
           </p>
         </div>
 
@@ -104,6 +116,16 @@
             </a-card>
           </a-col>
         </a-row>
+
+        <a-modal
+          v-model:visible="showEditSculpt"
+          title="Edit Sculpt"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="updateSculptProfile"
+        >
+          <sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
+        </a-modal>
       </a-page-header>
     </a-spin>
   </div>
@@ -113,6 +135,7 @@
 import { message } from "ant-design-vue";
 import { sortBy } from "lodash";
 import { storeToRefs } from "pinia";
+import SculptForm from "~~/components/modals/SculptForm.vue";
 import { useUserStore } from "~~/stores/user";
 
 const route = useRoute();
@@ -189,6 +212,22 @@ const isShowDescription = computed(() => {
 
   return release || count;
 });
+
+const showEditSculpt = ref(false);
+const showEditSculptModal = () => {
+  showEditSculpt.value = !showEditSculpt.value;
+};
+
+const sculptForm = ref();
+const confirmLoading = ref(false);
+const updateSculptProfile = async () => {
+  confirmLoading.value = true;
+
+  await sculptForm.value.addSculptProfile();
+
+  showEditSculptModal();
+  confirmLoading.value = false;
+};
 </script>
 
 <style>
