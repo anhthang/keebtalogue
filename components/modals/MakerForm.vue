@@ -1,11 +1,7 @@
 <template>
   <a-form layout="vertical">
     <a-form-item label="Name">
-      <a-input
-        v-model:value="maker.name"
-        placeholder="Maker Name"
-        :disabled="isEdit"
-      >
+      <a-input v-model:value="maker.name" placeholder="Maker Name">
         <template #prefix><file-text-outlined /></template>
       </a-input>
     </a-form-item>
@@ -63,10 +59,16 @@ const { metadata, isKeeb, isEdit } = defineProps({
 
 const maker = ref({});
 
+onBeforeMount(() => {
+  if (metadata && Object.keys(metadata).length) {
+    maker.value = { ...metadata };
+  }
+});
+
 watch(
   () => maker.value.name,
   () => {
-    if (!isKeeb) {
+    if (!isKeeb && !isEdit) {
       const id = crc32(maker.value.name).toString(16);
       maker.value.img = `https://github.com/keycap-archivist/website/raw/master/src/assets/img/logos/${id}.jpg`;
     }
@@ -74,23 +76,19 @@ watch(
 );
 
 const makerId = computed(() => {
-  return isKeeb
-    ? slugify(maker.value.name, { lower: true })
-    : maker.value.name // make it same as keycap-archivist
+  if (isEdit) {
+    return maker.value.id;
+  } else {
+    if (isKeeb) {
+      return slugify(maker.value.name, { lower: true });
+    } else {
+      return maker.value.name // make it same as keycap-archivist
         .replaceAll(" ", "-")
         .replaceAll(".", "-")
         .toLowerCase();
-});
-
-onBeforeMount(() => {
-  if (metadata && Object.keys(metadata).length) {
-    maker.value = { ...metadata };
+    }
   }
 });
-
-const collectionName = computed(() =>
-  isKeeb ? "keyboard-makers" : "artisan-makers"
-);
 
 const addMaker = () => {
   const { sculpts, ...rest } = maker.value;

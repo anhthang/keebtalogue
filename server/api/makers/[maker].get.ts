@@ -52,7 +52,6 @@ export default defineEventHandler(async (event) => {
 
             return {
                 ...profile,
-                slug: makerId,
                 sculpts,
             }
         })
