@@ -109,7 +109,9 @@
                     <span>
                       <calendar-outlined /> {{ colorway.releaseDate }}
                     </span>
-                    <span><number-outlined /> {{ colorway.totalCount }}</span>
+                    <span>
+                      <field-number-outlined /> {{ colorway.totalCount }}
+                    </span>
                   </a-list-item>
                 </template>
               </a-card-meta>
@@ -231,6 +233,10 @@ const updateSculptProfile = async () => {
 </script>
 
 <style>
+.one-off {
+  color: goldenrod;
+}
+
 .commissioned {
   color: palevioletred;
 }

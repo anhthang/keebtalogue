@@ -5,6 +5,24 @@
         <template #prefix><file-text-outlined /></template>
       </a-input>
     </a-form-item>
+
+    <a-row :gutter="8">
+      <a-col :xs="24" :md="12">
+        <a-form-item label="Nationality">
+          <a-input v-model:value="maker.nationality" :maxlength="2">
+            <template #prefix><flag-outlined /></template>
+          </a-input>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="24" :md="12">
+        <a-form-item label="Founded">
+          <a-input v-model:value="maker.founded">
+            <template #prefix><calendar-outlined /></template>
+          </a-input>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
     <a-form-item label="Logo">
       <a-input v-model:value="maker.img" :disabled="!isKeeb">
         <template #prefix><file-image-outlined /></template>
@@ -28,11 +46,6 @@
     <a-form-item label="Discord">
       <a-input v-model:value="maker.discord">
         <template #prefix><nuxt-icon name="discord" /></template>
-      </a-input>
-    </a-form-item>
-    <a-form-item label="Nationality">
-      <a-input v-model:value="maker.nationality" :maxlength="2">
-        <template #prefix><flag-outlined /></template>
       </a-input>
     </a-form-item>
     <a-form-item label="Artisan Collector">
