@@ -68,3 +68,7 @@ body {
 .ant-layout-header .ant-menu {
   flex: 1;
 }
+
+.nuxt-icon svg {
+  font-size: 18px;
+}

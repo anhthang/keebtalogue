@@ -55,7 +55,7 @@
           v-model:value="wishlistConfig.social.discord"
           placeholder="Discord#0000"
         >
-          <aliwangwang-outlined />
+          <nuxt-icon name="discord" />
         </a-input>
       </a-form-item>
       <a-form-item label="QQ">

@@ -32,18 +32,18 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a v-if="maker.website" :href="maker.website" target="_blank">
-            <a-button key="3" type="link"
-              ><global-outlined /> Website
+            <a-button key="3" type="link">
+              <global-outlined /> Website
             </a-button>
           </a>
           <a v-if="maker.instagram" :href="maker.instagram" target="_blank">
-            <a-button key="2" type="link"
-              ><instagram-outlined /> Instagram
+            <a-button key="2" type="link">
+              <instagram-outlined /> Instagram
             </a-button>
           </a>
           <a v-if="maker.discord" :href="maker.discord" target="_blank">
-            <a-button key="1" type="link"
-              ><aliwangwang-outlined /> Discord
+            <a-button key="1" type="link">
+              <nuxt-icon name="discord" /> Discord
             </a-button>
           </a>
           <a
@@ -52,7 +52,7 @@
             target="_blank"
           >
             <a-button key="0" type="link">
-              <link-outlined /> Artisan Collector
+              <nuxt-icon name="artisancollector" /> Artisan Collector
             </a-button>
           </a>
           <a :href="maker.src" target="_blank">
@@ -163,3 +163,9 @@ const getFlagEmoji = (isoCode) => {
     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
 };
 </script>
+
+<style>
+.artisan-container .nuxt-icon svg {
+  margin-right: 8px;
+}
+</style>

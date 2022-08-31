@@ -27,7 +27,7 @@
     </a-form-item>
     <a-form-item label="Discord">
       <a-input v-model:value="maker.discord">
-        <template #prefix><aliwangwang-outlined /></template>
+        <template #prefix><nuxt-icon name="discord" /></template>
       </a-input>
     </a-form-item>
     <a-form-item label="Nationality">
@@ -37,7 +37,7 @@
     </a-form-item>
     <a-form-item label="Artisan Collector">
       <a-input v-model:value="maker.artisancollector">
-        <template #prefix><link-outlined /></template>
+        <template #prefix><nuxt-icon name="artisancollector" /></template>
       </a-input>
     </a-form-item>
     <a-form-item label="Introduce">

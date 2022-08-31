@@ -36,7 +36,7 @@
           </a-form-item>
           <a-form-item label="Discord">
             <a-input v-model:value="social.discord" placeholder="Discord#0000">
-              <template #prefix><aliwangwang-outlined /></template>
+              <template #prefix><nuxt-icon name="discord" /></template>
             </a-input>
           </a-form-item>
           <a-form-item label="QQ">

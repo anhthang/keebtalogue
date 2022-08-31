@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/google-fonts',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'nuxt-icons',
   ],
 
   googleFonts: {
@@ -30,7 +31,6 @@ export default defineNuxtConfig({
         resolvers: [AntDesignVueResolver({resolveIcons: true})],
       }),
     ],
-    // @ts-expect-error: Missing ssr key
     ssr: {
       noExternal: ['moment', 'compute-scroll-into-view', 'ant-design-vue','@ant-design/icons-vue'],
     },
