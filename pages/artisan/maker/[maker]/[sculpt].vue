@@ -77,10 +77,7 @@
                   v-if="colorway.commissioned"
                   class="commissioned"
                 />
-                <gift-filled
-                  v-if="colorway.name.toLowerCase().includes('giveaway')"
-                  class="giveaway"
-                />
+                <gift-filled v-if="colorway.giveaway" class="giveaway" />
               </template>
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />

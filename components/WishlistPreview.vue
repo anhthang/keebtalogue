@@ -12,12 +12,6 @@
       </a-button>
     </template>
 
-    <a-textarea
-      v-if="showTextToCopy"
-      v-model:value="wishlistToText"
-      auto-size
-    />
-
     <div v-if="base64Img && !isDesktop" class="preview-img">
       <a-card-meta
         description="Place your finger on the photo and hold it on the image until a menu
@@ -83,6 +77,13 @@
         </template>
       </draggable>
     </div>
+
+    <br />
+    <a-collapse :bordered="false">
+      <a-collapse-panel header="Click to show text and copy">
+        <pre>{{ wishlistToText }}</pre>
+      </a-collapse-panel>
+    </a-collapse>
   </a-card>
 </template>
 
@@ -154,8 +155,6 @@ const base64Img = ref();
 const loading = ref(false);
 const generateImg = async () => {
   loading.value = true;
-
-  // this.saveSettings()
 
   await $fetch("/api/wishlist", {
     method: "post",
