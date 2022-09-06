@@ -7,6 +7,9 @@
         </template>
 
         <template #extra>
+          <a-button v-if="authenticated" key="sale" @click="showAddSaleModal">
+            <template #icon><calendar-outlined /></template> Sales
+          </a-button>
           <a-button
             v-if="authenticated"
             key="edit"
@@ -96,6 +99,16 @@
         >
           <maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
         </a-modal>
+
+        <a-modal
+          v-model:visible="showAddSale"
+          title="Add Upcoming Sale"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="addUpcomingSale"
+        >
+          <sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
+        </a-modal>
       </a-page-header>
     </a-spin>
   </div>
@@ -104,6 +117,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import MakerForm from "~~/components/modals/MakerForm.vue";
+import SaleForm from "~~/components/modals/SaleForm.vue";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
@@ -111,6 +125,7 @@ const { authenticated } = storeToRefs(userStore);
 
 const route = useRoute();
 const showEditMaker = ref(false);
+const showAddSale = ref(false);
 
 const title = ref();
 useHead({ title });
@@ -132,8 +147,9 @@ const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;
 };
 
-const makerForm = ref();
 const confirmLoading = ref(false);
+
+const makerForm = ref();
 const updateMakerProfile = async () => {
   confirmLoading.value = true;
 
@@ -142,6 +158,29 @@ const updateMakerProfile = async () => {
   showEditMakerModal();
   confirmLoading.value = false;
 };
+
+const showAddSaleModal = () => {
+  showAddSale.value = !showAddSale.value;
+};
+
+const saleForm = ref();
+const addUpcomingSale = async () => {
+  confirmLoading.value = true;
+
+  await saleForm.value.addSale();
+
+  showAddSaleModal();
+  confirmLoading.value = false;
+};
+
+const sculptLst = computed(() => {
+  return maker && maker.value.sculpts
+    ? Object.values(maker.value.sculpts).map((sculpt) => ({
+        title: sculpt.name,
+        value: sculpt.slug,
+      }))
+    : [];
+});
 
 const getFlagEmoji = (isoCode) => {
   if (isoCode === "GB-ENG") {

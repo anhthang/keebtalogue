@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <a-page-header title="Calendar">
-      <a-calendar>
+      <a-calendar v-if="!pending">
         <template #dateCellRender="{ current }">
           <a-badge
             v-for="sale in salesOnDay(current)"
-            :key="sale.maker"
+            :key="sale.maker_id"
             :status="sale.type"
-            :text="`${sale.maker} - ${sale.sculpt} - ${sale.title}`"
+            :text="`${sale.maker.name} - ${sale.sculpt_name} - ${sale.title}`"
           />
         </template>
       </a-calendar>
@@ -16,7 +16,11 @@
 </template>
 
 <script setup>
-const sales = ref([])
+const {
+  data: sales,
+  pending,
+  refresh,
+} = await useAsyncData(() => $fetch("/api/sales"));
 
 const salesOnDay = (day) => {
   const today = new Date().getDate();
