@@ -106,7 +106,10 @@
                     <span>
                       <calendar-outlined /> {{ colorway.releaseDate }}
                     </span>
-                    <span>
+                    <span v-if="colorway.totalCount == 1">
+                      <nuxt-icon class="one-off" name="circle-1" />
+                    </span>
+                    <span v-else>
                       <field-number-outlined /> {{ colorway.totalCount }}
                     </span>
                   </a-list-item>
@@ -174,7 +177,7 @@ const addToCollection = (collection, colorway) => {
     name: colorway.name,
     img: colorway.img,
     sculpt_name: sculpt.value.name,
-    maker_name: route.params.maker,
+    maker_id: route.params.maker,
     uid: user.value.uid,
     collection_id: collection.id,
   };

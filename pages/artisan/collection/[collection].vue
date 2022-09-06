@@ -116,7 +116,7 @@ onMounted(() => {
 });
 
 watch(data, () => {
-  sortedCollections.value = sortBy(data.value, ["maker_name", sort.value]);
+  sortedCollections.value = sortBy(data.value, ["maker_id", sort.value]);
 });
 
 watchEffect(() => route.params.collection, refresh());
@@ -126,7 +126,7 @@ const onChangeSortType = (e) => {
 };
 watch(sort, () => {
   sortedCollections.value = sortBy(sortedCollections.value, [
-    "maker_name",
+    "maker_id",
     sort.value,
   ]);
 });
