@@ -1,18 +1,22 @@
 <template>
   <a-form layout="vertical">
     <a-form-item label="Sculpt">
-      <a-select v-model:value="sale.sculpt_id" show-search>
+      <a-select
+        v-model:value="sale.sculpt_id"
+        show-search
+        @change="selectSculpt"
+      >
         <a-select-option
-          v-for="sculpt in metadata"
-          :key="sculpt.value"
-          :value="sculpt.value"
+          v-for="(name, slug) in metadata"
+          :key="slug"
+          :value="slug"
         >
-          {{ sculpt.title }}
+          {{ name }}
         </a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item label="Title/Colorway">
-      <a-textarea v-model:value="sale.title" auto-size />
+      <a-input v-model:value="sale.title" />
     </a-form-item>
     <a-form-item label="Sale Date">
       <a-calendar v-model:value="sale.date" :fullscreen="false" />
@@ -24,13 +28,17 @@
 import { message } from "ant-design-vue";
 
 const { metadata } = defineProps({
-  metadata: Array,
+  metadata: Object,
 });
 
 const route = useRoute();
 const sale = ref({
   maker_id: route.params.maker,
 });
+
+const selectSculpt = (e) => {
+  sale.value.sculpt_name = metadata[e];
+};
 
 const addSale = () => {
   const body = {

@@ -175,11 +175,11 @@ const addUpcomingSale = async () => {
 
 const sculptLst = computed(() => {
   return maker && maker.value.sculpts
-    ? Object.values(maker.value.sculpts).map((sculpt) => ({
-        title: sculpt.name,
-        value: sculpt.slug,
-      }))
-    : [];
+    ? Object.entries(maker.value.sculpts).reduce((out, [slug, sculpt]) => {
+        out[slug] = sculpt.name;
+        return out;
+      }, {})
+    : {};
 });
 
 const getFlagEmoji = (isoCode) => {
