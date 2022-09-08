@@ -1,28 +1,42 @@
 <template>
   <div class="container">
     <a-page-header title="Calendar">
-      <a-calendar v-if="!pending">
-        <template #dateCellRender="{ current }">
-          <a-badge
-            v-for="sale in salesOnDay(current)"
-            :key="sale.maker_id"
-            :status="sale.type"
-            :text="`${sale.maker.name} - ${sale.sculpt_name} - ${sale.title}`"
-          />
-        </template>
-      </a-calendar>
+      <a-spin :spinning="pending">
+        <a-calendar v-model:value="currentDate" @change="onChange">
+          <template #dateCellRender="{ current }">
+            <a-badge
+              v-for="sale in salesOnCell(current)"
+              :key="sale.maker_id"
+              :status="sale.type"
+              :text="`${sale.maker.name} - ${sale.sculpt_name} - ${sale.title}`"
+            />
+          </template>
+        </a-calendar>
+      </a-spin>
     </a-page-header>
   </div>
 </template>
 
 <script setup>
+import dayjs from "dayjs";
+
+const start = ref(dayjs().startOf("month").format("YYYY-MM-DD"));
+const end = ref(dayjs().endOf("month").format("YYYY-MM-DD"));
+
 const {
   data: sales,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch("/api/sales"));
+} = await useAsyncData(() =>
+  $fetch("/api/sales", {
+    params: {
+      start: start.value,
+      end: end.value,
+    },
+  })
+);
 
-const salesOnDay = (day) => {
+const salesOnCell = (day) => {
   const today = new Date().getDate();
 
   return sales.value
@@ -40,6 +54,20 @@ const salesOnDay = (day) => {
       return Object.assign(d, { type });
     });
 };
+
+const currentDate = ref(dayjs());
+
+const onChange = (value) => {
+  start.value = value.startOf("month").format("YYYY-MM-DD");
+  end.value = value.endOf("month").format("YYYY-MM-DD");
+  currentDate.value = value;
+
+  refresh();
+};
+
+onMounted(() => {
+  refresh();
+});
 </script>
 
 <style>
