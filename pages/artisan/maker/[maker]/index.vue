@@ -46,7 +46,10 @@
           </a>
           <a v-if="maker.discord" :href="maker.discord" target="_blank">
             <a-button key="1" type="link">
-              <nuxt-icon name="discord" /> Discord
+              <span class="anticon anticon-custom-icon">
+                <icon name="la:discord" />
+              </span>
+              Discord
             </a-button>
           </a>
           <a
@@ -55,7 +58,10 @@
             target="_blank"
           >
             <a-button key="0" type="link">
-              <nuxt-icon name="artisancollector" /> Artisan Collector
+              <span class="anticon anticon-custom-icon">
+                <icon name="ArtisanCollectorIcon" size="18" />
+              </span>
+              Artisan Collector
             </a-button>
           </a>
           <a :href="maker.src" target="_blank">
@@ -204,7 +210,7 @@ const getFlagEmoji = (isoCode) => {
 </script>
 
 <style>
-.artisan-container .nuxt-icon svg {
-  margin-right: 8px;
+.artisan-container .anticon-custom-icon {
+  vertical-align: 0.125em !important;
 }
 </style>

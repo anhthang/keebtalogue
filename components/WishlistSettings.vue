@@ -1,7 +1,10 @@
 <template>
   <a-card title="Settings" size="small" class="wishlist-settings">
     <template #extra>
-      <a-radio-group v-model:value="wishlistConfig.want_to" button-style="solid">
+      <a-radio-group
+        v-model:value="wishlistConfig.want_to"
+        button-style="solid"
+      >
         <a-radio-button value="buy"> Buy </a-radio-button>
         <a-radio-button value="sell"> Sell </a-radio-button>
         <a-radio-button value="trade"> Trade </a-radio-button>
@@ -11,7 +14,7 @@
     <a-form layout="vertical">
       <a-form-item :label="wantToTrade ? 'Want Title' : 'Title'">
         <a-input v-model:value="wishlistConfig.wish.title">
-          <font-size-outlined />
+          <template #prefix><font-size-outlined /></template>
         </a-input>
       </a-form-item>
       <a-form-item :label="wantToTrade ? 'Want Collection' : 'Collection'">
@@ -28,7 +31,7 @@
 
       <a-form-item v-if="wantToTrade" label="Have Title">
         <a-input v-model:value="wishlistConfig.trade.title">
-          <font-size-outlined />
+          <template #prefix><font-size-outlined /></template>
         </a-input>
       </a-form-item>
       <a-form-item v-if="wantToTrade" label="Have Collection">
@@ -47,7 +50,7 @@
           v-model:value="wishlistConfig.social.reddit"
           placeholder="u/username"
         >
-          <reddit-outlined />
+          <template #prefix><reddit-outlined /></template>
         </a-input>
       </a-form-item>
       <a-form-item label="Discord">
@@ -55,12 +58,19 @@
           v-model:value="wishlistConfig.social.discord"
           placeholder="Discord#0000"
         >
-          <nuxt-icon name="discord" />
+          <template #prefix>
+            <span class="anticon">
+              <icon name="la:discord" />
+            </span>
+          </template>
         </a-input>
       </a-form-item>
       <a-form-item label="QQ">
-        <a-input v-model:value="wishlistConfig.social.qq" placeholder="00000000">
-          <qq-outlined />
+        <a-input
+          v-model:value="wishlistConfig.social.qq"
+          placeholder="00000000"
+        >
+          <template #prefix><qq-outlined /></template>
         </a-input>
       </a-form-item>
     </a-form>
@@ -80,7 +90,7 @@ const wantToTrade = computed(() => {
 
 watch(wishlistConfig.value, () => {
   userStore.$patch({
-    wishlistConfig: wishlistConfig.value
-  })
-})
+    wishlistConfig: wishlistConfig.value,
+  });
+});
 </script>

@@ -106,10 +106,7 @@
                     <span>
                       <calendar-outlined /> {{ colorway.releaseDate }}
                     </span>
-                    <span v-if="colorway.totalCount == 1">
-                      <nuxt-icon class="one-off" name="circle-1" />
-                    </span>
-                    <span v-else>
+                    <span>
                       <field-number-outlined /> {{ colorway.totalCount }}
                     </span>
                   </a-list-item>

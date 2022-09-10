@@ -45,12 +45,20 @@
     </a-form-item>
     <a-form-item label="Discord">
       <a-input v-model:value="maker.discord">
-        <template #prefix><nuxt-icon name="discord" /></template>
+        <template #prefix>
+          <span class="anticon">
+            <icon name="la:discord" />
+          </span>
+        </template>
       </a-input>
     </a-form-item>
     <a-form-item label="Artisan Collector">
       <a-input v-model:value="maker.artisancollector">
-        <template #prefix><nuxt-icon name="artisancollector" /></template>
+        <template #prefix>
+          <span class="anticon">
+            <icon name="ArtisanCollectorIcon" size="18" />
+          </span>
+        </template>
       </a-input>
     </a-form-item>
     <a-form-item label="Introduce">

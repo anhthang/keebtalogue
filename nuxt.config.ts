@@ -15,7 +15,7 @@ export default defineNuxtConfig({
         '@nuxtjs/supabase',
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
-        'nuxt-icons',
+        'nuxt-icon',
     ],
 
     googleFonts: {
