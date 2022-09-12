@@ -2,9 +2,9 @@
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :size="size">
       <template v-if="authenticated" #extra>
-        <star-filled
+        <star-two-tone
           v-if="favorite"
-          class="favorite-maker"
+          two-tone-color="#eb2f96"
           @click="
             (e) => {
               e.preventDefault();

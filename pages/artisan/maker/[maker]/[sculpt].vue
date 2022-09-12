@@ -77,7 +77,10 @@
                   v-if="colorway.commissioned"
                   class="commissioned"
                 />
-                <gift-filled v-if="colorway.giveaway" class="giveaway" />
+                <gift-two-tone
+                  v-if="colorway.giveaway"
+                  two-tone-color="orange"
+                />
               </template>
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
@@ -236,9 +239,6 @@ const updateSculptProfile = async () => {
 
 .commissioned {
   color: palevioletred;
-}
-.giveaway {
-  color: orange;
 }
 
 .sculpt-card .ant-card-body {

@@ -16,7 +16,7 @@
         >
           <maker-form ref="makerForm" />
         </a-modal>
-  
+
         <a-tabs v-model:activeKey="defaultTab">
           <a-tab-pane :disabled="!authenticated" key="favorite">
             <template #tab>
@@ -106,11 +106,6 @@ const addMaker = async () => {
   await makerForm.value.addMaker();
 
   confirmLoading.value = false;
+  showModal();
 };
 </script>
-
-<style>
-.favorite-maker {
-  color: #eb2f96;
-}
-</style>

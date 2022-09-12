@@ -2,7 +2,7 @@
   <div class="container artisan-container">
     <a-spin :spinning="pending">
       <a-page-header :title="maker.name" :avatar="{ src: maker.img }">
-        <template v-if="maker.nationality" #subTitle>
+        <template v-if="maker.nationality" #tags>
           {{ getFlagEmoji(maker.nationality) }}
         </template>
 

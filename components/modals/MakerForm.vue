@@ -113,7 +113,13 @@ const makerId = computed(() => {
 
 const addMaker = () => {
   const { sculpts, ...rest } = maker.value;
-  const endpoint = isEdit ? `/api/makers/${makerId.value}` : "/api/makers";
+
+  let endpoint = "/api/makers";
+  if (isEdit) {
+    endpoint += `/${makerId.value}`;
+  } else {
+    rest.id = makerId.value;
+  }
 
   $fetch(endpoint, {
     method: "post",
