@@ -22,6 +22,13 @@
 
           <a-button
             v-if="authenticated"
+            key="desc"
+            @click="showAddColorwayDescModal"
+          >
+            <template #icon><info-outlined /></template> Description
+          </a-button>
+          <a-button
+            v-if="authenticated"
             key="edit"
             type="primary"
             @click="showEditSculptModal"
@@ -71,6 +78,7 @@
               :title="colorway.name || '-'"
               :size="size"
               class="sculpt-card"
+              @click="showColorwayInformationModal(colorway)"
             >
               <template #extra>
                 <bg-colors-outlined
@@ -128,6 +136,45 @@
         >
           <sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
         </a-modal>
+
+        <a-modal
+          v-model:visible="showAddColorwayDesc"
+          title="Add Colorway Information"
+          destroyOnClose
+          :confirmLoading="confirmLoading"
+          @ok="addColorwayDesc"
+        >
+          <colorway-form ref="colorwayForm" :metadata="sculpt.colorways" />
+        </a-modal>
+
+        <a-modal
+          v-model:visible="showColorwayInformation"
+          destroy-on-close
+          :footer="null"
+        >
+          <a-descriptions :title="selectedColorway.name">
+            <a-descriptions-item>
+              When they go deeper inside the temple, the way gets darker. For
+              easier mobility. Valis suddenly remembered that the egg she had
+              been given by the merchants earlier had the ability to glow. She
+              took it out and gave it to Barlas so that he could see the way.
+              Then they saw a room have a stone pedestal. Middle of the stone
+              pedestal there is a stone pillar, above the body of the stone
+              pillar with intricately carved strange animal figures. Behind this
+              stone pedestal is a triangular door blocking the path. Above the
+              cave door there are special characters, to open the door, they
+              must solve these characters. But there were no clues. Will they be
+              able to find the answer to open the door and continue exploring
+              inside the cave?
+            </a-descriptions-item>
+            <!-- <a-descriptions-item label="Sale Date">
+              {{ selectedColorway.releaseDate }}
+            </a-descriptions-item>
+            <a-descriptions-item label="Number of items">
+              {{ selectedColorway.totalCount }}
+            </a-descriptions-item> -->
+          </a-descriptions>
+        </a-modal>
       </a-page-header>
     </a-spin>
   </div>
@@ -137,6 +184,7 @@
 import { message } from "ant-design-vue";
 import { sortBy } from "lodash";
 import { storeToRefs } from "pinia";
+import ColorwayForm from "~~/components/modals/ColorwayForm.vue";
 import SculptForm from "~~/components/modals/SculptForm.vue";
 import { useUserStore } from "~~/stores/user";
 
@@ -215,13 +263,15 @@ const isShowDescription = computed(() => {
   return release || count;
 });
 
+const confirmLoading = ref(false);
+
+// edit sculpt
 const showEditSculpt = ref(false);
 const showEditSculptModal = () => {
   showEditSculpt.value = !showEditSculpt.value;
 };
 
 const sculptForm = ref();
-const confirmLoading = ref(false);
 const updateSculptProfile = async () => {
   confirmLoading.value = true;
 
@@ -229,6 +279,30 @@ const updateSculptProfile = async () => {
 
   showEditSculptModal();
   confirmLoading.value = false;
+};
+
+// add colorway information
+const showAddColorwayDesc = ref(false);
+const showAddColorwayDescModal = () => {
+  showAddColorwayDesc.value = !showAddColorwayDesc.value;
+};
+
+const colorwayForm = ref();
+const addColorwayDesc = async () => {
+  confirmLoading.value = true;
+
+  await colorwayForm.value.addColorwayInformation();
+  showAddColorwayDescModal();
+
+  confirmLoading.value = false;
+};
+
+// show colorway information popup
+const showColorwayInformation = ref(false);
+const selectedColorway = ref({});
+const showColorwayInformationModal = (clw) => {
+  showColorwayInformation.value = !showColorwayInformation.value;
+  selectedColorway.value = clw;
 };
 </script>
 
