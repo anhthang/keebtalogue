@@ -28,7 +28,7 @@ const colorway = ref({
   sculpt_id: route.params.sculpt,
 });
 
-const addColorwayInformation = () => {
+const addColorway = () => {
   colorway.value.name = keyBy(metadata, "id")[colorway.value.colorway_id].name;
 
   $fetch(
@@ -47,6 +47,6 @@ const addColorwayInformation = () => {
 };
 
 defineExpose({
-  addColorwayInformation,
+  addColorway,
 });
 </script>

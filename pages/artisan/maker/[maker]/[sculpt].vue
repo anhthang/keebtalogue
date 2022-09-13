@@ -22,10 +22,11 @@
 
           <a-button
             v-if="authenticated"
-            key="desc"
-            @click="showAddColorwayDescModal"
+            key="colorway"
+            type="primary"
+            @click="showAddColorwayModal"
           >
-            <template #icon><info-circle-outlined /></template> Description
+            <template #icon><file-add-outlined /></template> Colorway
           </a-button>
           <a-button
             v-if="authenticated"
@@ -145,11 +146,11 @@
         </a-modal>
 
         <a-modal
-          v-model:visible="showAddColorwayDesc"
+          v-model:visible="showAddNewColorway"
           title="Add Colorway Information"
           destroyOnClose
           :confirmLoading="confirmLoading"
-          @ok="addColorwayDesc"
+          @ok="newColorwaySubmission"
         >
           <colorway-form ref="colorwayForm" :metadata="sculpt.colorways" />
         </a-modal>
@@ -189,6 +190,8 @@ const route = useRoute();
 const title = ref();
 useHead({ title });
 
+const hasDescription = ref(false);
+
 const {
   data: sculpt,
   pending,
@@ -199,6 +202,8 @@ const {
   ).then((data) => {
     const sculpt = data.sculpts[route.params.sculpt];
     title.value = `${sculpt.name} • ${data.name}`;
+
+    hasDescription.value = sculpt.colorways.some((c) => !!c.description);
 
     return sculpt;
   })
@@ -279,18 +284,21 @@ const updateSculptProfile = async () => {
   confirmLoading.value = false;
 };
 
-// add colorway information
-const showAddColorwayDesc = ref(false);
-const showAddColorwayDescModal = () => {
-  showAddColorwayDesc.value = !showAddColorwayDesc.value;
+/**
+ * New colorway submission
+ * Currently, just add/update colorway description
+ */
+const showAddNewColorway = ref(false);
+const showAddColorwayModal = () => {
+  showAddNewColorway.value = !showAddNewColorway.value;
 };
 
 const colorwayForm = ref();
-const addColorwayDesc = async () => {
+const newColorwaySubmission = async () => {
   confirmLoading.value = true;
 
-  await colorwayForm.value.addColorwayInformation();
-  showAddColorwayDescModal();
+  await colorwayForm.value.addColorway();
+  showAddColorwayModal();
 
   confirmLoading.value = false;
 };
@@ -299,7 +307,8 @@ const addColorwayDesc = async () => {
 const showColorwayInformation = ref(false);
 const selectedColorway = ref({});
 const showColorwayInformationModal = (clw) => {
-  showColorwayInformation.value = !showColorwayInformation.value;
+  showColorwayInformation.value =
+    hasDescription.value && !showColorwayInformation.value;
   selectedColorway.value = clw;
 };
 </script>
@@ -321,6 +330,5 @@ const showColorwayInformationModal = (clw) => {
 .colorway-description,
 .sculpt-description {
   white-space: pre-wrap;
-  text-align: justify;
 }
 </style>
