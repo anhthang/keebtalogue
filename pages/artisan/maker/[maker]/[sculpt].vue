@@ -3,6 +3,10 @@
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
         <template #extra>
+          <a-button :href="sculpt.href" target="_blank" type="dashed">
+            <link-outlined /> Visit
+          </a-button>
+
           <a-dropdown placement="bottomRight">
             <template #overlay>
               <a-menu @click="onChangeSortType">
@@ -20,32 +24,24 @@
             </a-button>
           </a-dropdown>
 
-          <a-button
-            v-if="authenticated"
-            key="colorway"
-            type="primary"
-            @click="showAddColorwayModal"
-          >
-            <template #icon><file-add-outlined /></template> Colorway
-          </a-button>
-          <a-button
-            v-if="authenticated"
-            key="edit"
-            type="primary"
-            @click="showEditSculptModal"
-          >
-            <template #icon><edit-outlined /></template>
-            Edit
-          </a-button>
+          <a-dropdown v-if="authenticated" placement="bottomRight">
+            <template #overlay>
+              <a-menu>
+                <a-menu-item key="edit" @click="showEditSculptModal">
+                  <edit-outlined /> Edit Sculpt
+                </a-menu-item>
+                <a-menu-item key="add" @click="showAddColorwayModal">
+                  <file-add-outlined /> Update Colorway
+                </a-menu-item>
+              </a-menu>
+            </template>
+            <a-button type="primary"> Actions <dash-outlined /> </a-button>
+          </a-dropdown>
         </template>
 
         <div v-if="sculpt.story" class="sculpt-description">
           <p>
             {{ sculpt.story }}
-            <br />
-            <a v-if="sculpt.href" :href="sculpt.href" target="_blank">
-              Read more
-            </a>
           </p>
         </div>
 

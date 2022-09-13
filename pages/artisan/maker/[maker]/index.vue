@@ -27,48 +27,62 @@
           </p>
         </div>
 
-        <!-- <a-descriptions>
-          <a-descriptions-item label="Catalog Last Updated">
-            {{ maker.last_updated }}
-          </a-descriptions-item>
-        </a-descriptions> -->
-
         <a-row :gutter="[8, 8]" type="flex">
-          <a v-if="maker.website" :href="maker.website" target="_blank">
-            <a-button key="3" type="link">
-              <global-outlined /> Website
-            </a-button>
-          </a>
-          <a v-if="maker.instagram" :href="maker.instagram" target="_blank">
-            <a-button key="2" type="link">
-              <instagram-outlined /> Instagram
-            </a-button>
-          </a>
-          <a v-if="maker.discord" :href="maker.discord" target="_blank">
-            <a-button key="1" type="link">
-              <span class="anticon anticon-custom-icon">
-                <icon name="la:discord" />
-              </span>
-              Discord
-            </a-button>
-          </a>
-          <a
+          <a-button
+            v-if="maker.website"
+            :href="maker.website"
+            target="_blank"
+            key="website"
+            type="link"
+          >
+            <global-outlined /> Website
+          </a-button>
+
+          <a-button
+            v-if="maker.instagram"
+            :href="maker.instagram"
+            target="_blank"
+            key="instagram"
+            type="link"
+          >
+            <instagram-outlined /> Instagram
+          </a-button>
+
+          <a-button
+            v-if="maker.discord"
+            :href="maker.discord"
+            target="_blank"
+            key="discord"
+            type="link"
+          >
+            <span class="anticon anticon-custom-icon">
+              <icon name="la:discord" />
+            </span>
+            Discord
+          </a-button>
+
+          <a-button
             v-if="maker.artisancollector"
             :href="maker.artisancollector"
             target="_blank"
+            key="artisancollector"
+            type="link"
           >
-            <a-button key="0" type="link">
-              <span class="anticon anticon-custom-icon">
-                <icon name="ArtisanCollectorIcon" size="18" />
-              </span>
-              Artisan Collector
-            </a-button>
-          </a>
-          <a :href="maker.src" target="_blank">
-            <a-button v-if="maker.src" key="0" type="link">
-              <file-word-outlined /> Catalog
-            </a-button>
-          </a>
+            <span class="anticon anticon-custom-icon">
+              <icon name="ArtisanCollectorIcon" size="18" />
+            </span>
+            Artisan Collector
+          </a-button>
+
+          <a-button
+            v-if="maker.src"
+            :href="maker.src"
+            target="_blank"
+            key="catalog"
+            type="link"
+          >
+            <file-word-outlined /> Catalog
+          </a-button>
         </a-row>
         <br />
 

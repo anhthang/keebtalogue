@@ -3,13 +3,14 @@
     <a-spin :spinning="pending">
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
-          <a
+          <a-button
             v-if="collection.published"
             :href="$route.fullPath"
             target="_blank"
+            type="link"
           >
-            <a-button type="link"><link-outlined /> Share URL </a-button>
-          </a>
+            <link-outlined /> Share URL
+          </a-button>
 
           <a-dropdown placement="bottomRight">
             <template #overlay>
