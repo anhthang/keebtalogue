@@ -6,13 +6,22 @@ import slugify from 'slugify'
 
 export default defineEventHandler(async (event) => {
     const makerId = event.context.params.maker
+    const { sculpt: sculptId } = await useQuery(event.req)
 
     const client = serverSupabaseClient(event)
-    const { data: profile, error } = await client
+    const { data: profile } = await client
         .from('makers')
         .select('*, sculpts (*)')
         .eq('id', makerId)
         .single()
+
+    const { data: colorways } = await client
+        .from('colorways')
+        .select()
+        .eq('maker_id', makerId)
+        .eq('sculpt_id', sculptId)
+
+    const colorwayMap = keyBy(colorways, 'colorway_id')
 
     const filename =
         makerId === 'gaias-creature' ? 'gaia%E2%80%99s-creature' : makerId
@@ -30,6 +39,9 @@ export default defineEventHandler(async (event) => {
 
                 sculpt.colorways = sculpt.colorways.map((c, idx) => {
                     c.order = idx
+                    c.description =
+                        colorwayMap[c.id] && colorwayMap[c.id].description
+
                     return c
                 })
 

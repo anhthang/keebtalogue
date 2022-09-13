@@ -25,7 +25,7 @@
             key="desc"
             @click="showAddColorwayDescModal"
           >
-            <template #icon><info-outlined /></template> Description
+            <template #icon><info-circle-outlined /></template> Description
           </a-button>
           <a-button
             v-if="authenticated"
@@ -38,7 +38,7 @@
           </a-button>
         </template>
 
-        <div v-if="sculpt.story">
+        <div v-if="sculpt.story" class="sculpt-description">
           <p>
             {{ sculpt.story }}
             <br />
@@ -78,7 +78,6 @@
               :title="colorway.name || '-'"
               :size="size"
               class="sculpt-card"
-              @click="showColorwayInformationModal(colorway)"
             >
               <template #extra>
                 <bg-colors-outlined
@@ -91,7 +90,12 @@
                 />
               </template>
               <template #cover>
-                <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
+                <img
+                  loading="lazy"
+                  :alt="colorway.name"
+                  :src="colorway.img"
+                  @click="showColorwayInformationModal(colorway)"
+                />
               </template>
 
               <template v-if="collections.length" #actions>
@@ -117,7 +121,10 @@
                     <span>
                       <calendar-outlined /> {{ colorway.releaseDate }}
                     </span>
-                    <span>
+                    <span v-if="colorway.totalCount == 1">
+                      <field-binary-outlined class="one-off" />
+                    </span>
+                    <span v-else>
                       <field-number-outlined /> {{ colorway.totalCount }}
                     </span>
                   </a-list-item>
@@ -153,26 +160,15 @@
           :footer="null"
         >
           <a-descriptions :title="selectedColorway.name">
-            <a-descriptions-item>
-              When they go deeper inside the temple, the way gets darker. For
-              easier mobility. Valis suddenly remembered that the egg she had
-              been given by the merchants earlier had the ability to glow. She
-              took it out and gave it to Barlas so that he could see the way.
-              Then they saw a room have a stone pedestal. Middle of the stone
-              pedestal there is a stone pillar, above the body of the stone
-              pillar with intricately carved strange animal figures. Behind this
-              stone pedestal is a triangular door blocking the path. Above the
-              cave door there are special characters, to open the door, they
-              must solve these characters. But there were no clues. Will they be
-              able to find the answer to open the door and continue exploring
-              inside the cave?
+            <a-descriptions-item
+              v-if="selectedColorway.description"
+              class="colorway-description"
+            >
+              {{ selectedColorway.description }}
             </a-descriptions-item>
-            <!-- <a-descriptions-item label="Sale Date">
-              {{ selectedColorway.releaseDate }}
+            <a-descriptions-item v-else>
+              <i>Updating...</i>
             </a-descriptions-item>
-            <a-descriptions-item label="Number of items">
-              {{ selectedColorway.totalCount }}
-            </a-descriptions-item> -->
           </a-descriptions>
         </a-modal>
       </a-page-header>
@@ -198,7 +194,9 @@ const {
   pending,
   refresh,
 } = await useAsyncData(() =>
-  $fetch(`/api/makers/${route.params.maker}`).then((data) => {
+  $fetch(
+    `/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`
+  ).then((data) => {
     const sculpt = data.sculpts[route.params.sculpt];
     title.value = `${sculpt.name} • ${data.name}`;
 
@@ -309,6 +307,7 @@ const showColorwayInformationModal = (clw) => {
 <style>
 .one-off {
   color: goldenrod;
+  font-size: 18px;
 }
 
 .commissioned {
@@ -317,5 +316,11 @@ const showColorwayInformationModal = (clw) => {
 
 .sculpt-card .ant-card-body {
   padding: 12px 24px;
+}
+
+.colorway-description,
+.sculpt-description {
+  white-space: pre-wrap;
+  text-align: justify;
 }
 </style>
