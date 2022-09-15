@@ -67,4 +67,7 @@ export default defineEventHandler(async (event) => {
                 sculpts,
             }
         })
+        .catch(() => {
+            return
+        })
 })

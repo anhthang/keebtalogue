@@ -3,7 +3,12 @@
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
         <template #extra>
-          <a-button :href="sculpt.href" target="_blank" type="dashed">
+          <a-button
+            v-if="sculpt.href"
+            :href="sculpt.href"
+            target="_blank"
+            type="dashed"
+          >
             <link-outlined /> Visit
           </a-button>
 

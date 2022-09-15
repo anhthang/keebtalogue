@@ -1,7 +1,11 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header :title="maker.name" :avatar="{ src: maker.img }">
+      <a-page-header
+        v-if="maker"
+        :title="maker.name"
+        :avatar="{ src: maker.img }"
+      >
         <template v-if="maker.nationality" #tags>
           {{ getFlagEmoji(maker.nationality) }}
         </template>
@@ -130,6 +134,17 @@
           <sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
         </a-modal>
       </a-page-header>
+      <a-result
+        v-else
+        status="404"
+        title="Sorry, we're unable to get this catalogue at the moment."
+      >
+        <template #extra>
+          <nuxt-link to="/artisan/maker">
+            <a-button type="primary">Back</a-button>
+          </nuxt-link>
+        </template>
+      </a-result>
     </a-spin>
   </div>
 </template>
@@ -157,7 +172,7 @@ const {
 } = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`));
 
 watch(pending, () => {
-  title.value = maker.value.name;
+  title.value = maker.value ? maker.value.name : "Not Found";
 });
 watchEffect(() => route.params.maker, refresh());
 
