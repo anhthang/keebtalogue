@@ -161,7 +161,7 @@
           destroy-on-close
           :footer="null"
         >
-          <a-descriptions :title="selectedColorway.name">
+          <a-descriptions :title="colorwayTitle">
             <a-descriptions-item
               v-if="selectedColorway.description"
               class="colorway-description"
@@ -312,6 +312,10 @@ const showColorwayInformationModal = (clw) => {
     hasDescription.value && !showColorwayInformation.value;
   selectedColorway.value = clw;
 };
+
+const colorwayTitle = computed(() => {
+  return `${selectedColorway.value.name} ${sculpt.value.name}`;
+});
 </script>
 
 <style>
