@@ -9,14 +9,14 @@
         />
         Keycap Archivist
       </a>
-      for creating the database and
+      for the open source database and
       <a href="https://artisancollector.com" target="_blank">
         <img
           src="https://artisancollector.com/wp-content/uploads/ac_logo_320.png"
           height="36"
         />
       </a>
-      for creating great articles, guides and maker profiles
+      for news, guides, maker profiles and more.
     </div>
     <div class="global-footer-copyright">
       <a :href="config.public.baseUrl" target="_blank">

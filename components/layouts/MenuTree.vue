@@ -44,6 +44,9 @@
         <shopping-cart-outlined /> Wishlist
       </nuxt-link>
     </a-menu-item>
+    <a-menu-item key="about">
+      <nuxt-link to="/about"> About </nuxt-link>
+    </a-menu-item>
   </a-menu>
 </template>
 
