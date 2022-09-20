@@ -11,11 +11,11 @@
         </template>
 
         <template #extra>
-          <a-button v-if="authenticated" key="sale" @click="showAddSaleModal">
+          <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
             <template #icon><calendar-outlined /></template> Sales
           </a-button>
           <a-button
-            v-if="authenticated"
+            v-if="isEditor"
             key="edit"
             type="primary"
             @click="showEditMakerModal"
@@ -156,7 +156,7 @@ import SaleForm from "~~/components/modals/SaleForm.vue";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
-const { authenticated } = storeToRefs(userStore);
+const { isEditor } = storeToRefs(userStore);
 
 const route = useRoute();
 const showEditMaker = ref(false);

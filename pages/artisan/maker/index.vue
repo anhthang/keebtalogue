@@ -2,7 +2,7 @@
   <div class="container maker-container">
     <a-spin :spinning="pending">
       <a-page-header title="Artisan Makers">
-        <template v-if="authenticated" #extra>
+        <template v-if="isAdmin" #extra>
           <a-button type="primary" @click="showModal">
             <user-add-outlined /> Add
           </a-button>
@@ -76,7 +76,7 @@ const {
 } = await useAsyncData(() => $fetch("/api/makers"));
 
 const userStore = useUserStore();
-const { authenticated, user, favorites } = storeToRefs(userStore);
+const { authenticated, isAdmin, user, favorites } = storeToRefs(userStore);
 
 const visible = ref(false);
 const showModal = () => {

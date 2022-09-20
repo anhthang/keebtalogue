@@ -4,6 +4,8 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         user: {},
         authenticated: false,
+        isAdmin: false,
+        isEditor: false,
         collections: [
             { name: 'Wish', id: 'wish' },
             { name: 'Trade', id: 'trade' },
@@ -57,6 +59,8 @@ export const useUserStore = defineStore('user', {
                 qq: data.qq,
             }
             this.wishlistConfig.social = this.social
+            this.isAdmin = data.role === 'admin'
+            this.isEditor = ['admin', 'editor'].includes(data.role)
         },
         addCollection(name, id) {
             this.collections.push({ name, id })

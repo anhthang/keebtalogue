@@ -29,7 +29,7 @@
             </a-button>
           </a-dropdown>
 
-          <a-dropdown v-if="authenticated" placement="bottomRight">
+          <a-dropdown v-if="isEditor" placement="bottomRight">
             <template #overlay>
               <a-menu>
                 <a-menu-item key="edit" @click="showEditSculptModal">
@@ -213,7 +213,7 @@ const {
 watchEffect(() => route.params.sculpt, refresh());
 
 const userStore = useUserStore();
-const { authenticated, collections, user } = storeToRefs(userStore);
+const { authenticated, isEditor, collections, user } = storeToRefs(userStore);
 
 const size = "default";
 let sort = ref("order");
