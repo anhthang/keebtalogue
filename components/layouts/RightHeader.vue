@@ -27,9 +27,7 @@
       <template #overlay>
         <a-menu>
           <a-menu-item>
-            <span @click="login('google')">
-              <google-outlined /> Login with Google
-            </span>
+            <nuxt-link to="/login"><login-outlined /> Login </nuxt-link>
           </a-menu-item>
         </a-menu>
       </template>
@@ -55,6 +53,7 @@ const login = async (provider) => {
     { provider },
     { redirectTo: window.location.origin }
   );
+
   if (error) {
     message.warning(error.message);
   } else if (authUser) {

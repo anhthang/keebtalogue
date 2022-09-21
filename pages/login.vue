@@ -5,6 +5,12 @@
     <a-button type="primary" @click="login('google')">
       <google-outlined /> Login with Google
     </a-button>
+    <a-button type="primary" @click="login('discord')">
+      <span class="anticon">
+        <icon name="bi:discord" />
+      </span>
+      Login with Discord
+    </a-button>
   </div>
 </template>
 
@@ -28,6 +34,7 @@ const login = async (provider) => {
     { provider },
     { redirectTo: window.location.origin }
   );
+
   if (error) {
     message.warning(err.message);
   } else {

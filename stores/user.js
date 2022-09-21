@@ -34,6 +34,7 @@ export const useUserStore = defineStore('user', {
             const {
                 id: uid,
                 user_metadata: { email, email_verified, full_name, picture },
+                identities,
             } = authUser
 
             this.user = {
@@ -45,6 +46,11 @@ export const useUserStore = defineStore('user', {
             }
 
             this.authenticated = email_verified
+
+            const discord = identities.find((i) => i.provider === 'discord')
+            if (discord) {
+                this.social.discord = discord.name
+            }
 
             this.getUserDocument(uid)
         },
