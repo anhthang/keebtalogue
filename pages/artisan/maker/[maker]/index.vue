@@ -137,7 +137,8 @@
       <a-result
         v-else
         status="404"
-        title="Sorry, we're unable to get this catalogue at the moment."
+        title="404"
+        sub-title="Sorry, we're unable to get this catalogue at the moment."
       >
         <template #extra>
           <nuxt-link to="/artisan/maker">

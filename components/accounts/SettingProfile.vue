@@ -4,7 +4,7 @@
       <a-col :xs="24" :sm="16">
         <a-form :layout="layout">
           <a-form-item label="Name">
-            <a-input v-model:value="user.full_name" disabled>
+            <a-input v-model:value="user.name" disabled>
               <template #prefix><user-outlined /></template>
             </a-input>
           </a-form-item>
@@ -35,8 +35,18 @@
             </a-input>
           </a-form-item>
           <a-form-item label="Discord">
-            <a-input v-model:value="social.discord" placeholder="Discord#0000">
+            <a-input
+              v-model:value="social.discord"
+              placeholder="Discord#0000"
+              :disabled="discordVerified"
+            >
               <template #prefix><icon name="la:discord" /></template>
+              <template v-if="discordVerified" #suffix>
+                <check-circle-outlined
+                  v-if="user.email_verified"
+                  class="email-verified"
+                />
+              </template>
             </a-input>
           </a-form-item>
           <a-form-item label="QQ">
@@ -85,10 +95,18 @@ const saveSettings = (key) => {
       loading.value = false;
     });
 };
+
+const discordVerified = computed(() => {
+  return user.value && user.value.providers?.includes("discord");
+});
 </script>
 
 <style lang="postcss" scoped>
 .avatar {
   @apply mx-auto my-0 rounded-full block;
+}
+
+.email-verified {
+  @apply text-[#50d71e]
 }
 </style>

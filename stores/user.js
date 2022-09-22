@@ -32,8 +32,9 @@ export const useUserStore = defineStore('user', {
     actions: {
         setCurrentUser(authUser) {
             const {
+                app_metadata: { providers },
                 id: uid,
-                user_metadata: { email, email_verified, full_name, picture },
+                user_metadata: { email, email_verified, picture, name },
                 identities,
             } = authUser
 
@@ -41,8 +42,9 @@ export const useUserStore = defineStore('user', {
                 uid,
                 email,
                 email_verified,
-                full_name,
+                name,
                 picture,
+                providers,
             }
 
             this.authenticated = email_verified

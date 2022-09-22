@@ -37,9 +37,9 @@ const login = async (provider) => {
 
   if (error) {
     message.warning(err.message);
-  } else {
+  } else if (user) {
     message.success(
-      `Hello, ${user.full_name}. You successfully logged into this website.`
+      `Hello, ${user.name}. You successfully logged into this website.`
     );
 
     router.back();

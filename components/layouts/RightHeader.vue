@@ -5,8 +5,8 @@
 
       <template #overlay>
         <a-menu>
-          <a-menu-item v-if="authenticated">
-            👋 <strong>{{ user.full_name }}</strong>
+          <a-menu-item>
+            👋 <strong>{{ user.name }}</strong>
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item>
@@ -20,17 +20,9 @@
       </template>
     </a-dropdown>
     <a-dropdown v-else>
-      <a-avatar
-        src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
-      />
-
-      <template #overlay>
-        <a-menu>
-          <a-menu-item>
-            <nuxt-link to="/login"><login-outlined /> Login </nuxt-link>
-          </a-menu-item>
-        </a-menu>
-      </template>
+      <nuxt-link to="/login">
+        <a-button type="link"><login-outlined /> Login </a-button>
+      </nuxt-link>
     </a-dropdown>
   </div>
 </template>
@@ -45,26 +37,9 @@ const router = useRouter();
 const isMobile = false;
 
 const userStore = useUserStore();
-const { authenticated, user } = storeToRefs(userStore);
+const { user } = storeToRefs(userStore);
 
 const client = useSupabaseClient();
-const login = async (provider) => {
-  const { user: authUser, error } = await client.auth.signIn(
-    { provider },
-    { redirectTo: window.location.origin }
-  );
-
-  if (error) {
-    message.warning(error.message);
-  } else if (authUser) {
-    userStore.setCurrentUser(authUser);
-    userStore.getUserDocument(authUser.id);
-
-    message.success(
-      `Hello, ${authUser.app_metadata.full_name}. You successfully logged into this website.`
-    );
-  }
-};
 
 const logout = async () => {
   const { error } = await client.auth.signOut();

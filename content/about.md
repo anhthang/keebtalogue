@@ -9,10 +9,12 @@ title: About
     - More maker details from homepage, [artisancollector](https://artisancollector.com) website
     - Sculpt & colorway story
     - Flags for commissioned, giveaway colorways and quantity
-- **Collection**
+- **Collection**:
     - Just 2 collections for wish & trade list in your local storage
-- **Calendar**: Watch your favorite maker sales
-- **Wishlist**
+- **Calendar**:
+    - Watch your favorite maker sales
+- **Wishlist**:
+    - Select your collection to create trading images
 
 ### More features for authenticated user
 - Sync data across your devices
