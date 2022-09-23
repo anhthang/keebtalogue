@@ -20,10 +20,29 @@
       </template>
     </a-dropdown>
     <a-dropdown v-else>
-      <nuxt-link to="/login">
-        <a-button type="link"><login-outlined /> Login </a-button>
-      </nuxt-link>
+      <a-button type="link" @click="toggleShowLogin">
+        <login-outlined /> Login
+      </a-button>
     </a-dropdown>
+
+    <a-modal v-model:visible="showLoginModal" destroy-on-close :footer="null">
+      <h2>Welcome back</h2>
+
+      <a-row :gutter="[8, 8]" class="social-login">
+        <a-button @click="login('google')">
+          <span class="custom-icon">
+            <icon name="logos:google-icon" />
+          </span>
+          Continue with Google
+        </a-button>
+        <a-button @click="login('discord')">
+          <span class="custom-icon">
+            <icon name="logos:discord-icon" />
+          </span>
+          Continue with Discord
+        </a-button>
+      </a-row>
+    </a-modal>
   </div>
 </template>
 
@@ -41,6 +60,28 @@ const { user } = storeToRefs(userStore);
 
 const client = useSupabaseClient();
 
+const showLoginModal = ref(false);
+const toggleShowLogin = () => {
+  showLoginModal.value = !showLoginModal.value;
+};
+
+const login = async (provider) => {
+  const { user, error } = await client.auth.signIn(
+    { provider },
+    { redirectTo: window.location.origin }
+  );
+
+  if (error) {
+    message.warning(err.message);
+  } else if (user) {
+    message.success(
+      `Hello, ${user.name}. You successfully logged into this website.`
+    );
+
+    router.back();
+  }
+};
+
 const logout = async () => {
   const { error } = await client.auth.signOut();
   if (error) {
@@ -57,3 +98,13 @@ const gotoSettings = () => {
   router.push("/account/settings");
 };
 </script>
+
+<style lang="postcss" scoped>
+.social-login {
+  @apply flex flex-col;
+}
+
+.custom-icon {
+  @apply mr-2 align-[0.125rem];
+}
+</style>
