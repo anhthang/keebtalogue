@@ -1,16 +1,14 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
-      <!-- <a-radio-group v-model:value="showTextToCopy" button-style="solid">
-        <a-radio-button :value="true"> <eye-outlined /> Show </a-radio-button>
-        <a-radio-button :value="false">
-          <eye-invisible-outlined /> Hide
-        </a-radio-button>
-      </a-radio-group> -->
       <a-button :loading="loading" type="primary" @click="generateImg">
         <download-outlined /> Download
       </a-button>
     </template>
+
+    <a-typography-paragraph :copyable="{ text: wishlistToText }">
+      <i>Click to copy trading list in text format</i>
+    </a-typography-paragraph>
 
     <div v-if="base64Img && !isDesktop" class="preview-img">
       <a-card-meta
@@ -19,6 +17,7 @@
       />
       <img :src="`data:image/png;base64,${base64Img}`" alt="" />
     </div>
+
     <div class="artisan-container">
       <a-descriptions title="Information">
         <a-descriptions-item label="Discord">
@@ -77,13 +76,6 @@
         </template>
       </draggable>
     </div>
-
-    <br />
-    <a-collapse :bordered="false">
-      <a-collapse-panel header="Click to show text and copy">
-        <pre>{{ wishlistToText }}</pre>
-      </a-collapse-panel>
-    </a-collapse>
   </a-card>
 </template>
 
