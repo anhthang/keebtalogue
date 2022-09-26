@@ -4,9 +4,6 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    ssr: false,
-    target: 'static',
-
     css: ['ant-design-vue/dist/antd.css', 'ant-design-vue/dist/antd.dark.css'],
 
     modules: [
@@ -45,6 +42,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             appName: process.env.APP_NAME,
+            appDesc: process.env.APP_DESC,
             baseUrl: process.env.BASE_URL,
         },
     },

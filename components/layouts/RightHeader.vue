@@ -26,7 +26,7 @@
     </a-dropdown>
 
     <a-modal v-model:visible="showLoginModal" destroy-on-close :footer="null">
-      <h2>Welcome back</h2>
+      <a-typography-title :level="2">Welcome back</a-typography-title>
 
       <a-row :gutter="[8, 8]" class="social-login">
         <a-button @click="login('google')">
@@ -42,6 +42,14 @@
           Continue with Discord
         </a-button>
       </a-row>
+
+      <a-typography-text>
+        By clicking continue, you agree to our
+        <a-typography-link href="/policy" target="_blank">
+          Privacy Policy
+        </a-typography-link>
+        and Terms of Service.
+      </a-typography-text>
     </a-modal>
   </div>
 </template>
@@ -101,7 +109,7 @@ const gotoSettings = () => {
 
 <style lang="postcss" scoped>
 .social-login {
-  @apply flex flex-col;
+  @apply flex flex-col mt-12 mb-8;
 }
 
 .custom-icon {
