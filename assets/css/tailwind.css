@@ -1,3 +1,6 @@
+@import url('ant-design-vue/dist/antd.css');
+@import url('ant-design-vue/dist/antd.dark.css') screen and (prefers-color-scheme: dark);
+
 body {
   font-family: 'Nunito', sans-serif !important;
 }

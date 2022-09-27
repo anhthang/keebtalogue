@@ -1,9 +1,6 @@
 # Keebtalogue
 The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Vue 3
 
-## Migration
-- Dark mode
-
 ## TODO
 - Sign in with popup (Supabase is not supported at the moment)
 - Self managed maker archivist

@@ -4,7 +4,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    css: ['ant-design-vue/dist/antd.css', 'ant-design-vue/dist/antd.dark.css'],
+    ssr: false, // use this until production build have no issues
 
     modules: [
         '@nuxtjs/color-mode',
@@ -25,8 +25,16 @@ export default defineNuxtConfig({
     vite: {
         plugins: [
             Components({
-                // add option {resolveIcons: true} as parameter for resolving problem with icons
-                resolvers: [AntDesignVueResolver({ resolveIcons: true })],
+                /**
+                 * {resolveIcons: true}: resolving problem with icons
+                 * {importStyle: false}: do not import css, do it manually for dark mode
+                 */
+                resolvers: [
+                    AntDesignVueResolver({
+                        resolveIcons: true,
+                        importStyle: false,
+                    }),
+                ],
             }),
         ],
         ssr: {
