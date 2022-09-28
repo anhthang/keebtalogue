@@ -1,7 +1,12 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
-      <a-button :loading="loading" type="primary" @click="generateImg">
+      <a-button
+        :disabled="!isAdmin"
+        :loading="loading"
+        type="primary"
+        @click="generateImg"
+      >
         <download-outlined /> Download
       </a-button>
     </template>
@@ -10,7 +15,7 @@
       <i>Click to copy trading list in text format</i>
     </a-typography-paragraph>
 
-    <div v-if="base64Img && !isDesktop" class="preview-img">
+    <div v-if="base64Img" class="preview-img">
       <a-card-meta
         description="Place your finger on the photo and hold it on the image until a menu
       appears on the screen. Tap Save to download it."
@@ -27,6 +32,15 @@
           {{ wishlistConfig.social.reddit }}
         </a-descriptions-item>
       </a-descriptions>
+
+      <a-alert
+        v-if="errorText"
+        type="error"
+        message="Some items in your list is updated. Please remove it to continue."
+        :description="errorText"
+        showIcon
+        closable
+      />
 
       <a-divider v-if="draggableWishList.length">
         {{ wishlistConfig.wish.title }}
@@ -87,7 +101,7 @@ import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";
 
 const userStore = useUserStore();
-const { authenticated, user, wishlistConfig } = storeToRefs(userStore);
+const { authenticated, user, isAdmin, wishlistConfig } = storeToRefs(userStore);
 
 const draggableWishList = ref([]);
 const draggableTradeList = ref([]);
@@ -145,8 +159,10 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
 const base64Img = ref();
 const loading = ref(false);
+const errorText = ref();
 const generateImg = async () => {
   loading.value = true;
+  errorText.value = undefined;
 
   await $fetch("/api/wishlist", {
     method: "post",
@@ -157,7 +173,17 @@ const generateImg = async () => {
     },
   })
     .then((response) => {
-      base64Img.value = response.Body;
+      if (response.IsError) {
+        const caps = draggableWishList.value
+          .concat(draggableTradeList.value)
+          .filter((c) => response.ErrorItems.includes(c.colorway_id));
+
+        errorText.value = caps
+          .map((c) => `${c.name} ${c.sculpt_name}`)
+          .join(", ");
+      } else {
+        base64Img.value = response.Body;
+      }
     })
     .catch((error) => {
       message.error(error.message);
@@ -232,6 +258,7 @@ const removeCap = (colorway, type) => {
 .preview-img img {
   width: 100%;
   margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .draggable-row {

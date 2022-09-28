@@ -86,10 +86,7 @@
                   v-if="colorway.commissioned"
                   class="commissioned"
                 />
-                <gift-two-tone
-                  v-if="colorway.giveaway"
-                  two-tone-color="orange"
-                />
+                <gift-filled v-if="colorway.giveaway" class="giveaway" />
               </template>
               <template #cover>
                 <img
@@ -322,6 +319,10 @@ const colorwayTitle = computed(() => {
 .one-off {
   color: goldenrod;
   font-size: 18px;
+}
+
+.giveaway {
+  color: orange;
 }
 
 .commissioned {

@@ -38,15 +38,29 @@ export default defineEventHandler(async (event) => {
         },
         capsPerLine: null,
         caps: wishlist.map((i) => ({
-            id: i.id,
+            id: i.colorway_id,
             isPriority: false,
             legendColor: 'Crimson',
         })),
         tradeCaps: tradelist.map((i) => ({
-            id: i.id,
+            id: i.colorway_id,
             isPriority: false,
             legendColor: 'Crimson',
         })),
+    }
+
+    const check: any = await $fetch('https://api.keycap-archivist.com/wishlist/check', {
+        method: 'post',
+        body,
+    })
+
+    if (check.hasError) {
+        // just want it return same format as /generate
+        return {
+            StatusCode: 200,
+            IsError: true,
+            ErrorItems: check.errors
+        }
     }
 
     /**

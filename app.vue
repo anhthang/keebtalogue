@@ -52,5 +52,6 @@ useHead({
     { name: "twitter:description", content: appDesc },
     { name: "twitter:image", content: `${baseUrl}/website-card.png` },
   ],
+  link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 </script>
