@@ -9,18 +9,11 @@ export default defineNuxtConfig({
     modules: [
         '@nuxtjs/color-mode',
         '@nuxt/content',
-        '@nuxtjs/google-fonts',
         '@nuxtjs/supabase',
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'nuxt-icon',
     ],
-
-    googleFonts: {
-        families: {
-            Nunito: true,
-        },
-    },
 
     vite: {
         plugins: [

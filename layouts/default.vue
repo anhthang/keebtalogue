@@ -64,10 +64,8 @@ const config = useRuntimeConfig();
 .logo {
   height: 100%;
   font-size: 24px;
-  /* color: @text-color-dark; */
-  color: mediumpurple;
   margin-right: 24px;
-  font-weight: 700;
+  font-family: 'Bungee Spice', cursive;
 }
 
 .logo img {
