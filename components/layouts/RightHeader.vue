@@ -19,6 +19,11 @@
         </a-menu>
       </template>
     </a-dropdown>
+    <a-dropdown v-else-if="isMobile">
+      <a-button type="link" @click="toggleShowLogin">
+        <login-outlined />
+      </a-button>
+    </a-dropdown>
     <a-dropdown v-else>
       <a-button type="link" @click="toggleShowLogin">
         <login-outlined /> Login
@@ -29,13 +34,13 @@
       <a-typography-title :level="2">Welcome back</a-typography-title>
 
       <a-row :gutter="[8, 8]" class="social-login">
-        <a-button @click="login('google')">
+        <a-button @click="login('google')" block>
           <span class="custom-icon">
             <icon name="logos:google-icon" />
           </span>
           Continue with Google
         </a-button>
-        <a-button @click="login('discord')">
+        <a-button @click="login('discord')" block>
           <span class="custom-icon">
             <icon name="logos:discord-icon" />
           </span>
@@ -61,7 +66,8 @@ import { useUserStore } from "~~/stores/user";
 
 const router = useRouter();
 
-const isMobile = false;
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
@@ -109,7 +115,7 @@ const gotoSettings = () => {
 
 <style lang="postcss" scoped>
 .social-login {
-  @apply flex flex-col mt-12 mb-8;
+  @apply mt-12 mb-8;
 }
 
 .custom-icon {

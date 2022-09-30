@@ -154,6 +154,10 @@ import MakerForm from "~~/components/modals/MakerForm.vue";
 import SaleForm from "~~/components/modals/SaleForm.vue";
 import { useUserStore } from "~~/stores/user";
 
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+const size = isMobile ? "small" : "default";
+
 const userStore = useUserStore();
 const { isEditor } = storeToRefs(userStore);
 
@@ -174,8 +178,6 @@ watch(pending, () => {
   title.value = maker.value ? maker.value.name : "Not Found";
 });
 watchEffect(() => route.params.maker, refresh());
-
-const size = "default";
 
 const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
+    "@nuxtjs/device": "Redemption198/device-module",
     "@pinia/nuxt": "^0.4.2",
     "ant-design-vue": "^3.2.12",
     "crc": "4.1.1",

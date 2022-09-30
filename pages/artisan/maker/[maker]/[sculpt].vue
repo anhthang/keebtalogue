@@ -186,6 +186,10 @@ import ColorwayForm from "~~/components/modals/ColorwayForm.vue";
 import SculptForm from "~~/components/modals/SculptForm.vue";
 import { useUserStore } from "~~/stores/user";
 
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+const size = isMobile ? "small" : "default";
+
 const route = useRoute();
 
 const title = ref();
@@ -215,7 +219,6 @@ watchEffect(() => route.params.sculpt, refresh());
 const userStore = useUserStore();
 const { authenticated, isEditor, collections, user } = storeToRefs(userStore);
 
-const size = "default";
 let sort = ref("order");
 
 const onChangeSortType = (e) => {

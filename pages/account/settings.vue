@@ -27,6 +27,9 @@ definePageMeta({
   middleware: "auth",
 });
 
-const tabPosition = "left";
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+
+const tabPosition = isMobile ? "top" : "left";
 const activeKey = ref("profile");
 </script>

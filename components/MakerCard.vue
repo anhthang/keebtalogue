@@ -33,7 +33,10 @@
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~~/stores/user";
 
-const size = "default";
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+const size = isMobile ? "small" : "default";
+
 const nologo = "https://i.imgur.com/wYMcZiI.png";
 
 const { maker, favorite } = defineProps({

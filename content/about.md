@@ -16,6 +16,8 @@ title: About
 - **Wishlist**:
     - Select your collection to create trading images
 
+- Login with social profiles
+
 ### More features for authenticated user
 - Sync data across your devices
 - Quick access your favorite makers in a separate tab

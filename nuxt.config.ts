@@ -7,8 +7,9 @@ export default defineNuxtConfig({
     ssr: false, // use this until production build have no issues
 
     modules: [
-        '@nuxtjs/color-mode',
         '@nuxt/content',
+        '@nuxtjs/color-mode',
+        '@nuxtjs/device',
         '@nuxtjs/supabase',
         '@nuxtjs/tailwindcss',
         '@pinia/nuxt',

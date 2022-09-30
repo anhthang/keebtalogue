@@ -3,7 +3,6 @@
     <a-layout-header :class="isMobile ? 'mobile' : ''">
       <a-button
         v-if="isMobile"
-        type="link"
         ghost
         class="sidebar-toggle"
         @click="sidebarToogle"
@@ -16,7 +15,12 @@
 
       <nuxt-link to="/">
         <div class="logo">
-          <img v-if="!isMobile" src="/icon.png" alt="logo" class="logo-icon" />
+          <img
+            v-if="!isMobileOrTablet"
+            src="/icon.png"
+            alt="logo"
+            class="logo-icon"
+          />
           {{ config.public.appName }}
         </div>
       </nuxt-link>
@@ -51,7 +55,9 @@ import LayoutFooter from "~~/components/layouts/Footer.vue";
 import MenuTree from "~~/components/layouts/MenuTree.vue";
 import RightHeader from "~~/components/layouts/RightHeader.vue";
 
-const isMobile = false;
+const { $device } = useNuxtApp();
+const { isMobile, isMobileOrTablet } = $device;
+
 const collapsed = ref(true);
 const sidebarToogle = () => {
   collapsed.value = !collapsed.value;

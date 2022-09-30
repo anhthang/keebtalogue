@@ -625,6 +625,13 @@
     lodash.template "^4.5.0"
     pathe "^0.3.5"
 
+"@nuxtjs/device@Redemption198/device-module":
+  version "3.0.0"
+  resolved "https://codeload.github.com/Redemption198/device-module/tar.gz/f9d04770cbe66c5c9167f32f60ef90fd4d10deee"
+  dependencies:
+    "@nuxt/kit" "^3.0.0-rc.10"
+    defu "^6.1.0"
+
 "@nuxtjs/supabase@^0.1.27":
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/@nuxtjs/supabase/-/supabase-0.1.27.tgz#759e6bd850f9e8dc4429b6fc4bce7ab1756f3575"

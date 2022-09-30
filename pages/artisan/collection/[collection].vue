@@ -8,7 +8,7 @@
             type="dashed"
             @click="copyShareUrl"
           >
-            <share-alt-outlined /> Share URL
+            <share-alt-outlined /> Share
           </a-button>
 
           <a-dropdown placement="bottomRight">
@@ -88,7 +88,10 @@ const router = useRouter();
 const sortedCollections = ref([]);
 
 const sort = ref("sculpt_name");
-const size = "default";
+
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+const size = isMobile ? "small" : "default";
 
 const collection =
   collections.value.find((c) => c.id === route.params.collection) || {};
