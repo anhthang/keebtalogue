@@ -44,11 +44,14 @@
           </a-dropdown>
         </template>
 
-        <div v-if="sculpt.story" class="sculpt-description">
-          <p>
-            {{ sculpt.story }}
-          </p>
-        </div>
+        <a-typography v-if="sculpt.story">
+          <a-typography-paragraph
+            v-for="(line, idx) in sculpt.story.split('\n')"
+            :key="idx"
+          >
+            {{ line }}
+          </a-typography-paragraph>
+        </a-typography>
 
         <a-descriptions>
           <a-descriptions-item v-if="sculpt.releaseDate" label="Release">
@@ -158,17 +161,17 @@
           destroy-on-close
           :footer="null"
         >
-          <a-descriptions :title="colorwayTitle">
-            <a-descriptions-item
-              v-if="selectedColorway.description"
-              class="colorway-description"
+          <a-typography>
+            <a-typography-title :level="4">
+              {{ colorwayTitle }}
+            </a-typography-title>
+            <a-typography-paragraph
+              v-for="(line, idx) in selectedColorway.description.split('\n')"
+              :key="idx"
             >
-              {{ selectedColorway.description }}
-            </a-descriptions-item>
-            <a-descriptions-item v-else>
-              <i>Updating...</i>
-            </a-descriptions-item>
-          </a-descriptions>
+              {{ line }}
+            </a-typography-paragraph>
+          </a-typography>
         </a-modal>
       </a-page-header>
     </a-spin>
@@ -331,10 +334,5 @@ const colorwayTitle = computed(() => {
 
 .sculpt-card .ant-card-body {
   padding: 12px 24px;
-}
-
-.colorway-description,
-.sculpt-description {
-  white-space: pre-wrap;
 }
 </style>

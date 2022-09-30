@@ -25,11 +25,9 @@
           </a-button>
         </template>
 
-        <div v-if="maker.intro">
-          <p>
-            {{ maker.intro }}
-          </p>
-        </div>
+        <a-typography v-if="maker.intro">
+          <a-typography-paragraph>{{ maker.intro }}</a-typography-paragraph>
+        </a-typography>
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-button

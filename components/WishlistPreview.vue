@@ -1,6 +1,10 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
+      <a-button type="primary" @click="copyToClipboard">
+        <copy-outlined /> Copy
+      </a-button>
+
       <a-button
         :disabled="!isAdmin"
         :loading="loading"
@@ -10,10 +14,6 @@
         <download-outlined /> Download
       </a-button>
     </template>
-
-    <a-typography-paragraph :copyable="{ text: wishlistToText }">
-      <i>Click to copy trading list in text format</i>
-    </a-typography-paragraph>
 
     <div v-if="base64Img" class="preview-img">
       <a-card-meta
@@ -95,6 +95,7 @@
 
 <script setup>
 import { message, Modal } from "ant-design-vue";
+import copy from "ant-design-vue/lib/_util/copy-to-clipboard";
 import { groupBy } from "lodash";
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
@@ -140,10 +141,10 @@ watch(
   wishlistConfig,
   () => {
     draggableWishList.value =
-      collections.value[wishlistConfig.value.wish.collection];
+      collections.value[wishlistConfig.value.wish.collection] || [];
     if (wishlistConfig.value.trade.collection) {
       draggableTradeList.value =
-        collections.value[wishlistConfig.value.trade.collection];
+        collections.value[wishlistConfig.value.trade.collection] || [];
     }
   },
   { deep: true }
@@ -234,36 +235,29 @@ const removeCap = (colorway, type) => {
     },
   });
 };
+
+const copyToClipboard = () => {
+  copy(wishlistToText.value);
+  message.success("Trading text copied to your clipboard!");
+};
 </script>
 
-<style>
+<style lang="postcss" scoped>
 .wishlist-preview {
-  height: 100%;
+  @apply h-full;
 
-  /* .ant-card-cover {
-    @media (max-width: 1200px) {
-      height: 220px;
-    }
-
-    @media (max-width: 992px) {
-      height: 150px;
+  .ant-card-extra {
+    button {
+      @apply ml-2;
     }
   }
-
-  @media (max-width: 576px) {
-    margin-top: 12px;
-  } */
 }
 
 .preview-img img {
-  width: 100%;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  @apply w-full my-3;
 }
 
 .draggable-row {
-  margin-left: -4px;
-  margin-right: -4px;
-  row-gap: 8px;
+  @apply -mx-1 gap-y-2;
 }
 </style>

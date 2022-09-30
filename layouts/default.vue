@@ -16,7 +16,7 @@
 
       <nuxt-link to="/">
         <div class="logo">
-          <img src="/icon.png" alt="logo" class="logo-icon" />
+          <img v-if="!isMobile" src="/icon.png" alt="logo" class="logo-icon" />
           {{ config.public.appName }}
         </div>
       </nuxt-link>
@@ -61,11 +61,19 @@ const config = useRuntimeConfig();
 </script>
 
 <style>
+.mobile {
+  justify-content: space-between;
+}
+
+.mobile .logo {
+  margin-right: 0;
+}
+
 .logo {
   height: 100%;
   font-size: 24px;
   margin-right: 24px;
-  font-family: 'Bungee Spice', cursive;
+  font-family: "Bungee Spice", cursive;
 }
 
 .logo img {

@@ -5,11 +5,10 @@
         <template #extra>
           <a-button
             v-if="collection.published"
-            :href="$route.fullPath"
-            target="_blank"
-            type="link"
+            type="dashed"
+            @click="copyShareUrl"
           >
-            <link-outlined /> Share URL
+            <share-alt-outlined /> Share URL
           </a-button>
 
           <a-dropdown placement="bottomRight">
@@ -77,6 +76,9 @@ import { useUserStore } from "~~/stores/user";
 import { storeToRefs } from "pinia";
 import { sortBy } from "lodash";
 import { message, Modal } from "ant-design-vue";
+import copy from "ant-design-vue/lib/_util/copy-to-clipboard";
+
+const config = useRuntimeConfig();
 
 const userStore = useUserStore();
 const { authenticated, collections, user } = storeToRefs(userStore);
@@ -232,6 +234,10 @@ const publishCollection = () => {
         });
     },
   });
+};
+
+const copyShareUrl = () => {
+  copy(config.public.baseUrl + route.fullPath);
 };
 </script>
 
