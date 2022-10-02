@@ -44,6 +44,8 @@
       </a-layout-content>
     </a-layout>
 
+    <a-back-top />
+
     <a-layout-footer>
       <layout-footer />
     </a-layout-footer>

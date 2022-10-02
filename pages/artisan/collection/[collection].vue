@@ -3,13 +3,15 @@
     <a-spin :spinning="pending">
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
-          <a-button
-            v-if="collection.published"
-            type="dashed"
-            @click="copyShareUrl"
-          >
-            <share-alt-outlined /> Share
-          </a-button>
+          <a-tooltip title="Copy link to share">
+            <a-button
+              v-if="collection.published"
+              type="dashed"
+              @click="copyShareUrl"
+            >
+              <share-alt-outlined /> Share
+            </a-button>
+          </a-tooltip>
 
           <a-dropdown placement="bottomRight">
             <template #overlay>
@@ -241,6 +243,7 @@ const publishCollection = () => {
 
 const copyShareUrl = () => {
   copy(config.public.baseUrl + route.fullPath);
+  message.success("Collection URL has been copied to the clipboard!");
 };
 </script>
 

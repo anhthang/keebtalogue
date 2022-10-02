@@ -1,12 +1,15 @@
 <template>
   <a-card title="Preview" size="small" class="wishlist-preview">
     <template #extra>
-      <a-button type="primary" @click="copyToClipboard">
-        <copy-outlined /> Copy
-      </a-button>
+      <a-tooltip>
+        <template #title>Copy trading text to clipboard</template>
+        <a-button type="primary" @click="copyToClipboard">
+          <copy-outlined /> Copy
+        </a-button>
+      </a-tooltip>
 
       <a-button
-        :disabled="!isAdmin"
+        v-if="isAdmin"
         :loading="loading"
         type="primary"
         @click="generateImg"
@@ -238,7 +241,7 @@ const removeCap = (colorway, type) => {
 
 const copyToClipboard = () => {
   copy(wishlistToText.value);
-  message.success("Trading text copied to your clipboard!");
+  message.success("Your trading text has been copied to the clipboard!");
 };
 </script>
 

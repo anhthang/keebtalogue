@@ -117,21 +117,6 @@
                   </template>
                 </a-dropdown>
               </template>
-              <a-card-meta v-if="isShowDescription">
-                <template #description>
-                  <a-list-item>
-                    <span>
-                      <calendar-outlined /> {{ colorway.releaseDate }}
-                    </span>
-                    <span v-if="colorway.totalCount == 1">
-                      <field-binary-outlined class="one-off" />
-                    </span>
-                    <span v-else>
-                      <field-number-outlined /> {{ colorway.totalCount }}
-                    </span>
-                  </a-list-item>
-                </template>
-              </a-card-meta>
             </a-card>
           </a-col>
         </a-row>
@@ -165,8 +150,21 @@
             <a-typography-title :level="4">
               {{ colorwayTitle }}
             </a-typography-title>
+
+            <a-descriptions :bordered="false" :column="2" size="small">
+              <a-descriptions-item label="Released">
+                {{ selectedColorway.releaseDate }}
+              </a-descriptions-item>
+              <a-descriptions-item label="Quantity">
+                {{ selectedColorway.totalCount }}
+              </a-descriptions-item>
+              <a-descriptions-item v-if="selectedColorway.price" label="Price">
+                {{ selectedColorway.price }}
+              </a-descriptions-item>
+            </a-descriptions>
+
             <a-typography-paragraph
-              v-for="(line, idx) in selectedColorway.description.split('\n')"
+              v-for="(line, idx) in descriptionLines"
               :key="idx"
             >
               {{ line }}
@@ -195,8 +193,6 @@ const route = useRoute();
 const title = ref();
 useHead({ title });
 
-const hasDescription = ref(false);
-
 const {
   data: sculpt,
   pending,
@@ -207,8 +203,6 @@ const {
   ).then((data) => {
     const sculpt = data.sculpts[route.params.sculpt];
     title.value = `${sculpt.name} • ${data.name}`;
-
-    hasDescription.value = sculpt.colorways.some((c) => !!c.description);
 
     return sculpt;
   })
@@ -263,13 +257,6 @@ const addToCollection = (collection, colorway) => {
   }
 };
 
-const isShowDescription = computed(() => {
-  const release = sculpt.value.colorways.filter((c) => c.releaseDate).length;
-  const count = sculpt.value.colorways.filter((c) => c.totalCount).length;
-
-  return release || count;
-});
-
 const confirmLoading = ref(false);
 
 // edit sculpt
@@ -310,10 +297,13 @@ const newColorwaySubmission = async () => {
 // show colorway information popup
 const showColorwayInformation = ref(false);
 const selectedColorway = ref({});
+const descriptionLines = ref([]);
 const showColorwayInformationModal = (clw) => {
-  showColorwayInformation.value =
-    hasDescription.value && !showColorwayInformation.value;
+  showColorwayInformation.value = !showColorwayInformation.value;
   selectedColorway.value = clw;
+  if (clw.description) {
+    descriptionLines.value = clw.description.split("\n");
+  }
 };
 
 const colorwayTitle = computed(() => {
@@ -322,20 +312,11 @@ const colorwayTitle = computed(() => {
 </script>
 
 <style>
-.one-off {
-  color: goldenrod;
-  font-size: 18px;
-}
-
 .giveaway {
   color: orange;
 }
 
 .commissioned {
   color: palevioletred;
-}
-
-.sculpt-card .ant-card-body {
-  padding: 12px 24px;
 }
 </style>

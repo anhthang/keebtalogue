@@ -26,3 +26,6 @@ title: About
 ### For makers & editors
 - Manage maker, sculpt, colorway profile
 - Add future sales
+
+## Credits
+- Catalog icons created by popo2021 - [Flaticon](https://www.flaticon.com/free-icon/catalog_5832440)
