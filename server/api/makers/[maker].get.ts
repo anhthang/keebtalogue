@@ -43,14 +43,16 @@ export default defineEventHandler(async (event) => {
                     // FIXME: to use same property name with our database
                     c.qty = c.totalCount
                     c.release = c.releaseDate
+                    c.colorway_id = c.id
 
-                    if (colorwayMap[c.id]) {
+                    if (colorwayMap[c.colorway_id]) {
                         // append data from the database
-                        Object.assign(c, colorwayMap[c.id])
+                        Object.assign(c, colorwayMap[c.colorway_id])
                     }
 
                     delete c.totalCount
                     delete c.releaseDate
+                    delete c.id
 
                     return c
                 })

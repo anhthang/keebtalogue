@@ -2,11 +2,15 @@
   <a-form layout="vertical">
     <a-form-item label="Colorway">
       <a-select
-        v-model:value="colorway.id"
+        v-model:value="colorway.colorway_id"
         show-search
         @select="onSelectColorway"
       >
-        <a-select-option v-for="clw in metadata" :key="clw.id" :value="clw.id">
+        <a-select-option
+          v-for="clw in metadata"
+          :key="clw.colorway_id"
+          :value="clw.colorway_id"
+        >
           {{ clw.name }}
         </a-select-option>
       </a-select>
@@ -73,7 +77,7 @@ const { metadata } = defineProps({
   metadata: Object,
 });
 
-const colorwayMap = keyBy(metadata, "id");
+const colorwayMap = keyBy(metadata, "colorway_id");
 const currencies = ["USD", "EUR", "CAD", "SGD", "MYR", "CNY", "VND"];
 
 const route = useRoute();

@@ -71,7 +71,7 @@
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="colorway in sculpt.colorways"
-            :key="colorway.id"
+            :key="colorway.colorway_id"
             :xs="12"
             :sm="12"
             :md="8"
@@ -222,7 +222,7 @@ const onChangeSortType = (e) => {
 
 const addToCollection = (collection, colorway) => {
   const clw = {
-    colorway_id: colorway.id,
+    colorway_id: colorway.colorway_id,
     name: colorway.name,
     img: colorway.img,
     sculpt_name: sculpt.value.name,
