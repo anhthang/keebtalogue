@@ -39,8 +39,18 @@ export default defineEventHandler(async (event) => {
 
                 sculpt.colorways = sculpt.colorways.map((c, idx) => {
                     c.order = idx
-                    c.description =
-                        colorwayMap[c.id] && colorwayMap[c.id].description
+
+                    // FIXME: to use same property name with our database
+                    c.qty = c.totalCount
+                    c.release = c.releaseDate
+
+                    if (colorwayMap[c.id]) {
+                        // append data from the database
+                        Object.assign(c, colorwayMap[c.id])
+                    }
+
+                    delete c.totalCount
+                    delete c.releaseDate
 
                     return c
                 })

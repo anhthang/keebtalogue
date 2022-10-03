@@ -82,3 +82,7 @@ body {
 .ant-typography {
   text-align: justify;
 }
+
+.ant-input-number {
+  width: 100%;
+}

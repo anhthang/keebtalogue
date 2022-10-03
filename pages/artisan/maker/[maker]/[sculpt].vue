@@ -153,13 +153,13 @@
 
             <a-descriptions :bordered="false" :column="2" size="small">
               <a-descriptions-item label="Released">
-                {{ selectedColorway.releaseDate }}
+                {{ selectedColorway.release }}
               </a-descriptions-item>
               <a-descriptions-item label="Quantity">
-                {{ selectedColorway.totalCount }}
+                {{ selectedColorway.qty }}
               </a-descriptions-item>
               <a-descriptions-item v-if="selectedColorway.price" label="Price">
-                {{ selectedColorway.price }}
+                {{ selectedColorway.currency }} {{ selectedColorway.price }}
               </a-descriptions-item>
             </a-descriptions>
 
