@@ -1,5 +1,10 @@
 <template>
   <a-form layout="vertical">
+    <a-form-item label="Name">
+      <a-input v-model:value="sculpt.name">
+        <template #prefix><font-size-outlined /></template>
+      </a-input>
+    </a-form-item>
     <a-form-item label="URL">
       <a-input v-model:value="sculpt.href">
         <template #prefix><link-outlined /></template>
@@ -26,10 +31,9 @@ const sculpt = ref({
 });
 
 onBeforeMount(() => {
-  if (metadata && Object.keys(metadata).length) {
-    sculpt.value.story = metadata.story;
-    sculpt.value.href = metadata.href;
-  }
+  const { colorways, preview, ...rest } = metadata;
+
+  Object.assign(sculpt.value, rest);
 });
 
 const addSculptProfile = () => {

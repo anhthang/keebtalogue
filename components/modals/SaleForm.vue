@@ -7,9 +7,9 @@
         @change="selectSculpt"
       >
         <a-select-option
-          v-for="(name, slug) in metadata"
-          :key="slug"
-          :value="slug"
+          v-for="(name, sculptId) in metadata"
+          :key="sculptId"
+          :value="sculptId"
         >
           {{ name }}
         </a-select-option>

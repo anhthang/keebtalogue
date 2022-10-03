@@ -45,34 +45,30 @@ export default defineEventHandler(async (event) => {
                     c.release = c.releaseDate
                     c.colorway_id = c.id
 
+                    delete c.totalCount
+                    delete c.releaseDate
+                    delete c.id
+
                     if (colorwayMap[c.colorway_id]) {
                         // append data from the database
                         Object.assign(c, colorwayMap[c.colorway_id])
                     }
 
-                    delete c.totalCount
-                    delete c.releaseDate
-                    delete c.id
-
                     return c
                 })
 
-                const slug = slugify(sculpt.name, { lower: true })
-
-                // append data from our database
-                const story = sculptMap[slug] && sculptMap[slug].story
-                const href = sculptMap[slug] && sculptMap[slug].href
+                const sculptId = slugify(sculpt.name, { lower: true })
+                delete sculpt.id
 
                 return {
                     ...sculpt,
-                    slug,
-                    story,
-                    href,
+                    ...(sculptMap[sculptId] || {}),
+                    sculpt_id: sculptId,
                     preview: random.img,
                 }
             })
 
-            sculpts = keyBy(sortBy(sculpts, 'name'), 'slug')
+            sculpts = keyBy(sortBy(sculpts, 'name'), 'sculpt_id')
 
             return {
                 ...profile,

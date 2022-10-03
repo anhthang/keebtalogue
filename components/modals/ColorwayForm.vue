@@ -19,17 +19,39 @@
     <a-row :gutter="[8, 8]">
       <a-col :xs="12">
         <a-form-item label="Release">
-          <a-input v-model:value="colorway.release" />
+          <a-input v-model:value="colorway.release">
+            <template #prefix><calendar-outlined /></template>
+          </a-input>
         </a-form-item>
       </a-col>
       <a-col :xs="12">
         <a-form-item label="Quantity">
-          <a-input-number v-model:value="colorway.qty" />
+          <a-input-number v-model:value="colorway.qty">
+            <template #prefix><number-outlined /></template>
+          </a-input-number>
         </a-form-item>
       </a-col>
     </a-row>
 
     <a-row :gutter="[8, 8]">
+      <a-col :xs="12">
+        <a-form-item>
+          <a-checkbox v-model:checked="colorway.giveaway">Giveaway</a-checkbox>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="12">
+        <a-form-item>
+          <a-checkbox
+            v-model:checked="colorway.commissioned"
+            :disabled="colorway.giveaway"
+          >
+            Commission
+          </a-checkbox>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="[8, 8]" v-if="!colorway.giveaway">
       <a-col :xs="12">
         <a-form-item label="Price">
           <a-input-group class="price-input-group" compact>
@@ -52,17 +74,6 @@
       </a-col>
     </a-row>
 
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-checkbox v-model:checked="colorway.giveaway">Giveaway</a-checkbox>
-      </a-col>
-      <a-col :xs="12">
-        <a-checkbox v-model:checked="colorway.commissioned">
-          Commission
-        </a-checkbox>
-      </a-col>
-    </a-row>
-    <br />
     <a-form-item label="Description">
       <a-textarea v-model:value="colorway.description" auto-size />
     </a-form-item>

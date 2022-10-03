@@ -98,7 +98,7 @@
             :lg="6"
             :xl="4"
           >
-            <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.slug}`">
+            <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
               <a-card hoverable :title="sculpt.name" :size="size">
                 <template #cover>
                   <img
@@ -211,8 +211,8 @@ const addUpcomingSale = async () => {
 
 const sculptLst = computed(() => {
   return maker && maker.value.sculpts
-    ? Object.entries(maker.value.sculpts).reduce((out, [slug, sculpt]) => {
-        out[slug] = sculpt.name;
+    ? Object.entries(maker.value.sculpts).reduce((out, [sculptId, sculpt]) => {
+        out[sculptId] = sculpt.name;
         return out;
       }, {})
     : {};
