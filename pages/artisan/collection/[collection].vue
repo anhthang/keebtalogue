@@ -169,8 +169,11 @@ const removeCap = (clw) => {
 
 const deleteCollection = () => {
   Modal.confirm({
-    title: "Are you sure to delete this collection?",
+    title: "Confirm Deletion",
+    content:
+      "Are you sure you want to delete this collection? This action cannot be undone.",
     okText: "Delete",
+    okType: "danger",
     onOk() {
       userStore.removeCollection(route.params.collection);
 
@@ -181,7 +184,7 @@ const deleteCollection = () => {
         }
       )
         .then(() => {
-          message.success("Collection successfully deleted!");
+          message.success("Successfully deleted the collection.");
 
           router.go(-1);
         })
@@ -194,7 +197,7 @@ const deleteCollection = () => {
 
 const delPublishedCollection = () => {
   Modal.confirm({
-    title: "Are you sure to unpublish this collection?",
+    title: "Are you sure you want to unpublish this collection?",
     onOk() {
       $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}`,
@@ -207,7 +210,7 @@ const delPublishedCollection = () => {
       )
         .then(() => {
           collection.published = false;
-          message.success("Collection unpublished");
+          message.success("Successfully unpublished the collection.");
         })
         .catch((error) => {
           message.error(error.message);
@@ -232,7 +235,7 @@ const publishCollection = () => {
       )
         .then(() => {
           collection.published = true;
-          message.success("Collection published");
+          message.success("Successfully published the collection.");
         })
         .catch((error) => {
           message.error(error.message);

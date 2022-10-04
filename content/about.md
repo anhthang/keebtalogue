@@ -29,3 +29,4 @@ title: About
 
 ## Credits
 - Catalog icons created by popo2021 - [Flaticon](https://www.flaticon.com/free-icon/catalog_5832440)
+- Website card using vector from [Freepik](https://www.freepik.com/free-vector/technology-background_4219798.htm)
