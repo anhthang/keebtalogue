@@ -1,17 +1,14 @@
 <template>
   <a-layout>
     <a-layout-header :class="isMobile ? 'mobile' : ''">
-      <a-button
-        v-if="isMobile"
-        ghost
-        class="sidebar-toggle"
-        @click="sidebarToogle"
-      >
+      <a-button v-if="isMobile" type="text" @click="sidebarToogle">
         <template #icon>
-          <menu-unfold-outlined v-if="collapsed" />
-          <menu-fold-outlined v-else />
+          <menu-unfold-outlined />
         </template>
       </a-button>
+      <a-drawer v-if="isMobile" v-model:visible="visible" placement="top">
+        <menu-tree mode="inline" @click="sidebarToogle" />
+      </a-drawer>
 
       <nuxt-link to="/">
         <div class="logo">
@@ -31,14 +28,6 @@
     </a-layout-header>
 
     <a-layout>
-      <a-layout-sider
-        v-if="isMobile"
-        :collapsed="collapsed"
-        collapsed-width="0"
-      >
-        <menu-tree mode="inline" @click="sidebarToogle" />
-      </a-layout-sider>
-
       <a-layout-content>
         <NuxtPage />
       </a-layout-content>
@@ -60,9 +49,9 @@ import RightHeader from "~~/components/layouts/RightHeader.vue";
 const { $device } = useNuxtApp();
 const { isMobile, isMobileOrTablet } = $device;
 
-const collapsed = ref(true);
+const visible = ref(false);
 const sidebarToogle = () => {
-  collapsed.value = !collapsed.value;
+  visible.value = !visible.value;
 };
 
 const config = useRuntimeConfig();

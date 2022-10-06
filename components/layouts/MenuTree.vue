@@ -1,6 +1,6 @@
 <template>
   <a-menu
-    theme="dark"
+    :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'"
     :mode="mode"
     :default-selected-keys="['1']"
     :style="{ lineHeight: '64px' }"
