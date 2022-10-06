@@ -35,8 +35,8 @@ body {
 
 .artisan-container .ant-card-head-title,
 .artisan-container .ant-card-meta-description {
-    text-align: center;
-  }
+  text-align: center;
+}
 
 .artisan-container .ant-card-cover {
   height: 250px;
@@ -61,14 +61,6 @@ body {
   display: flex;
   align-items: center;
   padding: 0 24px !important;
-
-  /* &.mobile {
-    justify-content: space-between;
-
-    .logo {
-      margin-right: 0;
-    }
-  } */
 }
 
 .ant-layout-header .ant-menu {
@@ -83,6 +75,7 @@ body {
   text-align: justify;
 }
 
-.ant-input-number, .ant-input-number-affix-wrapper {
+.ant-input-number,
+.ant-input-number-affix-wrapper {
   width: 100%;
 }

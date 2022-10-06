@@ -142,29 +142,37 @@ watch(sort, () => {
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 
 const removeCap = (clw) => {
-  if (authenticated.value) {
-    $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-      { method: "delete" }
-    )
-      .then(() => {
-        refresh();
-        message.success(`${cardTitle(clw)} removed from the collection.`);
-      })
-      .catch((error) => {
-        message.error(error.message);
-      });
-  } else {
-    sortedCollections.value = sortedCollections.value.filter(
-      (c) => c.colorway_id !== clw.colorway_id
-    );
-    localStorage.setItem(
-      `KeebArchivist_${route.params.collection}`,
-      JSON.stringify(sortedCollections.value)
-    );
+  Modal.confirm({
+    title: "Confirm Deletion",
+    content: `Are you sure you want to delete ${clw.name} ${clw.sculpt_name} from the collection? This action cannot be undone.`,
+    okText: "Delete",
+    okType: "danger",
+    onOk() {
+      if (authenticated.value) {
+        $fetch(
+          `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
+          { method: "delete" }
+        )
+          .then(() => {
+            refresh();
+            message.success(`${cardTitle(clw)} removed from the collection.`);
+          })
+          .catch((error) => {
+            message.error(error.message);
+          });
+      } else {
+        sortedCollections.value = sortedCollections.value.filter(
+          (c) => c.colorway_id !== clw.colorway_id
+        );
+        localStorage.setItem(
+          `KeebArchivist_${route.params.collection}`,
+          JSON.stringify(sortedCollections.value)
+        );
 
-    message.success(`${cardTitle(clw)} removed from the collection.`);
-  }
+        message.success(`${cardTitle(clw)} removed from the collection.`);
+      }
+    },
+  });
 };
 
 const deleteCollection = () => {

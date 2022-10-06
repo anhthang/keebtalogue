@@ -1,7 +1,18 @@
 <template>
   <div class="container">
     <a-page-header title="Calendar">
-      <a-spin :spinning="pending">
+      <a-result
+        v-if="isMobile"
+        status="warning"
+        sub-title="Calendar is not compatible for your device. Please use tablet or desktop."
+      >
+        <template #extra>
+          <nuxt-link to="/artisan/maker">
+            <a-button type="primary"> Go Artisan Makers </a-button>
+          </nuxt-link>
+        </template>
+      </a-result>
+      <a-spin v-else :spinning="pending">
         <a-calendar v-model:value="currentDate" @change="onChange">
           <template #dateCellRender="{ current }">
             <a-badge
@@ -23,17 +34,22 @@ import dayjs from "dayjs";
 const start = ref(dayjs().startOf("month").format("YYYY-MM-DD"));
 const end = ref(dayjs().endOf("month").format("YYYY-MM-DD"));
 
+const { $device } = useNuxtApp();
+const { isMobile } = $device;
+
 const {
   data: sales,
   pending,
   refresh,
 } = await useAsyncData(() =>
-  $fetch("/api/sales", {
-    params: {
-      start: start.value,
-      end: end.value,
-    },
-  })
+  isMobile
+    ? []
+    : $fetch("/api/sales", {
+        params: {
+          start: start.value,
+          end: end.value,
+        },
+      })
 );
 
 const salesOnCell = (day) => {
