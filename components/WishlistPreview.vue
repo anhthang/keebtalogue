@@ -99,7 +99,7 @@
 <script setup>
 import { message, Modal } from "ant-design-vue";
 import copy from "ant-design-vue/lib/_util/copy-to-clipboard";
-import { groupBy } from "lodash";
+import groupBy from 'lodash.groupby'
 import { storeToRefs } from "pinia";
 import draggable from "vuedraggable";
 import { useUserStore } from "~~/stores/user";

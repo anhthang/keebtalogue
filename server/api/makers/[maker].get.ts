@@ -1,12 +1,12 @@
 import { serverSupabaseClient } from '#supabase/server'
+import sample from 'lodash.sample'
+import groupBy from 'lodash.groupby'
 import keyBy from 'lodash.keyby'
 import sortBy from 'lodash.sortby'
-import sample from 'lodash.sample'
-import slugify from 'slugify'
 
 export default defineEventHandler(async (event) => {
     const makerId = event.context.params.maker
-    const { sculpt: sculptId } = await useQuery(event.req)
+    const { sculpt: sculptId } = useQuery(event.req)
 
     const client = serverSupabaseClient(event)
     const { data: profile } = await client
@@ -21,61 +21,19 @@ export default defineEventHandler(async (event) => {
         .eq('maker_id', makerId)
         .eq('sculpt_id', sculptId)
 
-    const colorwayMap = keyBy(colorways, 'colorway_id')
+    const colorwayMap = groupBy(colorways, 'sculpt_id')
 
-    const filename =
-        makerId === 'gaias-creature' ? 'gaia%E2%80%99s-creature' : makerId
+    const sculpts = profile.sculpts.map((sculpt) => {
+        const colorways = colorwayMap[sculpt.sculpt_id] || []
+        const random = sample(colorways)
 
-    // fetch database from github
-    return fetch(
-        `https://raw.githubusercontent.com/keycap-archivist/database/master/db/${filename}.json`
-    )
-        .then((res) => res.json())
-        .then((maker) => {
-            const sculptMap = keyBy(profile.sculpts, 'sculpt_id')
+        sculpt.colorways = colorways
+        sculpt.preview = random && random.img
 
-            let sculpts = maker.sculpts.map((sculpt) => {
-                const random = sample(sculpt.colorways)
+        return sculpt
+    })
 
-                sculpt.colorways = sculpt.colorways.map((c, idx) => {
-                    c.order = idx
+    profile.sculpts = keyBy(sortBy(sculpts, 'name'), 'sculpt_id')
 
-                    // FIXME: to use same property name with our database
-                    c.qty = c.totalCount
-                    c.release = c.releaseDate
-                    c.colorway_id = c.id
-
-                    delete c.totalCount
-                    delete c.releaseDate
-                    delete c.id
-
-                    if (colorwayMap[c.colorway_id]) {
-                        // append data from the database
-                        Object.assign(c, colorwayMap[c.colorway_id])
-                    }
-
-                    return c
-                })
-
-                const sculptId = slugify(sculpt.name, { lower: true })
-                delete sculpt.id
-
-                return {
-                    ...sculpt,
-                    ...(sculptMap[sculptId] || {}),
-                    sculpt_id: sculptId,
-                    preview: random.img,
-                }
-            })
-
-            sculpts = keyBy(sortBy(sculpts, 'name'), 'sculpt_id')
-
-            return {
-                ...profile,
-                sculpts,
-            }
-        })
-        .catch(() => {
-            return
-        })
+    return profile
 })
