@@ -158,7 +158,10 @@
               <a-descriptions-item label="Quantity">
                 {{ selectedColorway.qty }}
               </a-descriptions-item>
-              <a-descriptions-item v-if="selectedColorway.price" label="Price">
+              <a-descriptions-item
+                v-if="authenticated && selectedColorway.price"
+                label="Price"
+              >
                 {{ selectedColorway.currency }} {{ selectedColorway.price }}
               </a-descriptions-item>
             </a-descriptions>

@@ -104,7 +104,7 @@
                   <img
                     loading="lazy"
                     :alt="sculpt.name"
-                    :src="sculpt.preview"
+                    :src="sculpt.img"
                   />
                 </template>
               </a-card>

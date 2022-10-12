@@ -31,7 +31,7 @@ const sculpt = ref({
 });
 
 onBeforeMount(() => {
-  const { colorways, preview, ...rest } = metadata;
+  const { colorways, ...rest } = metadata;
 
   Object.assign(sculpt.value, rest);
 });

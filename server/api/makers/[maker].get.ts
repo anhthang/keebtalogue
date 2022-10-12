@@ -1,5 +1,4 @@
 import { serverSupabaseClient } from '#supabase/server'
-import sample from 'lodash.sample'
 import groupBy from 'lodash.groupby'
 import keyBy from 'lodash.keyby'
 import sortBy from 'lodash.sortby'
@@ -25,10 +24,8 @@ export default defineEventHandler(async (event) => {
 
     const sculpts = profile.sculpts.map((sculpt) => {
         const colorways = colorwayMap[sculpt.sculpt_id] || []
-        const random = sample(colorways)
 
-        sculpt.colorways = colorways
-        sculpt.preview = random && random.img
+        sculpt.colorways = sortBy(colorways, 'order')
 
         return sculpt
     })
