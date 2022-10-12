@@ -23,7 +23,11 @@
         />
       </template>
       <template #cover>
-        <img loading="lazy" :alt="maker.name" :src="maker.img || nologo" />
+        <img
+          loading="lazy"
+          :alt="maker.name"
+          :src="`/logo/${$colorMode.value}/${maker.id}.png`"
+        />
       </template>
     </a-card>
   </nuxt-link>

@@ -4,7 +4,7 @@
       <a-page-header
         v-if="maker"
         :title="maker.name"
-        :avatar="{ src: maker.img }"
+        :avatar="{ src: `/logo/${$colorMode.value}/${maker.id}.png` }"
       >
         <template v-if="maker.nationality" #tags>
           {{ getFlagEmoji(maker.nationality) }}
@@ -101,11 +101,7 @@
             <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
               <a-card hoverable :title="sculpt.name" :size="size">
                 <template #cover>
-                  <img
-                    loading="lazy"
-                    :alt="sculpt.name"
-                    :src="sculpt.img"
-                  />
+                  <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
                 </template>
               </a-card>
             </nuxt-link>
