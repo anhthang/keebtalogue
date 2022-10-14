@@ -54,6 +54,24 @@
               </a-col>
             </a-row>
           </a-tab-pane>
+          <a-tab-pane key="archived">
+            <template #tab>
+              <database-outlined />Archived ({{ archivedMakers.length }})
+            </template>
+            <a-row :gutter="[8, 8]" type="flex">
+              <a-col
+                v-for="maker in archivedMakers"
+                :key="maker.id"
+                :xs="12"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                :xl="4"
+              >
+                <maker-card :maker="maker" :archived="true" />
+              </a-col>
+            </a-row>
+          </a-tab-pane>
         </a-tabs>
       </a-page-header>
     </a-spin>
@@ -95,7 +113,15 @@ const favoriteMakers = computed(() => {
   return makers.value.filter((m) => favorites.value.includes(m.id));
 });
 const otherMakers = computed(() => {
-  return makers.value.filter((m) => !favorites.value.includes(m.id));
+  return makers.value.filter(
+    (m) => !favorites.value.includes(m.id) && !m.deleted
+  );
+});
+
+const archivedMakers = computed(() => {
+  return makers.value.filter(
+    (m) => !favorites.value.includes(m.id) && m.deleted
+  );
 });
 
 const makerForm = ref();

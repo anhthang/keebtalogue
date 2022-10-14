@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :size="size">
-      <template v-if="authenticated" #extra>
+      <template v-if="authenticated && !archived" #extra>
         <star-filled
           v-if="favorite"
           class="favorite"
@@ -43,9 +43,10 @@ const size = isMobile ? "small" : "default";
 
 const nologo = "https://i.imgur.com/wYMcZiI.png";
 
-const { maker, favorite } = defineProps({
+const { maker, favorite, archived } = defineProps({
   maker: Object,
   favorite: Boolean,
+  archived: Boolean,
 });
 
 const userStore = useUserStore();
