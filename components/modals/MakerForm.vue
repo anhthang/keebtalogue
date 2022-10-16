@@ -23,11 +23,6 @@
       </a-col>
     </a-row>
 
-    <a-form-item label="Logo">
-      <a-input v-model:value="maker.img" :disabled="!isKeeb">
-        <template #prefix><file-image-outlined /></template>
-      </a-input>
-    </a-form-item>
     <a-form-item v-if="!isKeeb" label="Source">
       <a-input v-model:value="maker.src">
         <template #prefix><file-word-outlined /></template>
@@ -69,7 +64,6 @@
 
 <script setup>
 import { message } from "ant-design-vue";
-import crc32 from "crc/crc32";
 import slugify from "slugify";
 
 const { metadata, isKeeb, isEdit } = defineProps({
@@ -86,42 +80,12 @@ onBeforeMount(() => {
   }
 });
 
-watch(
-  () => maker.value.name,
-  () => {
-    if (!isKeeb && !isEdit) {
-      const id = crc32(maker.value.name).toString(16);
-      maker.value.img = `https://github.com/keycap-archivist/website/raw/master/src/assets/img/logos/${id}.jpg`;
-    }
-  }
-);
-
-const makerId = computed(() => {
-  if (isEdit) {
-    return maker.value.id;
-  } else {
-    if (isKeeb) {
-      return slugify(maker.value.name, { lower: true });
-    } else {
-      return maker.value.name // make it same as keycap-archivist
-        .replaceAll(" ", "-")
-        .replaceAll(".", "-")
-        .toLowerCase();
-    }
-  }
-});
-
 const addMaker = () => {
   const { sculpts, ...rest } = maker.value;
 
-  let endpoint = "/api/makers";
-  if (isEdit) {
-    endpoint += `/${makerId.value}`;
-  } else {
-    rest.id = makerId.value;
-  }
+  const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true });
 
-  $fetch(endpoint, {
+  $fetch(`/api/makers/${makerId}`, {
     method: "post",
     body: rest,
   })

@@ -2,6 +2,9 @@
   <div class="container artisan-container">
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
+        <template v-if="sculpt.release" #subTitle>
+          {{ sculpt.release }}
+        </template>
         <template #extra>
           <a-button
             v-if="sculpt.href"
@@ -54,9 +57,6 @@
         </a-typography>
 
         <a-descriptions>
-          <a-descriptions-item v-if="sculpt.releaseDate" label="Release">
-            {{ sculpt.releaseDate }}
-          </a-descriptions-item>
           <a-descriptions-item v-if="sculpt.profile" label="Profile">
             {{ sculpt.profile }}
           </a-descriptions-item>
