@@ -2,9 +2,13 @@ import { defineNuxtConfig } from 'nuxt/config'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-    ssr: false, // use this until production build have no issues
+    build: {
+        transpile: [...(isProduction ? ['@babel/runtime'] : [])],
+    },
 
     modules: [
         '@nuxt/content',
