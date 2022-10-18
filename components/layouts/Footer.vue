@@ -1,6 +1,6 @@
 <template>
   <div class="global-footer">
-    <div class="credits">
+    <!-- <div class="credits">
       <strong>Thanks</strong>
       <a href="https://keycap-archivist.com" target="_blank">
         <img
@@ -17,7 +17,7 @@
         />
       </a>
       for news, guides, maker profiles and more.
-    </div>
+    </div> -->
     <div class="global-footer-copyright">
       <a :href="config.public.baseUrl" target="_blank">
         {{ config.public.appName }}

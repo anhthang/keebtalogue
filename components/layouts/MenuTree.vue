@@ -2,13 +2,12 @@
   <a-menu
     :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'"
     :mode="mode"
-    :default-selected-keys="['1']"
     :style="{ lineHeight: '64px' }"
     @click="onChangeMenu"
   >
-    <a-menu-item key="1">
+    <!-- <a-menu-item key="1">
       <nuxt-link to="/"><calendar-outlined /> Calendar </nuxt-link>
-    </a-menu-item>
+    </a-menu-item> -->
 
     <!-- <a-sub-menu key="2">
       <template #title> <insert-row-above-outlined /> Keebs </template>
