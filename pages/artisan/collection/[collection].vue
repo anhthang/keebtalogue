@@ -119,7 +119,7 @@ const { data, pending, refresh } = await useAsyncData(() => {
 
 onMounted(() => {
   data.value = JSON.parse(
-    localStorage.getItem(`KeebArchivist_${route.params.collection}`) || "[]"
+    localStorage.getItem(`Keebtalogue_${route.params.collection}`) || "[]"
   );
 });
 
@@ -165,7 +165,7 @@ const removeCap = (clw) => {
           (c) => c.colorway_id !== clw.colorway_id
         );
         localStorage.setItem(
-          `KeebArchivist_${route.params.collection}`,
+          `Keebtalogue_${route.params.collection}`,
           JSON.stringify(sortedCollections.value)
         );
 

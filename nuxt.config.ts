@@ -7,6 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
     build: {
+        // fixing @babel/runtime issue in production build
         transpile: [...(isProduction ? ['@babel/runtime'] : [])],
     },
 

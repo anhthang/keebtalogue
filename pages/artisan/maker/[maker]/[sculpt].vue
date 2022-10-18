@@ -247,12 +247,12 @@ const addToCollection = (collection, colorway) => {
       });
   } else {
     const collectionMap =
-      JSON.parse(localStorage.getItem(`KeebArchivist_${collection.id}`)) || [];
+      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || [];
 
     collectionMap.push(clw);
 
     localStorage.setItem(
-      `KeebArchivist_${collection.id}`,
+      `Keebtalogue_${collection.id}`,
       JSON.stringify(collectionMap)
     );
 

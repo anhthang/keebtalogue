@@ -128,9 +128,9 @@ const {
 
 onMounted(() => {
   if (!authenticated.value) {
-    const wish = JSON.parse(localStorage.getItem("KeebArchivist_wish") || "[]");
+    const wish = JSON.parse(localStorage.getItem("Keebtalogue_wish") || "[]");
     const trade = JSON.parse(
-      localStorage.getItem("KeebArchivist_trade") || "[]"
+      localStorage.getItem("Keebtalogue_trade") || "[]"
     );
 
     collections.value = {

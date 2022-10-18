@@ -80,7 +80,7 @@ const toggleShowLogin = () => {
 };
 
 const login = async (provider) => {
-  const { user, error } = await client.auth.signInWithOAuth(
+  const { user, error } = await client.auth.signIn(
     { provider },
     { redirectTo: window.location.origin }
   );
