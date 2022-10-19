@@ -6,6 +6,15 @@
         :title="maker.name"
         :avatar="{ src: `/logo/${$colorMode.value}/${maker.id}.png` }"
       >
+        <template #breadcrumb>
+          <a-breadcrumb>
+            <a-breadcrumb-item>
+              <nuxt-link to="/artisan/maker">Artisan Makers</nuxt-link>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>{{ maker.name }}</a-breadcrumb-item>
+          </a-breadcrumb>
+        </template>
+
         <template v-if="maker.nationality" #tags>
           {{ getFlagEmoji(maker.nationality) }}
         </template>

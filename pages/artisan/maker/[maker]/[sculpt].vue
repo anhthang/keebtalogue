@@ -2,6 +2,20 @@
   <div class="container artisan-container">
     <a-spin :spinning="pending">
       <a-page-header :title="sculpt.name">
+        <template #breadcrumb>
+          <a-breadcrumb>
+            <a-breadcrumb-item>
+              <nuxt-link to="/artisan/maker">Artisan Makers</nuxt-link>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>
+              <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
+                {{ makerName }}
+              </nuxt-link>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>{{ sculpt.name }}</a-breadcrumb-item>
+          </a-breadcrumb>
+        </template>
+
         <template v-if="sculpt.release" #subTitle>
           {{ sculpt.release }}
         </template>
@@ -181,7 +195,7 @@
 
 <script setup>
 import { message } from "ant-design-vue";
-import { sortBy } from "lodash";
+import sortBy from "lodash.sortby";
 import { storeToRefs } from "pinia";
 import ColorwayForm from "~~/components/modals/ColorwayForm.vue";
 import SculptForm from "~~/components/modals/SculptForm.vue";
@@ -196,6 +210,8 @@ const route = useRoute();
 const title = ref();
 useHead({ title });
 
+const makerName = ref();
+
 const {
   data: sculpt,
   pending,
@@ -205,7 +221,9 @@ const {
     `/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`
   ).then((data) => {
     const sculpt = data.sculpts[route.params.sculpt];
+
     title.value = `${sculpt.name} • ${data.name}`;
+    makerName.value = data.name;
 
     return sculpt;
   })
