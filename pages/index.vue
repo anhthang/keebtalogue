@@ -5,8 +5,8 @@
         <a-col
           v-for="(additions, maker) in data"
           :key="maker"
-          :xs="12"
-          :sm="12"
+          :xs="24"
+          :sm="24"
           :md="8"
           :lg="6"
           :xl="4"

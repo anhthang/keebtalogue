@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
     const { data, error } = await client
         .from('makers')
-        .update([body])
+        .upsert(body)
         .eq('id', event.context.params.maker)
 
     if (error) {

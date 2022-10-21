@@ -87,7 +87,10 @@ const addMaker = () => {
 
   $fetch(`/api/makers/${makerId}`, {
     method: "post",
-    body: rest,
+    body: {
+      ...rest,
+      id: makerId,
+    },
   })
     .then(() => {
       if (isEdit) {
