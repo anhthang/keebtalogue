@@ -5,7 +5,7 @@ import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
     const makerId = event.context.params.maker
-    const { sculpt: sculptId } = useQuery(event.req)
+    const { sculpt: sculptId } = useQuery(event)
 
     const client = serverSupabaseClient(event)
     const { data: profile } = await client
