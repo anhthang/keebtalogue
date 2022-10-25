@@ -2,7 +2,7 @@ import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-    const { created_at, ...rest } = await useBody(event.req)
+    const { created_at, ...rest } = await useBody(event)
 
     const { data, error } = await client
         .from('sculpts')

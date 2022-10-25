@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
     // @ts-ignore
-    const { settings, wishlist, tradelist } = await useBody(event.req)
+    const { settings, wishlist, tradelist } = await useBody(event)
 
     const body = {
         settings: {
@@ -49,17 +49,20 @@ export default defineEventHandler(async (event) => {
         })),
     }
 
-    const check: any = await $fetch('https://api.keycap-archivist.com/wishlist/check', {
-        method: 'post',
-        body,
-    })
+    const check: any = await $fetch(
+        'https://api.keycap-archivist.com/wishlist/check',
+        {
+            method: 'post',
+            body,
+        }
+    )
 
     if (check.hasError) {
         // just want it return same format as /generate
         return {
             StatusCode: 200,
             IsError: true,
-            ErrorItems: check.errors
+            ErrorItems: check.errors,
         }
     }
 
