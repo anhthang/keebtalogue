@@ -1,13 +1,18 @@
 {
   "name": "keebtalogue",
   "version": "1.0.0",
-  "license": "MIT",
+  "description": "The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Vue 3",
   "private": true,
-  "author": {
-    "email": "buianhthang89@gmail.com",
-    "name": "Anh Thang Bui",
-    "url": "https://anhthang.org"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anhthang/keebtalogue.git"
   },
+  "author": "Anh Thang Bui <buianhthang89@gmail.com> (https://anhthang.org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anhthang/keebtalogue/issues"
+  },
+  "homepage": "https://github.com/anhthang/keebtalogue#readme",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -16,7 +21,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
-    "@nuxtjs/device": "Redemption198/device-module",
+    "@nuxtjs/device": "github:Redemption198/device-module",
     "@pinia/nuxt": "^0.4.3",
     "ant-design-vue": "^3.2.13",
     "crc": "4.1.1",
@@ -28,10 +33,10 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@nuxt/content": "^2.2.0",
+    "@nuxt/content": "^2.2.1",
     "@nuxtjs/color-mode": "^3.1.8",
     "@nuxtjs/supabase": "^0.1.28",
-    "@nuxtjs/tailwindcss": "^6.1.1",
+    "@nuxtjs/tailwindcss": "^6.1.2",
     "@types/lodash.keyby": "^4.6.7",
     "@types/lodash.sample": "^4.2.7",
     "@types/lodash.sortby": "^4.7.7",

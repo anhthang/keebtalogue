@@ -164,6 +164,16 @@
             <a-typography-title :level="4">
               {{ colorwayTitle }}
             </a-typography-title>
+            <a-typography-paragraph v-if="selectedColorway.keyset">
+              <a-typography-text>
+                <a-tag
+                  :key="selectedColorway.keyset.id"
+                  :color="selectedColorway.keyset.base"
+                >
+                  {{ selectedColorway.keyset.name }}
+                </a-tag>
+              </a-typography-text>
+            </a-typography-paragraph>
 
             <a-descriptions :bordered="false" :column="2" size="small">
               <a-descriptions-item label="Released">

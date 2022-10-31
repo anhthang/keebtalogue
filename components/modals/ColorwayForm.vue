@@ -77,6 +77,22 @@
     <a-form-item label="Description">
       <a-textarea v-model:value="colorway.description" auto-size />
     </a-form-item>
+
+    <a-form-item label="Tags">
+      <a-select
+        v-model:value="colorway.keyset"
+        mode="multiple"
+        label-in-value
+        :filter-option="false"
+        :not-found-content="fetching ? undefined : null"
+        :options="keysets"
+        @search="fetchKeysets"
+      >
+        <template v-if="fetching" #notFoundContent>
+          <a-spin size="small" />
+        </template>
+      </a-select>
+    </a-form-item>
   </a-form>
 </template>
 
@@ -117,6 +133,21 @@ const addColorway = () => {
     })
     .catch((error) => {
       message.error(error.message);
+    });
+};
+
+const keysetQuery = ref();
+const fetching = ref(false);
+const keysets = ref([]);
+const fetchKeysets = (val) => {
+  fetching.value = true;
+  $fetch(`/api/keysets?query=${val}`)
+    .then((data) => {
+      keysets.value = data.map((k) => ({ key: k.id, value: k.name }));
+      fetching.value = false;
+    })
+    .catch(() => {
+      fetching.value = false;
     });
 };
 
