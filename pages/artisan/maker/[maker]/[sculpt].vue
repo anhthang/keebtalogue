@@ -166,12 +166,14 @@
             </a-typography-title>
             <a-typography-paragraph v-if="selectedColorway.keyset">
               <a-typography-text>
-                <a-tag
-                  :key="selectedColorway.keyset.id"
-                  :color="selectedColorway.keyset.base"
-                >
-                  {{ selectedColorway.keyset.name }}
-                </a-tag>
+                <nuxt-link :to="`/keyset/${selectedColorway.keyset.slug}`">
+                  <a-tag
+                    :key="selectedColorway.keyset.id"
+                    :color="selectedColorway.keyset.base"
+                  >
+                    {{ selectedColorway.keyset.name }}
+                  </a-tag>
+                </nuxt-link>
               </a-typography-text>
             </a-typography-paragraph>
 
