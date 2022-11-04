@@ -1,10 +1,33 @@
 <template>
-  <div class="container maker-container">
+  <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header title="Keyset">
+      <a-page-header :title="data.name">
+        <template #breadcrumb>
+          <a-breadcrumb>
+            <a-breadcrumb-item>
+              <nuxt-link>Keysets</nuxt-link>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>
+              <nuxt-link :to="`/keysets/${data.manufacture}`">
+                {{ data.manufacture.toUpperCase() }}
+              </nuxt-link>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
+          </a-breadcrumb>
+        </template>
+
+        <a-descriptions>
+          <a-descriptions-item v-if="data.designer" label="Designer">
+            {{ data.designer }}
+          </a-descriptions-item>
+          <a-descriptions-item v-if="data.profile" label="Profile">
+            {{ data.profile }}
+          </a-descriptions-item>
+        </a-descriptions>
+
         <a-tabs>
           <a-tab-pane
-            v-for="(colorways, maker) in data"
+            v-for="(colorways, maker) in data.artisans"
             :key="maker"
             :tab="maker"
           >
@@ -68,6 +91,8 @@
 </template>
 
 <script setup>
+import { groupBy } from "lodash";
+
 const { $device } = useNuxtApp();
 const { isMobile } = $device;
 const size = isMobile ? "small" : "default";
@@ -77,8 +102,11 @@ const route = useRoute();
 const { manufacture, keyset } = route.params;
 
 const { data, pending } = await useAsyncData(() =>
-  $fetch(`/api/keysets/${manufacture}/${keyset}`)
+  $fetch(`/api/keysets/${manufacture}/${keyset}`).then((data) => {
+    data.artisans = groupBy(data.artisans, "maker_name");
+    return data;
+  })
 );
 
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_id}`;
+const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
 </script>

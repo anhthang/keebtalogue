@@ -1,15 +1,36 @@
 import { serverSupabaseClient } from '#supabase/server'
-import groupBy from 'lodash.groupby'
-import sortBy from 'lodash.sortby'
+import keyBy from 'lodash.keyby'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
     const { manufacture, keyset } = event.context.params
 
     const { data } = await client
-        .from('colorways')
-        .select('*, maker:makers(name)')
-        .eq('keyset', `${manufacture}/${keyset}`)
+        .from('keysets')
+        .select('*, artisans:colorways(*)')
+        .eq('slug', `${manufacture}/${keyset}`)
+        .single()
 
-    return groupBy(sortBy(data, 'maker.name'), 'maker.name')
+    // get unique maker_id
+    const makerIds = [...new Set(data.artisans.map((a) => a.maker_id))]
+
+    const { data: makers } = await client
+        .from('makers')
+        .select()
+        .in('id', makerIds)
+
+    const { data: sculpts } = await client
+        .from('sculpts')
+        .select()
+        .in('maker_id', makerIds)
+
+    const makerMap = keyBy(makers, 'id')
+    const sculptMap = keyBy(sculpts, (s) => `${s.maker_id}/${s.sculpt_id}`)
+
+    data.artisans.forEach((cap) => {
+        cap.maker_name = makerMap[cap.maker_id].name
+        cap.sculpt_name = sculptMap[`${cap.maker_id}/${cap.sculpt_id}`].name
+    })
+
+    return data
 })

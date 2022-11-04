@@ -627,11 +627,11 @@
     lodash.template "^4.5.0"
     pathe "^0.3.5"
 
-"@nuxtjs/device@Redemption198/device-module":
+"@nuxtjs/device@github:Redemption198/device-module":
   version "3.0.0"
   resolved "https://codeload.github.com/Redemption198/device-module/tar.gz/2136ea04d9b1281a1d14d1c91ed40641106bbfaf"
   dependencies:
-    "@nuxt/kit" "^3.0.0-rc.12"
+    "@nuxt/kit" "^3.0.0-rc.10"
     defu "^6.1.0"
 
 "@nuxtjs/supabase@^0.1.28":
@@ -837,6 +837,13 @@
   version "7.0.11"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
+
+"@types/lodash.groupby@^4.6.7":
+  version "4.6.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash.groupby/-/lodash.groupby-4.6.7.tgz#35fdb9647f100450d1004f65f74cbd964cdb567a"
+  integrity sha512-dFUR1pqdMgjIBbgPJ/8axJX6M1C7zsL+HF4qdYMQeJ7XOp0Qbf37I3zh9gpXr/ks6tgEYPDRqyZRAnFYvewYHQ==
+  dependencies:
+    "@types/lodash" "*"
 
 "@types/lodash.keyby@^4.6.7":
   version "4.6.7"
