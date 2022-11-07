@@ -3,7 +3,7 @@
     <a-layout-header :class="isMobile ? 'mobile' : ''">
       <a-button v-if="isMobile" type="text" @click="sidebarToogle">
         <template #icon>
-          <menu-unfold-outlined />
+          <menu-unfold-outlined style="color: #f0f0f4" />
         </template>
       </a-button>
       <a-drawer v-if="isMobile" v-model:visible="visible" placement="top">

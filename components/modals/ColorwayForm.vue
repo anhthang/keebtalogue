@@ -17,6 +17,16 @@
     </a-form-item>
 
     <a-row :gutter="[8, 8]">
+      <a-col :xs="24">
+        <a-form-item label="Name">
+          <a-input v-model:value="colorway.name">
+            <template #prefix><font-size-outlined /></template>
+          </a-input>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="[8, 8]">
       <a-col :xs="12">
         <a-form-item label="Release">
           <a-input v-model:value="colorway.release">
@@ -78,7 +88,7 @@
       <a-textarea v-model:value="colorway.description" auto-size />
     </a-form-item>
 
-    <a-form-item label="Tags">
+    <!-- <a-form-item label="Tags">
       <a-select
         v-model:value="colorway.keyset"
         mode="multiple"
@@ -92,7 +102,7 @@
           <a-spin size="small" />
         </template>
       </a-select>
-    </a-form-item>
+    </a-form-item> -->
   </a-form>
 </template>
 
@@ -115,7 +125,7 @@ const colorway = ref({
 
 const onSelectColorway = (clwId) => {
   // exclude some data that we don't store in our database
-  const { isCover, note, order, ...rest } = colorwayMap[clwId];
+  const { isCover, note, ...rest } = colorwayMap[clwId];
 
   Object.assign(colorway.value, rest);
 };

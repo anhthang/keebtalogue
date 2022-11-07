@@ -306,6 +306,7 @@ const updateSculptProfile = async () => {
 
   showEditSculptModal();
   confirmLoading.value = false;
+  refresh();
 };
 
 /**
@@ -325,6 +326,7 @@ const newColorwaySubmission = async () => {
   showAddColorwayModal();
 
   confirmLoading.value = false;
+  refresh();
 };
 
 // show colorway information popup
