@@ -1,21 +1,5 @@
 <template>
   <a-form layout="vertical">
-    <a-form-item label="Colorway">
-      <a-select
-        v-model:value="colorway.colorway_id"
-        show-search
-        @select="onSelectColorway"
-      >
-        <a-select-option
-          v-for="clw in metadata"
-          :key="clw.colorway_id"
-          :value="clw.colorway_id"
-        >
-          {{ clw.name }}
-        </a-select-option>
-      </a-select>
-    </a-form-item>
-
     <a-row :gutter="[8, 8]">
       <a-col :xs="24">
         <a-form-item label="Name">
@@ -108,13 +92,11 @@
 
 <script setup>
 import { message } from "ant-design-vue";
-import keyBy from "lodash.keyby";
 
 const { metadata } = defineProps({
   metadata: Object,
 });
 
-const colorwayMap = keyBy(metadata, "colorway_id");
 const currencies = ["USD", "EUR", "CAD", "SGD", "MYR", "CNY", "VND"];
 
 const route = useRoute();
@@ -123,12 +105,9 @@ const colorway = ref({
   sculpt_id: route.params.sculpt,
 });
 
-const onSelectColorway = (clwId) => {
-  // exclude some data that we don't store in our database
-  const { isCover, note, ...rest } = colorwayMap[clwId];
-
-  Object.assign(colorway.value, rest);
-};
+onBeforeMount(() => {
+  Object.assign(colorway.value, metadata);
+});
 
 const addColorway = () => {
   $fetch(
@@ -146,7 +125,6 @@ const addColorway = () => {
     });
 };
 
-const keysetQuery = ref();
 const fetching = ref(false);
 const keysets = ref([]);
 const fetchKeysets = (val) => {

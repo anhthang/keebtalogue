@@ -46,19 +46,9 @@
             </a-button>
           </a-dropdown>
 
-          <a-dropdown v-if="isEditor" placement="bottomRight">
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="edit" @click="showEditSculptModal">
-                  <edit-outlined /> Edit Sculpt
-                </a-menu-item>
-                <a-menu-item key="add" @click="showAddColorwayModal">
-                  <file-add-outlined /> Update Colorway
-                </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button type="primary"> Actions <dash-outlined /> </a-button>
-          </a-dropdown>
+          <a-button v-if="isEditor" type="primary" @click="showEditSculptModal">
+            <edit-outlined /> Edit
+          </a-button>
         </template>
 
         <a-typography v-if="sculpt.story">
@@ -147,12 +137,12 @@
 
         <a-modal
           v-model:visible="showAddNewColorway"
-          title="Add Colorway Information"
+          :title="`Edit ${colorwayTitle}`"
           destroyOnClose
           :confirmLoading="confirmLoading"
           @ok="newColorwaySubmission"
         >
-          <colorway-form ref="colorwayForm" :metadata="sculpt.colorways" />
+          <colorway-form ref="colorwayForm" :metadata="selectedColorway" />
         </a-modal>
 
         <a-modal
@@ -163,6 +153,13 @@
           <a-typography>
             <a-typography-title :level="4">
               {{ colorwayTitle }}
+              <a-button
+                v-if="isEditor"
+                type="link"
+                @click="onEditColorway(selectedColorway)"
+              >
+                <edit-outlined />
+              </a-button>
             </a-typography-title>
             <a-typography-paragraph v-if="selectedColorway.keyset">
               <a-typography-text>
@@ -344,6 +341,12 @@ const showColorwayInformationModal = (clw) => {
 const colorwayTitle = computed(() => {
   return `${selectedColorway.value.name} ${sculpt.value.name}`;
 });
+
+// edit colorway
+const onEditColorway = (clw) => {
+  showColorwayInformationModal(clw);
+  showAddColorwayModal();
+};
 </script>
 
 <style>
