@@ -198,6 +198,7 @@ const updateMakerProfile = async () => {
 
   showEditMakerModal();
   confirmLoading.value = false;
+  refresh();
 };
 
 const showAddSaleModal = () => {

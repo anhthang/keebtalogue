@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <a-page-header title="Recently Added">
+    <a-page-header title="Overview">
+      <a-typography-title :level="5">
+        <history-outlined /> Recently Added
+      </a-typography-title>
       <a-row :gutter="[8, 8]" type="flex">
         <a-col
           v-for="(additions, maker) in data"

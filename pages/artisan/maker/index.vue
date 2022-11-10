@@ -18,6 +18,12 @@
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">
+          <template v-if="!$device.isMobile" #rightExtra>
+            <a-input-search
+              v-model:value="searchMaker"
+              placeholder="Search Maker Name"
+            />
+          </template>
           <a-tab-pane :disabled="!authenticated" key="favorite">
             <template #tab>
               <star-outlined />Favorite ({{ favoriteMakers.length }})
@@ -101,25 +107,31 @@ const showModal = () => {
   visible.value = !visible.value;
 };
 
+// search maker box
+const searchMaker = ref();
+const filteringMakers = ref(makers.value);
+watch(searchMaker, () => {
+  filteringMakers.value = makers.value.filter((m) =>
+    m.name.toLowerCase().includes(searchMaker.value.toLowerCase())
+  );
+});
+
 const defaultTab = ref(favorites.value.length ? "favorite" : "makers");
-watch(
-  () => favorites.value.length,
-  () => {
-    defaultTab.value = "favorite";
-  }
-);
+watch(favorites, () => {
+  defaultTab.value = "favorite";
+});
 
 const favoriteMakers = computed(() => {
-  return makers.value.filter((m) => favorites.value.includes(m.id));
+  return filteringMakers.value.filter((m) => favorites.value.includes(m.id));
 });
 const otherMakers = computed(() => {
-  return makers.value.filter(
+  return filteringMakers.value.filter(
     (m) => !favorites.value.includes(m.id) && !m.deleted
   );
 });
 
 const archivedMakers = computed(() => {
-  return makers.value.filter(
+  return filteringMakers.value.filter(
     (m) => !favorites.value.includes(m.id) && m.deleted
   );
 });
