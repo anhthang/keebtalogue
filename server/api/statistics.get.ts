@@ -10,5 +10,15 @@ export default defineEventHandler(async (event) => {
         .select('*, maker:makers(name)')
         .gte('created_at', dayjs().startOf('day'))
 
-    return groupBy(sortBy(data, 'maker.name'), 'maker.name')
+    const statistics = Object.entries(groupBy(data, 'maker.name')).map(
+        ([name, keycaps]) => {
+            return {
+                name,
+                id: keycaps[0].maker_id,
+                additions: keycaps.length,
+            }
+        }
+    )
+
+    return sortBy(statistics, 'name')
 })
