@@ -10,6 +10,7 @@ And I want to have a catalogue of all keyboard related things available here (ke
 
 ## Features
 - **Home**
+    - artisancollector guides
     - Recently added/updated makers & additions
 - **Makers**
     - More maker details from homepage, [artisancollector](https://artisancollector.com) website

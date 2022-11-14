@@ -80,10 +80,12 @@ const toggleShowLogin = () => {
 };
 
 const login = async (provider) => {
-  const { user, error } = await client.auth.signIn(
-    { provider },
-    { redirectTo: window.location.origin }
-  );
+  const { user, error } = await client.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
 
   if (error) {
     message.warning(err.message);
