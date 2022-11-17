@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
     // @ts-ignore
-    const { settings, wishlist, tradelist } = await useBody(event)
+    const { settings, wishlist, tradelist } = await readBody(event)
 
     const body = {
         settings: {
@@ -37,12 +37,12 @@ export default defineEventHandler(async (event) => {
             },
         },
         capsPerLine: null,
-        caps: wishlist.map((i) => ({
+        caps: wishlist.map((i: any) => ({
             id: i.colorway_id,
             isPriority: false,
             legendColor: 'Crimson',
         })),
-        tradeCaps: tradelist.map((i) => ({
+        tradeCaps: tradelist.map((i: any) => ({
             id: i.colorway_id,
             isPriority: false,
             legendColor: 'Crimson',

@@ -4,7 +4,7 @@ import slugify from 'slugify'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-    const body = await useBody(event)
+    const body = await readBody(event)
 
     const slug = slugify(body.name, { lower: true })
     body.colorway_id = crc32(

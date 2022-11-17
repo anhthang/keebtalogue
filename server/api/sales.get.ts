@@ -3,7 +3,7 @@ import { serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
 
-    const { start, end } = useQuery(event)
+    const { start, end } = getQuery(event)
 
     const { data } = await client
         .from('sales')

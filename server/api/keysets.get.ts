@@ -3,7 +3,7 @@ import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-    const { query } = useQuery(event)
+    const { query } = getQuery(event)
 
     const { data } = await client.from('keysets').select().like('slug', `%${query}%`)
 
