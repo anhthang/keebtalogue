@@ -66,6 +66,13 @@
           </a-input-group>
         </a-form-item>
       </a-col>
+      <a-col :xs="12">
+        <a-form-item label="Order">
+          <a-input-number v-model:value="colorway.order">
+            <template #prefix><number-outlined /></template>
+          </a-input-number>
+        </a-form-item>
+      </a-col>
     </a-row>
 
     <a-form-item label="Description">
