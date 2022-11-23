@@ -72,7 +72,7 @@ const { isMobile } = $device;
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
-const client = useSupabaseClient();
+const authClient = useSupabaseAuthClient();
 
 const showLoginModal = ref(false);
 const toggleShowLogin = () => {
@@ -80,7 +80,7 @@ const toggleShowLogin = () => {
 };
 
 const login = async (provider) => {
-  const { user, error } = await client.auth.signInWithOAuth({
+  const { user, error } = await authClient.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: window.location.origin,
@@ -99,7 +99,7 @@ const login = async (provider) => {
 };
 
 const logout = async () => {
-  const { error } = await client.auth.signOut();
+  const { error } = await authClient.auth.signOut();
   if (error) {
     message.error(error.message);
   } else {

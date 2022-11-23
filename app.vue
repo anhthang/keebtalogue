@@ -12,8 +12,8 @@ import { useUserStore } from "./stores/user";
 const config = useRuntimeConfig();
 const userStore = useUserStore();
 
-const client = useSupabaseClient();
-client.auth.onAuthStateChange((event, session) => {
+const authClient = useSupabaseAuthClient();
+authClient.auth.onAuthStateChange((event, session) => {
   switch (event) {
     case "SIGNED_IN":
       userStore.setCurrentUser(session.user);
