@@ -46,6 +46,15 @@
             </a-button>
           </a-dropdown>
 
+          <a-button
+            v-if="isEditor"
+            type="primary"
+            key="submission"
+            @click="showAddColorwayModal"
+          >
+            <template #icon><file-add-outlined /></template> Add
+          </a-button>
+
           <a-button v-if="isEditor" type="primary" @click="showEditSculptModal">
             <edit-outlined /> Edit
           </a-button>
@@ -137,7 +146,11 @@
 
         <a-modal
           v-model:visible="showAddNewColorway"
-          :title="`Edit ${colorwayTitle}`"
+          :title="
+            selectedColorway && selectedColorway.name
+              ? `Edit ${colorwayTitle}`
+              : 'Add New Colorway'
+          "
           destroyOnClose
           :confirmLoading="confirmLoading"
           @ok="newColorwaySubmission"
@@ -174,7 +187,7 @@
               </a-typography-text>
             </a-typography-paragraph>
 
-            <a-descriptions :bordered="false" :column="2" size="small">
+            <a-descriptions :bordered="false" :column="1" size="small">
               <a-descriptions-item label="Released">
                 {{ selectedColorway.release }}
               </a-descriptions-item>
@@ -186,6 +199,12 @@
                 label="Price"
               >
                 {{ selectedColorway.currency }} {{ selectedColorway.price }}
+              </a-descriptions-item>
+              <a-descriptions-item
+                v-if="authenticated && selectedColorway.sale_type"
+                label="Sale Type"
+              >
+                {{ selectedColorway.sale_type }}
               </a-descriptions-item>
             </a-descriptions>
 
