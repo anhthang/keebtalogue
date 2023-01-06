@@ -13,6 +13,13 @@ const config = useRuntimeConfig();
 const userStore = useUserStore();
 
 const authClient = useSupabaseAuthClient();
+
+authClient.auth.getSession().then(({ data }) => {
+  if (data.session && data.session.user) {
+    userStore.setCurrentUser(data.session.user);
+  }
+});
+
 authClient.auth.onAuthStateChange((event, session) => {
   switch (event) {
     case "SIGNED_IN":
