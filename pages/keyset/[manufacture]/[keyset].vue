@@ -25,7 +25,20 @@
           </a-descriptions-item>
         </a-descriptions>
 
-        <a-tabs>
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col>
+            <a-carousel autoplay>
+              <img
+                v-for="kit in data.kits"
+                :key="kit.id"
+                :src="kit.img"
+                :alt="kit.name"
+              />
+            </a-carousel>
+          </a-col>
+        </a-row>
+
+        <a-tabs v-if="false">
           <a-tab-pane
             v-for="(colorways, maker) in data.artisans"
             :key="maker"
