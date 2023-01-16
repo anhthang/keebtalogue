@@ -8,7 +8,7 @@
               <nuxt-link>Keysets</nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link :to="`/keysets/${data.manufacture}`">
+              <nuxt-link :to="`/keyset/${data.manufacture}`">
                 {{ data.manufacture.toUpperCase() }}
               </nuxt-link>
             </a-breadcrumb-item>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { groupBy } from "lodash";
+import groupBy from "lodash.groupby";
 
 const { $device } = useNuxtApp();
 const { isMobile } = $device;

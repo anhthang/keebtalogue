@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     const { data } = await client
         .from('keysets')
-        .select('*, artisans:colorways(*)')
+        .select('*, artisans:colorways(*), kits:keyset_kits(*)')
         .eq('slug', `${manufacture}/${keyset}`)
         .single()
 
