@@ -16,25 +16,37 @@
           </a-breadcrumb>
         </template>
 
-        <a-descriptions>
-          <a-descriptions-item v-if="data.designer" label="Designer">
-            {{ data.designer }}
-          </a-descriptions-item>
-          <a-descriptions-item v-if="data.profile" label="Profile">
-            {{ data.profile }}
-          </a-descriptions-item>
-        </a-descriptions>
-
         <a-row :gutter="[8, 8]" type="flex">
           <a-col>
-            <a-carousel autoplay>
-              <img
-                v-for="kit in data.kits"
-                :key="kit.id"
-                :src="kit.img"
-                :alt="kit.name"
-              />
-            </a-carousel>
+            <a-descriptions>
+              <a-descriptions-item v-if="data.designer" label="Designer">
+                {{ data.designer }}
+              </a-descriptions-item>
+              <a-descriptions-item v-if="data.profile" label="Profile">
+                {{ data.profile }}
+              </a-descriptions-item>
+            </a-descriptions>
+          </a-col>
+        </a-row>
+
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col
+            v-for="kit in data.kits"
+            :key="kit.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :xl="6"
+          >
+            <a-card hoverable :title="kit.name" :size="size">
+              <template #cover>
+                <img loading="lazy" :alt="kit.name" :src="kit.img" />
+              </template>
+              <template #actions>
+                <span><dollar-outlined key="edit" /> {{ kit.price }} </span>
+                <span><number-outlined key="setting" /> {{ kit.qty }} </span>
+              </template>
+            </a-card>
           </a-col>
         </a-row>
 
