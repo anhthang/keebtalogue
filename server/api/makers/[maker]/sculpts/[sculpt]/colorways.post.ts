@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
         `${body.maker_id}-${body.sculpt_id}-${slug}-${body.order}`
     ).toString(16)
 
-    delete body.keyset
+    delete body.keycap
 
     const sqlQuery = body.id
         ? client.from('colorways').update(body).eq('id', body.id)

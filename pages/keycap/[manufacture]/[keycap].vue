@@ -5,10 +5,10 @@
         <template #breadcrumb>
           <a-breadcrumb>
             <a-breadcrumb-item>
-              <nuxt-link>Keysets</nuxt-link>
+              <nuxt-link>Keycaps</nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link :to="`/keyset/${data.manufacture}`">
+              <nuxt-link :to="`/keycap/${data.manufacture}`">
                 {{ data.manufacture.toUpperCase() }}
               </nuxt-link>
             </a-breadcrumb-item>
@@ -124,10 +124,10 @@ const size = isMobile ? "small" : "default";
 
 const route = useRoute();
 
-const { manufacture, keyset } = route.params;
+const { manufacture, keycap } = route.params;
 
 const { data, pending } = await useAsyncData(() =>
-  $fetch(`/api/keysets/${manufacture}/${keyset}`).then((data) => {
+  $fetch(`/api/keycaps/${manufacture}/${keycap}`).then((data) => {
     data.artisans = groupBy(data.artisans, "maker_name");
     return data;
   })

@@ -112,13 +112,13 @@
 
     <!-- <a-form-item label="Tags">
       <a-select
-        v-model:value="colorway.keyset"
+        v-model:value="colorway.keycap"
         mode="multiple"
         label-in-value
         :filter-option="false"
         :not-found-content="fetching ? undefined : null"
-        :options="keysets"
-        @search="fetchKeysets"
+        :options="keycaps"
+        @search="fetchkeycaps"
       >
         <template v-if="fetching" #notFoundContent>
           <a-spin size="small" />
@@ -167,12 +167,12 @@ const addColorway = () => {
 };
 
 const fetching = ref(false);
-const keysets = ref([]);
-const fetchKeysets = (val) => {
+const keycaps = ref([]);
+const fetchkeycaps = (val) => {
   fetching.value = true;
-  $fetch(`/api/keysets?query=${val}`)
+  $fetch(`/api/keycaps?query=${val}`)
     .then((data) => {
-      keysets.value = data.map((k) => ({ key: k.id, value: k.name }));
+      keycaps.value = data.map((k) => ({ key: k.id, value: k.name }));
       fetching.value = false;
     })
     .catch(() => {

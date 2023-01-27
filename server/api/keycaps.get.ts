@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
     const { query } = getQuery(event)
 
-    const { data } = await client.from('keysets').select().like('slug', `%${query}%`)
+    const { data } = await client.from('keycaps').select().like('slug', `%${query}%`)
 
     return sortBy(data, 'id')
 })

@@ -3,13 +3,13 @@ import keyBy from 'lodash.keyby'
 
 export default defineEventHandler(async (event) => {
     const client = serverSupabaseClient(event)
-    const { manufacture, keyset } = event.context.params
+    const { manufacture, keycap } = event.context.params
 
     const { data } = await client
-        .from('keysets')
-        .select('*, kits:keyset_kits(*)')
-        // .select('*, artisans:colorways(*), kits:keyset_kits(*)')
-        .eq('slug', `${manufacture}/${keyset}`)
+        .from('keycaps')
+        .select('*, kits:keycap_kits(*)')
+        // .select('*, artisans:colorways(*), kits:keycap_kits(*)')
+        .eq('slug', `${manufacture}/${keycap}`)
         .single()
 
     // // get unique maker_id

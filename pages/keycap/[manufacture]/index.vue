@@ -4,19 +4,19 @@
       <a-page-header title="GMK">
         <a-row :gutter="[8,8]" type="flex">
           <a-col
-            v-for="keyset in keysets"
-            :key="keyset.id"
+            v-for="keycap in keycaps"
+            :key="keycap.id"
             :xs="12"
             :sm="12"
             :md="8"
             :xl="6"
           >
-            <nuxt-link :to="`/keyset/${keyset.slug}`">
-              <a-card hoverable :title="keyset.name" :size="size">
+            <nuxt-link :to="`/keycap/${keycap.slug}`">
+              <a-card hoverable :title="keycap.name" :size="size">
                 <template #cover>
-                  <img loading="lazy" :alt="keyset.name" :src="keyset.img" />
+                  <img loading="lazy" :alt="keycap.name" :src="keycap.img" />
                 </template>
-                <!-- <a-card-meta :title="keyset.name" :description="keyset.designer" /> -->
+                <!-- <a-card-meta :title="keycap.name" :description="keycap.designer" /> -->
               </a-card>
             </nuxt-link>
           </a-col>
@@ -39,8 +39,8 @@ useHead({
 const route = useRoute();
 
 const {
-  data: keysets,
+  data: keycaps,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch(`/api/keysets?query=${route.params.manufacture}`));
+} = await useAsyncData(() => $fetch(`/api/keycaps?query=${route.params.manufacture}`));
 </script>

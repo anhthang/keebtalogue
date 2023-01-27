@@ -32,10 +32,10 @@
 
     <a-sub-menu title="Keycap" key="2">
       <a-menu-item key="2.1">
-        <nuxt-link to="/keyset/gmk"> GMK </nuxt-link>
+        <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
       </a-menu-item>
       <a-menu-item key="2.2">
-        <nuxt-link to="/keyset/sa"> SA </nuxt-link>
+        <nuxt-link to="/keycap/sa"> SA </nuxt-link>
       </a-menu-item>
     </a-sub-menu>
 

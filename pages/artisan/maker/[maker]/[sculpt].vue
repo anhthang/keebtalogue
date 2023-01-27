@@ -174,14 +174,14 @@
                 <edit-outlined />
               </a-button>
             </a-typography-title>
-            <a-typography-paragraph v-if="selectedColorway.keyset">
+            <a-typography-paragraph v-if="selectedColorway.keycap">
               <a-typography-text>
-                <nuxt-link :to="`/keyset/${selectedColorway.keyset.slug}`">
+                <nuxt-link :to="`/keycap/${selectedColorway.keycap.slug}`">
                   <a-tag
-                    :key="selectedColorway.keyset.id"
-                    :color="selectedColorway.keyset.base"
+                    :key="selectedColorway.keycap.id"
+                    :color="selectedColorway.keycap.base"
                   >
-                    {{ selectedColorway.keyset.name }}
+                    {{ selectedColorway.keycap.name }}
                   </a-tag>
                 </nuxt-link>
               </a-typography-text>
