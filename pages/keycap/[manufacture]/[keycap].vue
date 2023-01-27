@@ -40,7 +40,8 @@
           >
             <a-card hoverable :title="kit.name" :size="size">
               <template #cover>
-                <img loading="lazy" :alt="kit.name" :src="kit.img" />
+                <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
+                <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
               </template>
               <template #actions>
                 <span><dollar-outlined key="edit" /> {{ kit.price }} </span>
