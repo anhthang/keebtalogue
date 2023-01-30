@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
 
     const { data: colorways } = await client
         .from('colorways')
-        .select('*, keycap:keycaps(*)')
+        .select()
+        // .select('*, keycap:keycaps(*)')
         .eq('maker_id', makerId)
         .eq('sculpt_id', sculptId)
 
