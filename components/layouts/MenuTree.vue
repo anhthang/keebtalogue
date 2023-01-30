@@ -30,19 +30,33 @@
       </a-menu-item>
     </a-sub-menu> -->
 
-    <a-menu-item key="7">
-      <nuxt-link to="/artisan/maker"> <user-add-outlined /> Makers </nuxt-link>
-    </a-menu-item>
-    <a-menu-item key="8">
-      <nuxt-link to="/artisan/collection">
-        <book-outlined /> Collection
-      </nuxt-link>
-    </a-menu-item>
-    <a-menu-item key="9">
-      <nuxt-link to="/artisan/wishlist">
-        <shopping-cart-outlined /> Wishlist
-      </nuxt-link>
-    </a-menu-item>
+    <a-sub-menu title="Keycap" key="2">
+      <a-menu-item key="2.1">
+        <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
+      </a-menu-item>
+      <a-menu-item key="2.2">
+        <nuxt-link to="/keycap/sa"> SA </nuxt-link>
+      </a-menu-item>
+    </a-sub-menu>
+
+    <a-sub-menu title="Artisan">
+      <a-menu-item key="2.1">
+        <nuxt-link to="/artisan/maker">
+          <user-add-outlined /> Makers
+        </nuxt-link>
+      </a-menu-item>
+      <a-menu-item key="2.2">
+        <nuxt-link to="/artisan/collection">
+          <book-outlined /> Collection
+        </nuxt-link>
+      </a-menu-item>
+      <a-menu-item key="2.3">
+        <nuxt-link to="/artisan/wishlist">
+          <shopping-cart-outlined /> Wishlist
+        </nuxt-link>
+      </a-menu-item>
+    </a-sub-menu>
+
     <a-menu-item key="about">
       <nuxt-link to="/about"> About </nuxt-link>
     </a-menu-item>

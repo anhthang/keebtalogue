@@ -5,10 +5,10 @@
         <template #breadcrumb>
           <a-breadcrumb>
             <a-breadcrumb-item>
-              <nuxt-link>Keysets</nuxt-link>
+              <nuxt-link>Keycaps</nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link :to="`/keyset/${data.manufacture}`">
+              <nuxt-link :to="`/keycap/${data.manufacture}`">
                 {{ data.manufacture.toUpperCase() }}
               </nuxt-link>
             </a-breadcrumb-item>
@@ -16,16 +16,42 @@
           </a-breadcrumb>
         </template>
 
-        <a-descriptions>
-          <a-descriptions-item v-if="data.designer" label="Designer">
-            {{ data.designer }}
-          </a-descriptions-item>
-          <a-descriptions-item v-if="data.profile" label="Profile">
-            {{ data.profile }}
-          </a-descriptions-item>
-        </a-descriptions>
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col>
+            <a-descriptions>
+              <a-descriptions-item v-if="data.designer" label="Designer">
+                {{ data.designer }}
+              </a-descriptions-item>
+              <a-descriptions-item v-if="data.profile" label="Profile">
+                {{ data.profile }}
+              </a-descriptions-item>
+            </a-descriptions>
+          </a-col>
+        </a-row>
 
-        <a-tabs>
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col
+            v-for="kit in data.kits"
+            :key="kit.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :xl="6"
+          >
+            <a-card hoverable :title="kit.name" :size="size">
+              <template #cover>
+                <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
+                <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
+              </template>
+              <template #actions>
+                <span><dollar-outlined key="edit" /> {{ kit.price }} </span>
+                <span><number-outlined key="setting" /> {{ kit.qty }} </span>
+              </template>
+            </a-card>
+          </a-col>
+        </a-row>
+
+        <a-tabs v-if="false">
           <a-tab-pane
             v-for="(colorways, maker) in data.artisans"
             :key="maker"
@@ -99,10 +125,10 @@ const size = isMobile ? "small" : "default";
 
 const route = useRoute();
 
-const { manufacture, keyset } = route.params;
+const { manufacture, keycap } = route.params;
 
 const { data, pending } = await useAsyncData(() =>
-  $fetch(`/api/keysets/${manufacture}/${keyset}`).then((data) => {
+  $fetch(`/api/keycaps/${manufacture}/${keycap}`).then((data) => {
     data.artisans = groupBy(data.artisans, "maker_name");
     return data;
   })
