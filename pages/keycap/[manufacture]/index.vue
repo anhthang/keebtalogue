@@ -1,8 +1,8 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header title="GMK">
-        <a-row :gutter="[8,8]" type="flex">
+      <a-page-header :title="manufacturers[$route.params.manufacture]">
+        <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="keycap in keycaps"
             :key="keycap.id"
@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-
 const { $device } = useNuxtApp();
 const { isMobile } = $device;
 const size = isMobile ? "small" : "default";
@@ -37,10 +36,16 @@ useHead({
 });
 
 const route = useRoute();
+const manufacturers = {
+  gmk: "GMK",
+  sa: "SA",
+};
 
 const {
   data: keycaps,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch(`/api/keycaps?query=${route.params.manufacture}`));
+} = await useAsyncData(() =>
+  $fetch(`/api/keycaps?query=${route.params.manufacture}`)
+);
 </script>

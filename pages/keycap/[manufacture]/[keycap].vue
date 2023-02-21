@@ -25,6 +25,9 @@
               <a-descriptions-item v-if="data.profile" label="Profile">
                 {{ data.profile }}
               </a-descriptions-item>
+              <a-descriptions-item v-if="data.url" label="Website">
+                <a :href="data.url" target="_blank">Link</a>
+              </a-descriptions-item>
             </a-descriptions>
           </a-col>
         </a-row>
