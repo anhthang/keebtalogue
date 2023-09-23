@@ -8,6 +8,7 @@
 
 <script setup>
 import { useUserStore } from "./stores/user";
+import '@/assets/app.css';
 import 'ant-design-vue/dist/reset.css';
 
 const config = useRuntimeConfig();

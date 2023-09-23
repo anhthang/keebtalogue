@@ -14,11 +14,18 @@ export default defineNuxtConfig({
         '@nuxt/content',
         '@nuxtjs/color-mode',
         '@nuxtjs/device',
+        '@nuxtjs/google-fonts',
         '@nuxtjs/supabase',
-        '@nuxtjs/tailwindcss',
         '@pinia/nuxt',
         'nuxt-icon',
     ],
+
+    googleFonts: {
+        families: {
+            'Bungee+Spice': true,
+            'Titillium+Web': true
+        }
+    },
 
     runtimeConfig: {
         public: {
