@@ -7,37 +7,21 @@
             <user-add-outlined /> Add
           </a-button>
         </template>
-        <a-modal
-          v-model:visible="visible"
-          title="New Maker"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="addMaker"
-        >
+        <a-modal v-model:visible="visible" title="New Maker" destroy-on-close :confirm-loading="confirmLoading"
+          @ok="addMaker">
           <maker-form ref="makerForm" />
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">
           <template v-if="!$device.isMobile" #rightExtra>
-            <a-input-search
-              v-model:value="searchMaker"
-              placeholder="Search Maker Name"
-            />
+            <a-input-search v-model:value="searchMaker" placeholder="Search Maker Name" />
           </template>
           <a-tab-pane :disabled="!authenticated" key="favorite">
             <template #tab>
               <star-outlined />Favorite ({{ favoriteMakers.length }})
             </template>
             <a-row :gutter="[8, 8]" type="flex">
-              <a-col
-                v-for="maker in favoriteMakers"
-                :key="maker.id"
-                :xs="12"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                :xl="4"
-              >
+              <a-col v-for="maker in favoriteMakers" :key="maker.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
                 <maker-card :favorite="true" :maker="maker" />
               </a-col>
             </a-row>
@@ -47,34 +31,8 @@
               <usergroup-add-outlined />Makers ({{ otherMakers.length }})
             </template>
             <a-row :gutter="[8, 8]" type="flex">
-              <a-col
-                v-for="maker in otherMakers"
-                :key="maker.id"
-                :xs="12"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                :xl="4"
-              >
+              <a-col v-for="maker in otherMakers" :key="maker.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
                 <maker-card :maker="maker" />
-              </a-col>
-            </a-row>
-          </a-tab-pane>
-          <a-tab-pane key="archived">
-            <template #tab>
-              <database-outlined />Archived ({{ archivedMakers.length }})
-            </template>
-            <a-row :gutter="[8, 8]" type="flex">
-              <a-col
-                v-for="maker in archivedMakers"
-                :key="maker.id"
-                :xs="12"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                :xl="4"
-              >
-                <maker-card :maker="maker" :archived="true" />
               </a-col>
             </a-row>
           </a-tab-pane>
@@ -124,15 +82,10 @@ watch(favorites, () => {
 const favoriteMakers = computed(() => {
   return filteringMakers.value.filter((m) => favorites.value.includes(m.id));
 });
+
 const otherMakers = computed(() => {
   return filteringMakers.value.filter(
-    (m) => !favorites.value.includes(m.id) && !m.deleted
-  );
-});
-
-const archivedMakers = computed(() => {
-  return filteringMakers.value.filter(
-    (m) => !favorites.value.includes(m.id) && m.deleted
+    (m) => !favorites.value.includes(m.id)
   );
 });
 

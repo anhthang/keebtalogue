@@ -1,33 +1,20 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :size="size">
-      <template v-if="authenticated && !archived" #extra>
-        <star-filled
-          v-if="favorite"
-          class="favorite"
-          @click="
-            (e) => {
-              e.preventDefault();
-              addFavoriteMaker(maker.id);
-            }
-          "
-        />
-        <star-outlined
-          v-else
-          @click="
-            (e) => {
-              e.preventDefault();
-              addFavoriteMaker(maker.id);
-            }
-          "
-        />
+      <template v-if="authenticated" #extra>
+        <star-filled v-if="favorite" class="favorite" @click="(e) => {
+            e.preventDefault();
+            addFavoriteMaker(maker.id);
+          }
+          " />
+        <star-outlined v-else @click="(e) => {
+            e.preventDefault();
+            addFavoriteMaker(maker.id);
+          }
+          " />
       </template>
       <template #cover>
-        <img
-          loading="lazy"
-          :alt="maker.name"
-          :src="`/logo/${$colorMode.value}/${maker.id}.png`"
-        />
+        <img loading="lazy" :alt="maker.name" :src="`/logo/${$colorMode.value}/${maker.id}.png`" />
       </template>
     </a-card>
   </nuxt-link>
@@ -43,10 +30,9 @@ const size = isMobile ? "small" : "default";
 
 const nologo = "https://i.imgur.com/wYMcZiI.png";
 
-const { maker, favorite, archived } = defineProps({
+const { maker, favorite } = defineProps({
   maker: Object,
   favorite: Boolean,
-  archived: Boolean,
 });
 
 const userStore = useUserStore();
