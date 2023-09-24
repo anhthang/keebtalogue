@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <a-config-provider :theme="{
+    algorithm: $colorMode.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  }">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-  </div>
+  </a-config-provider>
 </template>
 
 <script setup>
+import { theme } from "ant-design-vue";
 import { useUserStore } from "./stores/user";
 import '@/assets/app.css';
 import 'ant-design-vue/dist/reset.css';
