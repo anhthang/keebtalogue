@@ -6,32 +6,17 @@
           <file-add-outlined /> Add
         </a-button>
       </template>
-      <a-modal
-        v-model:visible="visible"
-        title="New Collection"
-        @ok="addCollection"
-      >
+      <a-modal v-model:open="visible" title="New Collection" @ok="addCollection">
         <a-input v-model:value="collectionName" placeholder="Collection Name" />
       </a-modal>
 
       <a-row v-if="!user.email_verified" type="flex">
-        <a-alert
-          class="collection-alert"
-          message="You must log in to use this feature and sync the collections across your devices."
-          banner
-        />
+        <a-alert class="collection-alert"
+          message="You must log in to use this feature and sync the collections across your devices." banner />
       </a-row>
 
       <a-row :gutter="[8, 8]" type="flex">
-        <a-col
-          v-for="collection in collections"
-          :key="collection.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
+        <a-col v-for="collection in collections" :key="collection.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
           <nuxt-link :to="`/artisan/collection/${collection.id}`">
             <a-card hoverable :title="collection.name" />
           </nuxt-link>

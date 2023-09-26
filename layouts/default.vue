@@ -6,18 +6,13 @@
           <menu-unfold-outlined style="color: #f0f0f4" />
         </template>
       </a-button>
-      <a-drawer v-if="isMobile" v-model:visible="visible" placement="top">
+      <a-drawer v-if="isMobile" v-model:open="visible" placement="top">
         <menu-tree mode="inline" @click="sidebarToogle" />
       </a-drawer>
 
       <nuxt-link to="/">
         <div class="logo">
-          <img
-            v-if="!isMobileOrTablet"
-            src="/icon.png"
-            alt="logo"
-            class="logo-icon"
-          />
+          <img v-if="!isMobileOrTablet" src="/icon.png" alt="logo" class="logo-icon" />
           {{ config.public.appName }}
         </div>
       </nuxt-link>

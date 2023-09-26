@@ -30,7 +30,7 @@
       </a-button>
     </a-dropdown>
 
-    <a-modal v-model:visible="showLoginModal" destroy-on-close :footer="null">
+    <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
       <a-typography-title :level="2">Welcome back</a-typography-title>
 
       <a-row :gutter="[8, 8]" class="social-login">

@@ -20,12 +20,7 @@
           {{ sculpt.release }}
         </template>
         <template #extra>
-          <a-button
-            v-if="sculpt.href"
-            :href="sculpt.href"
-            target="_blank"
-            type="dashed"
-          >
+          <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank" type="dashed">
             <link-outlined /> Visit
           </a-button>
 
@@ -46,12 +41,7 @@
             </a-button>
           </a-dropdown>
 
-          <a-button
-            v-if="isEditor"
-            type="primary"
-            key="submission"
-            @click="showAddColorwayModal"
-          >
+          <a-button v-if="isEditor" type="primary" key="submission" @click="showAddColorwayModal">
             <template #icon><file-add-outlined /></template> Add
           </a-button>
 
@@ -61,10 +51,7 @@
         </template>
 
         <a-typography v-if="sculpt.story">
-          <a-typography-paragraph
-            v-for="(line, idx) in sculpt.story.split('\n')"
-            :key="idx"
-          >
+          <a-typography-paragraph v-for="(line, idx) in sculpt.story.split('\n')" :key="idx">
             {{ line }}
           </a-typography-paragraph>
         </a-typography>
@@ -82,35 +69,16 @@
         </a-descriptions>
 
         <a-row :gutter="[8, 8]" type="flex">
-          <a-col
-            v-for="colorway in sculpt.colorways"
-            :key="colorway.colorway_id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <a-card
-              hoverable
-              :title="colorway.name || '-'"
-              :size="size"
-              class="sculpt-card"
-            >
+          <a-col v-for="colorway in sculpt.colorways" :key="colorway.colorway_id" :xs="12" :sm="12" :md="8" :lg="6"
+            :xl="4">
+            <a-card hoverable :title="colorway.name || '-'" :size="size" class="sculpt-card">
               <template #extra>
-                <bg-colors-outlined
-                  v-if="colorway.commissioned"
-                  class="commissioned"
-                />
+                <bg-colors-outlined v-if="colorway.commissioned" class="commissioned" />
                 <gift-filled v-if="colorway.giveaway" class="giveaway" />
               </template>
               <template #cover>
-                <img
-                  loading="lazy"
-                  :alt="colorway.name"
-                  :src="colorway.img"
-                  @click="showColorwayInformationModal(colorway)"
-                />
+                <img loading="lazy" :alt="colorway.name" :src="colorway.img"
+                  @click="showColorwayInformationModal(colorway)" />
               </template>
 
               <template v-if="collections.length" #actions>
@@ -118,12 +86,8 @@
                   <div><save-outlined /> Add to Collection</div>
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item
-                        v-for="collection in collections"
-                        :key="collection.id"
-                        :disabled="!collections.length"
-                        @click="addToCollection(collection, colorway)"
-                      >
+                      <a-menu-item v-for="collection in collections" :key="collection.id" :disabled="!collections.length"
+                        @click="addToCollection(collection, colorway)">
                         {{ collection.name }}
                       </a-menu-item>
                     </a-menu>
@@ -134,53 +98,30 @@
           </a-col>
         </a-row>
 
-        <a-modal
-          v-model:visible="showEditSculpt"
-          title="Edit Sculpt"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="updateSculptProfile"
-        >
+        <a-modal v-model:open="showEditSculpt" title="Edit Sculpt" destroy-on-close :confirm-loading="confirmLoading"
+          @ok="updateSculptProfile">
           <sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
         </a-modal>
 
-        <a-modal
-          v-model:visible="showAddNewColorway"
-          :title="
-            selectedColorway && selectedColorway.name
-              ? `Edit ${colorwayTitle}`
-              : 'Add New Colorway'
-          "
-          destroyOnClose
-          :confirmLoading="confirmLoading"
-          @ok="newColorwaySubmission"
-        >
+        <a-modal v-model:open="showAddNewColorway" :title="selectedColorway && selectedColorway.name
+            ? `Edit ${colorwayTitle}`
+            : 'Add New Colorway'
+          " destroyOnClose :confirmLoading="confirmLoading" @ok="newColorwaySubmission">
           <colorway-form ref="colorwayForm" :metadata="selectedColorway" />
         </a-modal>
 
-        <a-modal
-          v-model:visible="showColorwayInformation"
-          destroy-on-close
-          :footer="null"
-        >
+        <a-modal v-model:open="showColorwayInformation" destroy-on-close :footer="null">
           <a-typography>
             <a-typography-title :level="4">
               {{ colorwayTitle }}
-              <a-button
-                v-if="isEditor"
-                type="link"
-                @click="onEditColorway(selectedColorway)"
-              >
+              <a-button v-if="isEditor" type="link" @click="onEditColorway(selectedColorway)">
                 <edit-outlined />
               </a-button>
             </a-typography-title>
             <a-typography-paragraph v-if="selectedColorway.keycap">
               <a-typography-text>
                 <nuxt-link :to="`/keycap/${selectedColorway.keycap.slug}`">
-                  <a-tag
-                    :key="selectedColorway.keycap.id"
-                    :color="selectedColorway.keycap.base"
-                  >
+                  <a-tag :key="selectedColorway.keycap.id" :color="selectedColorway.keycap.base">
                     {{ selectedColorway.keycap.name }}
                   </a-tag>
                 </nuxt-link>
@@ -194,24 +135,15 @@
               <a-descriptions-item label="Quantity">
                 {{ selectedColorway.qty }}
               </a-descriptions-item>
-              <a-descriptions-item
-                v-if="authenticated && selectedColorway.price"
-                label="Price"
-              >
+              <a-descriptions-item v-if="authenticated && selectedColorway.price" label="Price">
                 {{ selectedColorway.currency }} {{ selectedColorway.price }}
               </a-descriptions-item>
-              <a-descriptions-item
-                v-if="authenticated && selectedColorway.sale_type"
-                label="Sale Type"
-              >
+              <a-descriptions-item v-if="authenticated && selectedColorway.sale_type" label="Sale Type">
                 {{ selectedColorway.sale_type }}
               </a-descriptions-item>
             </a-descriptions>
 
-            <a-typography-paragraph
-              v-for="(line, idx) in descriptionLines"
-              :key="idx"
-            >
+            <a-typography-paragraph v-for="(line, idx) in descriptionLines" :key="idx">
               {{ line }}
             </a-typography-paragraph>
           </a-typography>

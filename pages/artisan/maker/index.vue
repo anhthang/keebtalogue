@@ -7,7 +7,7 @@
             <user-add-outlined /> Add
           </a-button>
         </template>
-        <a-modal v-model:visible="visible" title="New Maker" destroy-on-close :confirm-loading="confirmLoading"
+        <a-modal v-model:open="visible" title="New Maker" destroy-on-close :confirm-loading="confirmLoading"
           @ok="addMaker">
           <maker-form ref="makerForm" />
         </a-modal>
