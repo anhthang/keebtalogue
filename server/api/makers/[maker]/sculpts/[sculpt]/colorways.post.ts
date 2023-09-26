@@ -3,7 +3,7 @@ import { crc32 } from 'crc'
 import slugify from 'slugify'
 
 export default defineEventHandler(async (event) => {
-    const client = serverSupabaseClient(event)
+    const client = await serverSupabaseClient(event)
     const body = await readBody(event)
 
     const slug = slugify(body.name, { lower: true })

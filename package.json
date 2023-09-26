@@ -38,12 +38,12 @@
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/device": "^3.1.1",
     "@nuxtjs/google-fonts": "^3.0.2",
-    "@nuxtjs/supabase": "0.3.8",
+    "@nuxtjs/supabase": "1.1.2",
     "@types/lodash.groupby": "^4.6.7",
     "@types/lodash.keyby": "^4.6.7",
     "@types/lodash.sample": "^4.2.7",
     "@types/lodash.sortby": "^4.7.7",
-    "nuxt": "^3.7.3",
+    "nuxt": "^3.7.4",
     "nuxt-icon": "^0.5.0"
   }
 }

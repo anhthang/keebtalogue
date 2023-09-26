@@ -17,15 +17,15 @@ import 'ant-design-vue/dist/reset.css';
 const config = useRuntimeConfig();
 const userStore = useUserStore();
 
-const authClient = useSupabaseAuthClient();
+const client = useSupabaseClient();
 
-authClient.auth.getSession().then(({ data }) => {
+client.auth.getSession().then(({ data }) => {
   if (data.session && data.session.user) {
     userStore.setCurrentUser(data.session.user);
   }
 });
 
-authClient.auth.onAuthStateChange((event, session) => {
+client.auth.onAuthStateChange((event, session) => {
   switch (event) {
     case "SIGNED_IN":
       userStore.setCurrentUser(session.user);

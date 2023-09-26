@@ -59,16 +59,20 @@ export const useUserStore = defineStore('user', {
         async getUserDocument(uid) {
             const { data, error } = await $fetch(`/api/users/${uid}`)
 
-            this.favorites = data.favorite_makers
-            this.collections = data.collections
-            this.social = {
-                discord: data.discord,
-                reddit: data.reddit,
-                qq: data.qq,
+            if (data) {
+                this.favorites = data.favorite_makers
+                this.collections = data.collections
+                this.social = {
+                    discord: data.discord,
+                    reddit: data.reddit,
+                    qq: data.qq,
+                }
+                this.wishlistConfig.social = this.social
+                this.isAdmin = data.role === 'admin'
+                this.isEditor = ['admin', 'editor'].includes(data.role)
+            } else {
+                console.error(uid, error)
             }
-            this.wishlistConfig.social = this.social
-            this.isAdmin = data.role === 'admin'
-            this.isEditor = ['admin', 'editor'].includes(data.role)
         },
         addCollection(name, id) {
             this.collections.push({ name, id })

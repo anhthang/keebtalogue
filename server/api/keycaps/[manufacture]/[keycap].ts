@@ -2,7 +2,7 @@ import { serverSupabaseClient } from '#supabase/server'
 import keyBy from 'lodash.keyby'
 
 export default defineEventHandler(async (event) => {
-    const client = serverSupabaseClient(event)
+    const client = await serverSupabaseClient(event)
     const { manufacture, keycap } = event.context.params
 
     const { data } = await client

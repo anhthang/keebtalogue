@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const makerId = event.context.params.maker
     const { sculpt: sculptId } = getQuery(event)
 
-    const client = serverSupabaseClient(event)
+    const client = await serverSupabaseClient(event)
     const { data: profile } = await client
         .from('makers')
         .select('*, sculpts (*)')

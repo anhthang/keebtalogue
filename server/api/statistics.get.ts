@@ -4,7 +4,7 @@ import groupBy from 'lodash.groupby'
 import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
-    const client = serverSupabaseClient(event)
+    const client = await serverSupabaseClient(event)
     const { data } = await client
         .from('colorways')
         .select('*, maker:makers(name)')
