@@ -13,10 +13,7 @@
     <a-row>
       <a-col :xs="24" :sm="16">
         <a-form-item>
-          <a-radio-group
-            v-model:value="$colorMode.preference"
-            class="color-mode-radio"
-          >
+          <a-radio-group v-model:value="$colorMode.preference" class="color-mode-radio">
             <a-radio value="system"> ⚙️ System </a-radio>
             <a-radio disabled value="light"> 🌞 Light </a-radio>
             <a-radio disabled value="dark"> 🌛 Dark </a-radio>
@@ -27,10 +24,12 @@
   </a-card>
 </template>
 
-<style lang="postcss" scoped>
+<style>
 .color-mode-radio {
   .ant-radio-wrapper {
-    @apply block h-8 leading-8
+    display: block;
+    height: 2rem;
+    line-height: 2rem;
   }
 }
 </style>

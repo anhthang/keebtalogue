@@ -115,12 +115,14 @@ const gotoSettings = () => {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .social-login {
-  @apply mt-12 mb-8;
+  margin-bottom: 2rem;
+  margin-top: 3rem;
 }
 
 .custom-icon {
-  @apply mr-2 align-[0.125rem];
+  margin-right: 0.5rem;
+  vertical-align: 0.125rem;
 }
 </style>

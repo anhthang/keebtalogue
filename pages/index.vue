@@ -24,12 +24,12 @@
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style>
 .guides {
-  @apply h-full;
+  height: 100%;
 }
 
 .recently-added {
-  @apply h-full;
+  height: 100%;
 }
 </style>

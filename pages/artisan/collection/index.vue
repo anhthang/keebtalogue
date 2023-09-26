@@ -63,8 +63,10 @@ const addCollection = async () => {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .collection-alert {
-  @apply mx-auto mb-4;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
 }
 </style>

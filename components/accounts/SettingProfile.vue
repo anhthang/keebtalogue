@@ -12,10 +12,7 @@
             <a-input v-model:value="user.email" disabled>
               <template #prefix><mail-outlined /></template>
               <template #suffix>
-                <check-circle-outlined
-                  v-if="user.email_verified"
-                  class="email-verified"
-                />
+                <check-circle-outlined v-if="user.email_verified" class="email-verified" />
               </template>
             </a-input>
           </a-form-item>
@@ -35,17 +32,12 @@
             </a-input>
           </a-form-item>
           <a-form-item label="Discord">
-            <a-input
-              v-model:value="social.discord"
-              placeholder="Discord#0000"
-              :disabled="discordVerified"
-            >
-              <template #prefix><icon name="la:discord" /></template>
+            <a-input v-model:value="social.discord" placeholder="Discord#0000" :disabled="discordVerified">
+              <template #prefix>
+                <icon name="la:discord" />
+              </template>
               <template v-if="discordVerified" #suffix>
-                <check-circle-outlined
-                  v-if="user.email_verified"
-                  class="email-verified"
-                />
+                <check-circle-outlined v-if="user.email_verified" class="email-verified" />
               </template>
             </a-input>
           </a-form-item>
@@ -55,11 +47,7 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button
-              type="primary"
-              :loading="loading"
-              @click="saveSettings('social')"
-            >
+            <a-button type="primary" :loading="loading" @click="saveSettings('social')">
               <save-outlined /> Save
             </a-button>
           </a-form-item>
@@ -101,12 +89,17 @@ const discordVerified = computed(() => {
 });
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .avatar {
-  @apply mx-auto my-0 rounded-full block;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 9999px;
 }
 
 .email-verified {
-  @apply text-[#50d71e]
+  color: #50d71e;
 }
 </style>

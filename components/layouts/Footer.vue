@@ -31,12 +31,14 @@
 const config = useRuntimeConfig();
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .global-footer {
-  @apply flex flex-col items-center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .credits {
-  @apply mb-4;
+  margin-bottom: 1rem;
 }
 </style>

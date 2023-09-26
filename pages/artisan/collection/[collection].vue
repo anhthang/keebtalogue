@@ -4,11 +4,7 @@
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
           <a-tooltip title="Copy link to share">
-            <a-button
-              v-if="collection.published"
-              type="dashed"
-              @click="copyShareUrl"
-            >
+            <a-button v-if="collection.published" type="dashed" @click="copyShareUrl">
               <share-alt-outlined /> Share
             </a-button>
           </a-tooltip>
@@ -23,41 +19,21 @@
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
 
-          <a-button
-            v-if="user.email_verified && !collection.published"
-            type="primary"
-            @click="publishCollection"
-          >
+          <a-button v-if="user.email_verified && !collection.published" type="primary" @click="publishCollection">
             <cloud-upload-outlined /> Publish
           </a-button>
 
-          <a-button
-            v-if="user.email_verified && collection.published"
-            type="danger"
-            @click="delPublishedCollection"
-          >
+          <a-button v-if="user.email_verified && collection.published" danger @click="delPublishedCollection">
             <cloud-download-outlined /> Unpublish
           </a-button>
 
-          <a-button
-            v-if="user.email_verified"
-            type="danger"
-            @click="deleteCollection"
-          >
+          <a-button v-if="user.email_verified" type="primary" danger @click="deleteCollection">
             <delete-outlined /> Delete
           </a-button>
         </template>
 
         <a-row :gutter="[8, 8]" type="flex">
-          <a-col
-            v-for="colorway in sortedCollections"
-            :key="colorway.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
+          <a-col v-for="colorway in sortedCollections" :key="colorway.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
             <a-card hoverable :title="cardTitle(colorway)" :size="size">
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />

@@ -8,21 +8,14 @@
         </a-button>
       </a-tooltip>
 
-      <a-button
-        v-if="isAdmin"
-        :loading="loading"
-        type="primary"
-        @click="generateImg"
-      >
+      <a-button v-if="isAdmin" :loading="loading" type="primary" @click="generateImg">
         <download-outlined /> Download
       </a-button>
     </template>
 
     <div v-if="base64Img" class="preview-img">
-      <a-card-meta
-        description="Place your finger on the photo and hold it on the image until a menu
-      appears on the screen. Tap Save to download it."
-      />
+      <a-card-meta description="Place your finger on the photo and hold it on the image until a menu
+      appears on the screen. Tap Save to download it." />
       <img :src="`data:image/png;base64,${base64Img}`" alt="" />
     </div>
 
@@ -36,25 +29,14 @@
         </a-descriptions-item>
       </a-descriptions>
 
-      <a-alert
-        v-if="errorText"
-        type="error"
-        message="Some items in your list is updated. Please remove it to continue."
-        :description="errorText"
-        showIcon
-        closable
-      />
+      <a-alert v-if="errorText" type="error" message="Some items in your list is updated. Please remove it to continue."
+        :description="errorText" showIcon closable />
 
       <a-divider v-if="draggableWishList.length">
         {{ wishlistConfig.wish.title }}
       </a-divider>
 
-      <draggable
-        :list="draggableWishList"
-        itemKey="id"
-        group="group"
-        class="ant-row draggable-row"
-      >
+      <draggable :list="draggableWishList" itemKey="id" group="group" class="ant-row draggable-row">
         <template #item="{ element }">
           <a-col :key="element.id" :xs="12" :md="8" :xl="6">
             <a-card :title="cardTitle(element)" size="small" :bordered="false">
@@ -73,12 +55,7 @@
         {{ wishlistConfig.trade.title }}
       </a-divider>
 
-      <draggable
-        :list="draggableTradeList"
-        itemKey="id"
-        group="group"
-        class="ant-row draggable-row"
-      >
+      <draggable :list="draggableTradeList" itemKey="id" group="group" class="ant-row draggable-row">
         <template #item="{ element }">
           <a-col :key="element.id" :xs="12" :md="8" :xl="6">
             <a-card :title="cardTitle(element)" size="small" :bordered="false">
@@ -245,22 +222,26 @@ const copyToClipboard = () => {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style>
 .wishlist-preview {
-  @apply h-full;
+  height: 100%;
 
   .ant-card-extra {
     button {
-      @apply ml-2;
+      margin-left: 0.5rem;
     }
   }
 }
 
 .preview-img img {
-  @apply w-full my-3;
+  width: 100%;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .draggable-row {
-  @apply -mx-1 gap-y-2;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+  row-gap: 0.5rem;
 }
 </style>

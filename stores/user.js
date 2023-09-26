@@ -71,7 +71,7 @@ export const useUserStore = defineStore('user', {
                 this.isAdmin = data.role === 'admin'
                 this.isEditor = ['admin', 'editor'].includes(data.role)
             } else {
-                console.error(uid, error)
+                // console.error(uid, error)
             }
         },
         addCollection(name, id) {
