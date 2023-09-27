@@ -23,8 +23,12 @@ export default defineNuxtConfig({
     googleFonts: {
         families: {
             'Bungee+Spice': true,
-            'Titillium+Web': true
-        }
+            'Titillium+Web': true,
+        },
+    },
+
+    supabase: {
+        redirect: false,
     },
 
     runtimeConfig: {
