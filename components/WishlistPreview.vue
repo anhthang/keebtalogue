@@ -240,6 +240,8 @@ const copyToClipboard = () => {
 }
 
 .draggable-row {
+  display: flex;
+  flex-flow: row wrap;
   margin-left: -0.25rem;
   margin-right: -0.25rem;
   row-gap: 0.5rem;

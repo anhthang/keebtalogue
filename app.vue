@@ -1,6 +1,7 @@
 <template>
   <a-config-provider :theme="{
     algorithm: $colorMode.value === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    token: seedToken,
   }">
     <NuxtLayout>
       <NuxtPage />
@@ -13,6 +14,10 @@ import { theme } from "ant-design-vue";
 import { useUserStore } from "./stores/user";
 import '@/assets/app.css';
 import 'ant-design-vue/dist/reset.css';
+
+const seedToken = {
+  fontFamily: "'Titillium Web', sans-serif;"
+}
 
 const config = useRuntimeConfig();
 const userStore = useUserStore();
