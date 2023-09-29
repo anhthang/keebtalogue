@@ -19,6 +19,8 @@
 
       <menu-tree v-if="!isMobile" mode="horizontal" />
 
+      <appearance />
+
       <right-header />
     </a-layout-header>
 
@@ -37,6 +39,7 @@
 </template>
 
 <script setup>
+import Appearance from "~~/components/layouts/Appearance.vue";
 import LayoutFooter from "~~/components/layouts/Footer.vue";
 import MenuTree from "~~/components/layouts/MenuTree.vue";
 import RightHeader from "~~/components/layouts/RightHeader.vue";
