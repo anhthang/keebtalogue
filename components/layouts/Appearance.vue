@@ -4,7 +4,7 @@
       <icon class="light-dark-icon" name="line-md:light-dark" />
     </a-button>
     <template #overlay>
-      <a-menu @click="handleAppearanceChange">
+      <a-menu :selected-keys="[$colorMode.preference]" @click="handleAppearanceChange">
         <a-menu-item key="system">
           <icon class="appearance-icon" name="material-symbols:desktop-mac-outline" /> System
         </a-menu-item>

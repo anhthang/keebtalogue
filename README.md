@@ -1,12 +1,9 @@
 # Keebtalogue
-The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Vue 3
-
-## TODO
-- Sign in with popup (Supabase is not supported at the moment)
+The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Ant Design Vue 4
 
 # Development
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+Look at the [nuxt 3 documentation](https://nuxt.com/) to learn more.
 
 ## Setup
 
@@ -45,4 +42,4 @@ Locally preview production build:
 npm run preview
 ```
 
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
