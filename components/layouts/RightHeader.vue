@@ -1,5 +1,7 @@
 <template>
   <div class="right-header">
+    <appearance />
+
     <a-dropdown v-if="user.email_verified">
       <a-avatar :src="user.picture" />
 
@@ -60,6 +62,8 @@
 </template>
 
 <script setup>
+import Appearance from "./Appearance.vue";
+
 import { message } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~~/stores/user";
@@ -116,6 +120,13 @@ const gotoSettings = () => {
 </script>
 
 <style>
+.right-header {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .social-login {
   margin-bottom: 2rem;
   margin-top: 3rem;

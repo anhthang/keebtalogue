@@ -14,7 +14,7 @@
           " />
       </template>
       <template #cover>
-        <img loading="lazy" :alt="maker.name" :src="`/logo/${$colorMode.value}/${maker.id}.png`" />
+        <a-image :preview="false" :alt="maker.name" :src="`/logo/${$colorMode.value}/${maker.id}.png`" :fallback="`/logo/no_photo.png`" />
       </template>
     </a-card>
   </nuxt-link>
@@ -27,8 +27,6 @@ import { useUserStore } from "~~/stores/user";
 const { $device } = useNuxtApp();
 const { isMobile } = $device;
 const size = isMobile ? "small" : "default";
-
-const nologo = "https://i.imgur.com/wYMcZiI.png";
 
 const { maker, favorite } = defineProps({
   maker: Object,

@@ -1,10 +1,6 @@
 <template>
-  <a-menu
-    :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'"
-    :mode="mode"
-    :style="{ lineHeight: '64px' }"
-    @click="onChangeMenu"
-  >
+  <a-menu :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'" :mode="mode"
+    :style="{ lineHeight: '64px' }" @click="onChangeMenu">
     <!-- <a-menu-item key="1">
       <nuxt-link to="/"><calendar-outlined /> Calendar </nuxt-link>
     </a-menu-item> -->
@@ -30,27 +26,27 @@
       </a-menu-item>
     </a-sub-menu> -->
 
-    <a-sub-menu title="Keycap" key="2">
-      <a-menu-item key="2.1">
+    <a-sub-menu title="Keycap" key="keycap">
+      <a-menu-item key="keycap.gmk">
         <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
       </a-menu-item>
-      <a-menu-item key="2.2">
+      <a-menu-item key="keycap.sa">
         <nuxt-link to="/keycap/sa"> SA </nuxt-link>
       </a-menu-item>
     </a-sub-menu>
 
-    <a-sub-menu title="Artisan">
-      <a-menu-item key="2.1">
+    <a-sub-menu title="Artisan" key="artisan">
+      <a-menu-item key="artisan.maker">
         <nuxt-link to="/artisan/maker">
           <user-add-outlined /> Makers
         </nuxt-link>
       </a-menu-item>
-      <a-menu-item key="2.2">
+      <a-menu-item key="artisan.collection">
         <nuxt-link to="/artisan/collection">
           <book-outlined /> Collection
         </nuxt-link>
       </a-menu-item>
-      <a-menu-item key="2.3">
+      <a-menu-item key="artisan.wishlist">
         <nuxt-link to="/artisan/wishlist">
           <shopping-cart-outlined /> Wishlist
         </nuxt-link>
