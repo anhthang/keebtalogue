@@ -9,7 +9,7 @@
             </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
-                {{ makerName }}
+                {{ sculpt.maker_name }}
               </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ sculpt.name }}</a-breadcrumb-item>
@@ -104,8 +104,8 @@
         </a-modal>
 
         <a-modal v-model:open="showAddNewColorway" :title="selectedColorway && selectedColorway.name
-            ? `Edit ${colorwayTitle}`
-            : 'Add New Colorway'
+          ? `Edit ${colorwayTitle}`
+          : 'Add New Colorway'
           " destroyOnClose :confirmLoading="confirmLoading" @ok="newColorwaySubmission">
           <colorway-form ref="colorwayForm" :metadata="selectedColorway" />
         </a-modal>
@@ -170,8 +170,6 @@ const route = useRoute();
 const title = ref();
 useHead({ title });
 
-const makerName = ref();
-
 const {
   data: sculpt,
   pending,
@@ -183,13 +181,12 @@ const {
     const sculpt = data.sculpts[route.params.sculpt];
 
     title.value = `${sculpt.name} • ${data.name}`;
-    makerName.value = data.name;
+    sculpt.maker_name = data.name;
 
     return sculpt;
-  })
+  }),
+  { watch: route.params.sculpt }
 );
-
-watchEffect(() => route.params.sculpt, refresh());
 
 const userStore = useUserStore();
 const { authenticated, isEditor, collections, user } = storeToRefs(userStore);
@@ -286,6 +283,8 @@ const showColorwayInformationModal = (clw) => {
   selectedColorway.value = clw;
   if (clw.description) {
     descriptionLines.value = clw.description.split("\n");
+  } else {
+    descriptionLines.value = [];
   }
 };
 

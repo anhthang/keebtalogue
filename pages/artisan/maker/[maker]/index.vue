@@ -116,12 +116,11 @@ const {
   data: maker,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`));
+} = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`), { watch: route.params.maker });
 
 watch(pending, () => {
   title.value = maker.value ? maker.value.name : "Not Found";
 });
-watchEffect(() => route.params.maker, refresh());
 
 const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;
