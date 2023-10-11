@@ -16,12 +16,12 @@
         </template>
 
         <template #extra>
-          <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
-            <template #icon><calendar-outlined /></template> Sales
-          </a-button>
-          <a-button v-if="isEditor" key="edit" type="primary" @click="showEditMakerModal">
+          <a-button v-if="isEditor" type="primary" ghost key="edit" @click="showEditMakerModal">
             <template #icon><edit-outlined /></template>
             Edit
+          </a-button>
+          <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
+            <template #icon><calendar-outlined /></template> Sales
           </a-button>
         </template>
 
@@ -185,6 +185,7 @@ const getFlagEmoji = (isoCode) => {
 
 <style>
 .artisan-container .anticon-custom-icon {
-  vertical-align: 0.125em !important;
+  vertical-align: 0.1rem;
+  font-size: 16px;
 }
 </style>

@@ -20,6 +20,14 @@
           {{ sculpt.release }}
         </template>
         <template #extra>
+          <a-button v-if="isEditor" type="primary" key="submission" @click="showAddColorwayModal">
+            <template #icon><file-add-outlined /></template> Add
+          </a-button>
+
+          <a-button v-if="isEditor" type="primary" ghost @click="showEditSculptModal">
+            <edit-outlined /> Edit
+          </a-button>
+
           <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank" type="dashed">
             <link-outlined /> Visit
           </a-button>
@@ -40,14 +48,6 @@
               <ordered-list-outlined v-else /> Sort
             </a-button>
           </a-dropdown>
-
-          <a-button v-if="isEditor" type="primary" key="submission" @click="showAddColorwayModal">
-            <template #icon><file-add-outlined /></template> Add
-          </a-button>
-
-          <a-button v-if="isEditor" type="primary" @click="showEditSculptModal">
-            <edit-outlined /> Edit
-          </a-button>
         </template>
 
         <a-typography v-if="sculpt.story">
