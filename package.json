@@ -21,19 +21,19 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "7.0.1",
-    "@pinia/nuxt": "^0.4.11",
-    "ant-design-vue": "4.0.3",
+    "@pinia/nuxt": "^0.5.1",
+    "ant-design-vue": "4.0.4",
     "crc": "4.3.2",
     "lodash.groupby": "^4.6.0",
     "lodash.keyby": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.sortby": "^4.7.0",
-    "pinia": "^2.1.6",
+    "pinia": "^2.1.7",
     "slugify": "^1.6.6",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@ant-design-vue/nuxt": "^1.1.1",
+    "@ant-design-vue/nuxt": "^1.1.2",
     "@nuxt/content": "^2.8.5",
     "@nuxtjs/color-mode": "^3.3.0",
     "@nuxtjs/device": "^3.1.1",

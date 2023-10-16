@@ -168,7 +168,9 @@ const size = isMobile ? "small" : "default";
 const route = useRoute();
 
 const title = ref();
-useHead({ title });
+const meta = ref([]);
+
+useHead({ title, meta });
 
 const {
   data: sculpt,
@@ -181,6 +183,15 @@ const {
     const sculpt = data.sculpts[route.params.sculpt];
 
     title.value = `${sculpt.name} • ${data.name}`;
+
+    if (sculpt.story) {
+      meta.value.push(
+        { name: "description", content: sculpt.story },
+        { property: "og:image", content: sculpt.img },
+        { name: "twitter:image", content: sculpt.img }
+      );
+    }
+
     sculpt.maker_name = data.name;
 
     return sculpt;

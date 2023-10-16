@@ -110,17 +110,28 @@ const showEditMaker = ref(false);
 const showAddSale = ref(false);
 
 const title = ref();
-useHead({ title });
+const meta = ref([
+  { property: "og:image", content: `/logo/light/${route.params.maker}.png` },
+  { name: "twitter:image", content: `/logo/light/${route.params.maker}.png` }
+]);
+
+useHead({ title, meta });
 
 const {
   data: maker,
   pending,
   refresh,
-} = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`), { watch: route.params.maker });
+} = await useAsyncData(() => $fetch(`/api/makers/${route.params.maker}`).then((data) => {
+  console.log(data.name, data.intro)
 
-watch(pending, () => {
-  title.value = maker.value ? maker.value.name : "Not Found";
-});
+  title.value = data.name
+
+  if (data.intro) {
+    meta.value.unshift({ name: "description", content: data.intro })
+  }
+
+  return data
+}), { watch: route.params.maker });
 
 const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value;
