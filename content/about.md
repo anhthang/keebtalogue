@@ -23,8 +23,8 @@ And I want to have a catalogue of all keyboard related things available here (ke
 - **Wishlist**:
     - Select your collection to create trading images
 
-- Login with social profiles
-- Dark mode (following system preference)
+- Login with social profiles: Google/Discord
+- Dark mode configuration: System/Light/Dark
 
 ### More features for authenticated user
 - Sync data across your devices
