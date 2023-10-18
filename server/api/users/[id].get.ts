@@ -1,10 +1,10 @@
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-    const client = await serverSupabaseClient(event)
-    return await client
-        .from('users')
-        .select('*, collections:user_collections(*)')
-        .eq('id', event.context.params.id)
-        .single()
+  const client = await serverSupabaseClient(event)
+  return await client
+    .from('users')
+    .select('*, collections:user_collections(*)')
+    .eq('id', event.context.params.id)
+    .single()
 })

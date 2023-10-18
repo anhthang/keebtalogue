@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <ContentDoc>
-      <template v-slot="{ doc }">
+      <template #default="{ doc }">
         <a-page-header :title="doc.title">
           <ContentRenderer :value="doc" />
         </a-page-header>

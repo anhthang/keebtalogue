@@ -1,18 +1,18 @@
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-    const client = await serverSupabaseClient(event)
-    const { created_at, ...rest } = await readBody(event)
+  const client = await serverSupabaseClient(event)
+  const { created_at, ...rest } = await readBody(event)
 
-    const { data, error } = await client
-        .from('sculpts')
-        .upsert(rest)
-        .eq('maker_id', rest.maker_id)
-        .eq('sculpt_id', rest.sculpt_id)
+  const { data, error } = await client
+    .from('sculpts')
+    .upsert(rest)
+    .eq('maker_id', rest.maker_id)
+    .eq('sculpt_id', rest.sculpt_id)
 
-    if (error) {
-        return error
-    }
+  if (error) {
+    return error
+  }
 
-    return data
+  return data
 })

@@ -69,43 +69,43 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
+import { message } from 'ant-design-vue'
 
 const { metadata, isEdit } = defineProps({
   metadata: Object,
   isEdit: Boolean,
-});
+})
 
-const route = useRoute();
+const route = useRoute()
 const sculpt = ref({
   maker_id: route.params.maker,
   sculpt_id: route.params.sculpt,
-});
+})
 
 onBeforeMount(() => {
-  const { colorways, ...rest } = metadata;
+  const { colorways, ...rest } = metadata
 
-  Object.assign(sculpt.value, rest);
-});
+  Object.assign(sculpt.value, rest)
+})
 
 const addSculptProfile = () => {
   $fetch(`/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}`, {
-    method: "post",
+    method: 'post',
     body: sculpt.value,
   })
     .then(() => {
       if (isEdit) {
-        message.success("Sculpt profile updated succesful");
+        message.success('Sculpt profile updated succesful')
       } else {
-        message.success("Successfully added new sculpt profile");
+        message.success('Successfully added new sculpt profile')
       }
     })
     .catch((error) => {
-      message.error(error.message);
-    });
-};
+      message.error(error.message)
+    })
+}
 
 defineExpose({
   addSculptProfile,
-});
+})
 </script>

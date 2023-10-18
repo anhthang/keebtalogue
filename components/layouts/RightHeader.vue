@@ -36,13 +36,13 @@
       <a-typography-title :level="2">Welcome back</a-typography-title>
 
       <a-row :gutter="[8, 8]" class="social-login">
-        <a-button @click="login('google')" block>
+        <a-button block @click="login('google')">
           <span class="custom-icon">
             <icon name="logos:google-icon" />
           </span>
           Continue with Google
         </a-button>
-        <a-button @click="login('discord')" block>
+        <a-button block @click="login('discord')">
           <span class="custom-icon">
             <icon name="logos:discord-icon" />
           </span>
@@ -62,26 +62,26 @@
 </template>
 
 <script setup>
-import Appearance from "./Appearance.vue";
+import Appearance from './Appearance.vue'
 
-import { message } from "ant-design-vue";
-import { storeToRefs } from "pinia";
-import { useUserStore } from "~~/stores/user";
+import { message } from 'ant-design-vue'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '~~/stores/user'
 
-const router = useRouter();
+const router = useRouter()
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
+const { $device } = useNuxtApp()
+const { isMobile } = $device
 
-const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
-const client = useSupabaseClient();
+const client = useSupabaseClient()
 
-const showLoginModal = ref(false);
+const showLoginModal = ref(false)
 const toggleShowLogin = () => {
-  showLoginModal.value = !showLoginModal.value;
-};
+  showLoginModal.value = !showLoginModal.value
+}
 
 const login = async (provider) => {
   const { user, error } = await client.auth.signInWithOAuth({
@@ -89,34 +89,34 @@ const login = async (provider) => {
     options: {
       redirectTo: window.location.origin,
     },
-  });
+  })
 
   if (error) {
-    message.warning(err.message);
+    message.warning(err.message)
   } else if (user) {
     message.success(
-      `Hello, ${user.name}. You successfully logged into this website.`
-    );
+      `Hello, ${user.name}. You successfully logged into this website.`,
+    )
 
-    router.back();
+    router.back()
   }
-};
+}
 
 const logout = async () => {
-  const { error } = await client.auth.signOut();
+  const { error } = await client.auth.signOut()
   if (error) {
-    message.error(error.message);
+    message.error(error.message)
   } else {
-    userStore.$reset();
-    message.success("You have been logged out successfully.");
+    userStore.$reset()
+    message.success('You have been logged out successfully.')
 
-    navigateTo("/");
+    navigateTo('/')
   }
-};
+}
 
 const gotoSettings = () => {
-  router.push("/account/settings");
-};
+  router.push('/account/settings')
+}
 </script>
 
 <style>

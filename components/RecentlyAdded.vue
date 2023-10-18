@@ -18,7 +18,7 @@
         </a-list-item-meta>
         <div>
           {{
-            item.additions === 1 ? "1 addition" : `${item.additions} additions`
+            item.additions === 1 ? '1 addition' : `${item.additions} additions`
           }}
         </div>
       </a-list-item>
@@ -27,5 +27,5 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData(() => $fetch("/api/statistics"));
+const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 </script>

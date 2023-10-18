@@ -12,7 +12,10 @@
             <a-input v-model:value="user.email" disabled>
               <template #prefix><mail-outlined /></template>
               <template #suffix>
-                <check-circle-outlined v-if="user.email_verified" class="email-verified" />
+                <check-circle-outlined
+                  v-if="user.email_verified"
+                  class="email-verified"
+                />
               </template>
             </a-input>
           </a-form-item>
@@ -32,12 +35,19 @@
             </a-input>
           </a-form-item>
           <a-form-item label="Discord">
-            <a-input v-model:value="social.discord" placeholder="Discord#0000" :disabled="discordVerified">
+            <a-input
+              v-model:value="social.discord"
+              placeholder="Discord#0000"
+              :disabled="discordVerified"
+            >
               <template #prefix>
                 <icon name="la:discord" />
               </template>
               <template v-if="discordVerified" #suffix>
-                <check-circle-outlined v-if="user.email_verified" class="email-verified" />
+                <check-circle-outlined
+                  v-if="user.email_verified"
+                  class="email-verified"
+                />
               </template>
             </a-input>
           </a-form-item>
@@ -47,7 +57,11 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" :loading="loading" @click="saveSettings('social')">
+            <a-button
+              type="primary"
+              :loading="loading"
+              @click="saveSettings('social')"
+            >
               <save-outlined /> Save
             </a-button>
           </a-form-item>
@@ -58,35 +72,35 @@
 </template>
 
 <script setup>
-import { useUserStore } from "~~/stores/user";
-import { message } from "ant-design-vue";
-import { storeToRefs } from "pinia";
+import { useUserStore } from '~~/stores/user'
+import { message } from 'ant-design-vue'
+import { storeToRefs } from 'pinia'
 
-const userStore = useUserStore();
-const { user, social } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { user, social } = storeToRefs(userStore)
 
-const layout = "vertical";
+const layout = 'vertical'
 
-const loading = ref(false);
-const saveSettings = (key) => {
-  loading.value = true;
+const loading = ref(false)
+const saveSettings = () => {
+  loading.value = true
   $fetch(`/api/users/${user.value.uid}`, {
-    method: "post",
+    method: 'post',
     body: social.value,
   })
     .then(() => {
-      message.success("Setting updated sucessfully");
-      loading.value = false;
+      message.success('Setting updated sucessfully')
+      loading.value = false
     })
     .catch((error) => {
-      message.error(error.message);
-      loading.value = false;
-    });
-};
+      message.error(error.message)
+      loading.value = false
+    })
+}
 
 const discordVerified = computed(() => {
-  return user.value && user.value.providers?.includes("discord");
-});
+  return user.value && user.value.providers?.includes('discord')
+})
 </script>
 
 <style>

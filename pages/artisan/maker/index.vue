@@ -7,21 +7,37 @@
             <user-add-outlined /> Add
           </a-button>
         </template>
-        <a-modal v-model:open="visible" title="New Maker" destroy-on-close :confirm-loading="confirmLoading"
-          @ok="addMaker">
+        <a-modal
+          v-model:open="visible"
+          title="New Maker"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="addMaker"
+        >
           <maker-form ref="makerForm" />
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">
           <template v-if="!$device.isMobile" #rightExtra>
-            <a-input-search v-model:value="searchMaker" placeholder="Search Maker Name" />
+            <a-input-search
+              v-model:value="searchMaker"
+              placeholder="Search Maker Name"
+            />
           </template>
-          <a-tab-pane :disabled="!authenticated" key="favorite">
+          <a-tab-pane key="favorite" :disabled="!authenticated">
             <template #tab>
               <star-outlined />Favorite ({{ favoriteMakers.length }})
             </template>
             <a-row :gutter="[8, 8]" type="flex">
-              <a-col v-for="maker in favoriteMakers" :key="maker.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
+              <a-col
+                v-for="maker in favoriteMakers"
+                :key="maker.id"
+                :xs="12"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                :xl="4"
+              >
                 <maker-card :favorite="true" :maker="maker" />
               </a-col>
             </a-row>
@@ -31,7 +47,15 @@
               <usergroup-add-outlined />Makers ({{ otherMakers.length }})
             </template>
             <a-row :gutter="[8, 8]" type="flex">
-              <a-col v-for="maker in otherMakers" :key="maker.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
+              <a-col
+                v-for="maker in otherMakers"
+                :key="maker.id"
+                :xs="12"
+                :sm="12"
+                :md="8"
+                :lg="6"
+                :xl="4"
+              >
                 <maker-card :maker="maker" />
               </a-col>
             </a-row>
@@ -43,60 +67,56 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import MakerForm from "~~/components/modals/MakerForm.vue";
-import { useUserStore } from "~~/stores/user";
+import { storeToRefs } from 'pinia'
+import MakerForm from '~~/components/modals/MakerForm.vue'
+import { useUserStore } from '~~/stores/user'
 
 useHead({
-  title: "Artisan Makers",
-});
+  title: 'Artisan Makers',
+})
 
-const {
-  data: makers,
-  pending,
-  refresh,
-} = await useAsyncData(() => $fetch("/api/makers"));
+const { data: makers, pending } = await useAsyncData(() =>
+  $fetch('/api/makers'),
+)
 
-const userStore = useUserStore();
-const { authenticated, isAdmin, user, favorites } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { authenticated, isAdmin, favorites } = storeToRefs(userStore)
 
-const visible = ref(false);
+const visible = ref(false)
 const showModal = () => {
-  visible.value = !visible.value;
-};
+  visible.value = !visible.value
+}
 
 // search maker box
-const searchMaker = ref();
-const filteringMakers = ref(makers.value);
+const searchMaker = ref()
+const filteringMakers = ref(makers.value)
 watch(searchMaker, () => {
   filteringMakers.value = makers.value.filter((m) =>
-    m.name.toLowerCase().includes(searchMaker.value.toLowerCase())
-  );
-});
+    m.name.toLowerCase().includes(searchMaker.value.toLowerCase()),
+  )
+})
 
-const defaultTab = ref(favorites.value.length ? "favorite" : "makers");
+const defaultTab = ref(favorites.value.length ? 'favorite' : 'makers')
 watch(favorites, () => {
-  defaultTab.value = "favorite";
-});
+  defaultTab.value = 'favorite'
+})
 
 const favoriteMakers = computed(() => {
-  return filteringMakers.value.filter((m) => favorites.value.includes(m.id));
-});
+  return filteringMakers.value.filter((m) => favorites.value.includes(m.id))
+})
 
 const otherMakers = computed(() => {
-  return filteringMakers.value.filter(
-    (m) => !favorites.value.includes(m.id)
-  );
-});
+  return filteringMakers.value.filter((m) => !favorites.value.includes(m.id))
+})
 
-const makerForm = ref();
-const confirmLoading = ref(false);
+const makerForm = ref()
+const confirmLoading = ref(false)
 const addMaker = async () => {
-  confirmLoading.value = true;
+  confirmLoading.value = true
 
-  await makerForm.value.addMaker();
+  await makerForm.value.addMaker()
 
-  confirmLoading.value = false;
-  showModal();
-};
+  confirmLoading.value = false
+  showModal()
+}
 </script>

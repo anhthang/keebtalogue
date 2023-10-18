@@ -13,19 +13,19 @@
 </template>
 
 <script setup>
-import SettingProfile from "~~/components/accounts/SettingProfile.vue";
+import SettingProfile from '~~/components/accounts/SettingProfile.vue'
 
 useHead({
-  title: "Account Settings",
-});
+  title: 'Account Settings',
+})
 
 definePageMeta({
-  middleware: "auth",
-});
+  middleware: 'auth',
+})
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
+const { $device } = useNuxtApp()
+const { isMobile } = $device
 
-const tabPosition = isMobile ? "top" : "left";
-const activeKey = ref("profile");
+const tabPosition = isMobile ? 'top' : 'left'
+const activeKey = ref('profile')
 </script>

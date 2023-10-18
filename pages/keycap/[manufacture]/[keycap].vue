@@ -120,22 +120,22 @@
 </template>
 
 <script setup>
-import groupBy from "lodash.groupby";
+import groupBy from 'lodash.groupby'
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
-const size = isMobile ? "small" : "default";
+const { $device } = useNuxtApp()
+const { isMobile } = $device
+const size = isMobile ? 'small' : 'default'
 
-const route = useRoute();
+const route = useRoute()
 
-const { manufacture, keycap } = route.params;
+const { manufacture, keycap } = route.params
 
 const { data, pending } = await useAsyncData(() =>
   $fetch(`/api/keycaps/${manufacture}/${keycap}`).then((data) => {
-    data.artisans = groupBy(data.artisans, "maker_name");
-    return data;
-  })
-);
+    data.artisans = groupBy(data.artisans, 'maker_name')
+    return data
+  }),
+)
 
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
+const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 </script>

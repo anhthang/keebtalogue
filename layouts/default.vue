@@ -12,7 +12,12 @@
 
       <nuxt-link to="/">
         <div class="logo">
-          <img v-if="!isMobileOrTablet" src="/icon.png" alt="logo" class="logo-icon" />
+          <img
+            v-if="!isMobileOrTablet"
+            src="/icon.png"
+            alt="logo"
+            class="logo-icon"
+          />
           {{ config.public.appName }}
         </div>
       </nuxt-link>
@@ -37,19 +42,19 @@
 </template>
 
 <script setup>
-import LayoutFooter from "~~/components/layouts/Footer.vue";
-import MenuTree from "~~/components/layouts/MenuTree.vue";
-import RightHeader from "~~/components/layouts/RightHeader.vue";
+import LayoutFooter from '~~/components/layouts/Footer.vue'
+import MenuTree from '~~/components/layouts/MenuTree.vue'
+import RightHeader from '~~/components/layouts/RightHeader.vue'
 
-const { $device } = useNuxtApp();
-const { isMobile, isMobileOrTablet } = $device;
+const { $device } = useNuxtApp()
+const { isMobile, isMobileOrTablet } = $device
 
-const visible = ref(false);
+const visible = ref(false)
 const sidebarToogle = () => {
-  visible.value = !visible.value;
-};
+  visible.value = !visible.value
+}
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 </script>
 
 <style>
@@ -65,7 +70,7 @@ const config = useRuntimeConfig();
   height: 100%;
   font-size: 24px;
   margin-right: 24px;
-  font-family: "Bungee Spice", cursive;
+  font-family: 'Bungee Spice', cursive;
 }
 
 .logo img {

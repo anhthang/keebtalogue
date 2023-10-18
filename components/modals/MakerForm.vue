@@ -63,30 +63,30 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
-import slugify from "slugify";
+import { message } from 'ant-design-vue'
+import slugify from 'slugify'
 
 const { metadata, isKeeb, isEdit } = defineProps({
   metadata: Object,
   isKeeb: Boolean,
   isEdit: Boolean,
-});
+})
 
-const maker = ref({});
+const maker = ref({})
 
 onBeforeMount(() => {
   if (metadata && Object.keys(metadata).length) {
-    maker.value = { ...metadata };
+    maker.value = { ...metadata }
   }
-});
+})
 
 const addMaker = () => {
-  const { sculpts, ...rest } = maker.value;
+  const { sculpts, ...rest } = maker.value
 
-  const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true });
+  const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true })
 
   $fetch(`/api/makers/${makerId}`, {
-    method: "post",
+    method: 'post',
     body: {
       ...rest,
       id: makerId,
@@ -94,17 +94,17 @@ const addMaker = () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success("Maker profile updated succesful");
+        message.success('Maker profile updated succesful')
       } else {
-        message.success("Successfully added new maker");
+        message.success('Successfully added new maker')
       }
     })
     .catch((error) => {
-      message.error(error.message);
-    });
-};
+      message.error(error.message)
+    })
+}
 
 defineExpose({
   addMaker,
-});
+})
 </script>

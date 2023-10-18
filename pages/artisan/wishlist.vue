@@ -14,8 +14,7 @@
 </template>
 
 <script setup>
-
 useHead({
-  title: "Wishlist",
-});
+  title: 'Wishlist',
+})
 </script>

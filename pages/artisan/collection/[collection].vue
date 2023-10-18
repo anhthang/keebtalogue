@@ -4,7 +4,11 @@
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
           <a-tooltip title="Copy link to share">
-            <a-button v-if="collection.published" type="dashed" @click="copyShareUrl">
+            <a-button
+              v-if="collection.published"
+              type="dashed"
+              @click="copyShareUrl"
+            >
               <share-alt-outlined /> Share
             </a-button>
           </a-tooltip>
@@ -19,21 +23,42 @@
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
 
-          <a-button v-if="user.email_verified && !collection.published" type="primary" @click="publishCollection">
+          <a-button
+            v-if="user.email_verified && !collection.published"
+            type="primary"
+            @click="publishCollection"
+          >
             <cloud-upload-outlined /> Publish
           </a-button>
 
-          <a-button v-if="user.email_verified && collection.published" danger @click="delPublishedCollection">
+          <a-button
+            v-if="user.email_verified && collection.published"
+            danger
+            @click="delPublishedCollection"
+          >
             <cloud-download-outlined /> Unpublish
           </a-button>
 
-          <a-button v-if="user.email_verified" type="primary" danger @click="deleteCollection">
+          <a-button
+            v-if="user.email_verified"
+            type="primary"
+            danger
+            @click="deleteCollection"
+          >
             <delete-outlined /> Delete
           </a-button>
         </template>
 
         <a-row :gutter="[8, 8]" type="flex">
-          <a-col v-for="colorway in sortedCollections" :key="colorway.id" :xs="12" :sm="12" :md="8" :lg="6" :xl="4">
+          <a-col
+            v-for="colorway in sortedCollections"
+            :key="colorway.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :xl="4"
+          >
             <a-card hoverable :title="cardTitle(colorway)" :size="size">
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
@@ -50,188 +75,188 @@
 </template>
 
 <script setup>
-import { useUserStore } from "~~/stores/user";
-import { storeToRefs } from "pinia";
-import sortBy from "lodash.sortby";
-import { message, Modal } from "ant-design-vue";
-import copy from "ant-design-vue/lib/_util/copy-to-clipboard";
+import { useUserStore } from '~~/stores/user'
+import { storeToRefs } from 'pinia'
+import sortBy from 'lodash.sortby'
+import { message, Modal } from 'ant-design-vue'
+import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 
-const userStore = useUserStore();
-const { authenticated, collections, user } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { authenticated, collections, user } = storeToRefs(userStore)
 
-const route = useRoute();
-const router = useRouter();
-const sortedCollections = ref([]);
+const route = useRoute()
+const router = useRouter()
+const sortedCollections = ref([])
 
-const sort = ref("sculpt_name");
+const sort = ref('sculpt_name')
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
-const size = isMobile ? "small" : "default";
+const { $device } = useNuxtApp()
+const { isMobile } = $device
+const size = isMobile ? 'small' : 'default'
 
 const collection =
-  collections.value.find((c) => c.id === route.params.collection) || {};
+  collections.value.find((c) => c.id === route.params.collection) || {}
 
 useHead({
-  title: collection.name ? `${collection.name} • Collection` : "Collection",
-});
+  title: collection.name ? `${collection.name} • Collection` : 'Collection',
+})
 
 const { data, pending, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
     return $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}/items`
-    );
+      `/api/users/${user.value.uid}/collections/${route.params.collection}/items`,
+    )
   } else if (
-    route.params.collection === "wish" ||
-    route.params.collection === "trade"
+    route.params.collection === 'wish' ||
+    route.params.collection === 'trade'
   ) {
-    return [];
+    return []
   } else {
-    return $fetch(`/api/collections/${route.params.collection}`);
+    return $fetch(`/api/collections/${route.params.collection}`)
   }
-});
+})
 
 onMounted(() => {
   data.value = JSON.parse(
-    localStorage.getItem(`Keebtalogue_${route.params.collection}`) || "[]"
-  );
-});
+    localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
+  )
+})
 
 watch(data, () => {
-  sortedCollections.value = sortBy(data.value, ["maker_id", sort.value]);
-});
+  sortedCollections.value = sortBy(data.value, ['maker_id', sort.value])
+})
 
-watchEffect(() => route.params.collection, refresh());
+watchEffect(() => route.params.collection, refresh())
 
 const onChangeSortType = (e) => {
-  sort.value = e.key;
-};
+  sort.value = e.key
+}
 watch(sort, () => {
   sortedCollections.value = sortBy(sortedCollections.value, [
-    "maker_id",
+    'maker_id',
     sort.value,
-  ]);
-});
+  ])
+})
 
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`;
+const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 
 const removeCap = (clw) => {
   Modal.confirm({
-    title: "Confirm Deletion",
+    title: 'Confirm Deletion',
     content: `Are you sure you want to delete ${clw.name} ${clw.sculpt_name} from the collection? This action cannot be undone.`,
-    okText: "Delete",
-    okType: "danger",
+    okText: 'Delete',
+    okType: 'danger',
     onOk() {
       if (authenticated.value) {
         $fetch(
           `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-          { method: "delete" }
+          { method: 'delete' },
         )
           .then(() => {
-            refresh();
-            message.success(`${cardTitle(clw)} removed from the collection.`);
+            refresh()
+            message.success(`${cardTitle(clw)} removed from the collection.`)
           })
           .catch((error) => {
-            message.error(error.message);
-          });
+            message.error(error.message)
+          })
       } else {
         sortedCollections.value = sortedCollections.value.filter(
-          (c) => c.colorway_id !== clw.colorway_id
-        );
+          (c) => c.colorway_id !== clw.colorway_id,
+        )
         localStorage.setItem(
           `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(sortedCollections.value)
-        );
+          JSON.stringify(sortedCollections.value),
+        )
 
-        message.success(`${cardTitle(clw)} removed from the collection.`);
+        message.success(`${cardTitle(clw)} removed from the collection.`)
       }
     },
-  });
-};
+  })
+}
 
 const deleteCollection = () => {
   Modal.confirm({
-    title: "Confirm Deletion",
+    title: 'Confirm Deletion',
     content:
-      "Are you sure you want to delete this collection? This action cannot be undone.",
-    okText: "Delete",
-    okType: "danger",
+      'Are you sure you want to delete this collection? This action cannot be undone.',
+    okText: 'Delete',
+    okType: 'danger',
     onOk() {
-      userStore.removeCollection(route.params.collection);
+      userStore.removeCollection(route.params.collection)
 
       $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}`,
         {
-          method: "delete",
-        }
+          method: 'delete',
+        },
       )
         .then(() => {
-          message.success("Successfully deleted the collection.");
+          message.success('Successfully deleted the collection.')
 
-          router.go(-1);
+          router.go(-1)
         })
         .catch((error) => {
-          message.error(error.message);
-        });
+          message.error(error.message)
+        })
     },
-  });
-};
+  })
+}
 
 const delPublishedCollection = () => {
   Modal.confirm({
-    title: "Are you sure you want to unpublish this collection?",
+    title: 'Are you sure you want to unpublish this collection?',
     onOk() {
       $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}`,
         {
-          method: "post",
+          method: 'post',
           body: {
             published: false,
           },
-        }
+        },
       )
         .then(() => {
-          collection.published = false;
-          message.success("Successfully unpublished the collection.");
+          collection.published = false
+          message.success('Successfully unpublished the collection.')
         })
         .catch((error) => {
-          message.error(error.message);
-        });
+          message.error(error.message)
+        })
     },
-  });
-};
+  })
+}
 
 const publishCollection = () => {
   Modal.confirm({
-    title: "Do you want to publish this collection?",
-    okText: "Publish",
+    title: 'Do you want to publish this collection?',
+    okText: 'Publish',
     onOk() {
       $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}`,
         {
-          method: "post",
+          method: 'post',
           body: {
             published: true,
           },
-        }
+        },
       )
         .then(() => {
-          collection.published = true;
-          message.success("Successfully published the collection.");
+          collection.published = true
+          message.success('Successfully published the collection.')
         })
         .catch((error) => {
-          message.error(error.message);
-        });
+          message.error(error.message)
+        })
     },
-  });
-};
+  })
+}
 
 const copyShareUrl = () => {
-  copy(config.public.baseUrl + route.fullPath);
-  message.success("Collection URL has been copied to the clipboard!");
-};
+  copy(config.public.baseUrl + route.fullPath)
+  message.success('Collection URL has been copied to the clipboard!')
+}
 </script>
 
 <style>

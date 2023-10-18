@@ -29,13 +29,13 @@
 </template>
 
 <script setup>
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 
-const start = ref(dayjs().startOf("month").format("YYYY-MM-DD"));
-const end = ref(dayjs().endOf("month").format("YYYY-MM-DD"));
+const start = ref(dayjs().startOf('month').format('YYYY-MM-DD'))
+const end = ref(dayjs().endOf('month').format('YYYY-MM-DD'))
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
+const { $device } = useNuxtApp()
+const { isMobile } = $device
 
 const {
   data: sales,
@@ -44,46 +44,46 @@ const {
 } = await useAsyncData(() =>
   isMobile
     ? []
-    : $fetch("/api/sales", {
+    : $fetch('/api/sales', {
         params: {
           start: start.value,
           end: end.value,
         },
-      })
-);
+      }),
+)
 
 const salesOnCell = (day) => {
-  const today = new Date().getDate();
+  const today = new Date().getDate()
 
   return sales.value
-    .filter((d) => d.date === day.format("YYYY-MM-DD"))
+    .filter((d) => d.date === day.format('YYYY-MM-DD'))
     .map((d) => {
-      const cellDate = day.date();
-      let type;
+      const cellDate = day.date()
+      let type
       if (cellDate < today) {
-        type = "success";
+        type = 'success'
       } else if (cellDate === today) {
-        type = "processing";
+        type = 'processing'
       } else {
-        type = "warning";
+        type = 'warning'
       }
-      return Object.assign(d, { type });
-    });
-};
+      return Object.assign(d, { type })
+    })
+}
 
-const currentDate = ref(dayjs());
+const currentDate = ref(dayjs())
 
 const onChange = (value) => {
-  start.value = value.startOf("month").format("YYYY-MM-DD");
-  end.value = value.endOf("month").format("YYYY-MM-DD");
-  currentDate.value = value;
+  start.value = value.startOf('month').format('YYYY-MM-DD')
+  end.value = value.endOf('month').format('YYYY-MM-DD')
+  currentDate.value = value
 
-  refresh();
-};
+  refresh()
+}
 
 onMounted(() => {
-  refresh();
-});
+  refresh()
+})
 </script>
 
 <style>

@@ -78,19 +78,19 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import { useUserStore } from "~~/stores/user";
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '~~/stores/user'
 
-const userStore = useUserStore();
-const { collections, social, wishlistConfig } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { collections, wishlistConfig } = storeToRefs(userStore)
 
 const wantToTrade = computed(() => {
-  return wishlistConfig.value.want_to === "trade";
-});
+  return wishlistConfig.value.want_to === 'trade'
+})
 
 watch(wishlistConfig.value, () => {
   userStore.$patch({
     wishlistConfig: wishlistConfig.value,
-  });
-});
+  })
+})
 </script>

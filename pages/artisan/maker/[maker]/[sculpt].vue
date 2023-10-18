@@ -20,15 +20,30 @@
           {{ sculpt.release }}
         </template>
         <template #extra>
-          <a-button v-if="isEditor" type="primary" key="submission" @click="showAddColorwayModal">
+          <a-button
+            v-if="isEditor"
+            key="submission"
+            type="primary"
+            @click="showAddColorwayModal"
+          >
             <template #icon><file-add-outlined /></template> Add
           </a-button>
 
-          <a-button v-if="isEditor" type="primary" ghost @click="showEditSculptModal">
+          <a-button
+            v-if="isEditor"
+            type="primary"
+            ghost
+            @click="showEditSculptModal"
+          >
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank" type="dashed">
+          <a-button
+            v-if="sculpt.href"
+            :href="sculpt.href"
+            target="_blank"
+            type="dashed"
+          >
             <link-outlined /> Visit
           </a-button>
 
@@ -51,7 +66,10 @@
         </template>
 
         <a-typography v-if="sculpt.story">
-          <a-typography-paragraph v-for="(line, idx) in sculpt.story.split('\n')" :key="idx">
+          <a-typography-paragraph
+            v-for="(line, idx) in sculpt.story.split('\n')"
+            :key="idx"
+          >
             {{ line }}
           </a-typography-paragraph>
         </a-typography>
@@ -69,16 +87,35 @@
         </a-descriptions>
 
         <a-row :gutter="[8, 8]" type="flex">
-          <a-col v-for="colorway in sculpt.colorways" :key="colorway.colorway_id" :xs="12" :sm="12" :md="8" :lg="6"
-            :xl="4">
-            <a-card hoverable :title="colorway.name || '-'" :size="size" class="sculpt-card">
+          <a-col
+            v-for="colorway in sculpt.colorways"
+            :key="colorway.colorway_id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :xl="4"
+          >
+            <a-card
+              hoverable
+              :title="colorway.name || '-'"
+              :size="size"
+              class="sculpt-card"
+            >
               <template #extra>
-                <bg-colors-outlined v-if="colorway.commissioned" class="commissioned" />
+                <bg-colors-outlined
+                  v-if="colorway.commissioned"
+                  class="commissioned"
+                />
                 <gift-filled v-if="colorway.giveaway" class="giveaway" />
               </template>
               <template #cover>
-                <img loading="lazy" :alt="colorway.name" :src="colorway.img"
-                  @click="showColorwayInformationModal(colorway)" />
+                <img
+                  loading="lazy"
+                  :alt="colorway.name"
+                  :src="colorway.img"
+                  @click="showColorwayInformationModal(colorway)"
+                />
               </template>
 
               <template v-if="collections.length" #actions>
@@ -86,8 +123,12 @@
                   <div><save-outlined /> Add to Collection</div>
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item v-for="collection in collections" :key="collection.id" :disabled="!collections.length"
-                        @click="addToCollection(collection, colorway)">
+                      <a-menu-item
+                        v-for="collection in collections"
+                        :key="collection.id"
+                        :disabled="!collections.length"
+                        @click="addToCollection(collection, colorway)"
+                      >
                         {{ collection.name }}
                       </a-menu-item>
                     </a-menu>
@@ -98,30 +139,53 @@
           </a-col>
         </a-row>
 
-        <a-modal v-model:open="showEditSculpt" title="Edit Sculpt" destroy-on-close :confirm-loading="confirmLoading"
-          @ok="updateSculptProfile">
+        <a-modal
+          v-model:open="showEditSculpt"
+          title="Edit Sculpt"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="updateSculptProfile"
+        >
           <sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
         </a-modal>
 
-        <a-modal v-model:open="showAddNewColorway" :title="selectedColorway && selectedColorway.name
-          ? `Edit ${colorwayTitle}`
-          : 'Add New Colorway'
-          " destroyOnClose :confirmLoading="confirmLoading" @ok="newColorwaySubmission">
+        <a-modal
+          v-model:open="showAddNewColorway"
+          :title="
+            selectedColorway && selectedColorway.name
+              ? `Edit ${colorwayTitle}`
+              : 'Add New Colorway'
+          "
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="newColorwaySubmission"
+        >
           <colorway-form ref="colorwayForm" :metadata="selectedColorway" />
         </a-modal>
 
-        <a-modal v-model:open="showColorwayInformation" destroy-on-close :footer="null">
+        <a-modal
+          v-model:open="showColorwayInformation"
+          destroy-on-close
+          :footer="null"
+        >
           <a-typography>
             <a-typography-title :level="4">
               {{ colorwayTitle }}
-              <a-button v-if="isEditor" type="link" @click="onEditColorway(selectedColorway)">
+              <a-button
+                v-if="isEditor"
+                type="link"
+                @click="onEditColorway(selectedColorway)"
+              >
                 <edit-outlined />
               </a-button>
             </a-typography-title>
             <a-typography-paragraph v-if="selectedColorway.keycap">
               <a-typography-text>
                 <nuxt-link :to="`/keycap/${selectedColorway.keycap.slug}`">
-                  <a-tag :key="selectedColorway.keycap.id" :color="selectedColorway.keycap.base">
+                  <a-tag
+                    :key="selectedColorway.keycap.id"
+                    :color="selectedColorway.keycap.base"
+                  >
                     {{ selectedColorway.keycap.name }}
                   </a-tag>
                 </nuxt-link>
@@ -135,15 +199,24 @@
               <a-descriptions-item label="Quantity">
                 {{ selectedColorway.qty }}
               </a-descriptions-item>
-              <a-descriptions-item v-if="authenticated && selectedColorway.price" label="Price">
+              <a-descriptions-item
+                v-if="authenticated && selectedColorway.price"
+                label="Price"
+              >
                 {{ selectedColorway.currency }} {{ selectedColorway.price }}
               </a-descriptions-item>
-              <a-descriptions-item v-if="authenticated && selectedColorway.sale_type" label="Sale Type">
+              <a-descriptions-item
+                v-if="authenticated && selectedColorway.sale_type"
+                label="Sale Type"
+              >
                 {{ selectedColorway.sale_type }}
               </a-descriptions-item>
             </a-descriptions>
 
-            <a-typography-paragraph v-for="(line, idx) in descriptionLines" :key="idx">
+            <a-typography-paragraph
+              v-for="(line, idx) in descriptionLines"
+              :key="idx"
+            >
               {{ line }}
             </a-typography-paragraph>
           </a-typography>
@@ -154,60 +227,61 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
-import sortBy from "lodash.sortby";
-import { storeToRefs } from "pinia";
-import ColorwayForm from "~~/components/modals/ColorwayForm.vue";
-import SculptForm from "~~/components/modals/SculptForm.vue";
-import { useUserStore } from "~~/stores/user";
+import { message } from 'ant-design-vue'
+import sortBy from 'lodash.sortby'
+import { storeToRefs } from 'pinia'
+import ColorwayForm from '~~/components/modals/ColorwayForm.vue'
+import SculptForm from '~~/components/modals/SculptForm.vue'
+import { useUserStore } from '~~/stores/user'
 
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
-const size = isMobile ? "small" : "default";
+const { $device } = useNuxtApp()
+const { isMobile } = $device
+const size = isMobile ? 'small' : 'default'
 
-const route = useRoute();
+const route = useRoute()
 
-const title = ref();
-const meta = ref([]);
+const title = ref()
+const meta = ref([])
 
-useHead({ title, meta });
+useHead({ title, meta })
 
 const {
   data: sculpt,
   pending,
   refresh,
-} = await useAsyncData(() =>
-  $fetch(
-    `/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`
-  ).then((data) => {
-    const sculpt = data.sculpts[route.params.sculpt];
+} = await useAsyncData(
+  () =>
+    $fetch(
+      `/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`,
+    ).then((data) => {
+      const sculpt = data.sculpts[route.params.sculpt]
 
-    title.value = `${sculpt.name} • ${data.name}`;
+      title.value = `${sculpt.name} • ${data.name}`
 
-    if (sculpt.story) {
-      meta.value.push(
-        { name: "description", content: sculpt.story },
-        { property: "og:image", content: sculpt.img },
-        { name: "twitter:image", content: sculpt.img }
-      );
-    }
+      if (sculpt.story) {
+        meta.value.push(
+          { name: 'description', content: sculpt.story },
+          { property: 'og:image', content: sculpt.img },
+          { name: 'twitter:image', content: sculpt.img },
+        )
+      }
 
-    sculpt.maker_name = data.name;
+      sculpt.maker_name = data.name
 
-    return sculpt;
-  }),
-  { watch: route.params.sculpt }
-);
+      return sculpt
+    }),
+  { watch: route.params.sculpt },
+)
 
-const userStore = useUserStore();
-const { authenticated, isEditor, collections, user } = storeToRefs(userStore);
+const userStore = useUserStore()
+const { authenticated, isEditor, collections, user } = storeToRefs(userStore)
 
-let sort = ref("order");
+const sort = ref('order')
 
 const onChangeSortType = (e) => {
-  sort.value = e.key;
-  sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key);
-};
+  sort.value = e.key
+  sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key)
+}
 
 const addToCollection = (collection, colorway) => {
   const clw = {
@@ -218,96 +292,96 @@ const addToCollection = (collection, colorway) => {
     maker_id: route.params.maker,
     uid: user.value.uid,
     collection_id: collection.id,
-  };
+  }
 
   if (authenticated.value) {
     $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
-      method: "post",
+      method: 'post',
       body: clw,
     })
       .then(() => {
-        message.success(`Added ${colorway.name} to ${collection.name}`);
+        message.success(`Added ${colorway.name} to ${collection.name}`)
       })
       .catch((error) => {
-        message.error(error.message);
-      });
+        message.error(error.message)
+      })
   } else {
     const collectionMap =
-      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || [];
+      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || []
 
-    collectionMap.push(clw);
+    collectionMap.push(clw)
 
     localStorage.setItem(
       `Keebtalogue_${collection.id}`,
-      JSON.stringify(collectionMap)
-    );
+      JSON.stringify(collectionMap),
+    )
 
-    message.success(`Added ${clw.name} to ${collection.name}`);
+    message.success(`Added ${clw.name} to ${collection.name}`)
   }
-};
+}
 
-const confirmLoading = ref(false);
+const confirmLoading = ref(false)
 
 // edit sculpt
-const showEditSculpt = ref(false);
+const showEditSculpt = ref(false)
 const showEditSculptModal = () => {
-  showEditSculpt.value = !showEditSculpt.value;
-};
+  showEditSculpt.value = !showEditSculpt.value
+}
 
-const sculptForm = ref();
+const sculptForm = ref()
 const updateSculptProfile = async () => {
-  confirmLoading.value = true;
+  confirmLoading.value = true
 
-  await sculptForm.value.addSculptProfile();
+  await sculptForm.value.addSculptProfile()
 
-  showEditSculptModal();
-  confirmLoading.value = false;
-  refresh();
-};
+  showEditSculptModal()
+  confirmLoading.value = false
+  refresh()
+}
 
 /**
  * New colorway submission
  * Currently, just add/update colorway description
  */
-const showAddNewColorway = ref(false);
+const showAddNewColorway = ref(false)
 const showAddColorwayModal = () => {
-  showAddNewColorway.value = !showAddNewColorway.value;
-};
+  showAddNewColorway.value = !showAddNewColorway.value
+}
 
-const colorwayForm = ref();
+const colorwayForm = ref()
 const newColorwaySubmission = async () => {
-  confirmLoading.value = true;
+  confirmLoading.value = true
 
-  await colorwayForm.value.addColorway();
-  showAddColorwayModal();
+  await colorwayForm.value.addColorway()
+  showAddColorwayModal()
 
-  confirmLoading.value = false;
-  refresh();
-};
+  confirmLoading.value = false
+  refresh()
+}
 
 // show colorway information popup
-const showColorwayInformation = ref(false);
-const selectedColorway = ref({});
-const descriptionLines = ref([]);
+const showColorwayInformation = ref(false)
+const selectedColorway = ref({})
+const descriptionLines = ref([])
 const showColorwayInformationModal = (clw) => {
-  showColorwayInformation.value = !showColorwayInformation.value;
-  selectedColorway.value = clw;
+  showColorwayInformation.value = !showColorwayInformation.value
+  selectedColorway.value = clw
   if (clw.description) {
-    descriptionLines.value = clw.description.split("\n");
+    descriptionLines.value = clw.description.split('\n')
   } else {
-    descriptionLines.value = [];
+    descriptionLines.value = []
   }
-};
+}
 
 const colorwayTitle = computed(() => {
-  return `${selectedColorway.value.name} ${sculpt.value.name}`;
-});
+  return `${selectedColorway.value.name} ${sculpt.value.name}`
+})
 
 // edit colorway
 const onEditColorway = (clw) => {
-  showColorwayInformationModal(clw);
-  showAddColorwayModal();
-};
+  showColorwayInformationModal(clw)
+  showAddColorwayModal()
+}
 </script>
 
 <style>

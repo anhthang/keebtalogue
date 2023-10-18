@@ -25,40 +25,40 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
+import { message } from 'ant-design-vue'
 
 const { metadata } = defineProps({
   metadata: Object,
-});
+})
 
-const route = useRoute();
+const route = useRoute()
 const sale = ref({
   maker_id: route.params.maker,
-});
+})
 
 const selectSculpt = (e) => {
-  sale.value.sculpt_name = metadata[e];
-};
+  sale.value.sculpt_name = metadata[e]
+}
 
 const addSale = () => {
   const body = {
     ...sale.value,
-    date: sale.value.date.format("YYYY-MM-DD"),
-  };
+    date: sale.value.date.format('YYYY-MM-DD'),
+  }
 
-  $fetch("/api/sales", {
-    method: "post",
+  $fetch('/api/sales', {
+    method: 'post',
     body,
   })
     .then(() => {
-      message.success("Sale added succesfully.");
+      message.success('Sale added succesfully.')
     })
     .catch((error) => {
-      message.error(error.message);
-    });
-};
+      message.error(error.message)
+    })
+}
 
 defineExpose({
   addSale,
-});
+})
 </script>

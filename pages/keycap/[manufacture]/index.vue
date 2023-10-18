@@ -27,25 +27,21 @@
 </template>
 
 <script setup>
-const { $device } = useNuxtApp();
-const { isMobile } = $device;
-const size = isMobile ? "small" : "default";
+const { $device } = useNuxtApp()
+const { isMobile } = $device
+const size = isMobile ? 'small' : 'default'
 
 useHead({
-  title: "GMK Keycaps",
-});
+  title: 'GMK Keycaps',
+})
 
-const route = useRoute();
+const route = useRoute()
 const manufacturers = {
-  gmk: "GMK",
-  sa: "SA",
-};
+  gmk: 'GMK',
+  sa: 'SA',
+}
 
-const {
-  data: keycaps,
-  pending,
-  refresh,
-} = await useAsyncData(() =>
-  $fetch(`/api/keycaps?query=${route.params.manufacture}`)
-);
+const { data: keycaps, pending } = await useAsyncData(() =>
+  $fetch(`/api/keycaps?query=${route.params.manufacture}`),
+)
 </script>

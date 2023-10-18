@@ -52,7 +52,7 @@
       </a-col>
     </a-row>
 
-    <a-row :gutter="[8, 8]" v-if="!colorway.giveaway && !colorway.commissioned">
+    <a-row v-if="!colorway.giveaway && !colorway.commissioned" :gutter="[8, 8]">
       <a-col :xs="12">
         <a-form-item label="Price">
           <a-input-group class="price-input-group" compact>
@@ -129,81 +129,81 @@
 </template>
 
 <script setup>
-import { message } from "ant-design-vue";
+import { message } from 'ant-design-vue'
 
 const { metadata } = defineProps({
   metadata: Object,
-});
+})
 
-const currencies = ["USD", "EUR", "CAD", "SGD", "MYR", "CNY", "VND"];
+const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 
-const route = useRoute();
+const route = useRoute()
 const colorway = ref({
   maker_id: route.params.maker,
   sculpt_id: route.params.sculpt,
-});
+})
 
 onBeforeMount(() => {
-  Object.assign(colorway.value, metadata);
+  Object.assign(colorway.value, metadata)
   if (metadata.img) {
-    fileList.value = [{ url: metadata.img }];
+    fileList.value = [{ url: metadata.img }]
   }
-});
+})
 
 const addColorway = () => {
   $fetch(
     `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
     {
-      method: "post",
+      method: 'post',
       body: colorway.value,
-    }
+    },
   )
     .then(() => {
-      message.success("Colorway information updated successfully");
+      message.success('Colorway information updated successfully')
     })
     .catch((error) => {
-      message.error(error.message);
-    });
-};
-
-const fetching = ref(false);
-const keycaps = ref([]);
-const fetchkeycaps = (val) => {
-  fetching.value = true;
-  $fetch(`/api/keycaps?query=${val}`)
-    .then((data) => {
-      keycaps.value = data.map((k) => ({ key: k.id, value: k.name }));
-      fetching.value = false;
+      message.error(error.message)
     })
-    .catch(() => {
-      fetching.value = false;
-    });
-};
+}
+
+// const fetching = ref(false)
+// const keycaps = ref([])
+// const fetchkeycaps = (val) => {
+//   fetching.value = true
+//   $fetch(`/api/keycaps?query=${val}`)
+//     .then((data) => {
+//       keycaps.value = data.map((k) => ({ key: k.id, value: k.name }))
+//       fetching.value = false
+//     })
+//     .catch(() => {
+//       fetching.value = false
+//     })
+// }
 
 /**
  * Upload image
  */
-const fileList = ref([]);
+const fileList = ref([])
 
 const beforeUpload = (file) => {
-  const isImg = file.type.startsWith("image");
+  const isImg = file.type.startsWith('image')
   if (!isImg) {
-    message.error(`${file.name} is not an image file`);
+    message.error(`${file.name} is not an image file`)
   }
 
-  return isImg;
-};
+  return isImg
+}
 
 const onImageChange = (info) => {
-  const status = info.file.status;
-  if (status === "done") {
-    message.success(`${info.file.name} uploaded successfully.`);
-  } else if (status === "error") {
-    message.error(`${info.file.name} upload failed.`);
+  const status = info.file.status
+  if (status === 'done') {
+    message.success(`${info.file.name} uploaded successfully.`)
+  } else if (status === 'error') {
+    message.error(`${info.file.name} upload failed.`)
   }
-};
+}
 
 defineExpose({
   addColorway,
-});
+})
 </script>

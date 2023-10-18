@@ -1,6 +1,10 @@
 <template>
-  <a-menu :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'" :mode="mode"
-    :style="{ lineHeight: '64px' }" @click="onChangeMenu">
+  <a-menu
+    :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'"
+    :mode="mode"
+    :style="{ lineHeight: '64px' }"
+    @click="onChangeMenu"
+  >
     <!-- <a-menu-item key="1">
       <nuxt-link to="/"><calendar-outlined /> Calendar </nuxt-link>
     </a-menu-item> -->
@@ -26,7 +30,7 @@
       </a-menu-item>
     </a-sub-menu> -->
 
-    <a-sub-menu title="Keycap" key="keycap">
+    <a-sub-menu key="keycap" title="Keycap">
       <a-menu-item key="keycap.gmk">
         <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
       </a-menu-item>
@@ -35,7 +39,7 @@
       </a-menu-item>
     </a-sub-menu>
 
-    <a-sub-menu title="Artisan" key="artisan">
+    <a-sub-menu key="artisan" title="Artisan">
       <a-menu-item key="artisan.maker">
         <nuxt-link to="/artisan/maker">
           <user-add-outlined /> Makers
@@ -74,5 +78,5 @@ export default {
       // }
     },
   },
-};
+}
 </script>
