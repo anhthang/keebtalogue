@@ -72,7 +72,12 @@
 import { message } from 'ant-design-vue'
 
 const { metadata, isEdit } = defineProps({
-  metadata: Object,
+  metadata: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
   isEdit: Boolean,
 })
 

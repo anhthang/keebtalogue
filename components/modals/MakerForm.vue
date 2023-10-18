@@ -67,7 +67,12 @@ import { message } from 'ant-design-vue'
 import slugify from 'slugify'
 
 const { metadata, isKeeb, isEdit } = defineProps({
-  metadata: Object,
+  metadata: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
   isKeeb: Boolean,
   isEdit: Boolean,
 })

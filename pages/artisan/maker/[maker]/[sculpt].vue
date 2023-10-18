@@ -146,7 +146,11 @@
           :confirm-loading="confirmLoading"
           @ok="updateSculptProfile"
         >
-          <sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
+          <modals-sculpt-form
+            ref="sculptForm"
+            :is-edit="true"
+            :metadata="sculpt"
+          />
         </a-modal>
 
         <a-modal
@@ -160,7 +164,10 @@
           :confirm-loading="confirmLoading"
           @ok="newColorwaySubmission"
         >
-          <colorway-form ref="colorwayForm" :metadata="selectedColorway" />
+          <modals-colorway-form
+            ref="colorwayForm"
+            :metadata="selectedColorway"
+          />
         </a-modal>
 
         <a-modal
@@ -230,8 +237,6 @@
 import { message } from 'ant-design-vue'
 import sortBy from 'lodash.sortby'
 import { storeToRefs } from 'pinia'
-import ColorwayForm from '~~/components/modals/ColorwayForm.vue'
-import SculptForm from '~~/components/modals/SculptForm.vue'
 import { useUserStore } from '~~/stores/user'
 
 const { $device } = useNuxtApp()

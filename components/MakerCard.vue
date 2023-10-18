@@ -43,7 +43,12 @@ const { isMobile } = $device
 const size = isMobile ? 'small' : 'default'
 
 const { maker, favorite } = defineProps({
-  maker: Object,
+  maker: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
   favorite: Boolean,
 })
 

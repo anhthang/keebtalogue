@@ -14,7 +14,7 @@
           :confirm-loading="confirmLoading"
           @ok="addMaker"
         >
-          <maker-form ref="makerForm" />
+          <modals-maker-form ref="makerForm" />
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">
@@ -68,7 +68,6 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import MakerForm from '~~/components/modals/MakerForm.vue'
 import { useUserStore } from '~~/stores/user'
 
 useHead({

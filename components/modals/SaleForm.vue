@@ -28,7 +28,12 @@
 import { message } from 'ant-design-vue'
 
 const { metadata } = defineProps({
-  metadata: Object,
+  metadata: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
 })
 
 const route = useRoute()

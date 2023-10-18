@@ -125,7 +125,11 @@
           :confirm-loading="confirmLoading"
           @ok="updateMakerProfile"
         >
-          <maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
+          <modals-maker-form
+            ref="makerForm"
+            :is-edit="true"
+            :metadata="maker"
+          />
         </a-modal>
 
         <a-modal
@@ -135,7 +139,11 @@
           :confirm-loading="confirmLoading"
           @ok="addUpcomingSale"
         >
-          <sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
+          <modals-sale-form
+            ref="saleForm"
+            :is-edit="true"
+            :metadata="sculptLst"
+          />
         </a-modal>
       </a-page-header>
       <a-result
@@ -156,8 +164,6 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import MakerForm from '~~/components/modals/MakerForm.vue'
-import SaleForm from '~~/components/modals/SaleForm.vue'
 import { useUserStore } from '~~/stores/user'
 
 const { $device } = useNuxtApp()

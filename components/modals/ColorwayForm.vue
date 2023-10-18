@@ -132,7 +132,12 @@
 import { message } from 'ant-design-vue'
 
 const { metadata } = defineProps({
-  metadata: Object,
+  metadata: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
 })
 
 const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
