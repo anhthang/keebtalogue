@@ -22,9 +22,9 @@
         </div>
       </nuxt-link>
 
-      <menu-tree v-if="!isMobile" mode="horizontal" />
+      <layout-menu-tree v-if="!isMobile" mode="horizontal" />
 
-      <right-header />
+      <layout-right-header />
     </a-layout-header>
 
     <a-layout>
@@ -42,10 +42,6 @@
 </template>
 
 <script setup>
-import LayoutFooter from '~~/components/layouts/Footer.vue'
-import MenuTree from '~~/components/layouts/MenuTree.vue'
-import RightHeader from '~~/components/layouts/RightHeader.vue'
-
 const { $device } = useNuxtApp()
 const { isMobile, isMobileOrTablet } = $device
 

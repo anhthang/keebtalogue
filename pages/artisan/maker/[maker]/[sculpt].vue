@@ -146,7 +146,7 @@
           :confirm-loading="confirmLoading"
           @ok="updateSculptProfile"
         >
-          <modals-sculpt-form
+          <modal-sculpt-form
             ref="sculptForm"
             :is-edit="true"
             :metadata="sculpt"
@@ -164,7 +164,7 @@
           :confirm-loading="confirmLoading"
           @ok="newColorwaySubmission"
         >
-          <modals-colorway-form
+          <modal-colorway-form
             ref="colorwayForm"
             :metadata="selectedColorway"
           />

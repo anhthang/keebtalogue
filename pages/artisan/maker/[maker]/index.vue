@@ -125,11 +125,7 @@
           :confirm-loading="confirmLoading"
           @ok="updateMakerProfile"
         >
-          <modals-maker-form
-            ref="makerForm"
-            :is-edit="true"
-            :metadata="maker"
-          />
+          <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
         </a-modal>
 
         <a-modal
@@ -139,7 +135,7 @@
           :confirm-loading="confirmLoading"
           @ok="addUpcomingSale"
         >
-          <modals-sale-form
+          <modal-sale-form
             ref="saleForm"
             :is-edit="true"
             :metadata="sculptLst"

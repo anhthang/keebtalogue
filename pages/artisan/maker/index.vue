@@ -14,7 +14,7 @@
           :confirm-loading="confirmLoading"
           @ok="addMaker"
         >
-          <modals-maker-form ref="makerForm" />
+          <modal-maker-form ref="makerForm" />
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">

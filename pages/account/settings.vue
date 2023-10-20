@@ -4,7 +4,7 @@
       <a-card>
         <a-tabs v-model:activeKey="activeKey" :tab-position="tabPosition">
           <a-tab-pane key="profile" tab="Profile">
-            <setting-profile />
+            <account-profile />
           </a-tab-pane>
         </a-tabs>
       </a-card>
@@ -13,8 +13,6 @@
 </template>
 
 <script setup>
-import SettingProfile from '~~/components/accounts/SettingProfile.vue'
-
 useHead({
   title: 'Account Settings',
 })
