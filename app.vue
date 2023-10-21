@@ -8,7 +8,7 @@
       token: seedToken,
     }"
   >
-    <NuxtLayout>
+    <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
   </a-config-provider>
@@ -19,6 +19,16 @@ import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import '@/assets/app.css'
 import 'ant-design-vue/dist/reset.css'
+
+const { $device } = useNuxtApp()
+const { isMobile, isTablet } = $device
+
+let layout = 'desktop'
+if (isMobile) {
+  layout = 'mobile'
+} else if (isTablet) {
+  layout = 'tablet'
+}
 
 const seedToken = {
   fontFamily: "'Titillium Web', sans-serif;",

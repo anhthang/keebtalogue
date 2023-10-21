@@ -2,14 +2,18 @@ import { serverSupabaseClient } from '#supabase/server'
 import { crc32 } from 'crc'
 import slugify from 'slugify'
 
+const selfMakers = ['alpha-keycaps', 'gooey-keys']
+
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
   const body = await readBody(event)
 
-  const slug = slugify(body.name, { lower: true })
-  body.colorway_id = crc32(
-    `${body.maker_id}-${body.sculpt_id}-${slug}-${body.order}`,
-  ).toString(16)
+  if (selfMakers.includes(body.maker_id)) {
+    const slug = slugify(body.name, { lower: true })
+    body.colorway_id = crc32(
+      `${body.maker_id}-${body.sculpt_id}-${slug}-${body.order}`,
+    ).toString(16)
+  }
 
   delete body.keycap
 
