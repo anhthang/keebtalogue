@@ -96,12 +96,7 @@
             :lg="6"
             :xl="4"
           >
-            <a-card
-              hoverable
-              :title="colorway.name || '-'"
-              :size="size"
-              class="sculpt-card"
-            >
+            <a-card hoverable :title="colorway.name || '-'" class="sculpt-card">
               <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
@@ -238,10 +233,6 @@ import { message } from 'ant-design-vue'
 import sortBy from 'lodash.sortby'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
 
 const route = useRoute()
 

@@ -12,7 +12,7 @@
             :xl="6"
           >
             <nuxt-link :to="`/keycap/${keycap.slug}`">
-              <a-card hoverable :title="keycap.name" :size="size">
+              <a-card hoverable :title="keycap.name">
                 <template #cover>
                   <img loading="lazy" :alt="keycap.name" :src="keycap.img" />
                 </template>
@@ -27,10 +27,6 @@
 </template>
 
 <script setup>
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
-
 useHead({
   title: 'GMK Keycaps',
 })

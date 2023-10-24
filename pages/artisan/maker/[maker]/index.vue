@@ -109,7 +109,7 @@
             :xl="4"
           >
             <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
-              <a-card hoverable :title="sculpt.name" :size="size">
+              <a-card hoverable :title="sculpt.name">
                 <template #cover>
                   <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
                 </template>
@@ -161,10 +161,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
 
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)

@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
-    <a-card hoverable :title="maker.name" :size="size">
+    <a-card hoverable :title="maker.name">
       <template v-if="authenticated" #extra>
         <star-filled
           v-if="favorite"
@@ -37,10 +37,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
 
 const { maker, favorite } = defineProps({
   maker: {

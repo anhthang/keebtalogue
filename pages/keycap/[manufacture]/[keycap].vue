@@ -41,7 +41,7 @@
             :md="8"
             :xl="6"
           >
-            <a-card hoverable :title="kit.name" :size="size">
+            <a-card hoverable :title="kit.name">
               <template #cover>
                 <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
                 <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
@@ -73,7 +73,6 @@
                 <a-card
                   hoverable
                   :title="cardTitle(colorway)"
-                  :size="size"
                   class="sculpt-card"
                 >
                   <template #extra>
@@ -121,10 +120,6 @@
 
 <script setup>
 import groupBy from 'lodash.groupby'
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
 
 const route = useRoute()
 

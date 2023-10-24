@@ -59,7 +59,7 @@
             :lg="6"
             :xl="4"
           >
-            <a-card hoverable :title="cardTitle(colorway)" :size="size">
+            <a-card hoverable :title="cardTitle(colorway)">
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
               </template>
@@ -91,10 +91,6 @@ const router = useRouter()
 const sortedCollections = ref([])
 
 const sort = ref('sculpt_name')
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
-const size = isMobile ? 'small' : 'default'
 
 const collection =
   collections.value.find((c) => c.id === route.params.collection) || {}

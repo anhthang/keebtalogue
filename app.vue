@@ -1,5 +1,6 @@
 <template>
   <a-config-provider
+    :component-size="size"
     :theme="{
       algorithm:
         $colorMode.value === 'dark'
@@ -29,6 +30,8 @@ if (isMobile) {
 } else if (isTablet) {
   layout = 'tablet'
 }
+
+const size = isMobile ? 'small' : 'default'
 
 const seedToken = {
   fontFamily: "'Titillium Web', sans-serif;",
@@ -67,6 +70,9 @@ const { appName, appDesc, baseUrl } = config.public
 useHead({
   titleTemplate: (chunk) => {
     return chunk ? `${chunk} - ${appName}` : appName
+  },
+  htmlAttrs: {
+    lang: 'en',
   },
   meta: [
     // Primary Meta Tags
