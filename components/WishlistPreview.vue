@@ -3,18 +3,11 @@
     <template #extra>
       <a-tooltip>
         <template #title>Copy trading text to clipboard</template>
-        <a-button type="primary" @click="copyToClipboard">
-          <copy-outlined /> Copy
-        </a-button>
+        <a-button @click="copyToClipboard"> <copy-outlined /> Copy </a-button>
       </a-tooltip>
 
-      <a-button
-        v-if="isAdmin"
-        :loading="loading"
-        type="primary"
-        @click="generateImg"
-      >
-        <download-outlined /> Download
+      <a-button :loading="loading" @click="generateImg">
+        <file-image-outlined /> Download
       </a-button>
     </template>
 
@@ -39,7 +32,7 @@
       <a-alert
         v-if="errorText"
         type="error"
-        message="Some items in your list is updated. Please remove it to continue."
+        message="Something went wrong"
         :description="errorText"
         show-icon
         closable
@@ -99,13 +92,14 @@
 <script setup>
 import { message, Modal } from 'ant-design-vue'
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
+import html2canvas from 'html2canvas'
 import groupBy from 'lodash.groupby'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import { useUserStore } from '~~/stores/user'
 
 const userStore = useUserStore()
-const { authenticated, user, isAdmin, wishlistConfig } = storeToRefs(userStore)
+const { authenticated, user, wishlistConfig } = storeToRefs(userStore)
 
 const draggableWishList = ref([])
 const draggableTradeList = ref([])
@@ -158,39 +152,26 @@ const loading = ref(false)
 const errorText = ref()
 const generateImg = async () => {
   loading.value = true
-  errorText.value = undefined
 
-  await $fetch('/api/wishlist', {
-    method: 'post',
-    body: {
-      settings: wishlistConfig.value,
-      wishlist: draggableWishList.value,
-      tradelist: wantToTrade.value ? draggableTradeList.value : [],
-    },
-  })
-    .then((response) => {
-      if (response.IsError) {
-        const caps = draggableWishList.value
-          .concat(draggableTradeList.value)
-          .filter((c) => response.ErrorItems.includes(c.colorway_id))
+  try {
+    const el = document.getElementsByClassName('artisan-container')[0]
 
-        errorText.value = caps
-          .map((c) => `${c.name} ${c.sculpt_name}`)
-          .join(', ')
-      } else {
-        base64Img.value = response.Body
-      }
-    })
-    .catch((error) => {
-      message.error(error.message)
-    })
-
-  // if (isDesktop) {
-  //   const link = document.createElement("a");
-  //   link.setAttribute("download", "wishlist.png");
-  //   link.setAttribute("href", `data:image/png;base64,${base64Img}`);
-  //   link.click();
-  // }
+    const options = {
+      type: 'dataURL',
+      useCORS: true,
+      logging: false,
+    }
+    const canvas = await html2canvas(el, options)
+    const link = document.createElement('a')
+    link.setAttribute('download', 'wishlist.png')
+    link.setAttribute(
+      'href',
+      canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'),
+    )
+    link.click()
+  } catch (error) {
+    errorText.value = error.message
+  }
 
   loading.value = false
 }

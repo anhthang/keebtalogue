@@ -32,8 +32,8 @@
   "dependencies": {
     "@ant-design/icons-vue": "7.0.1",
     "@pinia/nuxt": "^0.5.1",
-    "ant-design-vue": "4.0.6",
     "crc": "4.3.2",
+    "html2canvas": "^1.4.1",
     "lodash.groupby": "^4.6.0",
     "lodash.keyby": "^4.6.0",
     "lodash.sample": "^4.2.1",
