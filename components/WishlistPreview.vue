@@ -1,5 +1,5 @@
 <template>
-  <a-card title="Preview" size="small" class="wishlist-preview">
+  <a-card title="Preview" class="wishlist-preview">
     <template #extra>
       <a-tooltip>
         <template #title>Copy trading text to clipboard</template>
@@ -41,7 +41,7 @@
     >
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card :title="cardTitle(element)" size="small" :bordered="false">
+          <a-card :title="cardTitle(element)">
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>
@@ -203,7 +203,8 @@ const wishlistToText = computed(() => {
 
 const removeCap = (colorway, type) => {
   Modal.confirm({
-    title: 'Do you want to remove?',
+    title: 'Remove Artisan',
+    content: 'Are you sure you want to continue?',
     onOk() {
       if (type === 'wish') {
         draggableWishList.value = draggableWishList.value.filter(
@@ -220,7 +221,7 @@ const removeCap = (colorway, type) => {
 
 const copyToClipboard = () => {
   copy(wishlistToText.value)
-  message.success('Your trading text has been copied to the clipboard!')
+  message.success('Copied to clipboard!')
 }
 </script>
 
@@ -242,12 +243,12 @@ const copyToClipboard = () => {
   .wishlist-hide {
     display: none;
   }
-}
 
-.preview-img img {
-  width: 100%;
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+  .ant-card-body {
+    .ant-card-head-title {
+      text-align: center;
+    }
+  }
 }
 
 .draggable-row {

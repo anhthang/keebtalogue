@@ -89,7 +89,7 @@ const saveSettings = () => {
     body: social.value,
   })
     .then(() => {
-      message.success('Setting updated sucessfully')
+      message.success('Your profile has been updated.')
       loading.value = false
     })
     .catch((error) => {

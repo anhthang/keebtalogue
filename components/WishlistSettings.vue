@@ -1,5 +1,5 @@
 <template>
-  <a-card title="Settings" size="small" class="wishlist-settings">
+  <a-card title="Settings" class="wishlist-settings">
     <template #extra>
       <a-radio-group
         v-model:value="wishlistConfig.want_to"
@@ -94,3 +94,9 @@ watch(wishlistConfig.value, () => {
   })
 })
 </script>
+
+<style>
+.wishlist-settings {
+  height: 100%;
+}
+</style>

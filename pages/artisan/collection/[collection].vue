@@ -3,7 +3,7 @@
     <a-spin :spinning="pending">
       <a-page-header :title="collection.name || 'Colllection'">
         <template #extra>
-          <a-tooltip title="Copy link to share">
+          <a-tooltip title="Click to copy URL">
             <a-button
               v-if="collection.published"
               type="dashed"
@@ -140,8 +140,8 @@ const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 
 const removeCap = (clw) => {
   Modal.confirm({
-    title: 'Confirm Deletion',
-    content: `Are you sure you want to delete ${clw.name} ${clw.sculpt_name} from the collection? This action cannot be undone.`,
+    title: 'Remove Artisan',
+    content: `Are you sure you want to remove ${clw.name} ${clw.sculpt_name}?`,
     okText: 'Delete',
     okType: 'danger',
     onOk() {
@@ -152,7 +152,7 @@ const removeCap = (clw) => {
         )
           .then(() => {
             refresh()
-            message.success(`${cardTitle(clw)} removed from the collection.`)
+            message.success(`${cardTitle(clw)} was removed.`)
           })
           .catch((error) => {
             message.error(error.message)
@@ -166,7 +166,7 @@ const removeCap = (clw) => {
           JSON.stringify(sortedCollections.value),
         )
 
-        message.success(`${cardTitle(clw)} removed from the collection.`)
+        message.success(`${cardTitle(clw)} was removed.`)
       }
     },
   })
@@ -174,9 +174,8 @@ const removeCap = (clw) => {
 
 const deleteCollection = () => {
   Modal.confirm({
-    title: 'Confirm Deletion',
-    content:
-      'Are you sure you want to delete this collection? This action cannot be undone.',
+    title: 'Delete Collection',
+    content: 'Are you sure you want to continue?',
     okText: 'Delete',
     okType: 'danger',
     onOk() {
@@ -189,7 +188,7 @@ const deleteCollection = () => {
         },
       )
         .then(() => {
-          message.success('Successfully deleted the collection.')
+          message.success('The collection was deleted.')
 
           router.go(-1)
         })
@@ -202,7 +201,8 @@ const deleteCollection = () => {
 
 const delPublishedCollection = () => {
   Modal.confirm({
-    title: 'Are you sure you want to unpublish this collection?',
+    title: 'Unpublish Collection',
+    content: 'Are you sure you want to continue?',
     onOk() {
       $fetch(
         `/api/users/${user.value.uid}/collections/${route.params.collection}`,
@@ -215,7 +215,7 @@ const delPublishedCollection = () => {
       )
         .then(() => {
           collection.published = false
-          message.success('Successfully unpublished the collection.')
+          message.success('The collection was unpublished.')
         })
         .catch((error) => {
           message.error(error.message)
@@ -226,7 +226,9 @@ const delPublishedCollection = () => {
 
 const publishCollection = () => {
   Modal.confirm({
-    title: 'Do you want to publish this collection?',
+    title: 'Publish Collection',
+    content:
+      'Anyone on the internet with the link can view. Are you sure you want to continue?',
     okText: 'Publish',
     onOk() {
       $fetch(
@@ -240,7 +242,7 @@ const publishCollection = () => {
       )
         .then(() => {
           collection.published = true
-          message.success('Successfully published the collection.')
+          message.success('The collection was published.')
         })
         .catch((error) => {
           message.error(error.message)
@@ -251,7 +253,7 @@ const publishCollection = () => {
 
 const copyShareUrl = () => {
   copy(config.public.baseUrl + route.fullPath)
-  message.success('Collection URL has been copied to the clipboard!')
+  message.success('Copied to clipboard!')
 }
 </script>
 
