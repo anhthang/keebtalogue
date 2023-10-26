@@ -1,11 +1,21 @@
 <template>
   <a-config-provider
+    v-if="$colorMode.value === 'dark'"
     :component-size="size"
     :theme="{
-      algorithm:
-        $colorMode.value === 'dark'
-          ? theme.darkAlgorithm
-          : theme.defaultAlgorithm,
+      algorithm: theme.darkAlgorithm,
+      token: seedToken,
+    }"
+  >
+    <NuxtLayout :name="layout">
+      <NuxtPage />
+    </NuxtLayout>
+  </a-config-provider>
+  <a-config-provider
+    v-else
+    :component-size="size"
+    :theme="{
+      algorithm: theme.defaultAlgorithm,
       token: seedToken,
     }"
   >

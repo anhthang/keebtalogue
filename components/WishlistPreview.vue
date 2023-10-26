@@ -11,81 +11,71 @@
       </a-button>
     </template>
 
-    <div v-if="base64Img" class="preview-img">
-      <a-card-meta
-        description="Place your finger on the photo and hold it on the image until a menu
-      appears on the screen. Tap Save to download it."
-      />
-      <img :src="`data:image/png;base64,${base64Img}`" alt="" />
-    </div>
+    <a-descriptions title="Information">
+      <a-descriptions-item label="Discord">
+        {{ wishlistConfig.social.discord }}
+      </a-descriptions-item>
+      <a-descriptions-item label="Reddit">
+        {{ wishlistConfig.social.reddit }}
+      </a-descriptions-item>
+    </a-descriptions>
 
-    <div class="artisan-container">
-      <a-descriptions title="Information">
-        <a-descriptions-item label="Discord">
-          {{ wishlistConfig.social.discord }}
-        </a-descriptions-item>
-        <a-descriptions-item label="Reddit">
-          {{ wishlistConfig.social.reddit }}
-        </a-descriptions-item>
-      </a-descriptions>
+    <a-alert
+      v-if="errorText"
+      type="error"
+      message="Something went wrong"
+      :description="errorText"
+      show-icon
+      closable
+    />
 
-      <a-alert
-        v-if="errorText"
-        type="error"
-        message="Something went wrong"
-        :description="errorText"
-        show-icon
-        closable
-      />
+    <a-divider v-if="draggableWishList.length">
+      {{ wishlistConfig.wish.title }}
+    </a-divider>
 
-      <a-divider v-if="draggableWishList.length">
-        {{ wishlistConfig.wish.title }}
-      </a-divider>
+    <draggable
+      :list="draggableWishList"
+      item-key="id"
+      group="group"
+      class="ant-row draggable-row"
+    >
+      <template #item="{ element }">
+        <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+          <a-card :title="cardTitle(element)" size="small" :bordered="false">
+            <template #cover>
+              <img loading="lazy" :alt="element.name" :src="element.img" />
+            </template>
+            <template #extra>
+              <delete-outlined @click="removeCap(element, 'wish')" />
+            </template>
+          </a-card>
+        </a-col>
+      </template>
+    </draggable>
 
-      <draggable
-        :list="draggableWishList"
-        item-key="id"
-        group="group"
-        class="ant-row draggable-row"
-      >
-        <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-            <a-card :title="cardTitle(element)" size="small" :bordered="false">
-              <template #cover>
-                <img loading="lazy" :alt="element.name" :src="element.img" />
-              </template>
-              <template #extra>
-                <delete-outlined @click="removeCap(element, 'wish')" />
-              </template>
-            </a-card>
-          </a-col>
-        </template>
-      </draggable>
+    <a-divider v-if="draggableTradeList.length && wantToTrade">
+      {{ wishlistConfig.trade.title }}
+    </a-divider>
 
-      <a-divider v-if="draggableTradeList.length && wantToTrade">
-        {{ wishlistConfig.trade.title }}
-      </a-divider>
-
-      <draggable
-        :list="draggableTradeList"
-        item-key="id"
-        group="group"
-        class="ant-row draggable-row"
-      >
-        <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-            <a-card :title="cardTitle(element)" size="small" :bordered="false">
-              <template #cover>
-                <img loading="lazy" :alt="element.name" :src="element.img" />
-              </template>
-              <template #extra>
-                <delete-outlined @click="removeCap(element, 'trade')" />
-              </template>
-            </a-card>
-          </a-col>
-        </template>
-      </draggable>
-    </div>
+    <draggable
+      :list="draggableTradeList"
+      item-key="id"
+      group="group"
+      class="ant-row draggable-row"
+    >
+      <template #item="{ element }">
+        <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+          <a-card :title="cardTitle(element)" size="small" :bordered="false">
+            <template #cover>
+              <img loading="lazy" :alt="element.name" :src="element.img" />
+            </template>
+            <template #extra>
+              <delete-outlined @click="removeCap(element, 'trade')" />
+            </template>
+          </a-card>
+        </a-col>
+      </template>
+    </draggable>
   </a-card>
 </template>
 
@@ -147,15 +137,25 @@ const wantToTrade = computed(() => {
 
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 
-const base64Img = ref()
 const loading = ref(false)
 const errorText = ref()
 const generateImg = async () => {
   loading.value = true
 
-  try {
-    const el = document.getElementsByClassName('artisan-container')[0]
+  const el = document.getElementsByClassName('wishlist-preview')[0]
 
+  // hide some items for rendering
+  const cardHead = el.getElementsByClassName('ant-card-head')[0]
+  const bodyExtras = el
+    .getElementsByClassName('ant-card-body')[0]
+    .getElementsByClassName('ant-card-extra')
+
+  cardHead.classList.add('wishlist-hide')
+  bodyExtras.forEach((ex) => {
+    ex.classList.add('wishlist-hide')
+  })
+
+  try {
     const options = {
       type: 'dataURL',
       useCORS: true,
@@ -172,6 +172,12 @@ const generateImg = async () => {
   } catch (error) {
     errorText.value = error.message
   }
+
+  // revert
+  cardHead.classList.remove('wishlist-hide')
+  bodyExtras.forEach((ex) => {
+    ex.classList.remove('wishlist-hide')
+  })
 
   loading.value = false
 }
@@ -226,6 +232,15 @@ const copyToClipboard = () => {
     button {
       margin-left: 0.5rem;
     }
+  }
+
+  .ant-divider-inner-text {
+    font-family: 'Bungee Spice', cursive;
+    font-size: 2rem;
+  }
+
+  .wishlist-hide {
+    display: none;
   }
 }
 
