@@ -1,6 +1,6 @@
 <template>
   <div class="right-header">
-    <appearance />
+    <!-- <layout-appearance /> -->
 
     <a-dropdown v-if="user.email_verified">
       <a-avatar :src="user.picture" />
@@ -62,8 +62,6 @@
 </template>
 
 <script setup>
-import Appearance from './Appearance.vue'
-
 import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'

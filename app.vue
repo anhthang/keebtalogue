@@ -1,21 +1,8 @@
 <template>
   <a-config-provider
-    v-if="$colorMode.value === 'dark'"
     :component-size="size"
     :theme="{
-      algorithm: theme.darkAlgorithm,
-      token: seedToken,
-    }"
-  >
-    <NuxtLayout :name="layout">
-      <NuxtPage />
-    </NuxtLayout>
-  </a-config-provider>
-  <a-config-provider
-    v-else
-    :component-size="size"
-    :theme="{
-      algorithm: theme.defaultAlgorithm,
+      // algorithm: theme.defaultAlgorithm,
       token: seedToken,
     }"
   >
@@ -26,7 +13,7 @@
 </template>
 
 <script setup>
-import { theme } from 'ant-design-vue'
+// import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import '@/assets/app.css'
 import 'ant-design-vue/dist/reset.css'

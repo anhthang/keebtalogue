@@ -20,6 +20,10 @@ export default defineNuxtConfig({
     'nuxt-icon',
   ],
 
+  colorMode: {
+    preference: 'light',
+  },
+
   googleFonts: {
     families: {
       'Bungee+Spice': true,
