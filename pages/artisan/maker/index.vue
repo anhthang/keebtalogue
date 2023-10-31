@@ -70,11 +70,11 @@
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
 
-useHead({
+useSeoMeta({
   title: 'Artisan Makers',
 })
 
-const { data: makers, pending } = await useAsyncData(() =>
+const { data: makers, pending } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 

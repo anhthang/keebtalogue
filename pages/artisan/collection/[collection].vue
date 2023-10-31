@@ -95,7 +95,7 @@ const sort = ref('sculpt_name')
 const collection =
   collections.value.find((c) => c.id === route.params.collection) || {}
 
-useHead({
+useSeoMeta({
   title: collection.name ? `${collection.name} • Collection` : 'Collection',
 })
 

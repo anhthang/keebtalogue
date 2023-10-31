@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-useHead({
+useSeoMeta({
   title: 'Account Settings',
 })
 

@@ -236,38 +236,34 @@ import { useUserStore } from '~~/stores/user'
 
 const route = useRoute()
 
-const title = ref()
-const meta = ref([])
-
-useHead({ title, meta })
-
 const {
   data: sculpt,
   pending,
   refresh,
 } = await useAsyncData(
+  `maker:${route.params.maker}:${route.params.sculpt}`,
   () =>
-    $fetch(
-      `/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`,
-    ).then((data) => {
+    $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
+  {
+    watch: route.params.sculpt,
+    transform: (data) => {
       const sculpt = data.sculpts[route.params.sculpt]
-
-      title.value = `${sculpt.name} • ${data.name}`
-
-      if (sculpt.story) {
-        meta.value.push(
-          { name: 'description', content: sculpt.story },
-          { property: 'og:image', content: sculpt.img },
-          { name: 'twitter:image', content: sculpt.img },
-        )
-      }
 
       sculpt.maker_name = data.name
 
       return sculpt
-    }),
-  { watch: route.params.sculpt },
+    },
+  },
 )
+
+const cfg = useRuntimeConfig()
+
+useSeoMeta({
+  title: `${sculpt.value.name} • ${sculpt.value.maker_name}`,
+  description: sculpt.value.story || cfg.public.appDesc,
+  ogImage: sculpt.value.img,
+  twitterImage: sculpt.value.img,
+})
 
 const userStore = useUserStore()
 const { authenticated, isEditor, collections, user } = storeToRefs(userStore)

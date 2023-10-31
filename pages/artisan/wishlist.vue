@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-useHead({
+useSeoMeta({
   title: 'Wishlist',
 })
 </script>

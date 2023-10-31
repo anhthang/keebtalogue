@@ -169,31 +169,24 @@ const route = useRoute()
 const showEditMaker = ref(false)
 const showAddSale = ref(false)
 
-const title = ref()
-const meta = ref([
-  { property: 'og:image', content: `/logo/light/${route.params.maker}.png` },
-  { name: 'twitter:image', content: `/logo/light/${route.params.maker}.png` },
-])
-
-useHead({ title, meta })
-
 const {
   data: maker,
   pending,
   refresh,
 } = await useAsyncData(
-  () =>
-    $fetch(`/api/makers/${route.params.maker}`).then((data) => {
-      title.value = data.name
-
-      if (data.intro) {
-        meta.value.unshift({ name: 'description', content: data.intro })
-      }
-
-      return data
-    }),
+  `maker:${route.params.maker}`,
+  () => $fetch(`/api/makers/${route.params.maker}`),
   { watch: route.params.maker },
 )
+
+const cfg = useRuntimeConfig()
+
+useSeoMeta({
+  title: maker.value.name,
+  description: maker.value.intro || cfg.public.appDesc,
+  ogImage: `/logo/light/${route.params.maker}.png`,
+  twitterImage: `/logo/light/${route.params.maker}.png`,
+})
 
 const showEditMakerModal = () => {
   showEditMaker.value = !showEditMaker.value

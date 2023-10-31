@@ -46,7 +46,7 @@ import { useUserStore } from '~~/stores/user'
 import { storeToRefs } from 'pinia'
 import { message } from 'ant-design-vue'
 
-useHead({
+useSeoMeta({
   title: 'Collection',
 })
 

@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-useHead({
+useSeoMeta({
   title: 'GMK Keycaps',
 })
 

@@ -65,28 +65,25 @@ client.auth.onAuthStateChange((event, session) => {
 const { appName, appDesc, baseUrl } = config.public
 
 useHead({
-  titleTemplate: (chunk) => {
-    return chunk ? `${chunk} - ${appName}` : appName
-  },
   htmlAttrs: {
     lang: 'en',
   },
-  meta: [
-    // Primary Meta Tags
-    { name: 'description', content: appDesc },
-    // Open Graph / Facebook
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: baseUrl },
-    { property: 'og:title', content: appName },
-    { property: 'og:description', content: appDesc },
-    { property: 'og:image', content: `${baseUrl}/website-card.png` },
-    // Twitter
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:url', content: baseUrl },
-    { name: 'twitter:title', content: appName },
-    { name: 'twitter:description', content: appDesc },
-    { name: 'twitter:image', content: `${baseUrl}/website-card.png` },
-  ],
   link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+})
+
+useSeoMeta({
+  titleTemplate: (chunk) => {
+    return chunk ? `${chunk} - ${appName}` : appName
+  },
+  description: appDesc,
+  ogType: 'website',
+  ogUrl: baseUrl,
+  ogTitle: appName,
+  ogDescription: appDesc,
+  ogImage: `${baseUrl}/website-card.png`,
+  twitterCard: 'summary_large_image',
+  twitterTitle: appName,
+  twitterDescription: appDesc,
+  twitterImage: `${baseUrl}/website-card.png`,
 })
 </script>
