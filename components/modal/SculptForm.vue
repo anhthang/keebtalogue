@@ -100,9 +100,9 @@ const addSculptProfile = () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success('Sculpt profile updated succesful')
+        message.success('Sculpt updated successfully!')
       } else {
-        message.success('Successfully added new sculpt profile')
+        message.success('New sculpt added successfully!')
       }
     })
     .catch((error) => {

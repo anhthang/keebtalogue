@@ -68,7 +68,7 @@ const addCollection = async () => {
     },
   })
     .then(() => {
-      message.success('Added new collection')
+      message.success('New collection added successfully!')
       userStore.getUserDocument(user.value.uid)
       showModal()
     })

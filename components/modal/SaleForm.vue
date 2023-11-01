@@ -56,7 +56,7 @@ const addSale = () => {
     body,
   })
     .then(() => {
-      message.success('Sale added succesfully.')
+      message.success('New sale added successfully!')
     })
     .catch((error) => {
       message.error(error.message)

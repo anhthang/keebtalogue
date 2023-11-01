@@ -142,18 +142,8 @@
           />
         </a-modal>
       </a-page-header>
-      <a-result
-        v-else
-        status="404"
-        title="404"
-        sub-title="Sorry, we're unable to get this catalogue at the moment."
-      >
-        <template #extra>
-          <nuxt-link to="/artisan/maker">
-            <a-button type="primary">Back</a-button>
-          </nuxt-link>
-        </template>
-      </a-result>
+
+      <back-to-artisan-makers v-else />
     </a-spin>
   </div>
 </template>
@@ -182,8 +172,8 @@ const {
 const cfg = useRuntimeConfig()
 
 useSeoMeta({
-  title: maker.value.name,
-  description: maker.value.intro || cfg.public.appDesc,
+  title: maker.value?.name,
+  description: maker.value?.intro || cfg.public.appDesc,
   ogImage: `/logo/light/${route.params.maker}.png`,
   twitterImage: `/logo/light/${route.params.maker}.png`,
 })

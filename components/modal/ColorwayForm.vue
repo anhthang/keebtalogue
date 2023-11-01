@@ -164,7 +164,7 @@ const addColorway = () => {
     },
   )
     .then(() => {
-      message.success('Colorway information updated successfully')
+      message.success('Colorway updated successfully!')
     })
     .catch((error) => {
       message.error(error.message)

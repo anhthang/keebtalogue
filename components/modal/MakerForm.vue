@@ -99,9 +99,9 @@ const addMaker = () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success('Maker profile updated succesful')
+        message.success('Maker updated successfully!')
       } else {
-        message.success('Successfully added new maker')
+        message.success('New maker added successfully!')
       }
     })
     .catch((error) => {

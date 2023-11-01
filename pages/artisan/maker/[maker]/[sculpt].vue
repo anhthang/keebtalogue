@@ -1,7 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header :title="sculpt.name">
+      <a-page-header v-if="sculpt" :title="sculpt.name">
         <template #breadcrumb>
           <a-breadcrumb>
             <a-breadcrumb-item>
@@ -224,6 +224,8 @@
           </a-typography>
         </a-modal>
       </a-page-header>
+
+      <back-to-artisan-makers v-else />
     </a-spin>
   </div>
 </template>
@@ -259,10 +261,12 @@ const {
 const cfg = useRuntimeConfig()
 
 useSeoMeta({
-  title: `${sculpt.value.name} • ${sculpt.value.maker_name}`,
-  description: sculpt.value.story || cfg.public.appDesc,
-  ogImage: sculpt.value.img,
-  twitterImage: sculpt.value.img,
+  title: sculpt.value
+    ? `${sculpt.value.name} • ${sculpt.value.maker_name}`
+    : '',
+  description: sculpt.value?.story || cfg.public.appDesc,
+  ogImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
+  twitterImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
 })
 
 const userStore = useUserStore()
@@ -292,7 +296,9 @@ const addToCollection = (collection, colorway) => {
       body: clw,
     })
       .then(() => {
-        message.success(`Added ${colorway.name} to ${collection.name}`)
+        message.success(
+          `${clw.name} has been added to ${collection.name} collection!`,
+        )
       })
       .catch((error) => {
         message.error(error.message)
@@ -308,7 +314,9 @@ const addToCollection = (collection, colorway) => {
       JSON.stringify(collectionMap),
     )
 
-    message.success(`Added ${clw.name} to ${collection.name}`)
+    message.success(
+      `${clw.name} has been added to ${collection.name} collection!`,
+    )
   }
 }
 

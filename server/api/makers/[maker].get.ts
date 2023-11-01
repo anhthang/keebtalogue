@@ -4,7 +4,7 @@ import keyBy from 'lodash.keyby'
 import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
-  const makerId = event.context.params.maker
+  const makerId = event.context.params?.maker
   const { sculpt: sculptId } = getQuery(event)
 
   const client = await serverSupabaseClient(event)
@@ -22,6 +22,8 @@ export default defineEventHandler(async (event) => {
     .eq('sculpt_id', sculptId)
 
   const colorwayMap = groupBy(colorways, 'sculpt_id')
+
+  if (!profile) return
 
   const sculpts = profile.sculpts.map((sculpt) => {
     const colorways = colorwayMap[sculpt.sculpt_id] || []
