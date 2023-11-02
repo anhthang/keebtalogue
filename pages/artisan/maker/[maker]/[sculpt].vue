@@ -112,24 +112,6 @@
                   @click="showColorwayInformationModal(colorway)"
                 />
               </template>
-
-              <template v-if="collections.length" #actions>
-                <a-dropdown :trigger="['click']" placement="top">
-                  <div><save-outlined /> Add to Collection</div>
-                  <template #overlay>
-                    <a-menu>
-                      <a-menu-item
-                        v-for="collection in collections"
-                        :key="collection.id"
-                        :disabled="!collections.length"
-                        @click="addToCollection(collection, colorway)"
-                      >
-                        {{ collection.name }}
-                      </a-menu-item>
-                    </a-menu>
-                  </template>
-                </a-dropdown>
-              </template>
             </a-card>
           </a-col>
         </a-row>
@@ -167,61 +149,61 @@
 
         <a-modal
           v-model:open="showColorwayInformation"
+          width="1024px"
+          :closable="false"
           destroy-on-close
           :footer="null"
         >
-          <a-typography>
-            <a-typography-title :level="4">
-              {{ colorwayTitle }}
-              <a-button
-                v-if="isEditor"
-                type="link"
-                @click="onEditColorway(selectedColorway)"
-              >
-                <edit-outlined />
-              </a-button>
-            </a-typography-title>
-            <a-typography-paragraph v-if="selectedColorway.keycap">
-              <a-typography-text>
-                <nuxt-link :to="`/keycap/${selectedColorway.keycap.slug}`">
-                  <a-tag
-                    :key="selectedColorway.keycap.id"
-                    :color="selectedColorway.keycap.base"
-                  >
-                    {{ selectedColorway.keycap.name }}
-                  </a-tag>
-                </nuxt-link>
-              </a-typography-text>
-            </a-typography-paragraph>
+          <a-card :title="colorwayTitle">
+            <a-row v-if="!$device.isMobile" :gutter="[16, 16]">
+              <a-col :sm="12" :xs="24">
+                <a-image
+                  :preview="false"
+                  :alt="selectedColorway.name"
+                  :src="selectedColorway.img"
+                />
+              </a-col>
+              <a-col :sm="12" :xs="24">
+                <colorway-descriptions :metadata="selectedColorway" />
+              </a-col>
+            </a-row>
 
-            <a-descriptions :bordered="false" :column="1" size="small">
-              <a-descriptions-item label="Released">
-                {{ selectedColorway.release }}
-              </a-descriptions-item>
-              <a-descriptions-item label="Quantity">
-                {{ selectedColorway.qty }}
-              </a-descriptions-item>
-              <a-descriptions-item
-                v-if="authenticated && selectedColorway.price"
-                label="Price"
-              >
-                {{ selectedColorway.currency }} {{ selectedColorway.price }}
-              </a-descriptions-item>
-              <a-descriptions-item
-                v-if="authenticated && selectedColorway.sale_type"
-                label="Sale Type"
-              >
-                {{ selectedColorway.sale_type }}
-              </a-descriptions-item>
-            </a-descriptions>
+            <template v-if="$device.isMobile" #cover>
+              <img :alt="selectedColorway.name" :src="selectedColorway.img" />
+            </template>
 
-            <a-typography-paragraph
-              v-for="(line, idx) in descriptionLines"
-              :key="idx"
-            >
-              {{ line }}
-            </a-typography-paragraph>
-          </a-typography>
+            <a-card-meta v-if="$device.isMobile">
+              <template #description>
+                <colorway-descriptions :metadata="selectedColorway" />
+              </template>
+            </a-card-meta>
+
+            <template #actions>
+              <div v-if="isEditor" @click="toggleEditColorway">
+                <edit-outlined /> Edit
+              </div>
+
+              <a-dropdown
+                v-if="collections.length"
+                :trigger="['click']"
+                placement="top"
+              >
+                <div><save-outlined /> Add to Collection</div>
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item
+                      v-for="collection in collections"
+                      :key="collection.id"
+                      :disabled="!collections.length"
+                      @click="addToCollection(collection, colorway)"
+                    >
+                      {{ collection.name }}
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </template>
+          </a-card>
         </a-modal>
       </a-page-header>
 
@@ -247,7 +229,7 @@ const {
   () =>
     $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
   {
-    watch: route.params.sculpt,
+    watch: () => route.params.sculpt,
     transform: (data) => {
       const sculpt = data.sculpts[route.params.sculpt]
 
@@ -362,15 +344,10 @@ const newColorwaySubmission = async () => {
 // show colorway information popup
 const showColorwayInformation = ref(false)
 const selectedColorway = ref({})
-const descriptionLines = ref([])
+
 const showColorwayInformationModal = (clw) => {
   showColorwayInformation.value = !showColorwayInformation.value
   selectedColorway.value = clw
-  if (clw.description) {
-    descriptionLines.value = clw.description.split('\n')
-  } else {
-    descriptionLines.value = []
-  }
 }
 
 const colorwayTitle = computed(() => {
@@ -378,8 +355,8 @@ const colorwayTitle = computed(() => {
 })
 
 // edit colorway
-const onEditColorway = (clw) => {
-  showColorwayInformationModal(clw)
+const toggleEditColorway = () => {
+  showColorwayInformationModal(selectedColorway.value)
   showAddColorwayModal()
 }
 </script>

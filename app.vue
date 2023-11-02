@@ -1,8 +1,7 @@
 <template>
   <a-config-provider
-    :component-size="size"
     :theme="{
-      // algorithm: theme.defaultAlgorithm,
+      algorithm: theme.darkAlgorithm,
       token: seedToken,
     }"
   >
@@ -13,7 +12,7 @@
 </template>
 
 <script setup>
-// import { theme } from 'ant-design-vue'
+import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import '@/assets/app.css'
 import 'ant-design-vue/dist/reset.css'
@@ -27,8 +26,6 @@ if (isMobile) {
 } else if (isTablet) {
   layout = 'tablet'
 }
-
-const size = isMobile ? 'small' : 'default'
 
 const seedToken = {
   fontFamily: "'Titillium Web', sans-serif;",

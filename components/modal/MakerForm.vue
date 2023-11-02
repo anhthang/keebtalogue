@@ -101,7 +101,7 @@ const addMaker = () => {
       if (isEdit) {
         message.success('Maker updated successfully!')
       } else {
-        message.success('New maker added successfully!')
+        message.success(`Maker [${rest.name}] added successfully!`)
       }
     })
     .catch((error) => {

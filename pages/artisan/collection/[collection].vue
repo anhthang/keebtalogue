@@ -43,7 +43,7 @@
             v-if="user.email_verified"
             type="primary"
             danger
-            @click="deleteCollection"
+            @click="deleteCollection(collection)"
           >
             <delete-outlined /> Delete
           </a-button>
@@ -172,23 +172,20 @@ const removeCap = (clw) => {
   })
 }
 
-const deleteCollection = () => {
+const deleteCollection = (collection) => {
   Modal.confirm({
     title: 'Delete Collection',
     content: 'Are you sure you want to continue?',
     okText: 'Delete',
     okType: 'danger',
     onOk() {
-      userStore.removeCollection(route.params.collection)
+      userStore.removeCollection(collection.id)
 
-      $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-        {
-          method: 'delete',
-        },
-      )
+      $fetch(`/api/users/${collection.uid}/collections/${collection.id}`, {
+        method: 'delete',
+      })
         .then(() => {
-          message.success('The collection was deleted.')
+          message.success(`Collection [${collection.name}] was deleted.`)
 
           router.go(-1)
         })

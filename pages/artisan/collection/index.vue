@@ -9,6 +9,7 @@
       <a-modal
         v-model:open="visible"
         title="New Collection"
+        :confirm-loading="loading"
         @ok="addCollection"
       >
         <a-input v-model:value="collectionName" placeholder="Collection Name" />
@@ -59,8 +60,11 @@ const showModal = () => {
 }
 
 const collectionName = ref('')
+const loading = ref(false)
+
 const addCollection = async () => {
-  $fetch(`/api/users/${user.value.uid}/collections`, {
+  loading.value = true
+  await $fetch(`/api/users/${user.value.uid}/collections`, {
     method: 'post',
     body: {
       name: collectionName.value,
@@ -68,13 +72,17 @@ const addCollection = async () => {
     },
   })
     .then(() => {
-      message.success('New collection added successfully!')
+      message.success(
+        `Collection [${collectionName.value}] added successfully!`,
+      )
       userStore.getUserDocument(user.value.uid)
       showModal()
     })
     .catch((error) => {
       message.error(error.message)
     })
+
+  loading.value = false
 }
 </script>
 
