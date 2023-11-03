@@ -41,7 +41,19 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-button
-            v-if="maker.website"
+            v-if="isLinktree"
+            key="linktree"
+            :href="maker.website"
+            target="_blank"
+            type="link"
+          >
+            <span class="anticon anticon-custom-icon">
+              <icon name="LinktreeIcon" size="18" />
+            </span>
+            Linktree
+          </a-button>
+          <a-button
+            v-else-if="maker.website"
             key="website"
             :href="maker.website"
             target="_blank"
@@ -168,6 +180,10 @@ const {
   () => $fetch(`/api/makers/${route.params.maker}`),
   { watch: () => route.params.maker },
 )
+
+const isLinktree = computed(() => {
+  return maker.value.website && maker.value.website.includes('linktr.ee')
+})
 
 const cfg = useRuntimeConfig()
 

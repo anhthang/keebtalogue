@@ -17,8 +17,7 @@ import { useUserStore } from './stores/user'
 import '@/assets/app.css'
 import 'ant-design-vue/dist/reset.css'
 
-const { $device } = useNuxtApp()
-const { isMobile, isTablet } = $device
+const { isMobile, isTablet } = useDevice()
 
 let layout = 'desktop'
 if (isMobile) {

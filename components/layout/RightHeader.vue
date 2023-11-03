@@ -21,7 +21,7 @@
         </a-menu>
       </template>
     </a-dropdown>
-    <a-dropdown v-else-if="isMobile">
+    <a-dropdown v-else-if="$device.isMobile">
       <a-button type="link" @click="toggleShowLogin">
         <login-outlined />
       </a-button>
@@ -67,9 +67,6 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
 
 const router = useRouter()
-
-const { $device } = useNuxtApp()
-const { isMobile } = $device
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)

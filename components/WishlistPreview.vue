@@ -41,7 +41,7 @@
     >
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card :title="cardTitle(element)">
+          <a-card :title="cardTitle(element)" :bordered="false">
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>

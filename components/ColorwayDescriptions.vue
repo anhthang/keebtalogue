@@ -1,7 +1,11 @@
 <template>
-  <a-descriptions title="Information" :column="1">
-    <template #extra>
-      <a-tag v-if="colorway.giveaway" color="orange">
+  <a-descriptions
+    :title="isMeta ? colorway.name : 'Information'"
+    :column="1"
+    size="small"
+  >
+    <template v-if="isMeta" #extra>
+      <a-tag v-if="colorway.giveaway" color="goldenrod">
         <template #icon> <gift-filled /> Giveaway </template>
       </a-tag>
 
@@ -9,6 +13,7 @@
         <template #icon> <bg-colors-outlined /> Commissioned </template>
       </a-tag>
     </template>
+
     <a-descriptions-item v-if="colorway.release" label="Released">
       {{ colorway.release }}
     </a-descriptions-item>
@@ -29,8 +34,8 @@
 </template>
 
 <script setup>
-const { metadata } = defineProps({
-  metadata: {
+const { colorway } = defineProps({
+  colorway: {
     type: Object,
     default() {
       return {}
@@ -38,17 +43,12 @@ const { metadata } = defineProps({
   },
 })
 
-const colorway = ref({})
-
-onBeforeMount(() => {
-  if (metadata && Object.keys(metadata).length) {
-    colorway.value = { ...metadata }
-  }
+const { isMobile } = useDevice()
+const isMeta = computed(() => {
+  return isMobile || !colorway.description
 })
 
 const descriptionLines = computed(() => {
-  return colorway.value.description
-    ? colorway.value.description.split('\n')
-    : []
+  return colorway.description ? colorway.description.split('\n') : []
 })
 </script>

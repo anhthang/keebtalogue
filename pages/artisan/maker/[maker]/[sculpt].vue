@@ -149,13 +149,25 @@
 
         <a-modal
           v-model:open="showColorwayInformation"
-          width="1024px"
+          :width="isShowAsMeta ? '512px' : '1024px'"
           :closable="false"
           destroy-on-close
           :footer="null"
         >
-          <a-card :title="colorwayTitle">
-            <a-row v-if="!$device.isMobile" :gutter="[16, 16]">
+          <a-card>
+            <template v-if="!isShowAsMeta" #title>
+              {{ selectedColorway.name }}
+            </template>
+            <template v-if="!isShowAsMeta" #extra>
+              <a-tag v-if="selectedColorway.giveaway" color="goldenrod">
+                <template #icon> <gift-filled /> Giveaway </template>
+              </a-tag>
+
+              <a-tag v-if="selectedColorway.commissioned" color="palevioletred">
+                <template #icon> <bg-colors-outlined /> Commissioned </template>
+              </a-tag>
+            </template>
+            <a-row v-if="!isShowAsMeta" :gutter="[16, 16]">
               <a-col :sm="12" :xs="24">
                 <a-image
                   :preview="false"
@@ -164,17 +176,17 @@
                 />
               </a-col>
               <a-col :sm="12" :xs="24">
-                <colorway-descriptions :metadata="selectedColorway" />
+                <colorway-descriptions :colorway="selectedColorway" />
               </a-col>
             </a-row>
 
-            <template v-if="$device.isMobile" #cover>
+            <template v-if="isShowAsMeta" #cover>
               <img :alt="selectedColorway.name" :src="selectedColorway.img" />
             </template>
 
-            <a-card-meta v-if="$device.isMobile">
+            <a-card-meta v-if="isShowAsMeta">
               <template #description>
-                <colorway-descriptions :metadata="selectedColorway" />
+                <colorway-descriptions :colorway="selectedColorway" />
               </template>
             </a-card-meta>
 
@@ -188,14 +200,14 @@
                 :trigger="['click']"
                 placement="top"
               >
-                <div><save-outlined /> Add to Collection</div>
+                <div><folder-add-outlined /> Add to Collection</div>
                 <template #overlay>
                   <a-menu>
                     <a-menu-item
                       v-for="collection in collections"
                       :key="collection.id"
                       :disabled="!collections.length"
-                      @click="addToCollection(collection, colorway)"
+                      @click="addToCollection(collection, selectedColorway)"
                     >
                       {{ collection.name }}
                     </a-menu-item>
@@ -219,6 +231,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
 
 const route = useRoute()
+const { isMobile } = useDevice()
 
 const {
   data: sculpt,
@@ -354,6 +367,10 @@ const colorwayTitle = computed(() => {
   return `${selectedColorway.value.name} ${sculpt.value.name}`
 })
 
+const isShowAsMeta = computed(() => {
+  return isMobile || !selectedColorway.value.description
+})
+
 // edit colorway
 const toggleEditColorway = () => {
   showColorwayInformationModal(selectedColorway.value)
@@ -363,7 +380,7 @@ const toggleEditColorway = () => {
 
 <style>
 .giveaway {
-  color: orange;
+  color: goldenrod;
 }
 
 .commissioned {

@@ -34,8 +34,7 @@ import dayjs from 'dayjs'
 const start = ref(dayjs().startOf('month').format('YYYY-MM-DD'))
 const end = ref(dayjs().endOf('month').format('YYYY-MM-DD'))
 
-const { $device } = useNuxtApp()
-const { isMobile } = $device
+const { isMobile } = useDevice()
 
 const {
   data: sales,
