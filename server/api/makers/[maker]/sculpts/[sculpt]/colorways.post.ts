@@ -6,30 +6,28 @@ const selfMakers = ['alpha-keycaps', 'gooey-keys']
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const body = await readBody(event)
+  const { keycap, sculpt_name, ...rest } = await readBody(event)
 
-  if (selfMakers.includes(body.maker_id)) {
-    const slug = slugify(body.name, { lower: true })
-    body.colorway_id = crc32(
-      `${body.maker_id}-${body.sculpt_id}-${slug}-${body.order}`,
+  if (selfMakers.includes(rest.maker_id)) {
+    const slug = slugify(rest.name, { lower: true })
+    rest.colorway_id = crc32(
+      `${rest.maker_id}-${rest.sculpt_id}-${slug}-${rest.order}`,
     ).toString(16)
   }
 
-  delete body.keycap
-
-  const sqlQuery = body.id
-    ? client.from('colorways').update(body).eq('id', body.id)
+  const sqlQuery = rest.id
+    ? client.from('colorways').update(rest).eq('id', rest.id)
     : client
         .from('colorways')
-        .upsert(body)
-        .eq('colorway_id', body.colorway_id)
-        .eq('maker_id', body.maker_id)
-        .eq('sculpt_id', body.sculpt_id)
+        .upsert(rest)
+        .eq('colorway_id', rest.colorway_id)
+        .eq('maker_id', rest.maker_id)
+        .eq('sculpt_id', rest.sculpt_id)
 
   const { data, error } = await sqlQuery
 
   if (error) {
-    return error
+    throw error
   }
 
   return data

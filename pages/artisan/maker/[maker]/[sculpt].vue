@@ -109,7 +109,7 @@
                   loading="lazy"
                   :alt="colorway.name"
                   :src="colorway.img"
-                  @click="showColorwayInformationModal(colorway)"
+                  @click="showColorwayCardModal(colorway)"
                 />
               </template>
             </a-card>
@@ -148,74 +148,16 @@
         </a-modal>
 
         <a-modal
-          v-model:open="showColorwayInformation"
+          v-model:open="showColorwayCard"
           :width="isShowAsMeta ? '512px' : '1024px'"
           :closable="false"
           destroy-on-close
           :footer="null"
         >
-          <a-card>
-            <template v-if="!isShowAsMeta" #title>
-              {{ selectedColorway.name }}
-            </template>
-            <template v-if="!isShowAsMeta" #extra>
-              <a-tag v-if="selectedColorway.giveaway" color="goldenrod">
-                <template #icon> <gift-filled /> Giveaway </template>
-              </a-tag>
-
-              <a-tag v-if="selectedColorway.commissioned" color="palevioletred">
-                <template #icon> <bg-colors-outlined /> Commissioned </template>
-              </a-tag>
-            </template>
-            <a-row v-if="!isShowAsMeta" :gutter="[16, 16]">
-              <a-col :sm="12" :xs="24">
-                <a-image
-                  :preview="false"
-                  :alt="selectedColorway.name"
-                  :src="selectedColorway.img"
-                />
-              </a-col>
-              <a-col :sm="12" :xs="24">
-                <colorway-descriptions :colorway="selectedColorway" />
-              </a-col>
-            </a-row>
-
-            <template v-if="isShowAsMeta" #cover>
-              <img :alt="selectedColorway.name" :src="selectedColorway.img" />
-            </template>
-
-            <a-card-meta v-if="isShowAsMeta">
-              <template #description>
-                <colorway-descriptions :colorway="selectedColorway" />
-              </template>
-            </a-card-meta>
-
-            <template #actions>
-              <div v-if="isEditor" @click="toggleEditColorway">
-                <edit-outlined /> Edit
-              </div>
-
-              <a-dropdown
-                v-if="collections.length"
-                :trigger="['click']"
-                placement="top"
-              >
-                <div><folder-add-outlined /> Add to Collection</div>
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item
-                      v-for="collection in collections"
-                      :key="collection.id"
-                      :disabled="!collections.length"
-                      @click="addToCollection(collection, selectedColorway)"
-                    >
-                      {{ collection.name }}
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-              </a-dropdown>
-            </template>
-          </a-card>
+          <modal-colorway-card
+            :colorway="selectedColorway"
+            @edit-colorway="toggleEditColorway"
+          />
         </a-modal>
       </a-page-header>
 
@@ -225,7 +167,6 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
 import sortBy from 'lodash.sortby'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
@@ -265,54 +206,13 @@ useSeoMeta({
 })
 
 const userStore = useUserStore()
-const { authenticated, isEditor, collections, user } = storeToRefs(userStore)
+const { isEditor } = storeToRefs(userStore)
 
 const sort = ref('order')
 
 const onChangeSortType = (e) => {
   sort.value = e.key
   sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key)
-}
-
-const addToCollection = (collection, colorway) => {
-  const clw = {
-    colorway_id: colorway.colorway_id,
-    name: colorway.name,
-    img: colorway.img,
-    sculpt_name: sculpt.value.name,
-    maker_id: route.params.maker,
-    uid: user.value.uid,
-    collection_id: collection.id,
-  }
-
-  if (authenticated.value) {
-    $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
-      method: 'post',
-      body: clw,
-    })
-      .then(() => {
-        message.success(
-          `${clw.name} has been added to ${collection.name} collection!`,
-        )
-      })
-      .catch((error) => {
-        message.error(error.message)
-      })
-  } else {
-    const collectionMap =
-      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || []
-
-    collectionMap.push(clw)
-
-    localStorage.setItem(
-      `Keebtalogue_${collection.id}`,
-      JSON.stringify(collectionMap),
-    )
-
-    message.success(
-      `${clw.name} has been added to ${collection.name} collection!`,
-    )
-  }
 }
 
 const confirmLoading = ref(false)
@@ -354,13 +254,14 @@ const newColorwaySubmission = async () => {
   refresh()
 }
 
-// show colorway information popup
-const showColorwayInformation = ref(false)
+// show colorway card popup
+const showColorwayCard = ref(false)
 const selectedColorway = ref({})
 
-const showColorwayInformationModal = (clw) => {
-  showColorwayInformation.value = !showColorwayInformation.value
+const showColorwayCardModal = (clw) => {
+  showColorwayCard.value = !showColorwayCard.value
   selectedColorway.value = clw
+  selectedColorway.value.sculpt_name = sculpt.value.name
 }
 
 const colorwayTitle = computed(() => {
@@ -373,7 +274,7 @@ const isShowAsMeta = computed(() => {
 
 // edit colorway
 const toggleEditColorway = () => {
-  showColorwayInformationModal(selectedColorway.value)
+  showColorwayCardModal(selectedColorway.value)
   showAddColorwayModal()
 }
 </script>

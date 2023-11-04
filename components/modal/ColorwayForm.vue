@@ -143,10 +143,7 @@ const { metadata } = defineProps({
 const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 
 const route = useRoute()
-const colorway = ref({
-  maker_id: route.params.maker,
-  sculpt_id: route.params.sculpt,
-})
+const colorway = ref({})
 
 onBeforeMount(() => {
   Object.assign(colorway.value, metadata)
@@ -167,6 +164,7 @@ const addColorway = () => {
       message.success('Colorway updated successfully!')
     })
     .catch((error) => {
+      console.error(error)
       message.error(error.message)
     })
 }
