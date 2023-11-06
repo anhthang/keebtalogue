@@ -17,8 +17,6 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
-
 const { colorway } = defineProps({
   colorway: {
     type: Object,

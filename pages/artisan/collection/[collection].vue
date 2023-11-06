@@ -78,7 +78,6 @@
 import { useUserStore } from '~~/stores/user'
 import { storeToRefs } from 'pinia'
 import sortBy from 'lodash.sortby'
-import { message, Modal } from 'ant-design-vue'
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 
 const config = useRuntimeConfig()

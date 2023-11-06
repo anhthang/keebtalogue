@@ -80,7 +80,6 @@
 </template>
 
 <script setup>
-import { message, Modal } from 'ant-design-vue'
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import html2canvas from 'html2canvas'
 import groupBy from 'lodash.groupby'

@@ -69,8 +69,6 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
-
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,

@@ -73,7 +73,6 @@
 
 <script setup>
 import { useUserStore } from '~~/stores/user'
-import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()

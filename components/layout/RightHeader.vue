@@ -62,7 +62,6 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
 

@@ -63,7 +63,6 @@
 </template>
 
 <script setup>
-import { message } from 'ant-design-vue'
 import slugify from 'slugify'
 
 const { metadata, isKeeb, isEdit } = defineProps({
