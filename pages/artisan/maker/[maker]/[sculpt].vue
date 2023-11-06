@@ -149,6 +149,7 @@
 
         <a-modal
           v-model:open="showColorwayCard"
+          class="colorway-card"
           :width="isShowAsMeta ? '512px' : '1024px'"
           :closable="false"
           destroy-on-close

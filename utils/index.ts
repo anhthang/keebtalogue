@@ -1,6 +1,9 @@
 import html2canvas from 'html2canvas'
 
-export const copyScreenshot = async (element: HTMLElement) => {
+export const copyScreenshot = async (
+  element: HTMLElement,
+  openInNewTab: Boolean,
+) => {
   const options = {
     type: 'dataURL',
     useCORS: true,
@@ -11,15 +14,19 @@ export const copyScreenshot = async (element: HTMLElement) => {
   canvas.toBlob(async (blob) => {
     try {
       if (blob) {
-        const clipItem = new ClipboardItem(
-          Object.defineProperty({}, blob.type, {
-            value: blob,
-            enumerable: true,
-          }),
-        )
-        await navigator.clipboard.write([clipItem])
+        if (openInNewTab) {
+          open(URL.createObjectURL(blob))
+        } else {
+          const clipItem = new ClipboardItem(
+            Object.defineProperty({}, blob.type, {
+              value: blob,
+              enumerable: true,
+            }),
+          )
+          await navigator.clipboard.write([clipItem])
 
-        message.success('Image copied to clipboard!')
+          message.success('Image copied to clipboard!')
+        }
       } else {
         message.error('Could not create image, blob is null')
       }

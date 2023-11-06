@@ -6,17 +6,13 @@
       </a-tooltip>
 
       <a-tooltip title="Copy screenshot to clipboard">
-        <a-button :loading="loading" @click="screenshot(false)">
+        <a-button @click="screenshot(false)">
           <picture-outlined />
         </a-button>
       </a-tooltip>
 
       <a-tooltip title="Download screenshot">
-        <a-button
-          v-if="$device.isDesktop"
-          :loading="loading"
-          @click="screenshot(true)"
-        >
+        <a-button v-if="isDesktop" @click="screenshot(true)">
           <download-outlined />
         </a-button>
       </a-tooltip>
@@ -147,12 +143,9 @@ const twowayTrading = computed(() => {
 
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 
-const loading = ref(false)
 const errorText = ref()
 
 const screenshot = async (download = false) => {
-  loading.value = true
-
   const card = document.getElementsByClassName('trading-preview')[0]
 
   // hide some items for rendering
@@ -166,11 +159,13 @@ const screenshot = async (download = false) => {
     ex.classList.add('trading-card-hide')
   })
 
+  const { isDesktop } = useDevice()
+
   try {
     if (download) {
-      downloadScreenshot(card)
+      await downloadScreenshot(card)
     } else {
-      copyScreenshot(card)
+      await copyScreenshot(card, !isDesktop)
     }
   } catch (error) {
     errorText.value = error.message
@@ -181,8 +176,6 @@ const screenshot = async (download = false) => {
   bodyExtras.forEach((ex) => {
     ex.classList.remove('trading-card-hide')
   })
-
-  loading.value = false
 }
 
 const tradingText = computed(() => {
