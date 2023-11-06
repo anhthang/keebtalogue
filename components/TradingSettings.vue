@@ -1,24 +1,20 @@
 <template>
-  <a-card title="Settings" class="wishlist-settings">
+  <a-card title="Settings" class="trading-settings">
     <template #extra>
-      <a-radio-group
-        v-model:value="wishlistConfig.want_to"
-        button-style="solid"
-      >
-        <a-radio-button value="buy"> Buy </a-radio-button>
-        <a-radio-button value="sell"> Sell </a-radio-button>
-        <a-radio-button value="trade"> Trade </a-radio-button>
+      <a-radio-group v-model:value="tradingConfig.type" button-style="solid">
+        <a-radio-button value="oneway"> Buy or Sell </a-radio-button>
+        <a-radio-button value="twoway"> Trade </a-radio-button>
       </a-radio-group>
     </template>
 
     <a-form layout="vertical">
-      <a-form-item :label="wantToTrade ? 'Want Title' : 'Title'">
-        <a-input v-model:value="wishlistConfig.wish.title">
+      <a-form-item :label="twowayTrading ? 'Want Title' : 'Title'">
+        <a-input v-model:value="tradingConfig.want.title">
           <template #prefix><font-size-outlined /></template>
         </a-input>
       </a-form-item>
-      <a-form-item :label="wantToTrade ? 'Want Collection' : 'Collection'">
-        <a-select v-model:value="wishlistConfig.wish.collection">
+      <a-form-item :label="twowayTrading ? 'Want Collection' : 'Collection'">
+        <a-select v-model:value="tradingConfig.want.collection">
           <a-select-option
             v-for="collection in collections"
             :key="collection.id"
@@ -29,13 +25,13 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item v-if="wantToTrade" label="Have Title">
-        <a-input v-model:value="wishlistConfig.trade.title">
+      <a-form-item v-if="twowayTrading" label="Have Title">
+        <a-input v-model:value="tradingConfig.have.title">
           <template #prefix><font-size-outlined /></template>
         </a-input>
       </a-form-item>
-      <a-form-item v-if="wantToTrade" label="Have Collection">
-        <a-select v-model:value="wishlistConfig.trade.collection">
+      <a-form-item v-if="twowayTrading" label="Have Collection">
+        <a-select v-model:value="tradingConfig.have.collection">
           <a-select-option
             v-for="collection in collections"
             :key="collection.id"
@@ -47,7 +43,7 @@
       </a-form-item>
       <a-form-item label="Reddit">
         <a-input
-          v-model:value="wishlistConfig.social.reddit"
+          v-model:value="tradingConfig.social.reddit"
           placeholder="u/username"
         >
           <template #prefix><reddit-outlined /></template>
@@ -55,7 +51,7 @@
       </a-form-item>
       <a-form-item label="Discord">
         <a-input
-          v-model:value="wishlistConfig.social.discord"
+          v-model:value="tradingConfig.social.discord"
           placeholder="Discord#0000"
         >
           <template #prefix>
@@ -66,10 +62,7 @@
         </a-input>
       </a-form-item>
       <a-form-item label="QQ">
-        <a-input
-          v-model:value="wishlistConfig.social.qq"
-          placeholder="00000000"
-        >
+        <a-input v-model:value="tradingConfig.social.qq" placeholder="00000000">
           <template #prefix><qq-outlined /></template>
         </a-input>
       </a-form-item>
@@ -82,21 +75,21 @@ import { storeToRefs } from 'pinia'
 import { useUserStore } from '~~/stores/user'
 
 const userStore = useUserStore()
-const { collections, wishlistConfig } = storeToRefs(userStore)
+const { collections, tradingConfig } = storeToRefs(userStore)
 
-const wantToTrade = computed(() => {
-  return wishlistConfig.value.want_to === 'trade'
+const twowayTrading = computed(() => {
+  return tradingConfig.value.type === 'twoway'
 })
 
-watch(wishlistConfig.value, () => {
+watch(tradingConfig.value, () => {
   userStore.$patch({
-    wishlistConfig: wishlistConfig.value,
+    tradingConfig: tradingConfig.value,
   })
 })
 </script>
 
 <style>
-.wishlist-settings {
+.trading-settings {
   height: 100%;
 }
 </style>

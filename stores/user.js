@@ -7,17 +7,17 @@ export const useUserStore = defineStore('user', {
     isAdmin: false,
     isEditor: false,
     collections: [
-      { name: 'Wish', id: 'wish' },
-      { name: 'Trade', id: 'trade' },
+      { name: 'Want', id: 'want' },
+      { name: 'Have', id: 'have' },
     ],
     favorites: [],
     social: {},
-    wishlistConfig: {
-      trade: {
+    tradingConfig: {
+      have: {
         collection: '',
         title: 'WTT',
       },
-      wish: {
+      want: {
         collection: '',
         title: 'WTB',
       },
@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', {
         reddit: '',
         qq: '',
       },
-      want_to: 'buy',
+      type: 'oneway',
     },
   }),
   actions: {
@@ -67,7 +67,7 @@ export const useUserStore = defineStore('user', {
           reddit: data.reddit,
           qq: data.qq,
         }
-        this.wishlistConfig.social = this.social
+        this.tradingConfig.social = this.social
         this.isAdmin = data.role === 'admin'
         this.isEditor = ['admin', 'editor'].includes(data.role)
       } else {
@@ -81,8 +81,8 @@ export const useUserStore = defineStore('user', {
       const collections = this.collections.filter((c) => c.id !== id)
       this.collections = collections
     },
-    setWishlistConfig(config) {
-      this.wishlistConfig = config
+    setTradingConfig(config) {
+      this.tradingConfig = config
     },
     updateFavoriteMakers(name) {
       if (this.favorites.includes(name)) {

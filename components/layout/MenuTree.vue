@@ -50,9 +50,9 @@
           <book-outlined /> Collection
         </nuxt-link>
       </a-menu-item>
-      <a-menu-item key="artisan.wishlist">
-        <nuxt-link to="/artisan/wishlist">
-          <shopping-cart-outlined /> Wishlist
+      <a-menu-item key="artisan.trading">
+        <nuxt-link to="/artisan/trading">
+          <shopping-cart-outlined /> Trading
         </nuxt-link>
       </a-menu-item>
     </a-sub-menu>

@@ -1,5 +1,5 @@
 <template>
-  <a-card v-if="!hasMeta" :title="colorway.name">
+  <a-card v-if="!hasMeta" :title="colorway.name" class="colorway-card">
     <template #cover>
       <img :alt="colorway.name" :src="colorway.img" />
     </template>
@@ -11,7 +11,7 @@
       <modal-colorway-card-actions :colorway="colorway" />
     </template>
   </a-card>
-  <a-card v-else-if="showAsMeta">
+  <a-card v-else-if="showAsMeta" class="colorway-card">
     <template #cover>
       <img :alt="colorway.name" :src="colorway.img" />
     </template>
@@ -29,7 +29,7 @@
       <modal-colorway-card-actions :colorway="colorway" />
     </template>
   </a-card>
-  <a-card v-else :title="colorway.name">
+  <a-card v-else :title="colorway.name" class="colorway-card">
     <template #extra>
       <a-tag v-if="colorway.giveaway" color="goldenrod">
         <template #icon> <gift-filled /> Giveaway </template>
@@ -53,6 +53,7 @@
       <div v-if="isEditor" @click="$emit('editColorway')">
         <edit-outlined /> Edit
       </div>
+      <div @click="copyColorwayCard"><copy-outlined /> Copy</div>
       <modal-colorway-card-actions :colorway="colorway" />
     </template>
   </a-card>
@@ -82,4 +83,27 @@ const hasMeta = computed(() => {
 const showAsMeta = computed(() => {
   return isMobile || !colorway.description
 })
+
+const copyColorwayCard = async () => {
+  const card = document.getElementsByClassName('colorway-card')[0]
+
+  const cardActions = card.getElementsByClassName('ant-card-actions')[0]
+  cardActions.classList.add('hide-actions')
+
+  try {
+    await copyScreenshot(card)
+  } catch (error) {
+    message.error(error.message)
+  }
+
+  cardActions.classList.remove('hide-actions')
+}
 </script>
+
+<style>
+.colorway-card {
+  .hide-actions {
+    display: none;
+  }
+}
+</style>

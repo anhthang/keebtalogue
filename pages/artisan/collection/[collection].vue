@@ -104,8 +104,8 @@ const { data, pending, refresh } = await useAsyncData(() => {
       `/api/users/${user.value.uid}/collections/${route.params.collection}/items`,
     )
   } else if (
-    route.params.collection === 'wish' ||
-    route.params.collection === 'trade'
+    route.params.collection === 'want' ||
+    route.params.collection === 'have'
   ) {
     return []
   } else {

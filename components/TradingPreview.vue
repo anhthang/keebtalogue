@@ -1,22 +1,33 @@
 <template>
-  <a-card title="Preview" class="wishlist-preview">
+  <a-card title="Preview" class="trading-preview">
     <template #extra>
-      <a-tooltip>
-        <template #title>Copy trading text to clipboard</template>
-        <a-button @click="copyToClipboard"> <copy-outlined /> Copy </a-button>
+      <a-tooltip title="Copy text to clipboard">
+        <a-button @click="copyToClipboard"> <copy-outlined /> </a-button>
       </a-tooltip>
 
-      <a-button :loading="loading" @click="generateImg">
-        <file-image-outlined /> Download
-      </a-button>
+      <a-tooltip title="Copy screenshot to clipboard">
+        <a-button :loading="loading" @click="screenshot(false)">
+          <picture-outlined />
+        </a-button>
+      </a-tooltip>
+
+      <a-tooltip title="Download screenshot">
+        <a-button
+          v-if="$device.isDesktop"
+          :loading="loading"
+          @click="screenshot(true)"
+        >
+          <download-outlined />
+        </a-button>
+      </a-tooltip>
     </template>
 
     <a-descriptions title="Information">
       <a-descriptions-item label="Discord">
-        {{ wishlistConfig.social.discord }}
+        {{ tradingConfig.social.discord }}
       </a-descriptions-item>
       <a-descriptions-item label="Reddit">
-        {{ wishlistConfig.social.reddit }}
+        {{ tradingConfig.social.reddit }}
       </a-descriptions-item>
     </a-descriptions>
 
@@ -29,12 +40,12 @@
       closable
     />
 
-    <a-divider v-if="draggableWishList.length">
-      {{ wishlistConfig.wish.title }}
+    <a-divider v-if="draggableWantList.length">
+      {{ tradingConfig.want.title }}
     </a-divider>
 
     <draggable
-      :list="draggableWishList"
+      :list="draggableWantList"
       item-key="id"
       group="group"
       class="ant-row draggable-row"
@@ -46,19 +57,19 @@
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>
             <template #extra>
-              <delete-outlined @click="removeCap(element, 'wish')" />
+              <delete-outlined @click="removeCap(element, 'want')" />
             </template>
           </a-card>
         </a-col>
       </template>
     </draggable>
 
-    <a-divider v-if="draggableTradeList.length && wantToTrade">
-      {{ wishlistConfig.trade.title }}
+    <a-divider v-if="draggableHaveList.length && twowayTrading">
+      {{ tradingConfig.have.title }}
     </a-divider>
 
     <draggable
-      :list="draggableTradeList"
+      :list="draggableHaveList"
       item-key="id"
       group="group"
       class="ant-row draggable-row"
@@ -70,7 +81,7 @@
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>
             <template #extra>
-              <delete-outlined @click="removeCap(element, 'trade')" />
+              <delete-outlined @click="removeCap(element, 'have')" />
             </template>
           </a-card>
         </a-col>
@@ -81,17 +92,17 @@
 
 <script setup>
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
-import html2canvas from 'html2canvas'
 import groupBy from 'lodash.groupby'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
+
 import { useUserStore } from '~~/stores/user'
 
 const userStore = useUserStore()
-const { authenticated, user, wishlistConfig } = storeToRefs(userStore)
+const { authenticated, user, tradingConfig } = storeToRefs(userStore)
 
-const draggableWishList = ref([])
-const draggableTradeList = ref([])
+const draggableWantList = ref([])
+const draggableHaveList = ref([])
 
 const { data: collections, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
@@ -105,24 +116,24 @@ const { data: collections, refresh } = await useAsyncData(() => {
 
 onMounted(() => {
   if (!authenticated.value) {
-    const wish = JSON.parse(localStorage.getItem('Keebtalogue_wish') || '[]')
-    const trade = JSON.parse(localStorage.getItem('Keebtalogue_trade') || '[]')
+    const want = JSON.parse(localStorage.getItem('Keebtalogue_want') || '[]')
+    const have = JSON.parse(localStorage.getItem('Keebtalogue_have') || '[]')
 
     collections.value = {
-      wish: Object.values(wish),
-      trade: Object.values(trade),
+      want: Object.values(want),
+      have: Object.values(have),
     }
   }
 })
 
 watch(
-  wishlistConfig,
+  tradingConfig,
   () => {
-    draggableWishList.value =
-      collections.value[wishlistConfig.value.wish.collection] || []
-    if (wishlistConfig.value.trade.collection) {
-      draggableTradeList.value =
-        collections.value[wishlistConfig.value.trade.collection] || []
+    draggableWantList.value =
+      collections.value[tradingConfig.value.want.collection] || []
+    if (tradingConfig.value.have.collection) {
+      draggableHaveList.value =
+        collections.value[tradingConfig.value.have.collection] || []
     }
   },
   { deep: true },
@@ -130,69 +141,62 @@ watch(
 
 watch(authenticated, () => refresh())
 
-const wantToTrade = computed(() => {
-  return wishlistConfig.value.want_to === 'trade'
+const twowayTrading = computed(() => {
+  return tradingConfig.value.type === 'twoway'
 })
 
 const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 
 const loading = ref(false)
 const errorText = ref()
-const generateImg = async () => {
+
+const screenshot = async (download = false) => {
   loading.value = true
 
-  const el = document.getElementsByClassName('wishlist-preview')[0]
+  const card = document.getElementsByClassName('trading-preview')[0]
 
   // hide some items for rendering
-  const cardHead = el.getElementsByClassName('ant-card-head')[0]
-  const bodyExtras = el
+  const cardHead = card.getElementsByClassName('ant-card-head')[0]
+  const bodyExtras = card
     .getElementsByClassName('ant-card-body')[0]
     .getElementsByClassName('ant-card-extra')
 
-  cardHead.classList.add('wishlist-hide')
+  cardHead.classList.add('trading-card-hide')
   bodyExtras.forEach((ex) => {
-    ex.classList.add('wishlist-hide')
+    ex.classList.add('trading-card-hide')
   })
 
   try {
-    const options = {
-      type: 'dataURL',
-      useCORS: true,
-      logging: false,
+    if (download) {
+      downloadScreenshot(card)
+    } else {
+      copyScreenshot(card)
     }
-    const canvas = await html2canvas(el, options)
-    const link = document.createElement('a')
-    link.setAttribute('download', 'wishlist.png')
-    link.setAttribute(
-      'href',
-      canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'),
-    )
-    link.click()
   } catch (error) {
     errorText.value = error.message
   }
 
   // revert
-  cardHead.classList.remove('wishlist-hide')
+  cardHead.classList.remove('trading-card-hide')
   bodyExtras.forEach((ex) => {
-    ex.classList.remove('wishlist-hide')
+    ex.classList.remove('trading-card-hide')
   })
 
   loading.value = false
 }
 
-const wishlistToText = computed(() => {
+const tradingText = computed(() => {
   let text =
-    `**${wishlistConfig.value.wish.title}**\n` +
-    `${draggableWishList.value
+    `**${tradingConfig.value.want.title}**\n` +
+    `${draggableWantList.value
       .map((c) => `- ${c.name} ${c.sculpt_name}`)
       .join('\n')}`
 
-  if (wantToTrade.value) {
+  if (twowayTrading.value) {
     text +=
       `\n\n` +
-      `**${wishlistConfig.value.trade.title}**\n` +
-      `${draggableTradeList.value
+      `**${tradingConfig.value.have.title}**\n` +
+      `${draggableHaveList.value
         .map((c) => `- ${c.name} ${c.sculpt_name}`)
         .join('\n')}`
   }
@@ -205,12 +209,12 @@ const removeCap = (colorway, type) => {
     title: 'Remove Artisan',
     content: 'Are you sure you want to continue?',
     onOk() {
-      if (type === 'wish') {
-        draggableWishList.value = draggableWishList.value.filter(
+      if (type === 'want') {
+        draggableWantList.value = draggableWantList.value.filter(
           (c) => c.id !== colorway.id,
         )
       } else {
-        draggableTradeList.value = draggableTradeList.value.filter(
+        draggableHaveList.value = draggableHaveList.value.filter(
           (c) => c.id !== colorway.id,
         )
       }
@@ -219,13 +223,13 @@ const removeCap = (colorway, type) => {
 }
 
 const copyToClipboard = () => {
-  copy(wishlistToText.value)
+  copy(tradingText.value)
   message.success('Copied to clipboard!')
 }
 </script>
 
 <style>
-.wishlist-preview {
+.trading-preview {
   height: 100%;
 
   .ant-card-extra {
@@ -239,7 +243,7 @@ const copyToClipboard = () => {
     font-size: 2rem;
   }
 
-  .wishlist-hide {
+  .trading-card-hide {
     display: none;
   }
 

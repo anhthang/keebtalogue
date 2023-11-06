@@ -15,10 +15,10 @@ And I want to have a catalogue of all keyboard related things available here (ke
     - More sculpt details
     - More colorway details like: commissioned, giveaway flag, retail price and quantity
 - **Collection**:
-    - Just 2 collections for wish & trade list in your local storage
+    - Just 2 collections for have & want list in your local storage
 - **Calendar**:
     - Watch your favorite maker sales
-- **Wishlist**:
+- **Trading**:
     - Select your collection to create trading images
 
 - Login with social profiles

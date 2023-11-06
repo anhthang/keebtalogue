@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <a-page-header title="Wishlist">
+    <a-page-header title="Trading">
       <a-row :gutter="8" type="flex">
         <a-col :xs="24" :md="8" :lg="6">
-          <wishlist-settings />
+          <trading-settings />
         </a-col>
         <a-col :xs="24" :md="16" :lg="18">
-          <wishlist-preview />
+          <trading-preview />
         </a-col>
       </a-row>
     </a-page-header>
@@ -15,6 +15,6 @@
 
 <script setup>
 useSeoMeta({
-  title: 'Wishlist',
+  title: 'Trading',
 })
 </script>
