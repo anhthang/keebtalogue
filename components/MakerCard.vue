@@ -1,10 +1,10 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
-    <a-card hoverable :title="maker.name">
+    <a-card hoverable :title="maker.name" :head-style="{ textAlign: 'center' }">
       <template v-if="authenticated" #extra>
         <star-filled
           v-if="favorite"
-          class="favorite"
+          :style="{ color: 'deeppink' }"
           @click="
             (e) => {
               e.preventDefault()
@@ -55,9 +55,3 @@ const addFavoriteMaker = (id) => {
   userStore.updateFavoriteMakers(id)
 }
 </script>
-
-<style>
-.favorite {
-  color: #eb2f96;
-}
-</style>

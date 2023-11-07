@@ -25,6 +25,14 @@
 </template>
 
 <style>
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 1600px;
+}
+
 .guides {
   height: 100%;
 }

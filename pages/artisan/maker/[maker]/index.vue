@@ -121,7 +121,11 @@
             :xl="4"
           >
             <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
-              <a-card hoverable :title="sculpt.name">
+              <a-card
+                hoverable
+                :title="sculpt.name"
+                :head-style="{ textAlign: 'center' }"
+              >
                 <template #cover>
                   <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
                 </template>
@@ -256,8 +260,29 @@ const getFlagEmoji = (isoCode) => {
 </script>
 
 <style>
-.artisan-container .anticon-custom-icon {
-  vertical-align: 0.1rem;
-  font-size: 16px;
+.artisan-container {
+  .ant-card-meta-description {
+    text-align: center;
+  }
+
+  .ant-card-cover {
+    height: 250px;
+    overflow: hidden;
+
+    @media (max-width: 480px) {
+      height: 150px;
+    }
+  }
+
+  .ant-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .anticon-custom-icon {
+    vertical-align: 0.1rem;
+    font-size: 16px;
+  }
 }
 </style>

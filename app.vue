@@ -14,7 +14,6 @@
 <script setup>
 import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
-import '@/assets/app.css'
 import 'ant-design-vue/dist/reset.css'
 
 const { isMobile, isTablet } = useDevice()
@@ -83,3 +82,32 @@ useSeoMeta({
   twitterImage: `${baseUrl}/website-card.png`,
 })
 </script>
+
+<style>
+.ant-spin-nested-loading {
+  min-height: 300px;
+}
+
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  padding: 0 24px !important;
+}
+
+.ant-layout-header .ant-menu {
+  flex: 1;
+}
+
+.nuxt-icon svg {
+  font-size: 18px;
+}
+
+.ant-typography {
+  text-align: justify;
+}
+
+.ant-input-number,
+.ant-input-number-affix-wrapper {
+  width: 100%;
+}
+</style>

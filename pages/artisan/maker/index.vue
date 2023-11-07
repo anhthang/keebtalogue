@@ -119,3 +119,20 @@ const addMaker = async () => {
   showModal()
 }
 </script>
+
+<style>
+.maker-container {
+  .ant-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-card-cover {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    /* background: white; */
+  }
+}
+</style>

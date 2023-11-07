@@ -48,7 +48,11 @@
     >
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card :title="cardTitle(element)" :bordered="false">
+          <a-card
+            :title="cardTitle(element)"
+            :bordered="false"
+            :head-style="{ textAlign: 'center' }"
+          >
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>
@@ -72,7 +76,11 @@
     >
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card :title="cardTitle(element)" size="small" :bordered="false">
+          <a-card
+            :title="cardTitle(element)"
+            :bordered="false"
+            :head-style="{ textAlign: 'center' }"
+          >
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
             </template>
@@ -99,6 +107,8 @@ const { authenticated, user, tradingConfig } = storeToRefs(userStore)
 
 const draggableWantList = ref([])
 const draggableHaveList = ref([])
+
+const { isDesktop } = useDevice()
 
 const { data: collections, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
@@ -158,8 +168,6 @@ const screenshot = async (download = false) => {
   bodyExtras.forEach((ex) => {
     ex.classList.add('trading-card-hide')
   })
-
-  const { isDesktop } = useDevice()
 
   try {
     if (download) {
@@ -238,12 +246,6 @@ const copyToClipboard = () => {
 
   .trading-card-hide {
     display: none;
-  }
-
-  .ant-card-body {
-    .ant-card-head-title {
-      text-align: center;
-    }
   }
 }
 

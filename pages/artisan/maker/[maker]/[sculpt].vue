@@ -96,13 +96,20 @@
             :lg="6"
             :xl="4"
           >
-            <a-card hoverable :title="colorway.name || '-'" class="sculpt-card">
+            <a-card
+              hoverable
+              :title="colorway.name || '-'"
+              :head-style="{ textAlign: 'center' }"
+            >
               <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
-                  class="commissioned"
+                  :style="{ color: 'palevioletred' }"
                 />
-                <gift-filled v-if="colorway.giveaway" class="giveaway" />
+                <gift-filled
+                  v-if="colorway.giveaway"
+                  :style="{ color: 'goldenrod' }"
+                />
               </template>
               <template #cover>
                 <img
@@ -279,13 +286,3 @@ const toggleEditColorway = () => {
   showAddColorwayModal()
 }
 </script>
-
-<style>
-.giveaway {
-  color: goldenrod;
-}
-
-.commissioned {
-  color: palevioletred;
-}
-</style>

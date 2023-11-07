@@ -70,11 +70,7 @@
                 :lg="6"
                 :xl="4"
               >
-                <a-card
-                  hoverable
-                  :title="cardTitle(colorway)"
-                  class="sculpt-card"
-                >
+                <a-card hoverable :title="cardTitle(colorway)">
                   <template #extra>
                     <bg-colors-outlined
                       v-if="colorway.commissioned"
