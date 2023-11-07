@@ -54,12 +54,12 @@
     "@types/lodash.keyby": "^4.6.8",
     "@types/lodash.sample": "^4.2.8",
     "@types/lodash.sortby": "^4.7.8",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-vue": "^9.18.1",
-    "nuxt": "^3.8.0",
-    "nuxt-icon": "^0.6.1",
+    "nuxt": "^3.8.1",
+    "nuxt-icon": "^0.6.3",
     "prettier": "^3.0.3"
   }
 }

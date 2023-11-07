@@ -1,5 +1,5 @@
 <template>
-  <a-card v-if="!hasMeta" :title="colorway.name">
+  <a-card v-if="!hasMeta" :title="colorwayTitle">
     <template #cover>
       <img :alt="colorway.name" :src="colorway.img" />
     </template>
@@ -31,7 +31,7 @@
       <modal-colorway-card-actions :colorway="colorway" />
     </template>
   </a-card>
-  <a-card v-else :title="colorway.name">
+  <a-card v-else :title="colorwayTitle">
     <template #extra>
       <a-tag v-if="colorway.giveaway" color="goldenrod">
         <template #icon> <gift-filled /> Giveaway </template>
@@ -100,6 +100,8 @@ const copyColorwayCard = async () => {
 
   cardActions.classList.remove('hide-actions')
 }
+
+const colorwayTitle = computed(() => `${colorway.name} ${colorway.sculpt_name}`)
 </script>
 
 <style>

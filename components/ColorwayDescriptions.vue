@@ -1,6 +1,6 @@
 <template>
   <a-descriptions
-    :title="isMeta ? colorway.name : 'Information'"
+    :title="isMeta ? `${colorway.name} ${colorway.sculpt_name}` : 'Information'"
     :column="1"
     size="small"
   >
