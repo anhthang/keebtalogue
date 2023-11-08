@@ -49,9 +49,9 @@
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
           <a-card
-            :title="cardTitle(element)"
+            :title="colorwayTitle(element)"
             :bordered="false"
-            :head-style="{ textAlign: 'center' }"
+            :head-style="artisanCardHeadStyle"
           >
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
@@ -77,9 +77,9 @@
       <template #item="{ element }">
         <a-col :key="element.id" :xs="12" :md="8" :xl="6">
           <a-card
-            :title="cardTitle(element)"
+            :title="colorwayTitle(element)"
             :bordered="false"
-            :head-style="{ textAlign: 'center' }"
+            :head-style="artisanCardHeadStyle"
           >
             <template #cover>
               <img loading="lazy" :alt="element.name" :src="element.img" />
@@ -151,8 +151,6 @@ const twowayTrading = computed(() => {
   return tradingConfig.value.type === 'twoway'
 })
 
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
-
 const errorText = ref()
 
 const screenshot = async (download = false) => {
@@ -189,16 +187,14 @@ const screenshot = async (download = false) => {
 const tradingText = computed(() => {
   let text =
     `**${tradingConfig.value.want.title}**\n` +
-    `${draggableWantList.value
-      .map((c) => `- ${c.name} ${c.sculpt_name}`)
-      .join('\n')}`
+    `${draggableWantList.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
 
   if (twowayTrading.value) {
     text +=
       `\n\n` +
       `**${tradingConfig.value.have.title}**\n` +
       `${draggableHaveList.value
-        .map((c) => `- ${c.name} ${c.sculpt_name}`)
+        .map((c) => `- ${colorwayTitle(c)}`)
         .join('\n')}`
   }
 

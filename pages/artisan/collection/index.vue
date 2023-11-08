@@ -34,7 +34,11 @@
           :xl="4"
         >
           <nuxt-link :to="`/artisan/collection/${collection.id}`">
-            <a-card hoverable :title="collection.name" />
+            <a-card
+              hoverable
+              :title="collection.name"
+              :head-style="artisanCardHeadStyle"
+            />
           </nuxt-link>
         </a-col>
       </a-row>

@@ -124,7 +124,7 @@
               <a-card
                 hoverable
                 :title="sculpt.name"
-                :head-style="{ textAlign: 'center' }"
+                :head-style="artisanCardHeadStyle"
               >
                 <template #cover>
                   <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />

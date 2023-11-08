@@ -70,7 +70,7 @@
                 :lg="6"
                 :xl="4"
               >
-                <a-card hoverable :title="cardTitle(colorway)">
+                <a-card hoverable :title="colorwayTitle(colorway)">
                   <template #extra>
                     <bg-colors-outlined
                       v-if="colorway.commissioned"
@@ -127,6 +127,4 @@ const { data, pending } = await useAsyncData(() =>
     return data
   }),
 )
-
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
 </script>

@@ -1,5 +1,12 @@
 import html2canvas from 'html2canvas'
 
+export const colorwayTitle = (colorway: any) =>
+  `${colorway.name} ${colorway.sculpt_name}`
+
+export const artisanCardHeadStyle = {
+  textAlign: 'center',
+}
+
 export const copyScreenshot = async (
   element: HTMLElement,
   openInNewTab: Boolean,

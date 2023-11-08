@@ -99,7 +99,7 @@
             <a-card
               hoverable
               :title="colorway.name || '-'"
-              :head-style="{ textAlign: 'center' }"
+              :head-style="artisanCardHeadStyle"
             >
               <template #extra>
                 <bg-colors-outlined

@@ -59,7 +59,11 @@
             :lg="6"
             :xl="4"
           >
-            <a-card hoverable :title="cardTitle(colorway)">
+            <a-card
+              hoverable
+              :title="colorwayTitle(colorway)"
+              :head-style="artisanCardHeadStyle"
+            >
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
               </template>
@@ -135,12 +139,10 @@ watch(sort, () => {
   ])
 })
 
-const cardTitle = (clw) => `${clw.name} ${clw.sculpt_name}`
-
 const removeCap = (clw) => {
   Modal.confirm({
     title: 'Remove Artisan',
-    content: `Are you sure you want to remove ${clw.name} ${clw.sculpt_name}?`,
+    content: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
     okText: 'Delete',
     okType: 'danger',
     onOk() {
@@ -151,7 +153,7 @@ const removeCap = (clw) => {
         )
           .then(() => {
             refresh()
-            message.success(`${cardTitle(clw)} was removed.`)
+            message.success(`${colorwayTitle(clw)} was removed.`)
           })
           .catch((error) => {
             message.error(error.message)
@@ -165,7 +167,7 @@ const removeCap = (clw) => {
           JSON.stringify(sortedCollections.value),
         )
 
-        message.success(`${cardTitle(clw)} was removed.`)
+        message.success(`${colorwayTitle(clw)} was removed.`)
       }
     },
   })
@@ -178,12 +180,16 @@ const deleteCollection = (collection) => {
     okText: 'Delete',
     okType: 'danger',
     onOk() {
-      userStore.removeCollection(collection.id)
-
       $fetch(`/api/users/${collection.uid}/collections/${collection.id}`, {
         method: 'delete',
       })
         .then(() => {
+          collections.value = collections.value.filter(
+            (c) => c.id !== collection.id,
+          )
+
+          userStore.$patch({ collections: collections.value })
+
           message.success(`Collection [${collection.name}] was deleted.`)
 
           router.go(-1)

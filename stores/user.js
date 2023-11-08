@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {},
-    authenticated: false,
     isAdmin: false,
     isEditor: false,
     collections: [
@@ -29,6 +28,9 @@ export const useUserStore = defineStore('user', {
       type: 'oneway',
     },
   }),
+  getters: {
+    authenticated: (state) => state.user && state.user.email_verified,
+  },
   actions: {
     setCurrentUser(authUser) {
       const {
@@ -46,8 +48,6 @@ export const useUserStore = defineStore('user', {
         picture,
         providers,
       }
-
-      this.authenticated = email_verified
 
       const discord = identities.find((i) => i.provider === 'discord')
       if (discord) {
@@ -73,30 +73,6 @@ export const useUserStore = defineStore('user', {
       } else {
         // console.error(uid, error)
       }
-    },
-    addCollection(name, id) {
-      this.collections.push({ name, id })
-    },
-    removeCollection(id) {
-      const collections = this.collections.filter((c) => c.id !== id)
-      this.collections = collections
-    },
-    setTradingConfig(config) {
-      this.tradingConfig = config
-    },
-    updateFavoriteMakers(name) {
-      if (this.favorites.includes(name)) {
-        this.favorites = this.favorites.filter((m) => m !== name)
-      } else {
-        this.favorites.push(name)
-      }
-
-      $fetch(`/api/users/${this.user.uid}`, {
-        method: 'post',
-        body: {
-          favorite_makers: this.favorites,
-        },
-      })
     },
   },
 })
