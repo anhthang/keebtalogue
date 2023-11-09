@@ -1,10 +1,5 @@
 <template>
-  <a-config-provider
-    :theme="{
-      algorithm: theme.darkAlgorithm,
-      token: seedToken,
-    }"
-  >
+  <a-config-provider :theme="themeCfg">
     <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
@@ -25,9 +20,39 @@ if (isMobile) {
   layout = 'tablet'
 }
 
-const seedToken = {
-  fontFamily: "'Titillium Web', sans-serif;",
+const themeCfg = ref({
+  algorithm: theme.defaultAlgorithm,
+  token: {
+    fontFamily: "'Titillium Web', sans-serif;",
+  },
+})
+
+const colorMode = useColorMode()
+
+const getAlgorithm = (preference) => {
+  switch (preference) {
+    case 'dark':
+      return theme.darkAlgorithm
+    case 'light':
+      return theme.defaultAlgorithm
+    default:
+      return colorMode.value === 'dark'
+        ? theme.darkAlgorithm
+        : theme.defaultAlgorithm
+  }
 }
+
+watch(
+  () => colorMode.value,
+  () => {
+    themeCfg.value.algorithm = getAlgorithm(colorMode.preference)
+  },
+)
+
+onMounted(() => {
+  const preference = localStorage.getItem('nuxt-color-mode')
+  themeCfg.value.algorithm = getAlgorithm(preference)
+})
 
 const config = useRuntimeConfig()
 const userStore = useUserStore()

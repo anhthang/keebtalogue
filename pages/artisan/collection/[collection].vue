@@ -263,4 +263,21 @@ const copyShareUrl = () => {
 .anticon-delete:hover svg {
   fill: #f5222d;
 }
+
+.artisan-container {
+  .ant-card-cover {
+    height: 250px;
+    overflow: hidden;
+
+    @media (max-width: 480px) {
+      height: 150px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
 </style>

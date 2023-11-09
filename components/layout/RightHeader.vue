@@ -1,6 +1,6 @@
 <template>
   <div class="right-header">
-    <!-- <layout-appearance /> -->
+    <layout-appearance />
 
     <a-dropdown v-if="user.email_verified">
       <a-avatar :src="user.picture" />
