@@ -97,10 +97,7 @@
 <script setup>
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import groupBy from 'lodash.groupby'
-import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
-
-import { useUserStore } from '~~/stores/user'
 
 const userStore = useUserStore()
 const { authenticated, user, tradingConfig } = storeToRefs(userStore)

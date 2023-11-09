@@ -47,9 +47,6 @@
 </template>
 
 <script setup>
-import { useUserStore } from '~~/stores/user'
-import { storeToRefs } from 'pinia'
-
 useSeoMeta({
   title: 'Collection',
 })

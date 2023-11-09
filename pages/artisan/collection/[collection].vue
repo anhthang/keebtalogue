@@ -79,8 +79,6 @@
 </template>
 
 <script setup>
-import { useUserStore } from '~~/stores/user'
-import { storeToRefs } from 'pinia'
 import sortBy from 'lodash.sortby'
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 

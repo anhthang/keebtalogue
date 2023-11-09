@@ -62,9 +62,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '~~/stores/user'
-
 const router = useRouter()
 
 const userStore = useUserStore()

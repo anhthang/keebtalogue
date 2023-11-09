@@ -176,8 +176,6 @@
 
 <script setup>
 import sortBy from 'lodash.sortby'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '~~/stores/user'
 
 const route = useRoute()
 const { isMobile } = useDevice()
