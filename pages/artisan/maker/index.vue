@@ -18,12 +18,6 @@
         </a-modal>
 
         <a-tabs v-model:activeKey="defaultTab">
-          <template v-if="!$device.isMobile" #rightExtra>
-            <a-input-search
-              v-model:value="searchMaker"
-              placeholder="Search Maker Name"
-            />
-          </template>
           <a-tab-pane key="favorite" :disabled="!authenticated">
             <template #tab>
               <star-outlined />Favorite ({{ favoriteMakers.length }})
@@ -83,26 +77,17 @@ const showModal = () => {
   visible.value = !visible.value
 }
 
-// search maker box
-const searchMaker = ref()
-const filteringMakers = ref(makers.value)
-watch(searchMaker, () => {
-  filteringMakers.value = makers.value.filter((m) =>
-    m.name.toLowerCase().includes(searchMaker.value.toLowerCase()),
-  )
-})
-
 const defaultTab = ref(favorites.value.length ? 'favorite' : 'makers')
 watch(favorites, () => {
   defaultTab.value = 'favorite'
 })
 
 const favoriteMakers = computed(() => {
-  return filteringMakers.value.filter((m) => favorites.value.includes(m.id))
+  return makers.value.filter((m) => favorites.value.includes(m.id))
 })
 
 const otherMakers = computed(() => {
-  return filteringMakers.value.filter((m) => !favorites.value.includes(m.id))
+  return makers.value.filter((m) => !favorites.value.includes(m.id))
 })
 
 const makerForm = ref()

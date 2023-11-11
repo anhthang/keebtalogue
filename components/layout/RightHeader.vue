@@ -1,5 +1,7 @@
 <template>
   <div class="right-header">
+    <artisan-search v-if="!$device.isMobile" />
+
     <layout-appearance />
 
     <a-dropdown v-if="user.email_verified">

@@ -269,12 +269,13 @@ const getFlagEmoji = (isoCode) => {
     @media (max-width: 480px) {
       height: 150px;
     }
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  /* iPad */
+  .ant-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .anticon-custom-icon {
