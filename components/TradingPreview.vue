@@ -18,79 +18,85 @@
       </a-tooltip>
     </template>
 
-    <a-descriptions title="Information">
-      <a-descriptions-item label="Discord">
-        {{ tradingConfig.social.discord }}
-      </a-descriptions-item>
-      <a-descriptions-item label="Reddit">
-        {{ tradingConfig.social.reddit }}
-      </a-descriptions-item>
-    </a-descriptions>
-
-    <a-alert
-      v-if="errorText"
-      type="error"
-      message="Something went wrong"
-      :description="errorText"
-      show-icon
-      closable
-    />
-
-    <a-divider v-if="draggableWantList.length">
-      {{ tradingConfig.want.title }}
-    </a-divider>
-
-    <draggable
-      :list="draggableWantList"
-      item-key="id"
-      group="group"
-      class="ant-row draggable-row"
+    <a-watermark
+      :height="50"
+      :width="248"
+      :image="`/watermark-${$colorMode.value}.png`"
     >
-      <template #item="{ element }">
-        <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card
-            :title="colorwayTitle(element)"
-            :bordered="false"
-            :head-style="artisanCardHeadStyle"
-          >
-            <template #cover>
-              <img loading="lazy" :alt="element.name" :src="element.img" />
-            </template>
-            <template #extra>
-              <delete-outlined @click="removeCap(element, 'want')" />
-            </template>
-          </a-card>
-        </a-col>
-      </template>
-    </draggable>
+      <a-descriptions title="Information">
+        <a-descriptions-item label="Discord">
+          {{ tradingConfig.social.discord }}
+        </a-descriptions-item>
+        <a-descriptions-item label="Reddit">
+          {{ tradingConfig.social.reddit }}
+        </a-descriptions-item>
+      </a-descriptions>
 
-    <a-divider v-if="draggableHaveList.length && twowayTrading">
-      {{ tradingConfig.have.title }}
-    </a-divider>
+      <a-alert
+        v-if="errorText"
+        type="error"
+        message="Something went wrong"
+        :description="errorText"
+        show-icon
+        closable
+      />
 
-    <draggable
-      :list="draggableHaveList"
-      item-key="id"
-      group="group"
-      class="ant-row draggable-row"
-    >
-      <template #item="{ element }">
-        <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-          <a-card
-            :title="colorwayTitle(element)"
-            :bordered="false"
-            :head-style="artisanCardHeadStyle"
-          >
-            <template #cover>
-              <img loading="lazy" :alt="element.name" :src="element.img" />
-            </template>
-            <template #extra>
-              <delete-outlined @click="removeCap(element, 'have')" />
-            </template>
-          </a-card>
-        </a-col>
-      </template>
-    </draggable>
+      <a-divider v-if="draggableWantList.length">
+        {{ tradingConfig.want.title }}
+      </a-divider>
+
+      <draggable
+        :list="draggableWantList"
+        item-key="id"
+        group="group"
+        class="ant-row draggable-row"
+      >
+        <template #item="{ element }">
+          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+            <a-card
+              :title="colorwayTitle(element)"
+              :bordered="false"
+              :head-style="artisanCardHeadStyle"
+            >
+              <template #cover>
+                <img loading="lazy" :alt="element.name" :src="element.img" />
+              </template>
+              <template #extra>
+                <delete-outlined @click="removeCap(element, 'want')" />
+              </template>
+            </a-card>
+          </a-col>
+        </template>
+      </draggable>
+
+      <a-divider v-if="draggableHaveList.length && twowayTrading">
+        {{ tradingConfig.have.title }}
+      </a-divider>
+
+      <draggable
+        :list="draggableHaveList"
+        item-key="id"
+        group="group"
+        class="ant-row draggable-row"
+      >
+        <template #item="{ element }">
+          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+            <a-card
+              :title="colorwayTitle(element)"
+              :bordered="false"
+              :head-style="artisanCardHeadStyle"
+            >
+              <template #cover>
+                <img loading="lazy" :alt="element.name" :src="element.img" />
+              </template>
+              <template #extra>
+                <delete-outlined @click="removeCap(element, 'have')" />
+              </template>
+            </a-card>
+          </a-col>
+        </template>
+      </draggable>
+    </a-watermark>
   </a-card>
 </template>
 
