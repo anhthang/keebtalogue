@@ -89,7 +89,6 @@ const { authenticated, collections, user } = storeToRefs(userStore)
 
 const route = useRoute()
 const router = useRouter()
-const sortedCollections = ref([])
 
 const sort = ref('sculpt_name')
 
@@ -121,20 +120,14 @@ onMounted(() => {
   )
 })
 
-watch(data, () => {
-  sortedCollections.value = sortBy(data.value, ['maker_id', sort.value])
-})
-
 watchEffect(() => route.params.collection, refresh())
 
 const onChangeSortType = (e) => {
   sort.value = e.key
 }
-watch(sort, () => {
-  sortedCollections.value = sortBy(sortedCollections.value, [
-    'maker_id',
-    sort.value,
-  ])
+
+const sortedCollections = computed(() => {
+  return sortBy(data.value, ['maker_id', sort.value])
 })
 
 const removeCap = (clw) => {

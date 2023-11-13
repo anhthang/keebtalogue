@@ -2,7 +2,7 @@
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <a-card hoverable :title="maker.name" :head-style="artisanCardHeadStyle">
       <template v-if="authenticated" #extra>
-        <star-filled
+        <pushpin-filled
           v-if="favorite"
           :style="{ color: 'deeppink' }"
           @click="
@@ -12,7 +12,7 @@
             }
           "
         />
-        <star-outlined
+        <pushpin-outlined
           v-else
           @click="
             (e) => {

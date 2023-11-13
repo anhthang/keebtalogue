@@ -17,44 +17,37 @@
           <modal-maker-form ref="makerForm" />
         </a-modal>
 
-        <a-tabs v-model:activeKey="defaultTab">
-          <a-tab-pane key="favorite" :disabled="!authenticated">
-            <template #tab>
-              <star-outlined />Favorite ({{ favoriteMakers.length }})
-            </template>
-            <a-row :gutter="[8, 8]" type="flex">
-              <a-col
-                v-for="maker in favoriteMakers"
-                :key="maker.id"
-                :xs="12"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                :xl="4"
-              >
-                <maker-card :favorite="true" :maker="maker" />
-              </a-col>
-            </a-row>
-          </a-tab-pane>
-          <a-tab-pane key="makers">
-            <template #tab>
-              <usergroup-add-outlined />Makers ({{ otherMakers.length }})
-            </template>
-            <a-row :gutter="[8, 8]" type="flex">
-              <a-col
-                v-for="maker in otherMakers"
-                :key="maker.id"
-                :xs="12"
-                :sm="12"
-                :md="8"
-                :lg="6"
-                :xl="4"
-              >
-                <maker-card :maker="maker" />
-              </a-col>
-            </a-row>
-          </a-tab-pane>
-        </a-tabs>
+        <a-divider v-if="authenticated" orientation="left"> Pinned </a-divider>
+
+        <a-row v-if="authenticated" :gutter="[8, 8]" type="flex">
+          <a-col
+            v-for="maker in favoriteMakers"
+            :key="maker.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :xl="4"
+          >
+            <maker-card :favorite="true" :maker="maker" />
+          </a-col>
+        </a-row>
+
+        <a-divider v-if="authenticated" orientation="left"> Others </a-divider>
+
+        <a-row :gutter="[8, 8]" type="flex">
+          <a-col
+            v-for="maker in otherMakers"
+            :key="maker.id"
+            :xs="12"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :xl="4"
+          >
+            <maker-card :maker="maker" />
+          </a-col>
+        </a-row>
       </a-page-header>
     </a-spin>
   </div>
@@ -76,11 +69,6 @@ const visible = ref(false)
 const showModal = () => {
   visible.value = !visible.value
 }
-
-const defaultTab = ref(favorites.value.length ? 'favorite' : 'makers')
-watch(favorites, () => {
-  defaultTab.value = 'favorite'
-})
 
 const favoriteMakers = computed(() => {
   return makers.value.filter((m) => favorites.value.includes(m.id))
