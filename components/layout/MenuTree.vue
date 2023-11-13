@@ -52,7 +52,7 @@
       </a-menu-item>
       <a-menu-item key="artisan.trading">
         <nuxt-link to="/artisan/trading">
-          <shopping-cart-outlined /> Trading
+          <shopping-outlined /> Trading
         </nuxt-link>
       </a-menu-item>
     </a-sub-menu>

@@ -47,22 +47,20 @@
             <link-outlined /> Visit
           </a-button>
 
-          <a-dropdown placement="bottomRight">
-            <template #overlay>
-              <a-menu @click="onChangeSortType">
-                <a-menu-item key="name">
-                  <sort-ascending-outlined /> Name
-                </a-menu-item>
-                <a-menu-item key="order">
-                  <ordered-list-outlined /> Order
-                </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button>
-              <sort-ascending-outlined v-if="sort === 'name'" />
-              <ordered-list-outlined v-else /> Sort
-            </a-button>
-          </a-dropdown>
+          <a-select v-model:value="sort">
+            <a-select-option value="name|asc">
+              <sort-ascending-outlined /> Name (A-Z)
+            </a-select-option>
+            <a-select-option value="name|desc">
+              <sort-descending-outlined /> Name (Z-A)
+            </a-select-option>
+            <a-select-option value="order|asc">
+              <ordered-list-outlined /> Oldest First
+            </a-select-option>
+            <a-select-option value="order|desc">
+              <ordered-list-outlined /> Newest First
+            </a-select-option>
+          </a-select>
         </template>
 
         <a-typography v-if="sculpt.story">
@@ -88,7 +86,7 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
-            v-for="colorway in sculpt.colorways"
+            v-for="colorway in colorways"
             :key="colorway.colorway_id"
             :xs="12"
             :sm="12"
@@ -175,7 +173,7 @@
 </template>
 
 <script setup>
-import sortBy from 'lodash.sortby'
+import orderBy from 'lodash.orderby'
 
 const route = useRoute()
 const { isMobile } = useDevice()
@@ -214,12 +212,11 @@ useSeoMeta({
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
-const sort = ref('order')
+const sort = ref('order|desc')
 
-const onChangeSortType = (e) => {
-  sort.value = e.key
-  sculpt.value.colorways = sortBy(sculpt.value.colorways, e.key)
-}
+const colorways = computed(() => {
+  return orderBy(sculpt.value.colorways, ...sort.value.split('|'))
+})
 
 const confirmLoading = ref(false)
 
