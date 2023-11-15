@@ -102,6 +102,7 @@ const addMaker = async () => {
     display: flex;
     align-items: center;
     flex: 1;
+    margin: 25px;
     /* background: white; */
   }
 }

@@ -5,6 +5,16 @@ It's inspired from [KeycapLendar](https://keycaplendar.firebaseapp.com/) and [Ke
 which I want to have full managed of the database instead of uploading to Google Docs file.
 And I want to have a catalogue of all keyboard related things available here (keyboard, keycap set, artisan keycap...)
 
+## [Unreleased]
+
+## Features
+- Appearance switch button
+- Download or Copy trading image
+- Colorway card information
+- More sort options, showing newly added colorway by default
+- More artisan maker logos
+- Keyset catalogue is experimental
+
 ## [1.0.0] - 2022-10-19
 
 ## Features

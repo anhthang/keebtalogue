@@ -24,9 +24,14 @@
       </template>
       <template #cover>
         <a-image
+          :class="
+            maker.invertible_logo && $colorMode.value === 'dark'
+              ? 'invertible-logo'
+              : ''
+          "
           :preview="false"
           :alt="maker.name"
-          :src="`/logo/${$colorMode.value}/${maker.id}.png`"
+          :src="`/logo/${maker.id}.png`"
           :fallback="`/logo/no_photo.png`"
         />
       </template>

@@ -13,7 +13,11 @@
             </nuxt-link>
           </template>
           <template #avatar>
-            <a-avatar :src="`/logo/${$colorMode.value}/${item.id}.png`" />
+            <a-avatar
+              :src="`/logo/${item.id}.png`"
+              shape="square"
+              :class="item.invertible_logo ? 'invertible-logo' : ''"
+            />
           </template>
         </a-list-item-meta>
         <div>
@@ -29,3 +33,13 @@
 <script setup>
 const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 </script>
+
+<style>
+.ant-avatar img {
+  object-fit: contain;
+}
+
+.invertible-logo {
+  filter: invert();
+}
+</style>

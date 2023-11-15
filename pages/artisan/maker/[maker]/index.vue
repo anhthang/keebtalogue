@@ -4,7 +4,14 @@
       <a-page-header
         v-if="maker"
         :title="maker.name"
-        :avatar="{ src: `/logo/${$colorMode.value}/${maker.id}.png` }"
+        :avatar="{
+          src: `/logo/${maker.id}.png`,
+          shape: 'square',
+          class:
+            maker.invertible_logo && $colorMode.value === 'dark'
+              ? 'invertible-logo'
+              : '',
+        }"
       >
         <template #breadcrumb>
           <a-breadcrumb>
@@ -191,8 +198,8 @@ const cfg = useRuntimeConfig()
 useSeoMeta({
   title: maker.value?.name,
   description: maker.value?.intro || cfg.public.appDesc,
-  ogImage: `/logo/light/${route.params.maker}.png`,
-  twitterImage: `/logo/light/${route.params.maker}.png`,
+  ogImage: `/logo/${route.params.maker}.png`,
+  twitterImage: `/logo/${route.params.maker}.png`,
 })
 
 const showEditMakerModal = () => {
