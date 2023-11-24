@@ -5,27 +5,32 @@
     :data-source="data"
   >
     <template #renderItem="{ item }">
-      <a-list-item>
-        <a-list-item-meta>
-          <template #title>
-            <nuxt-link :to="`/artisan/maker/${item.id}`">
-              {{ item.name }}
-            </nuxt-link>
-          </template>
-          <template #avatar>
-            <a-avatar
-              :src="`/logo/${item.id}.png`"
-              shape="square"
-              :class="item.invertible_logo ? 'invertible-logo' : ''"
-            />
-          </template>
-        </a-list-item-meta>
-        <div>
-          {{
-            item.additions === 1 ? '1 addition' : `${item.additions} additions`
-          }}
-        </div>
-      </a-list-item>
+      <nuxt-link :to="`/artisan/maker/${item.id}`">
+        <a-list-item>
+          <a-list-item-meta :title="item.name">
+            <template #avatar>
+              <a-avatar
+                :src="`/logo/${item.id}.png`"
+                shape="square"
+                :class="
+                  item.invertible_logo && $colorMode.value === 'dark'
+                    ? 'invertible-logo'
+                    : ''
+                "
+              >
+                {{ item.name.charAt(0).toUpperCase() }}
+              </a-avatar>
+            </template>
+          </a-list-item-meta>
+          <div>
+            {{
+              item.additions === 1
+                ? '1 addition'
+                : `${item.additions} additions`
+            }}
+          </div>
+        </a-list-item>
+      </nuxt-link>
     </template>
   </a-list>
 </template>
