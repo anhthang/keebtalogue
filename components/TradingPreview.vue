@@ -18,7 +18,19 @@
       </a-tooltip>
     </template>
 
+    <a-result
+      v-if="!Object.keys(collections).length"
+      status="404"
+      sub-title="Looks like you haven't created any collections yet. To use this feature, please create a collection first."
+    >
+      <template #extra>
+        <nuxt-link to="/artisan/collection">
+          <a-button type="primary"> Manage Collection </a-button>
+        </nuxt-link>
+      </template>
+    </a-result>
     <a-watermark
+      v-else
       :height="50"
       :width="248"
       :image="`/watermark-${$colorMode.value}.png`"
