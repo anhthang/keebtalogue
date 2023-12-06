@@ -209,6 +209,27 @@ useSeoMeta({
   twitterImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
 })
 
+watch(
+  () => route.query.cid,
+  () => {
+    const clw = sculpt.value.colorways.find(
+      (c) => c.colorway_id === route.query.cid,
+    )
+    if (clw) {
+      showColorwayCardModal(clw)
+    }
+  },
+)
+
+onMounted(() => {
+  const clw = sculpt.value.colorways.find(
+    (c) => c.colorway_id === route.query.cid,
+  )
+  if (clw) {
+    showColorwayCardModal(clw)
+  }
+})
+
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
