@@ -17,9 +17,18 @@
           <modal-maker-form ref="makerForm" />
         </a-modal>
 
-        <a-divider v-if="authenticated" orientation="left"> Pinned </a-divider>
+        <a-divider
+          v-if="authenticated && favoriteMakers.length"
+          orientation="left"
+        >
+          Pinned
+        </a-divider>
 
-        <a-row v-if="authenticated" :gutter="[8, 8]" type="flex">
+        <a-row
+          v-if="authenticated && favoriteMakers.length"
+          :gutter="[8, 8]"
+          type="flex"
+        >
           <a-col
             v-for="maker in favoriteMakers"
             :key="maker.id"
@@ -33,7 +42,12 @@
           </a-col>
         </a-row>
 
-        <a-divider v-if="authenticated" orientation="left"> Others </a-divider>
+        <a-divider
+          v-if="authenticated && favoriteMakers.length"
+          orientation="left"
+        >
+          Others
+        </a-divider>
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
