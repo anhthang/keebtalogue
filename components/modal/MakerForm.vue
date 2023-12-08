@@ -24,9 +24,11 @@
     </a-row>
 
     <a-form-item v-if="!isKeeb" label="Source">
-      <a-input v-model:value="maker.src">
-        <template #prefix><file-word-outlined /></template>
-      </a-input>
+      <a-textarea
+        v-model:value="maker.document_ids"
+        auto-size
+        placeholder="Please enter document ID from the URL of the files. Separated by comma (,)"
+      />
     </a-form-item>
     <a-form-item label="Website">
       <a-input v-model:value="maker.website">
@@ -86,6 +88,8 @@ onBeforeMount(() => {
 
 const addMaker = () => {
   const { sculpts, ...rest } = maker.value
+
+  rest.document_ids = rest.document_ids.split(',')
 
   const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true })
 

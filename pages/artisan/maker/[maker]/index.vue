@@ -40,82 +40,13 @@
           <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
             <template #icon><calendar-outlined /></template> Sales
           </a-button>
+
+          <maker-helpful-links :maker="maker" />
         </template>
 
         <a-typography v-if="maker.intro">
           <a-typography-paragraph>{{ maker.intro }}</a-typography-paragraph>
         </a-typography>
-
-        <a-row :gutter="[8, 8]" type="flex">
-          <a-button
-            v-if="isLinktree"
-            key="linktree"
-            :href="maker.website"
-            target="_blank"
-            type="link"
-          >
-            <span class="anticon anticon-custom-icon">
-              <icon name="LinktreeIcon" size="18" />
-            </span>
-            Linktree
-          </a-button>
-          <a-button
-            v-else-if="maker.website"
-            key="website"
-            :href="maker.website"
-            target="_blank"
-            type="link"
-          >
-            <global-outlined /> Website
-          </a-button>
-
-          <a-button
-            v-if="maker.instagram"
-            key="instagram"
-            :href="maker.instagram"
-            target="_blank"
-            type="link"
-          >
-            <instagram-outlined /> Instagram
-          </a-button>
-
-          <a-button
-            v-if="maker.discord"
-            key="discord"
-            :href="maker.discord"
-            target="_blank"
-            type="link"
-          >
-            <span class="anticon anticon-custom-icon">
-              <icon name="la:discord" />
-            </span>
-            Discord
-          </a-button>
-
-          <a-button
-            v-if="maker.artisancollector"
-            key="artisancollector"
-            :href="maker.artisancollector"
-            target="_blank"
-            type="link"
-          >
-            <span class="anticon anticon-custom-icon">
-              <icon name="ArtisanCollectorIcon" size="18" />
-            </span>
-            Artisan Collector
-          </a-button>
-
-          <a-button
-            v-if="maker.src"
-            key="catalog"
-            :href="maker.src"
-            target="_blank"
-            type="link"
-          >
-            <file-word-outlined /> Catalog
-          </a-button>
-        </a-row>
-        <br />
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
@@ -140,6 +71,19 @@
             </nuxt-link>
           </a-col>
         </a-row>
+
+        <a-flex justify="space-between" align="center" style="margin-top: 48px">
+          <a-avatar-group class="contributors">
+            <a-tooltip
+              v-for="contributor in maker.contributors"
+              :key="contributor.name"
+              :title="contributor.name"
+            >
+              <a-avatar :alt="contributor.name" :src="contributor.picture" />
+            </a-tooltip>
+          </a-avatar-group>
+          <span>Last updated: {{ new Date(maker.updated_at) }}</span>
+        </a-flex>
 
         <a-modal
           v-model:open="showEditMaker"
@@ -188,10 +132,6 @@ const {
   () => $fetch(`/api/makers/${route.params.maker}`),
   { watch: () => route.params.maker },
 )
-
-const isLinktree = computed(() => {
-  return maker.value.website && maker.value.website.includes('linktr.ee')
-})
 
 const cfg = useRuntimeConfig()
 
@@ -289,5 +229,19 @@ const getFlagEmoji = (isoCode) => {
     vertical-align: 0.1rem;
     font-size: 16px;
   }
+}
+
+.contributors span,
+.contributors .ant-avatar + .ant-avatar {
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  -webkit-margin-end: -8px;
+  margin-inline-end: -8px;
+}
+
+.contributors:hover span,
+.contributors:hover .ant-avatar {
+  -webkit-margin-end: 0;
+  margin-inline-end: 0;
 }
 </style>
