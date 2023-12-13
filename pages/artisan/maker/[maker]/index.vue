@@ -82,7 +82,9 @@
               <a-avatar :alt="contributor.name" :src="contributor.picture" />
             </a-tooltip>
           </a-avatar-group>
-          <span>Last updated: {{ new Date(maker.updated_at) }}</span>
+          <span>
+            Last updated: {{ new Date(maker.updated_at).toDateString() }}
+          </span>
         </a-flex>
 
         <a-modal

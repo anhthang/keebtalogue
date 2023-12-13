@@ -1,5 +1,5 @@
 <template>
-  <div class="right-header">
+  <a-flex gap="small">
     <artisan-search v-if="!$device.isMobile" />
 
     <layout-appearance />
@@ -60,7 +60,7 @@
         and Terms of Service.
       </a-typography-text>
     </a-modal>
-  </div>
+  </a-flex>
 </template>
 
 <script setup>
@@ -113,13 +113,6 @@ const gotoSettings = () => {
 </script>
 
 <style>
-.right-header {
-  flex: 0 1 auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
 .social-login {
   margin-bottom: 2rem;
   margin-top: 3rem;

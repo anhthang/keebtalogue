@@ -21,7 +21,8 @@
     <a-result
       v-if="!Object.keys(collections).length"
       status="404"
-      sub-title="Looks like you haven't created any collections yet. To use this feature, please create a collection first."
+      title="¯\_(ツ)_/¯"
+      sub-title="You don’t have any collections yet. Create a collection to get started."
     >
       <template #extra>
         <nuxt-link to="/artisan/collection">

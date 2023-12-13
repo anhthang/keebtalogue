@@ -1,10 +1,6 @@
 <template>
-  <a-descriptions
-    :title="isMeta ? colorwayTitle(colorway) : 'Information'"
-    :column="1"
-    size="small"
-  >
-    <template v-if="isMeta" #extra>
+  <a-descriptions :title="colorwayTitle(colorway)" :column="1" size="small">
+    <template #extra>
       <a-tag v-if="colorway.giveaway" color="goldenrod">
         <template #icon> <gift-filled /> Giveaway </template>
       </a-tag>
@@ -41,11 +37,6 @@ const { colorway } = defineProps({
       return {}
     },
   },
-})
-
-const { isMobile } = useDevice()
-const isMeta = computed(() => {
-  return isMobile || !colorway.description
 })
 
 const descriptionLines = computed(() => {
