@@ -211,7 +211,7 @@ onBeforeMount(() => {
 })
 
 const { useForm } = Form
-const { validate, validateInfos } = useForm(formModel, formRules)
+const { validate, validateInfos } = useForm(colorway, formRules)
 
 const addColorway = () => {
   validate()

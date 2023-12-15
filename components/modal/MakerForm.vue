@@ -179,7 +179,7 @@ const removeDocId = (docIdx) => {
 }
 
 const { useForm } = Form
-const { validate, validateInfos } = useForm(formModel, formRules)
+const { validate, validateInfos } = useForm(maker, formRules)
 
 const addMaker = () => {
   validate()
