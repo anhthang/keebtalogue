@@ -35,30 +35,34 @@
     </a-dropdown>
 
     <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
-      <a-typography-title :level="2">Welcome back</a-typography-title>
+      <a-flex vertical gap="large">
+        <a-typography-title :level="2">Welcome back</a-typography-title>
 
-      <a-row :gutter="[8, 8]" class="social-login">
-        <a-button block @click="login('google')">
-          <span class="custom-icon">
-            <icon name="logos:google-icon" />
-          </span>
-          Continue with Google
-        </a-button>
-        <a-button block @click="login('discord')">
-          <span class="custom-icon">
-            <icon name="logos:discord-icon" />
-          </span>
-          Continue with Discord
-        </a-button>
-      </a-row>
+        <a-flex vertical gap="small">
+          <a-button block @click="login('google')">
+            <span class="custom-icon">
+              <icon name="logos:google-icon" />
+            </span>
+            Continue with Google
+          </a-button>
+          <a-button block @click="login('discord')">
+            <span class="custom-icon">
+              <icon name="logos:discord-icon" />
+            </span>
+            Continue with Discord
+          </a-button>
+        </a-flex>
 
-      <a-typography-text>
-        By clicking continue, you agree to our
-        <a-typography-link href="/policy" target="_blank">
-          Privacy Policy
-        </a-typography-link>
-        and Terms of Service.
-      </a-typography-text>
+        <a-flex justify="center">
+          <a-typography-text>
+            By clicking continue, you agree to our
+            <a-typography-link href="/policy" target="_blank">
+              Privacy Policy
+            </a-typography-link>
+            and Terms of Service.
+          </a-typography-text>
+        </a-flex>
+      </a-flex>
     </a-modal>
   </a-flex>
 </template>

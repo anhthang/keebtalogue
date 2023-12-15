@@ -12,7 +12,14 @@
         :confirm-loading="loading"
         @ok="addCollection"
       >
-        <a-input v-model:value="collectionName" placeholder="Collection Name" />
+        <a-form :ref="formRef" :model="formModel" :rules="formRules">
+          <a-form-item ref="name" name="name" v-bind="validateInfos.name">
+            <a-input
+              v-model:value="formModel.name"
+              placeholder="Collection Name"
+            />
+          </a-form-item>
+        </a-form>
       </a-modal>
 
       <a-row v-if="!user.email_verified" type="flex">
@@ -51,6 +58,16 @@ useSeoMeta({
   title: 'Collection',
 })
 
+import { Form } from 'ant-design-vue'
+
+const formRef = ref()
+const formModel = ref({
+  name: '',
+})
+const formRules = {
+  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+}
+
 const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)
 
@@ -59,27 +76,36 @@ const showModal = () => {
   visible.value = !visible.value
 }
 
-const collectionName = ref('')
 const loading = ref(false)
+
+const { useForm } = Form
+const { validate, validateInfos } = useForm(formModel, formRules)
 
 const addCollection = async () => {
   loading.value = true
-  await $fetch(`/api/users/${user.value.uid}/collections`, {
-    method: 'post',
-    body: {
-      name: collectionName.value,
-      uid: user.value.uid,
-    },
-  })
-    .then(() => {
-      message.success(
-        `Collection [${collectionName.value}] added successfully!`,
-      )
-      userStore.getUserDocument(user.value.uid)
-      showModal()
+
+  await validate()
+    .then(async () => {
+      const { name } = formModel.value
+
+      await $fetch(`/api/users/${user.value.uid}/collections`, {
+        method: 'post',
+        body: {
+          name,
+          uid: user.value.uid,
+        },
+      })
+        .then(() => {
+          message.success(`Collection [${name}] added successfully!`)
+          userStore.getUserDocument(user.value.uid)
+          showModal()
+        })
+        .catch((error) => {
+          message.error(error.message)
+        })
     })
-    .catch((error) => {
-      message.error(error.message)
+    .catch(() => {
+      // ignore
     })
 
   loading.value = false

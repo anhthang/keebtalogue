@@ -1,8 +1,13 @@
 <template>
-  <a-form layout="vertical">
+  <a-form :ref="formRef" :rules="formRules" :model="colorway" layout="vertical">
     <a-row :gutter="[8, 8]">
       <a-col :xs="24">
-        <a-form-item label="Name">
+        <a-form-item
+          ref="name"
+          name="name"
+          v-bind="validateInfos.name"
+          label="Name"
+        >
           <a-input v-model:value="colorway.name">
             <template #prefix><font-size-outlined /></template>
           </a-input>
@@ -12,21 +17,36 @@
 
     <a-row :gutter="[8, 8]">
       <a-col :xs="12">
-        <a-form-item label="Release">
+        <a-form-item
+          ref="release"
+          name="release"
+          v-bind="validateInfos.release"
+          label="Release"
+        >
           <a-input v-model:value="colorway.release">
             <template #prefix><calendar-outlined /></template>
           </a-input>
         </a-form-item>
       </a-col>
       <a-col :xs="6" :sm="6">
-        <a-form-item label="Quantity">
+        <a-form-item
+          ref="quantity"
+          name="quantity"
+          v-bind="validateInfos.quantity"
+          label="Quantity"
+        >
           <a-input-number v-model:value="colorway.qty">
             <template #prefix><number-outlined /></template>
           </a-input-number>
         </a-form-item>
       </a-col>
       <a-col :xs="6" :sm="6">
-        <a-form-item label="Order">
+        <a-form-item
+          ref="order"
+          name="order"
+          v-bind="validateInfos.order"
+          label="Order"
+        >
           <a-input-number v-model:value="colorway.order">
             <template #prefix><number-outlined /></template>
           </a-input-number>
@@ -54,7 +74,12 @@
 
     <a-row v-if="!colorway.giveaway && !colorway.commissioned" :gutter="[8, 8]">
       <a-col :xs="12">
-        <a-form-item label="Price">
+        <a-form-item
+          ref="price"
+          name="price"
+          v-bind="validateInfos.price"
+          label="Price"
+        >
           <a-input-group class="price-input-group" compact>
             <a-select v-model:value="colorway.currency" style="width: 30%">
               <a-select-option
@@ -74,7 +99,12 @@
         </a-form-item>
       </a-col>
       <a-col :xs="12">
-        <a-form-item label="Sale Type">
+        <a-form-item
+          ref="sale_type"
+          name="sale_type"
+          v-bind="validateInfos.class"
+          label="Sale Type"
+        >
           <a-select v-model:value="colorway.sale_type">
             <a-select-option key="Raffle" value="Raffle">
               Raffle
@@ -89,11 +119,21 @@
       </a-col>
     </a-row>
 
-    <a-form-item label="Description">
+    <a-form-item
+      ref="description"
+      name="description"
+      v-bind="validateInfos.description"
+      label="Description"
+    >
       <a-textarea v-model:value="colorway.description" auto-size />
     </a-form-item>
 
-    <a-form-item label="Image">
+    <a-form-item
+      ref="image"
+      name="image"
+      v-bind="validateInfos.image"
+      label="Image"
+    >
       <a-upload-dragger
         v-model:fileList="fileList"
         list-type="picture"
@@ -129,6 +169,8 @@
 </template>
 
 <script setup>
+import { Form } from 'ant-design-vue'
+
 const { metadata } = defineProps({
   metadata: {
     type: Object,
@@ -143,6 +185,24 @@ const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 const route = useRoute()
 const colorway = ref({})
 
+const formRef = ref()
+const formRules = {
+  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+  release: [{ type: 'string', trigger: ['change', 'blur'] }],
+  quantity: [{ type: 'number', trigger: ['change', 'blur'] }],
+  order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
+  price: [{ type: 'string', trigger: ['change', 'blur'] }],
+  sale_type: [
+    {
+      type: 'enum',
+      enum: ['Raffle', 'FCFS', 'Fulfillment'],
+      trigger: ['change', 'blur'],
+    },
+  ],
+  description: [{ type: 'string', trigger: ['change', 'blur'] }],
+  image: [{ required: true, type: 'url' }],
+}
+
 onBeforeMount(() => {
   Object.assign(colorway.value, metadata)
   if (metadata.img) {
@@ -150,20 +210,29 @@ onBeforeMount(() => {
   }
 })
 
+const { useForm } = Form
+const { validate, validateInfos } = useForm(formModel, formRules)
+
 const addColorway = () => {
-  $fetch(
-    `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
-    {
-      method: 'post',
-      body: colorway.value,
-    },
-  )
+  validate()
     .then(() => {
-      message.success('Colorway updated successfully!')
+      $fetch(
+        `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
+        {
+          method: 'post',
+          body: colorway.value,
+        },
+      )
+        .then(() => {
+          message.success('Colorway updated successfully!')
+        })
+        .catch((error) => {
+          console.error(error)
+          message.error(error.message)
+        })
     })
-    .catch((error) => {
-      console.error(error)
-      message.error(error.message)
+    .catch(() => {
+      // ignore
     })
 }
 
