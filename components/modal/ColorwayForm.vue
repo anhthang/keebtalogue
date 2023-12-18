@@ -186,7 +186,7 @@ const route = useRoute()
 const colorway = ref({})
 
 const formRef = ref()
-const formRules = {
+const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
   release: [{ type: 'string', trigger: ['change', 'blur'] }],
   quantity: [{ type: 'number', trigger: ['change', 'blur'] }],
@@ -201,7 +201,7 @@ const formRules = {
   ],
   description: [{ type: 'string', trigger: ['change', 'blur'] }],
   image: [{ required: true, type: 'url' }],
-}
+})
 
 onBeforeMount(() => {
   Object.assign(colorway.value, metadata)

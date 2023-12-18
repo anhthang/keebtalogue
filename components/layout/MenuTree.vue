@@ -30,15 +30,6 @@
       </a-menu-item>
     </a-sub-menu> -->
 
-    <a-sub-menu key="keycap" title="Keycap">
-      <a-menu-item key="keycap.gmk">
-        <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="keycap.sa">
-        <nuxt-link to="/keycap/sa"> SA </nuxt-link>
-      </a-menu-item>
-    </a-sub-menu>
-
     <a-sub-menu key="artisan" title="Artisan">
       <a-menu-item key="artisan.maker">
         <nuxt-link to="/artisan/maker">
@@ -54,6 +45,15 @@
         <nuxt-link to="/artisan/trading">
           <shopping-outlined /> Trading
         </nuxt-link>
+      </a-menu-item>
+    </a-sub-menu>
+
+    <a-sub-menu key="keycap" title="Keycap">
+      <a-menu-item key="keycap.gmk">
+        <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
+      </a-menu-item>
+      <a-menu-item key="keycap.sa">
+        <nuxt-link to="/keycap/sa"> SA </nuxt-link>
       </a-menu-item>
     </a-sub-menu>
 

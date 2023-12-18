@@ -23,7 +23,8 @@ if (isMobile) {
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,
   token: {
-    fontFamily: "'Titillium Web', sans-serif;",
+    // fontFamily: "'Titillium Web', sans-serif;",
+    fontFamily: 'Dosis, sans-serif;',
   },
 })
 

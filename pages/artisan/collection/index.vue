@@ -64,9 +64,9 @@ const formRef = ref()
 const formModel = ref({
   name: '',
 })
-const formRules = {
+const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-}
+})
 
 const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)

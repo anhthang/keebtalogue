@@ -49,7 +49,7 @@
       <a-input v-model:value="maker.document_ids[idx]">
         <template #prefix><file-word-outlined /></template>
         <template #suffix>
-          <minus-circle-outlined @click="removeDocId(idx)" />
+          <minus-circle-outlined @click="removeDocId(docId)" />
         </template>
       </a-input>
     </a-form-item>
@@ -146,7 +146,7 @@ onBeforeMount(() => {
 })
 
 const formRef = ref()
-const formRules = {
+const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
   nationality: [{ len: 2, trigger: ['change', 'blur'] }],
   founded: [{ required: false, trigger: ['change', 'blur'] }],
@@ -162,7 +162,7 @@ const formRules = {
   discord: [{ type: 'url', trigger: ['change', 'blur'] }],
   artisancollector: [{ type: 'url', trigger: ['change', 'blur'] }],
   intro: [{ type: 'text', trigger: ['change', 'blur'] }],
-}
+})
 
 const addDocId = () => {
   if (!Array.isArray(maker.value.document_ids)) {
@@ -174,7 +174,7 @@ const addDocId = () => {
 
 const removeDocId = (docIdx) => {
   maker.value.document_ids = maker.value.document_ids.filter(
-    (d, idx) => idx === docIdx,
+    (d) => d !== docIdx,
   )
 }
 
