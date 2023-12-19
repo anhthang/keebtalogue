@@ -1,15 +1,24 @@
 import { serverSupabaseClient } from '#supabase/server'
-import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
-  const { query } = getQuery(event)
+  const { query, page = 1, size = 24 } = getQuery(event)
 
-  const { data } = await client
+  const from = (page - 1) * size
+  const to = page * size - 1
+
+  console.log(query, page, size, from, to)
+
+  const { data, count } = await client
     .from('keycaps')
-    .select()
+    .select('*', { count: 'exact' })
     .like('slug', `%${query}%`)
+    .order('name')
+    .range(from, to)
 
-  return sortBy(data, 'id')
+  return {
+    keycaps: data,
+    count,
+  }
 })

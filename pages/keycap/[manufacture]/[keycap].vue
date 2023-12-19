@@ -41,7 +41,11 @@
             :md="8"
             :xl="6"
           >
-            <a-card hoverable :title="kit.name">
+            <a-card
+              hoverable
+              :title="kit.name"
+              :head-style="artisanCardHeadStyle"
+            >
               <template #cover>
                 <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
                 <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
