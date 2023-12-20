@@ -1,16 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header :title="manufacturers[$route.params.manufacture]">
-        <template #extra>
-          <a-pagination
-            v-model:current="page"
-            :total="data.count"
-            :page-size="size"
-            :show-size-changer="false"
-          />
-        </template>
-
+      <a-page-header :title="title">
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="keycap in data.keycaps"
@@ -20,7 +11,7 @@
             :md="8"
             :xl="6"
           >
-            <nuxt-link :to="`/keycap/${keycap.slug}`">
+            <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
               <a-card
                 hoverable
                 :title="keycap.name"
@@ -34,6 +25,16 @@
             </nuxt-link>
           </a-col>
         </a-row>
+
+        <a-flex justify="center" style="margin-top: 16px">
+          <a-pagination
+            v-model:current="page"
+            :total="data.count"
+            :page-size="size"
+            :show-size-changer="false"
+            :show-quick-jumper="data.count > size * 10"
+          />
+        </a-flex>
       </a-page-header>
     </a-spin>
   </div>
@@ -41,14 +42,16 @@
 
 <script setup>
 const route = useRoute()
-const manufacturers = {
+const profileMap = {
   gmk: 'GMK',
   sa: 'SA',
   jtk: 'JTK',
 }
 
+const title = profileMap[route.params.profile]
+
 useSeoMeta({
-  title: manufacturers[route.params.manufacture],
+  title,
 })
 
 const page = ref(1)
@@ -58,7 +61,7 @@ const { data, pending } = await useAsyncData(
   () =>
     $fetch('/api/keycaps', {
       query: {
-        query: route.params.manufacture,
+        query: route.params.profile,
         page: page.value,
         size: size.value,
       },

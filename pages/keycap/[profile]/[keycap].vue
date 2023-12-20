@@ -8,8 +8,8 @@
               <nuxt-link>Keycaps</nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link :to="`/keycap/${data.manufacture}`">
-                {{ data.manufacture.toUpperCase() }}
+              <nuxt-link :to="`/keycap/${data.profile_id}`">
+                {{ data.profile_id.toUpperCase() }}
               </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
@@ -123,10 +123,10 @@ import groupBy from 'lodash.groupby'
 
 const route = useRoute()
 
-const { manufacture, keycap } = route.params
+const { profile, keycap } = route.params
 
 const { data, pending } = await useAsyncData(() =>
-  $fetch(`/api/keycaps/${manufacture}/${keycap}`).then((data) => {
+  $fetch(`/api/keycaps/${profile}/${keycap}`).then((data) => {
     data.artisans = groupBy(data.artisans, 'maker_name')
     return data
   }),

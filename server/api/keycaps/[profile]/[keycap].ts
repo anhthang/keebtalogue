@@ -2,13 +2,13 @@ import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const { manufacture, keycap } = event.context.params
+  const { profile, keycap } = event.context.params
 
   const { data } = await client
     .from('keycaps')
     .select('*, kits:keycap_kits(*)')
     // .select('*, artisans:colorways(*), kits:keycap_kits(*)')
-    .eq('slug', `${manufacture}/${keycap}`)
+    .eq('profile_keycap_id', `${profile}/${keycap}`)
     .single()
 
   // // get unique maker_id
