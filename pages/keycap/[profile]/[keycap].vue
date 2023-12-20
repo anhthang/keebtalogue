@@ -16,14 +16,34 @@
           </a-breadcrumb>
         </template>
 
+        <template v-if="isEditor" #extra>
+          <a-button type="primary" ghost @click="toggleShowEditKeycap">
+            <edit-outlined /> Edit
+          </a-button>
+        </template>
+
+        <a-modal
+          v-model:open="showEditKeycap"
+          title="Edit Keycap"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="updateKeycap"
+        >
+          <modal-keycap-form
+            ref="keycapForm"
+            :is-edit="true"
+            :metadata="data"
+          />
+        </a-modal>
+
         <a-row :gutter="[8, 8]" type="flex">
           <a-col>
             <a-descriptions>
               <a-descriptions-item v-if="data.designer" label="Designer">
                 {{ data.designer }}
               </a-descriptions-item>
-              <a-descriptions-item v-if="data.profile" label="Profile">
-                {{ data.profile }}
+              <a-descriptions-item v-if="data.sculpt" label="Sculpt">
+                {{ data.sculpt }}
               </a-descriptions-item>
               <a-descriptions-item v-if="data.url" label="Website">
                 <a :href="data.url" target="_blank">Link</a>
@@ -34,7 +54,7 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
-            v-for="kit in data.kits"
+            v-for="kit in sortBy(data.kits, 'id')"
             :key="kit.id"
             :xs="12"
             :sm="12"
@@ -120,15 +140,41 @@
 
 <script setup>
 import groupBy from 'lodash.groupby'
+import sortBy from 'lodash.sortby'
+
+const userStore = useUserStore()
+const { isEditor } = storeToRefs(userStore)
 
 const route = useRoute()
 
 const { profile, keycap } = route.params
 
-const { data, pending } = await useAsyncData(() =>
+const { data, pending, refresh } = await useAsyncData(() =>
   $fetch(`/api/keycaps/${profile}/${keycap}`).then((data) => {
     data.artisans = groupBy(data.artisans, 'maker_name')
     return data
   }),
 )
+
+useSeoMeta({
+  title: data.value.name,
+})
+
+const confirmLoading = ref(false)
+const showEditKeycap = ref(false)
+
+const toggleShowEditKeycap = () => {
+  showEditKeycap.value = !showEditKeycap.value
+}
+
+const keycapForm = ref()
+const updateKeycap = async () => {
+  confirmLoading.value = true
+
+  await keycapForm.value.addKeycap()
+
+  toggleShowEditKeycap()
+  confirmLoading.value = false
+  refresh()
+}
 </script>

@@ -2,6 +2,22 @@
   <div class="container artisan-container">
     <a-spin :spinning="pending">
       <a-page-header :title="title">
+        <template #extra>
+          <a-button v-if="isEditor" type="primary" @click="showAddKeycap">
+            <user-add-outlined /> Add
+          </a-button>
+        </template>
+
+        <a-modal
+          v-model:open="visible"
+          title="New Keycap"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="addKeycap"
+        >
+          <modal-keycap-form ref="keycapForm" />
+        </a-modal>
+
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="keycap in data.keycaps"
@@ -41,6 +57,9 @@
 </template>
 
 <script setup>
+const userStore = useUserStore()
+const { isEditor } = storeToRefs(userStore)
+
 const route = useRoute()
 const profileMap = {
   gmk: 'GMK',
@@ -70,4 +89,21 @@ const { data, pending } = await useAsyncData(
     watch: [page, size],
   },
 )
+
+const confirmLoading = ref(false)
+const visible = ref(false)
+const keycapForm = ref()
+
+const showAddKeycap = () => {
+  visible.value = !visible.value
+}
+
+const addKeycap = async () => {
+  confirmLoading.value = true
+
+  await keycapForm.value.addKeycap()
+
+  confirmLoading.value = false
+  showAddKeycap()
+}
 </script>
