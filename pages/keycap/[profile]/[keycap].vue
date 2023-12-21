@@ -21,7 +21,7 @@
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button type="primary" @click="toggleShowEditKit">
+          <a-button type="primary" @click="toggleShowEditKit()">
             <appstore-add-outlined /> Add Kit
           </a-button>
         </template>
@@ -150,7 +150,7 @@
         >
           <modal-keycap-kit-form
             ref="keycapKitForm"
-            :is-edit="true"
+            :is-edit="selectedKit && selectedKit.id"
             :metadata="selectedKit"
           />
         </a-modal>
@@ -199,12 +199,18 @@ const updateKeycap = async () => {
 }
 
 const showEditKit = ref(false)
-const selectedKit = ref()
+const selectedKit = ref({
+  profile_keycap_id: `${route.params.profile}/${route.params.keycap}`,
+})
+
 const toggleShowEditKit = (kit) => {
   showEditKit.value = !showEditKit.value
-  selectedKit.value = kit
+  if (kit) {
+    selectedKit.value = kit
+  }
 }
 
+const keycapKitForm = ref()
 const addKeycapKit = async () => {
   confirmLoading.value = true
 

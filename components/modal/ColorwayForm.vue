@@ -213,8 +213,8 @@ onBeforeMount(() => {
 const { useForm } = Form
 const { validate, validateInfos } = useForm(colorway, formRules)
 
-const addColorway = () => {
-  validate()
+const addColorway = async () => {
+  await validate()
     .then(() => {
       $fetch(
         `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,

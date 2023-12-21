@@ -181,8 +181,8 @@ const removeDocId = (docIdx) => {
 const { useForm } = Form
 const { validate, validateInfos } = useForm(maker, formRules)
 
-const addMaker = () => {
-  validate()
+const addMaker = async () => {
+  await validate()
     .then(() => {
       const { sculpts, ...rest } = maker.value
 
