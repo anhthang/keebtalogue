@@ -20,6 +20,10 @@
           <a-button type="primary" ghost @click="toggleShowEditKeycap">
             <edit-outlined /> Edit
           </a-button>
+
+          <a-button type="primary" @click="toggleShowEditKit">
+            <appstore-add-outlined /> Add Kit
+          </a-button>
         </template>
 
         <a-modal
@@ -54,7 +58,7 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
-            v-for="kit in sortBy(data.kits, 'id')"
+            v-for="kit in data.kits"
             :key="kit.id"
             :xs="12"
             :sm="12"
@@ -71,8 +75,11 @@
                 <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
               </template>
               <template #actions>
-                <span><dollar-outlined key="edit" /> {{ kit.price }} </span>
-                <span><number-outlined key="setting" /> {{ kit.qty }} </span>
+                <span v-if="isEditor">
+                  <edit-outlined key="edit" @click="toggleShowEditKit(kit)" />
+                </span>
+                <span><dollar-outlined key="price" /> {{ kit.price }} </span>
+                <span><number-outlined key="qty" /> {{ kit.qty }} </span>
               </template>
             </a-card>
           </a-col>
@@ -133,6 +140,20 @@
             </a-row>
           </a-tab-pane>
         </a-tabs>
+
+        <a-modal
+          v-model:open="showEditKit"
+          :title="selectedKit && selectedKit.id ? 'Edit Kit' : 'Add Kit'"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="addKeycapKit"
+        >
+          <modal-keycap-kit-form
+            ref="keycapKitForm"
+            :is-edit="true"
+            :metadata="selectedKit"
+          />
+        </a-modal>
       </a-page-header>
     </a-spin>
   </div>
@@ -140,7 +161,6 @@
 
 <script setup>
 import groupBy from 'lodash.groupby'
-import sortBy from 'lodash.sortby'
 
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
@@ -160,20 +180,37 @@ useSeoMeta({
   title: data.value.name,
 })
 
-const confirmLoading = ref(false)
 const showEditKeycap = ref(false)
-
 const toggleShowEditKeycap = () => {
   showEditKeycap.value = !showEditKeycap.value
 }
 
 const keycapForm = ref()
+const confirmLoading = ref(false)
+
 const updateKeycap = async () => {
   confirmLoading.value = true
 
   await keycapForm.value.addKeycap()
 
   toggleShowEditKeycap()
+  confirmLoading.value = false
+  refresh()
+}
+
+const showEditKit = ref(false)
+const selectedKit = ref()
+const toggleShowEditKit = (kit) => {
+  showEditKit.value = !showEditKit.value
+  selectedKit.value = kit
+}
+
+const addKeycapKit = async () => {
+  confirmLoading.value = true
+
+  await keycapKitForm.value.addKit()
+
+  toggleShowEditKit()
   confirmLoading.value = false
   refresh()
 }

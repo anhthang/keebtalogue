@@ -30,9 +30,9 @@
       </a-col>
       <a-col :xs="6" :sm="6">
         <a-form-item
-          ref="quantity"
-          name="quantity"
-          v-bind="validateInfos.quantity"
+          ref="qty"
+          name="qty"
+          v-bind="validateInfos.qty"
           label="Quantity"
         >
           <a-input-number v-model:value="colorway.qty">
@@ -189,7 +189,7 @@ const formRef = ref()
 const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
   release: [{ type: 'string', trigger: ['change', 'blur'] }],
-  quantity: [{ type: 'number', trigger: ['change', 'blur'] }],
+  qty: [{ type: 'number', trigger: ['change', 'blur'] }],
   order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
   price: [{ type: 'string', trigger: ['change', 'blur'] }],
   sale_type: [

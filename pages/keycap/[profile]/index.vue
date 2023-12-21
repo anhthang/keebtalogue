@@ -4,7 +4,7 @@
       <a-page-header :title="title">
         <template #extra>
           <a-button v-if="isEditor" type="primary" @click="showAddKeycap">
-            <user-add-outlined /> Add
+            <folder-add-outlined /> Add
           </a-button>
         </template>
 

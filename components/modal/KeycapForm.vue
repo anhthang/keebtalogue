@@ -71,23 +71,6 @@
         </a-form-item>
       </a-col>
     </a-row>
-
-    <a-row v-for="(kit, idx) in keycap.kits" :key="idx" :gutter="[8, 8]">
-      <a-col :xs="24" :sm="8">
-        <a-form-item label="Kit">
-          <a-input v-model:value="kit.name" disabled>
-            <template #prefix><font-size-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24" :sm="16">
-        <a-form-item label="Image">
-          <a-input v-model:value="kit.img" disabled>
-            <template #prefix><file-image-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-    </a-row>
   </a-form>
 </template>
 

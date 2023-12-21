@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -10,6 +11,10 @@ export default defineEventHandler(async (event) => {
     // .select('*, artisans:colorways(*), kits:keycap_kits(*)')
     .eq('profile_keycap_id', `${profile}/${keycap}`)
     .single()
+
+  if (data && Array.isArray(data.kits)) {
+    data.kits = sortBy(data.kits, 'id')
+  }
 
   // // get unique maker_id
   // const makerIds = [...new Set(data.artisans.map((a) => a.maker_id))]
