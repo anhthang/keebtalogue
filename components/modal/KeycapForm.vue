@@ -81,7 +81,7 @@
           v-bind="validateInfos.img"
         >
           <a-input v-model:value="keycap.img">
-            <template #prefix><global-outlined /></template>
+            <template #prefix><picture-outlined /></template>
           </a-input>
         </a-form-item>
       </a-col>
@@ -92,6 +92,30 @@
             style="width: 100%"
             @change="onChangeDates"
           />
+        </a-form-item>
+      </a-col>
+      <a-col :xs="24">
+        <a-form-item
+          ref="order_graph"
+          name="order_graph"
+          label="Order Graph"
+          v-bind="validateInfos.order_graph"
+        >
+          <a-input v-model:value="keycap.order_graph">
+            <template #prefix><picture-outlined /></template>
+          </a-input>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="24">
+        <a-form-item
+          ref="history_graph"
+          name="history_graph"
+          label="History Graph"
+          v-bind="validateInfos.history_graph"
+        >
+          <a-input v-model:value="keycap.history_graph">
+            <template #prefix><picture-outlined /></template>
+          </a-input>
         </a-form-item>
       </a-col>
     </a-row>
@@ -152,6 +176,10 @@ const formRules = ref({
   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
   start: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
+  order_graph: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
+  history_graph: [
+    { required: false, type: 'url', trigger: ['change', 'blur'] },
+  ],
 })
 
 const onChangeDates = () => {

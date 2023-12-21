@@ -17,14 +17,33 @@
         </template>
 
         <template v-if="isEditor" #extra>
+          <a-button type="primary" @click="toggleShowEditKit()">
+            <appstore-add-outlined /> Add Kit
+          </a-button>
+
           <a-button type="primary" ghost @click="toggleShowEditKeycap">
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button type="primary" @click="toggleShowEditKit()">
-            <appstore-add-outlined /> Add Kit
+          <a-button v-if="data.order_graph" @click="toggleShowGraph">
+            <bar-chart-outlined /> Sales
           </a-button>
+
+          <a v-if="data.url" :href="data.url" target="_blank">
+            <a-button> <link-outlined /> Link </a-button>
+          </a>
         </template>
+
+        <a-image
+          alt="Created by dvorcol"
+          :width="200"
+          style="display: none"
+          :preview="{
+            visible: showGraph,
+            onVisibleChange: toggleShowGraph,
+          }"
+          :src="data.order_graph"
+        />
 
         <a-modal
           v-model:open="showEditKeycap"
@@ -49,9 +68,9 @@
               <a-descriptions-item v-if="data.sculpt" label="Sculpt">
                 {{ data.sculpt }}
               </a-descriptions-item>
-              <a-descriptions-item v-if="data.url" label="Website">
+              <!-- <a-descriptions-item v-if="data.url" label="Website">
                 <a :href="data.url" target="_blank">Link</a>
-              </a-descriptions-item>
+              </a-descriptions-item> -->
             </a-descriptions>
           </a-col>
         </a-row>
@@ -179,6 +198,11 @@ const { data, pending, refresh } = await useAsyncData(() =>
 useSeoMeta({
   title: data.value.name,
 })
+
+const showGraph = ref(false)
+const toggleShowGraph = () => {
+  showGraph.value = !showGraph.value
+}
 
 const showEditKeycap = ref(false)
 const toggleShowEditKeycap = () => {
