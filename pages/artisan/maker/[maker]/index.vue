@@ -45,7 +45,12 @@
         </template>
 
         <a-typography v-if="maker.intro">
-          <a-typography-paragraph>{{ maker.intro }}</a-typography-paragraph>
+          <a-typography-paragraph
+            v-for="(line, idx) in maker.intro.split('\n')"
+            :key="idx"
+          >
+            {{ line }}
+          </a-typography-paragraph>
         </a-typography>
 
         <a-row :gutter="[8, 8]" type="flex">

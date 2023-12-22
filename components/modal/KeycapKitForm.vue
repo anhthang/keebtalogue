@@ -11,15 +11,10 @@
       </a-input>
     </a-form-item>
 
-    <a-form-item
-      ref="qty"
-      name="qty"
-      v-bind="validateInfos.qty"
-      label="Quantity"
-    >
-      <a-input-number v-model:value="kit.qty">
-        <template #prefix><number-outlined /></template>
-      </a-input-number>
+    <a-form-item ref="img" name="img" v-bind="validateInfos.img" label="Image">
+      <a-input v-model:value="kit.img">
+        <template #prefix><link-outlined /></template>
+      </a-input>
     </a-form-item>
 
     <a-form-item
@@ -33,10 +28,15 @@
       </a-input-number>
     </a-form-item>
 
-    <a-form-item ref="img" name="img" v-bind="validateInfos.img" label="Image">
-      <a-input v-model:value="kit.img">
-        <template #prefix><link-outlined /></template>
-      </a-input>
+    <a-form-item
+      ref="qty"
+      name="qty"
+      v-bind="validateInfos.qty"
+      label="Quantity"
+    >
+      <a-input-number v-model:value="kit.qty">
+        <template #prefix><number-outlined /></template>
+      </a-input-number>
     </a-form-item>
   </a-form>
 </template>

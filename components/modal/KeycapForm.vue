@@ -35,13 +35,16 @@
           label="Profile"
           v-bind="validateInfos.profile_id"
         >
-          <a-select v-model:value="keycap.profile_id">
+          <a-select
+            v-model:value="keycap.profile_id"
+            :default-value="route.params.profile"
+          >
             <a-select-option
-              v-for="profile in profiles"
-              :key="profile.key"
-              :value="profile.key"
+              v-for="[key, value] in Object.entries(keycapProfiles)"
+              :key="key"
+              :value="key"
             >
-              {{ profile.value }}
+              {{ value }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -60,65 +63,56 @@
       </a-col>
     </a-row>
 
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="24">
-        <a-form-item
-          ref="url"
-          name="url"
-          label="URL"
-          v-bind="validateInfos.url"
-        >
-          <a-input v-model:value="keycap.url">
-            <template #prefix><global-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24">
-        <a-form-item
-          ref="img"
-          name="img"
-          label="Image"
-          v-bind="validateInfos.img"
-        >
-          <a-input v-model:value="keycap.img">
-            <template #prefix><picture-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24">
-        <a-form-item label="Time">
-          <a-range-picker
-            v-model:value="keycap.dates"
-            style="width: 100%"
-            @change="onChangeDates"
-          />
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24">
-        <a-form-item
-          ref="order_graph"
-          name="order_graph"
-          label="Order Graph"
-          v-bind="validateInfos.order_graph"
-        >
-          <a-input v-model:value="keycap.order_graph">
-            <template #prefix><picture-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24">
-        <a-form-item
-          ref="history_graph"
-          name="history_graph"
-          label="History Graph"
-          v-bind="validateInfos.history_graph"
-        >
-          <a-input v-model:value="keycap.history_graph">
-            <template #prefix><picture-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-    </a-row>
+    <a-form-item ref="url" name="url" label="URL" v-bind="validateInfos.url">
+      <a-input v-model:value="keycap.url">
+        <template #prefix><global-outlined /></template>
+      </a-input>
+    </a-form-item>
+
+    <a-form-item ref="img" name="img" label="Image" v-bind="validateInfos.img">
+      <a-input v-model:value="keycap.img">
+        <template #prefix><picture-outlined /></template>
+      </a-input>
+    </a-form-item>
+
+    <a-form-item label="Time">
+      <a-range-picker
+        v-model:value="keycap.dates"
+        style="width: 100%"
+        @change="onChangeDates"
+      />
+    </a-form-item>
+
+    <a-form-item
+      ref="order_graph"
+      name="order_graph"
+      label="Order Graph"
+      v-bind="validateInfos.order_graph"
+    >
+      <a-input v-model:value="keycap.order_graph">
+        <template #prefix><picture-outlined /></template>
+      </a-input>
+    </a-form-item>
+
+    <a-form-item
+      ref="history_graph"
+      name="history_graph"
+      label="History Graph"
+      v-bind="validateInfos.history_graph"
+    >
+      <a-input v-model:value="keycap.history_graph">
+        <template #prefix><picture-outlined /></template>
+      </a-input>
+    </a-form-item>
+
+    <a-form-item
+      ref="description"
+      name="description"
+      v-bind="validateInfos.description"
+      label="Description"
+    >
+      <a-textarea v-model:value="keycap.description" auto-size />
+    </a-form-item>
   </a-form>
 </template>
 
@@ -152,13 +146,6 @@ onBeforeMount(() => {
   }
 })
 
-const profiles = [
-  { key: 'gmk', value: 'GMK CYL' },
-  { key: 'gmk-mtnu', value: 'GMK MTNU' },
-  { key: 'sa', value: 'SA' },
-  { key: 'jtk', value: 'JTK' },
-]
-
 const formRef = ref()
 const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
@@ -168,7 +155,7 @@ const formRules = ref({
     {
       required: true,
       type: 'enum',
-      enum: profiles.map((p) => p.key),
+      enum: Object.keys(keycapProfiles),
       trigger: ['change', 'blur'],
     },
   ],
@@ -180,6 +167,7 @@ const formRules = ref({
   history_graph: [
     { required: false, type: 'url', trigger: ['change', 'blur'] },
   ],
+  description: [{ type: 'text', trigger: ['change', 'blur'] }],
 })
 
 const onChangeDates = () => {

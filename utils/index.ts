@@ -1,5 +1,12 @@
 import html2canvas from 'html2canvas'
 
+export const keycapProfiles = {
+  gmk: 'GMK CYL',
+  'gmk-mtnu': 'GMK MTNU',
+  sa: 'SA',
+  jtk: 'JTK',
+}
+
 export const colorwayTitle = (colorway: any) =>
   `${colorway.name} ${colorway.sculpt_name}`
 

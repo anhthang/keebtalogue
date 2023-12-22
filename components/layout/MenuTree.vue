@@ -49,11 +49,11 @@
     </a-sub-menu>
 
     <a-sub-menu key="keycap" title="Keycap">
-      <a-menu-item key="keycap.gmk">
-        <nuxt-link to="/keycap/gmk"> GMK </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="keycap.sa">
-        <nuxt-link to="/keycap/sa"> SA </nuxt-link>
+      <a-menu-item
+        v-for="[key, value] of Object.entries(keycapProfiles)"
+        :key="`keycap.${key}`"
+      >
+        <nuxt-link :to="`/keycap/${key}`"> {{ value }} </nuxt-link>
       </a-menu-item>
     </a-sub-menu>
 

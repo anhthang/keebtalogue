@@ -42,7 +42,11 @@
           </a-col>
         </a-row>
 
-        <a-flex justify="center" style="margin-top: 16px">
+        <a-flex
+          v-if="data.keycaps.length"
+          justify="center"
+          style="margin-top: 16px"
+        >
           <a-pagination
             v-model:current="page"
             :total="data.count"
@@ -61,13 +65,8 @@ const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
 const route = useRoute()
-const profileMap = {
-  gmk: 'GMK',
-  sa: 'SA',
-  jtk: 'JTK',
-}
 
-const title = profileMap[route.params.profile]
+const title = keycapProfiles[route.params.profile]
 
 useSeoMeta({
   title,

@@ -1,12 +1,10 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="pending">
-      <a-page-header :title="data.name">
+      <a-page-header v-if="data" :title="data.name">
         <template #breadcrumb>
           <a-breadcrumb>
-            <a-breadcrumb-item>
-              <nuxt-link>Keycaps</nuxt-link>
-            </a-breadcrumb-item>
+            <a-breadcrumb-item> Keycap </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/keycap/${data.profile_id}`">
                 {{ data.profile_id.toUpperCase() }}
@@ -58,6 +56,15 @@
             :metadata="data"
           />
         </a-modal>
+
+        <a-typography v-if="data.description">
+          <a-typography-paragraph
+            v-for="(line, idx) in data.description.split('\n')"
+            :key="idx"
+          >
+            {{ line }}
+          </a-typography-paragraph>
+        </a-typography>
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col>
@@ -174,6 +181,14 @@
           />
         </a-modal>
       </a-page-header>
+
+      <a-result v-else status="404" title="Uh oh! Something went wrong.">
+        <template #extra>
+          <nuxt-link :to="`/keycap/${route.params.profile}`">
+            <a-button type="primary">Back</a-button>
+          </nuxt-link>
+        </template>
+      </a-result>
     </a-spin>
   </div>
 </template>
@@ -196,7 +211,9 @@ const { data, pending, refresh } = await useAsyncData(() =>
 )
 
 useSeoMeta({
-  title: data.value.name,
+  title: data.value
+    ? `${keycapProfiles[profile]} ${data.value.name}`
+    : keycapProfiles[profile],
 })
 
 const showGraph = ref(false)

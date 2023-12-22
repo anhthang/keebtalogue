@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const { data, count } = await client
     .from('keycaps')
     .select('*', { count: 'exact' })
-    .like('profile_keycap_id', `%${query}%`)
+    .like('profile_keycap_id', `${query}%`)
     .order('name')
     .range(from, to)
 
