@@ -54,7 +54,11 @@ const { metadata, isEdit } = defineProps({
   isEdit: Boolean,
 })
 
-const kit = ref({})
+const route = useRoute()
+const kit = ref({
+  profile_keycap_id: `${route.params.profile}/${route.params.keycap}`,
+})
+
 onBeforeMount(() => {
   Object.assign(kit.value, metadata)
 })

@@ -43,7 +43,7 @@
         </a-row>
 
         <a-flex
-          v-if="data.keycaps.length"
+          v-if="data.count > 24"
           justify="center"
           style="margin-top: 16px"
         >
@@ -75,7 +75,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data, pending } = await useAsyncData(
+const { data, pending, refresh } = await useAsyncData(
   () =>
     $fetch('/api/keycaps', {
       query: {
@@ -104,5 +104,7 @@ const addKeycap = async () => {
 
   confirmLoading.value = false
   showAddKeycap()
+
+  refresh()
 }
 </script>

@@ -161,7 +161,7 @@ const formRules = ref({
   instagram: [{ type: 'url', trigger: ['change', 'blur'] }],
   discord: [{ type: 'url', trigger: ['change', 'blur'] }],
   artisancollector: [{ type: 'url', trigger: ['change', 'blur'] }],
-  intro: [{ type: 'text', trigger: ['change', 'blur'] }],
+  intro: [{ type: 'string', trigger: ['change', 'blur'] }],
 })
 
 const addDocId = () => {
@@ -201,9 +201,9 @@ const addMaker = async () => {
       })
         .then(() => {
           if (isEdit) {
-            message.success('Maker updated successfully!')
+            message.success(`[${rest.name}] updated successfully!`)
           } else {
-            message.success(`Maker [${rest.name}] added successfully!`)
+            message.success(`[${rest.name}] added successfully!`)
           }
         })
         .catch((error) => {

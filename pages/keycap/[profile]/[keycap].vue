@@ -7,7 +7,7 @@
             <a-breadcrumb-item> Keycap </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/keycap/${data.profile_id}`">
-                {{ data.profile_id.toUpperCase() }}
+                {{ keycapProfiles[data.profile_id] }}
               </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
@@ -31,17 +31,6 @@
             <a-button> <link-outlined /> Link </a-button>
           </a>
         </template>
-
-        <a-image
-          alt="Created by dvorcol"
-          :width="200"
-          style="display: none"
-          :preview="{
-            visible: showGraph,
-            onVisibleChange: toggleShowGraph,
-          }"
-          :src="data.order_graph"
-        />
 
         <a-modal
           v-model:open="showEditKeycap"
@@ -169,17 +158,28 @@
 
         <a-modal
           v-model:open="showEditKit"
-          :title="selectedKit && selectedKit.id ? 'Edit Kit' : 'Add Kit'"
+          :title="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
           destroy-on-close
           :confirm-loading="confirmLoading"
           @ok="addKeycapKit"
         >
           <modal-keycap-kit-form
             ref="keycapKitForm"
-            :is-edit="selectedKit && selectedKit.id"
+            :is-edit="selectedKit?.id"
             :metadata="selectedKit"
           />
         </a-modal>
+
+        <a-image
+          alt="Created by dvorcol"
+          :width="200"
+          style="display: none"
+          :preview="{
+            visible: showGraph,
+            onVisibleChange: toggleShowGraph,
+          }"
+          :src="data.order_graph"
+        />
       </a-page-header>
 
       <a-result v-else status="404" title="Uh oh! Something went wrong.">
@@ -240,15 +240,11 @@ const updateKeycap = async () => {
 }
 
 const showEditKit = ref(false)
-const selectedKit = ref({
-  profile_keycap_id: `${route.params.profile}/${route.params.keycap}`,
-})
+const selectedKit = ref({})
 
 const toggleShowEditKit = (kit) => {
   showEditKit.value = !showEditKit.value
-  if (kit) {
-    selectedKit.value = kit
-  }
+  selectedKit.value = kit
 }
 
 const keycapKitForm = ref()
@@ -259,6 +255,7 @@ const addKeycapKit = async () => {
 
   toggleShowEditKit()
   confirmLoading.value = false
+
   refresh()
 }
 </script>

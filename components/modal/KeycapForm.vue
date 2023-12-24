@@ -35,10 +35,7 @@
           label="Profile"
           v-bind="validateInfos.profile_id"
         >
-          <a-select
-            v-model:value="keycap.profile_id"
-            :default-value="route.params.profile"
-          >
+          <a-select v-model:value="keycap.profile_id">
             <a-select-option
               v-for="[key, value] in Object.entries(keycapProfiles)"
               :key="key"
@@ -134,6 +131,7 @@ const { metadata, isEdit } = defineProps({
 const route = useRoute()
 const keycap = ref({
   dates: [],
+  profile_id: route.params.profile,
 })
 
 onBeforeMount(() => {
@@ -167,7 +165,7 @@ const formRules = ref({
   history_graph: [
     { required: false, type: 'url', trigger: ['change', 'blur'] },
   ],
-  description: [{ type: 'text', trigger: ['change', 'blur'] }],
+  description: [{ type: 'string', trigger: ['change', 'blur'] }],
 })
 
 const onChangeDates = () => {
