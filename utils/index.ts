@@ -1,5 +1,4 @@
 import html2canvas from 'html2canvas'
-import { merge, values } from 'lodash'
 
 export const keycapProfiles = {
   Cherry: {
@@ -15,7 +14,13 @@ export const keycapProfiles = {
   },
 }
 
-export const allProfiles = values(keycapProfiles).reduce(merge, {})
+export const allProfiles = Object.values(keycapProfiles).reduce(
+  (curr, prev) => {
+    Object.assign(curr, prev)
+    return curr
+  },
+  {},
+)
 
 export const colorwayTitle = (colorway: any) =>
   `${colorway.name} ${colorway.sculpt_name}`
