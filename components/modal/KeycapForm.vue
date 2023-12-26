@@ -37,7 +37,7 @@
         >
           <a-select v-model:value="keycap.profile_id">
             <a-select-option
-              v-for="[key, value] in Object.entries(keycapProfiles)"
+              v-for="[key, value] in Object.entries(allProfiles)"
               :key="key"
               :value="key"
             >
@@ -153,7 +153,7 @@ const formRules = ref({
     {
       required: true,
       type: 'enum',
-      enum: Object.keys(keycapProfiles),
+      enum: Object.keys(allProfiles),
       trigger: ['change', 'blur'],
     },
   ],

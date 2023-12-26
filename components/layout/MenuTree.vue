@@ -3,7 +3,6 @@
     :theme="$device.isMobile && $colorMode.value === 'light' ? 'light' : 'dark'"
     :mode="mode"
     :style="{ lineHeight: '64px' }"
-    @click="onChangeMenu"
   >
     <!-- <a-menu-item key="1">
       <nuxt-link to="/"><calendar-outlined /> Calendar </nuxt-link>
@@ -49,12 +48,18 @@
     </a-sub-menu>
 
     <a-sub-menu key="keycap" title="Keycap">
-      <a-menu-item
-        v-for="[key, value] of Object.entries(keycapProfiles)"
-        :key="`keycap.${key}`"
+      <a-sub-menu
+        v-for="[profile, manufacturers] of Object.entries(keycapProfiles)"
+        :key="profile"
+        :title="profile"
       >
-        <nuxt-link :to="`/keycap/${key}`"> {{ value }} </nuxt-link>
-      </a-menu-item>
+        <a-menu-item
+          v-for="[key, value] of Object.entries(manufacturers)"
+          :key="`keycap.${key}`"
+        >
+          <nuxt-link :to="`/keycap/${key}`"> {{ value }} </nuxt-link>
+        </a-menu-item>
+      </a-sub-menu>
     </a-sub-menu>
 
     <a-menu-item key="about">
@@ -63,20 +68,11 @@
   </a-menu>
 </template>
 
-<script>
-export default {
-  props: {
-    mode: {
-      type: String,
-      required: true,
-    },
+<script setup>
+defineProps({
+  mode: {
+    type: String,
+    required: true,
   },
-  methods: {
-    onChangeMenu() {
-      // if (this.$device.isMobile) {
-      //   this.$emit('click')
-      // }
-    },
-  },
-}
+})
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container artisan-container">
+  <div class="container keycap-container">
     <a-spin :spinning="pending">
       <a-page-header v-if="data" :title="data.name">
         <template #breadcrumb>
@@ -7,7 +7,7 @@
             <a-breadcrumb-item> Keycap </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/keycap/${data.profile_id}`">
-                {{ keycapProfiles[data.profile_id] }}
+                {{ allProfiles[data.profile_id] }}
               </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
@@ -64,9 +64,9 @@
               <a-descriptions-item v-if="data.sculpt" label="Sculpt">
                 {{ data.sculpt }}
               </a-descriptions-item>
-              <!-- <a-descriptions-item v-if="data.url" label="Website">
-                <a :href="data.url" target="_blank">Link</a>
-              </a-descriptions-item> -->
+              <a-descriptions-item label="Time">
+                {{ data.start }} - {{ data.end }}
+              </a-descriptions-item>
             </a-descriptions>
           </a-col>
         </a-row>
@@ -85,6 +85,11 @@
               :title="kit.name"
               :head-style="artisanCardHeadStyle"
             >
+              <template v-if="kit.cancelled" #extra>
+                <a-tooltip title="Cancelled">
+                  <stop-outlined style="color: red" />
+                </a-tooltip>
+              </template>
               <template #cover>
                 <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
                 <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
@@ -212,8 +217,8 @@ const { data, pending, refresh } = await useAsyncData(() =>
 
 useSeoMeta({
   title: data.value
-    ? `${keycapProfiles[profile]} ${data.value.name}`
-    : keycapProfiles[profile],
+    ? `${allProfiles[profile]} ${data.value.name}`
+    : allProfiles[profile],
 })
 
 const showGraph = ref(false)

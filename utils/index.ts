@@ -1,11 +1,21 @@
 import html2canvas from 'html2canvas'
+import { merge, values } from 'lodash'
 
 export const keycapProfiles = {
-  gmk: 'GMK CYL',
-  'gmk-mtnu': 'GMK MTNU',
-  sa: 'SA',
-  jtk: 'JTK',
+  Cherry: {
+    gmk: 'GMK CYL',
+    jtk: 'JTK',
+    pbtfans: 'PBTfans',
+  },
+  MTNU: {
+    'gmk-mtnu': 'GMK MTNU',
+  },
+  SA: {
+    sa: 'SP',
+  },
 }
+
+export const allProfiles = values(keycapProfiles).reduce(merge, {})
 
 export const colorwayTitle = (colorway: any) =>
   `${colorway.name} ${colorway.sculpt_name}`

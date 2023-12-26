@@ -17,26 +17,35 @@
       </a-input>
     </a-form-item>
 
-    <a-form-item
-      ref="price"
-      name="price"
-      v-bind="validateInfos.price"
-      label="Price"
-    >
-      <a-input-number v-model:value="kit.price">
-        <template #prefix><number-outlined /></template>
-      </a-input-number>
-    </a-form-item>
+    <a-row :gutter="[8, 8]">
+      <a-col :xs="12">
+        <a-form-item
+          ref="price"
+          name="price"
+          v-bind="validateInfos.price"
+          label="Price"
+        >
+          <a-input-number v-model:value="kit.price">
+            <template #prefix><number-outlined /></template>
+          </a-input-number>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="12">
+        <a-form-item
+          ref="qty"
+          name="qty"
+          v-bind="validateInfos.qty"
+          label="Quantity"
+        >
+          <a-input-number v-model:value="kit.qty">
+            <template #prefix><number-outlined /></template>
+          </a-input-number>
+        </a-form-item>
+      </a-col>
+    </a-row>
 
-    <a-form-item
-      ref="qty"
-      name="qty"
-      v-bind="validateInfos.qty"
-      label="Quantity"
-    >
-      <a-input-number v-model:value="kit.qty">
-        <template #prefix><number-outlined /></template>
-      </a-input-number>
+    <a-form-item>
+      <a-checkbox v-model:checked="kit.cancelled">Cancelled</a-checkbox>
     </a-form-item>
   </a-form>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container artisan-container">
+  <div class="container keycap-container">
     <a-spin :spinning="pending">
       <a-page-header :title="title">
         <template #extra>
@@ -66,7 +66,7 @@ const { isEditor } = storeToRefs(userStore)
 
 const route = useRoute()
 
-const title = keycapProfiles[route.params.profile]
+const title = allProfiles[route.params.profile]
 
 useSeoMeta({
   title,
@@ -108,3 +108,23 @@ const addKeycap = async () => {
   refresh()
 }
 </script>
+
+<style>
+.keycap-container {
+  .ant-card-cover {
+    height: 250px;
+    overflow: hidden;
+
+    @media (max-width: 480px) {
+      height: 150px;
+    }
+  }
+
+  /* iPad */
+  .ant-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+</style>
