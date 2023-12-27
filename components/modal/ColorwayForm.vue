@@ -183,7 +183,10 @@ const { metadata } = defineProps({
 const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 
 const route = useRoute()
-const colorway = ref({})
+const colorway = ref({
+  name: '',
+  image: '',
+})
 
 const formRef = ref()
 const formRules = ref({
@@ -214,26 +217,22 @@ const { useForm } = Form
 const { validate, validateInfos } = useForm(colorway, formRules)
 
 const addColorway = async () => {
-  await validate()
-    .then(() => {
-      $fetch(
-        `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
-        {
-          method: 'post',
-          body: colorway.value,
-        },
-      )
-        .then(() => {
-          message.success('Colorway updated successfully!')
-        })
-        .catch((error) => {
-          console.error(error)
-          message.error(error.message)
-        })
-    })
-    .catch(() => {
-      // ignore
-    })
+  await validate().then(() => {
+    $fetch(
+      `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
+      {
+        method: 'post',
+        body: colorway.value,
+      },
+    )
+      .then(() => {
+        message.success('Colorway updated successfully!')
+      })
+      .catch((error) => {
+        console.error(error)
+        message.error(error.message)
+      })
+  })
 }
 
 // const fetching = ref(false)

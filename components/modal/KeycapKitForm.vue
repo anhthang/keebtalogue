@@ -65,6 +65,8 @@ const { metadata, isEdit } = defineProps({
 
 const route = useRoute()
 const kit = ref({
+  name: '',
+  img: '',
   profile_keycap_id: `${route.params.profile}/${route.params.keycap}`,
 })
 

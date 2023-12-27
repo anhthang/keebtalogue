@@ -97,10 +97,15 @@ const confirmLoading = ref(false)
 const addMaker = async () => {
   confirmLoading.value = true
 
-  await makerForm.value.addMaker()
-
-  confirmLoading.value = false
-  showModal()
+  await makerForm.value
+    .addMaker()
+    .then(() => {
+      confirmLoading.value = false
+      showModal()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 </script>
 

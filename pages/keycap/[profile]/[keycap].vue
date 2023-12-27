@@ -105,6 +105,13 @@
           </a-col>
         </a-row>
 
+        <a-result
+          v-if="!data.kits.length"
+          status="404"
+          title="We're currently updating our catalog"
+          sub-title="There are no kits available right now. Check back soon for exciting new additions!"
+        />
+
         <a-tabs v-if="false">
           <a-tab-pane
             v-for="(colorways, maker) in data.artisans"
@@ -237,11 +244,16 @@ const confirmLoading = ref(false)
 const updateKeycap = async () => {
   confirmLoading.value = true
 
-  await keycapForm.value.addKeycap()
-
-  toggleShowEditKeycap()
-  confirmLoading.value = false
-  refresh()
+  await keycapForm.value
+    .addKeycap()
+    .then(() => {
+      confirmLoading.value = false
+      toggleShowEditKeycap()
+      refresh()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 
 const showEditKit = ref(false)
@@ -256,11 +268,15 @@ const keycapKitForm = ref()
 const addKeycapKit = async () => {
   confirmLoading.value = true
 
-  await keycapKitForm.value.addKit()
-
-  toggleShowEditKit()
-  confirmLoading.value = false
-
-  refresh()
+  await keycapKitForm.value
+    .addKit()
+    .then(() => {
+      confirmLoading.value = false
+      toggleShowEditKit()
+      refresh()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 </script>

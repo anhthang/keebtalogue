@@ -2,6 +2,7 @@ import html2canvas from 'html2canvas'
 
 export const keycapProfiles = {
   Cherry: {
+    epbt: 'ePBT',
     gmk: 'GMK CYL',
     jtk: 'JTK',
     pbtfans: 'PBTfans',

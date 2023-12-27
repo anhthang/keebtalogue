@@ -159,11 +159,16 @@ const makerForm = ref()
 const updateMakerProfile = async () => {
   confirmLoading.value = true
 
-  await makerForm.value.addMaker()
-
-  showEditMakerModal()
-  confirmLoading.value = false
-  refresh()
+  await makerForm.value
+    .addMaker()
+    .then(() => {
+      confirmLoading.value = false
+      showEditMakerModal()
+      refresh()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 
 const showAddSaleModal = () => {

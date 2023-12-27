@@ -55,6 +55,13 @@
             :show-quick-jumper="data.count > size * 10"
           />
         </a-flex>
+
+        <a-result
+          v-if="!data.keycaps.length"
+          status="404"
+          title="We're currently updating our catalog"
+          sub-title="There are no keycaps available right now. Check back soon for exciting new additions!"
+        />
       </a-page-header>
     </a-spin>
   </div>
@@ -100,12 +107,16 @@ const showAddKeycap = () => {
 const addKeycap = async () => {
   confirmLoading.value = true
 
-  await keycapForm.value.addKeycap()
-
-  confirmLoading.value = false
-  showAddKeycap()
-
-  refresh()
+  await keycapForm.value
+    .addKeycap()
+    .then(() => {
+      confirmLoading.value = false
+      showAddKeycap()
+      refresh()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 </script>
 

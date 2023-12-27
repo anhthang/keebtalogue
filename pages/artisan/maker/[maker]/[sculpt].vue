@@ -271,11 +271,16 @@ const colorwayForm = ref()
 const newColorwaySubmission = async () => {
   confirmLoading.value = true
 
-  await colorwayForm.value.addColorway()
-  showAddColorwayModal()
-
-  confirmLoading.value = false
-  refresh()
+  await colorwayForm.value
+    .addColorway()
+    .then(() => {
+      confirmLoading.value = false
+      showAddColorwayModal()
+      refresh()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 
 // show colorway card popup

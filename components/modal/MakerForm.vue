@@ -137,7 +137,9 @@ const { metadata, isEdit } = defineProps({
   isEdit: Boolean,
 })
 
-const maker = ref({})
+const maker = ref({
+  name: '',
+})
 
 onBeforeMount(() => {
   if (metadata && Object.keys(metadata).length) {
@@ -182,37 +184,33 @@ const { useForm } = Form
 const { validate, validateInfos } = useForm(maker, formRules)
 
 const addMaker = async () => {
-  await validate()
-    .then(() => {
-      const { sculpts, ...rest } = maker.value
+  await validate().then(() => {
+    const { sculpts, ...rest } = maker.value
 
-      rest.document_ids = rest.document_ids.split(',')
+    rest.document_ids = rest.document_ids.split(',')
 
-      const makerId = isEdit
-        ? rest.id
-        : slugify(maker.value.name, { lower: true })
+    const makerId = isEdit
+      ? rest.id
+      : slugify(maker.value.name, { lower: true })
 
-      $fetch(`/api/makers/${makerId}`, {
-        method: 'post',
-        body: {
-          ...rest,
-          id: makerId,
-        },
+    $fetch(`/api/makers/${makerId}`, {
+      method: 'post',
+      body: {
+        ...rest,
+        id: makerId,
+      },
+    })
+      .then(() => {
+        if (isEdit) {
+          message.success(`[${rest.name}] updated successfully!`)
+        } else {
+          message.success(`[${rest.name}] added successfully!`)
+        }
       })
-        .then(() => {
-          if (isEdit) {
-            message.success(`[${rest.name}] updated successfully!`)
-          } else {
-            message.success(`[${rest.name}] added successfully!`)
-          }
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
-    })
-    .catch(() => {
-      // ignore
-    })
+      .catch((error) => {
+        message.error(error.message)
+      })
+  })
 }
 
 defineExpose({

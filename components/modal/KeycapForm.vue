@@ -130,6 +130,9 @@ const { metadata, isEdit } = defineProps({
 
 const route = useRoute()
 const keycap = ref({
+  name: '',
+  url: '',
+  img: '',
   dates: [],
   profile_id: route.params.profile,
 })
@@ -177,34 +180,30 @@ const { useForm } = Form
 const { validate, validateInfos } = useForm(keycap, formRules)
 
 const addKeycap = async () => {
-  await validate()
-    .then(() => {
-      const slug = isEdit
-        ? keycap.value.id
-        : slugify(keycap.value.name, { lower: true })
+  await validate().then(() => {
+    const slug = isEdit
+      ? keycap.value.id
+      : slugify(keycap.value.name, { lower: true })
 
-      if (!isEdit) {
-        keycap.value.profile_keycap_id = `${keycap.value.profile_id}/${slug}`
-      }
+    if (!isEdit) {
+      keycap.value.profile_keycap_id = `${keycap.value.profile_id}/${slug}`
+    }
 
-      $fetch(`/api/keycaps/${route.params.profile}/${slug}`, {
-        method: 'post',
-        body: keycap.value,
+    $fetch(`/api/keycaps/${route.params.profile}/${slug}`, {
+      method: 'post',
+      body: keycap.value,
+    })
+      .then(() => {
+        if (isEdit) {
+          message.success(`[${keycap.value.name}] updated successfully!`)
+        } else {
+          message.success(`[${keycap.value.name}] added successfully!`)
+        }
       })
-        .then(() => {
-          if (isEdit) {
-            message.success(`[${keycap.value.name}] updated successfully!`)
-          } else {
-            message.success(`[${keycap.value.name}] added successfully!`)
-          }
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
-    })
-    .catch(() => {
-      // ignore
-    })
+      .catch((error) => {
+        message.error(error.message)
+      })
+  })
 }
 
 defineExpose({
