@@ -205,7 +205,9 @@ useSeoMeta({
     ? `${sculpt.value.name} • ${sculpt.value.maker_name}`
     : '',
   description: sculpt.value?.story || cfg.public.appDesc,
+  ogDescription: sculpt.value?.story || cfg.public.appDesc,
   ogImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
+  twitterDescription: sculpt.value?.story || cfg.public.appDesc,
   twitterImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
 })
 

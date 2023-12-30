@@ -145,7 +145,9 @@ const cfg = useRuntimeConfig()
 useSeoMeta({
   title: maker.value?.name,
   description: maker.value?.intro || cfg.public.appDesc,
+  ogDescription: maker.value?.intro || cfg.public.appDesc,
   ogImage: `/logo/${route.params.maker}.png`,
+  twitterDescription: maker.value?.intro || cfg.public.appDesc,
   twitterImage: `/logo/${route.params.maker}.png`,
 })
 

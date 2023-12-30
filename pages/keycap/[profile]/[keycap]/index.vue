@@ -230,6 +230,11 @@ useSeoMeta({
   title: data.value
     ? `${allProfiles[profile]} ${data.value.name}`
     : allProfiles[profile],
+  description: data.value && data.value.description,
+  ogDescription: data.value && data.value.description,
+  ogImage: data.value && data.value.img,
+  twitterDescription: data.value && data.value.description,
+  twitterImage: data.value && data.value.img,
 })
 
 const visible = ref(false)
