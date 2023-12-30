@@ -33,7 +33,10 @@
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button v-if="data.order_graph" @click="toggleShowChart">
+          <a-button
+            v-if="data.order_graph || data.order_history"
+            @click="toggleShowChart"
+          >
             <bar-chart-outlined /> Sales
           </a-button>
 
@@ -179,14 +182,14 @@
             visible,
             onVisibleChange: toggleShowChart,
           }"
-          :src="data.order_graph"
+          :src="data.order_graph || data.order_history"
         />
         <div style="display: none">
           <a-image-preview-group
             :preview="{ visible, onVisibleChange: (vis) => (visible = vis) }"
           >
-            <a-image :src="data.order_graph" />
-            <a-image :src="data.order_history" />
+            <a-image v-if="data.order_graph" :src="data.order_graph" />
+            <a-image v-if="data.order_history" :src="data.order_history" />
           </a-image-preview-group>
         </div>
       </a-page-header>

@@ -20,20 +20,24 @@
         </template>
 
         <template #extra>
-          <a-button type="primary" @click="toggleShowEditKit">
+          <a-button type="primary" @click="toggleShowEditKit()">
             <appstore-add-outlined /> Add
           </a-button>
         </template>
         <a-table :data-source="data.kits" :columns="columns">
           <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'img'">
+              <a :href="record.img" target="_blank">Link</a>
+            </template>
+
+            <template v-if="column.key === 'status' && !!record.cancelled">
+              <a-tag color="red">Cancelled</a-tag>
+            </template>
+
             <template v-if="column.key === 'action'">
               <a-button @click="toggleShowEditKit(record)">
                 <edit-outlined /> Edit
               </a-button>
-            </template>
-
-            <template v-if="column.key === 'status' && !!record.cancelled">
-              <a-tag color="red">CANCELLED</a-tag>
             </template>
           </template>
         </a-table>
