@@ -92,12 +92,12 @@
     </a-form-item>
 
     <a-form-item
-      ref="history_graph"
-      name="history_graph"
-      label="History Graph"
-      v-bind="validateInfos.history_graph"
+      ref="order_history"
+      name="order_history"
+      label="Order History"
+      v-bind="validateInfos.order_history"
     >
-      <a-input v-model:value="keycap.history_graph">
+      <a-input v-model:value="keycap.order_history">
         <template #prefix><picture-outlined /></template>
       </a-input>
     </a-form-item>
@@ -165,7 +165,7 @@ const formRules = ref({
   start: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   order_graph: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
-  history_graph: [
+  order_history: [
     { required: false, type: 'url', trigger: ['change', 'blur'] },
   ],
   description: [{ type: 'string', trigger: ['change', 'blur'] }],

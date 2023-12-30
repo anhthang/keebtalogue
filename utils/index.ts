@@ -5,13 +5,14 @@ export const keycapProfiles = {
     epbt: 'ePBT',
     gmk: 'GMK CYL',
     jtk: 'JTK',
+    keykobo: 'Key Kobo',
     pbtfans: 'PBTfans',
   },
   MTNU: {
     'gmk-mtnu': 'GMK MTNU',
   },
   SA: {
-    sa: 'SP',
+    sa: 'Signature Plastics',
   },
 }
 

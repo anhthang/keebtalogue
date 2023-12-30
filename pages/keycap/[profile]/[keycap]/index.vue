@@ -1,5 +1,5 @@
 <template>
-  <div class="container keycap-container">
+  <div class="container">
     <a-spin :spinning="pending">
       <a-page-header v-if="data" :title="data.name">
         <template #breadcrumb>
@@ -14,16 +14,26 @@
           </a-breadcrumb>
         </template>
 
-        <template v-if="isEditor" #extra>
-          <a-button type="primary" @click="toggleShowEditKit()">
-            <appstore-add-outlined /> Add Kit
-          </a-button>
+        <template #extra>
+          <nuxt-link
+            v-if="isEditor"
+            :to="`/keycap/${data.profile_keycap_id}/kit`"
+          >
+            <a-button type="primary">
+              <appstore-add-outlined /> Manage Kits
+            </a-button>
+          </nuxt-link>
 
-          <a-button type="primary" ghost @click="toggleShowEditKeycap">
+          <a-button
+            v-if="isEditor"
+            type="primary"
+            ghost
+            @click="toggleShowEditKeycap"
+          >
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button v-if="data.order_graph" @click="toggleShowGraph">
+          <a-button v-if="data.order_graph" @click="toggleShowChart">
             <bar-chart-outlined /> Sales
           </a-button>
 
@@ -46,67 +56,60 @@
           />
         </a-modal>
 
-        <a-typography v-if="data.description">
-          <a-typography-paragraph
-            v-for="(line, idx) in data.description.split('\n')"
-            :key="idx"
-          >
-            {{ line }}
-          </a-typography-paragraph>
-        </a-typography>
+        <a-row v-if="data.kits.length" :gutter="[16, 16]" type="flex">
+          <a-col :sm="16">
+            <a-carousel arrows dots-class="slick-thumb" autoplay effect="fade">
+              <a-card v-for="kit in data.kits" :key="kit.id">
+                <template #cover>
+                  <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
+                </template>
+              </a-card>
+            </a-carousel>
+          </a-col>
+          <a-col :sm="8">
+            <a-collapse v-model:activeKey="activeKey" :bordered="false">
+              <a-collapse-panel
+                v-if="data.description"
+                key="description"
+                header="Description"
+              >
+                <template #extra><info-circle-outlined /></template>
+                <a-typography>
+                  <a-typography-paragraph
+                    v-for="(line, idx) in data.description.split('\n')"
+                    :key="idx"
+                  >
+                    {{ line }}
+                  </a-typography-paragraph>
+                </a-typography>
+              </a-collapse-panel>
 
-        <a-row :gutter="[8, 8]" type="flex">
-          <a-col>
-            <a-descriptions>
-              <a-descriptions-item v-if="data.designer" label="Designer">
-                {{ data.designer }}
-              </a-descriptions-item>
-              <a-descriptions-item v-if="data.sculpt" label="Sculpt">
-                {{ data.sculpt }}
-              </a-descriptions-item>
-              <a-descriptions-item label="Time">
-                {{ data.start }} - {{ data.end }}
-              </a-descriptions-item>
-            </a-descriptions>
+              <a-collapse-panel key="specifications" header="Specifications">
+                <template #extra><expand-alt-outlined /></template>
+                <a-descriptions :column="1" size="small">
+                  <a-descriptions-item v-if="data.designer" label="Designer">
+                    {{ data.designer }}
+                  </a-descriptions-item>
+                  <a-descriptions-item v-if="data.sculpt" label="Sculpt">
+                    {{ data.sculpt }}
+                  </a-descriptions-item>
+                  <a-descriptions-item label="Time">
+                    {{ data.start }} - {{ data.end }}
+                  </a-descriptions-item>
+                </a-descriptions>
+              </a-collapse-panel>
+
+              <a-collapse-panel key="disclaimers" header="Disclaimers">
+                <template #extra><exclamation-circle-outlined /></template>
+                Kindly note that the images are of 3D renders and are for
+                illustration purposes only. The final colors may differ
+                slightly.
+              </a-collapse-panel>
+            </a-collapse>
           </a-col>
         </a-row>
-
-        <a-row :gutter="[8, 8]" type="flex">
-          <a-col
-            v-for="kit in data.kits"
-            :key="kit.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :xl="6"
-          >
-            <a-card
-              hoverable
-              :title="kit.name"
-              :head-style="artisanCardHeadStyle"
-            >
-              <template v-if="kit.cancelled" #extra>
-                <a-tooltip title="Cancelled">
-                  <stop-outlined style="color: red" />
-                </a-tooltip>
-              </template>
-              <template #cover>
-                <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
-                <!-- <img loading="lazy" :alt="kit.name" :src="kit.img" /> -->
-              </template>
-              <template #actions>
-                <span v-if="isEditor">
-                  <edit-outlined key="edit" @click="toggleShowEditKit(kit)" />
-                </span>
-                <span><dollar-outlined key="price" /> {{ kit.price }} </span>
-                <span><number-outlined key="qty" /> {{ kit.qty }} </span>
-              </template>
-            </a-card>
-          </a-col>
-        </a-row>
-
         <a-result
-          v-if="!data.kits.length"
+          v-else
           status="404"
           title="We're currently updating our catalog"
           sub-title="There are no kits available right now. Check back soon for exciting new additions!"
@@ -168,30 +171,24 @@
           </a-tab-pane>
         </a-tabs>
 
-        <a-modal
-          v-model:open="showEditKit"
-          :title="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="addKeycapKit"
-        >
-          <modal-keycap-kit-form
-            ref="keycapKitForm"
-            :is-edit="selectedKit?.id"
-            :metadata="selectedKit"
-          />
-        </a-modal>
-
         <a-image
           alt="Created by dvorcol"
           :width="200"
           style="display: none"
           :preview="{
-            visible: showGraph,
-            onVisibleChange: toggleShowGraph,
+            visible,
+            onVisibleChange: toggleShowChart,
           }"
           :src="data.order_graph"
         />
+        <div style="display: none">
+          <a-image-preview-group
+            :preview="{ visible, onVisibleChange: (vis) => (visible = vis) }"
+          >
+            <a-image :src="data.order_graph" />
+            <a-image :src="data.order_history" />
+          </a-image-preview-group>
+        </div>
       </a-page-header>
 
       <a-result v-else status="404" title="Uh oh! Something went wrong.">
@@ -211,15 +208,22 @@ import groupBy from 'lodash.groupby'
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
+const activeKey = ref(['description', 'specifications', 'disclaimers'])
+
 const route = useRoute()
 
 const { profile, keycap } = route.params
 
-const { data, pending, refresh } = await useAsyncData(() =>
-  $fetch(`/api/keycaps/${profile}/${keycap}`).then((data) => {
-    data.artisans = groupBy(data.artisans, 'maker_name')
-    return data
-  }),
+const { data, pending, refresh } = await useAsyncData(
+  `keycap/${profile}/${keycap}`,
+  () =>
+    $fetch(`/api/keycaps/${profile}/${keycap}`).then((data) => {
+      data.artisans = groupBy(data.artisans, 'maker_name')
+      return data
+    }),
+  {
+    watch: [profile, keycap],
+  },
 )
 
 useSeoMeta({
@@ -228,9 +232,9 @@ useSeoMeta({
     : allProfiles[profile],
 })
 
-const showGraph = ref(false)
-const toggleShowGraph = () => {
-  showGraph.value = !showGraph.value
+const visible = ref(false)
+const toggleShowChart = () => {
+  visible.value = !visible.value
 }
 
 const showEditKeycap = ref(false)
@@ -255,28 +259,13 @@ const updateKeycap = async () => {
       confirmLoading.value = false
     })
 }
-
-const showEditKit = ref(false)
-const selectedKit = ref({})
-
-const toggleShowEditKit = (kit) => {
-  showEditKit.value = !showEditKit.value
-  selectedKit.value = kit
-}
-
-const keycapKitForm = ref()
-const addKeycapKit = async () => {
-  confirmLoading.value = true
-
-  await keycapKitForm.value
-    .addKit()
-    .then(() => {
-      confirmLoading.value = false
-      toggleShowEditKit()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
-}
 </script>
+
+<style scoped>
+:deep(.slick-slide img) {
+  border: 4px solid #fff;
+  display: block;
+  margin: auto;
+  /* max-width: 80%; */
+}
+</style>
