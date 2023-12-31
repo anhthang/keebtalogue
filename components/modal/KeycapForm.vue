@@ -80,6 +80,18 @@
       />
     </a-form-item>
 
+    <a-form-item label="Status">
+      <a-select v-model:value="keycap.status">
+        <a-select-option
+          v-for="status in statuses"
+          :key="status"
+          :value="status"
+        >
+          {{ status }}
+        </a-select-option>
+      </a-select>
+    </a-form-item>
+
     <a-form-item
       ref="order_graph"
       name="order_graph"
@@ -147,6 +159,14 @@ onBeforeMount(() => {
   }
 })
 
+const statuses = [
+  'Interest Check',
+  'Live',
+  'In Production',
+  'Shipping',
+  'Complete',
+]
+
 const formRef = ref()
 const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
@@ -164,6 +184,14 @@ const formRules = ref({
   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
   start: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
+  status: [
+    {
+      required: false,
+      type: 'enum',
+      enum: statuses,
+      trigger: ['change', 'blur'],
+    },
+  ],
   order_graph: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
   order_history: [
     { required: false, type: 'url', trigger: ['change', 'blur'] },

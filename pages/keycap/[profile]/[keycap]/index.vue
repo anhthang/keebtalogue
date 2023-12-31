@@ -99,14 +99,21 @@
                   <a-descriptions-item label="Time">
                     {{ data.start }} - {{ data.end }}
                   </a-descriptions-item>
+                  <a-descriptions-item v-if="data.status" label="Status">
+                    <a-tag :color="statusMap[data.status]">
+                      {{ data.status }}
+                    </a-tag>
+                  </a-descriptions-item>
                 </a-descriptions>
               </a-collapse-panel>
 
               <a-collapse-panel key="disclaimers" header="Disclaimers">
                 <template #extra><exclamation-circle-outlined /></template>
-                Kindly note that the images are of 3D renders and are for
-                illustration purposes only. The final colors may differ
-                slightly.
+                <a-typography-text type="danger">
+                  Kindly note that the images are of 3D renders and are for
+                  illustration purposes only. The final colors may differ
+                  slightly.
+                </a-typography-text>
               </a-collapse-panel>
             </a-collapse>
           </a-col>
@@ -207,6 +214,14 @@
 
 <script setup>
 import groupBy from 'lodash.groupby'
+
+const statusMap = {
+  'Interest Check': 'gray',
+  Live: 'yellow',
+  'In Production': 'blue',
+  Shipping: 'green',
+  Complete: 'purple',
+}
 
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
