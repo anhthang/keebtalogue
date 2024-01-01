@@ -61,7 +61,13 @@
 
         <a-row v-if="data.kits.length" :gutter="[16, 16]" type="flex">
           <a-col :sm="16">
-            <a-carousel arrows dots-class="slick-thumb" autoplay effect="fade">
+            <a-carousel
+              ref="kitSlide"
+              arrows
+              dots-class="slick-thumb"
+              autoplay
+              effect="fade"
+            >
               <a-card v-for="kit in data.kits" :key="kit.id">
                 <template #cover>
                   <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
@@ -105,6 +111,19 @@
                     </a-tag>
                   </a-descriptions-item>
                 </a-descriptions>
+              </a-collapse-panel>
+
+              <a-collapse-panel key="kits" header="Kits">
+                <template #extra><appstore-add-outlined /></template>
+                <a-flex wrap="wrap" gap="small">
+                  <a-button
+                    v-for="(kit, idx) in data.kits"
+                    :key="kit.id"
+                    @click="gotoSlide(idx)"
+                  >
+                    {{ kit.name }}
+                  </a-button>
+                </a-flex>
               </a-collapse-panel>
 
               <a-collapse-panel key="disclaimers" header="Disclaimers">
@@ -226,7 +245,7 @@ const statusMap = {
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
-const activeKey = ref(['description', 'specifications', 'disclaimers'])
+const activeKey = ref(['description', 'specifications', 'kits', 'disclaimers'])
 
 const route = useRoute()
 
@@ -281,6 +300,11 @@ const updateKeycap = async () => {
     .catch(() => {
       confirmLoading.value = false
     })
+}
+
+const kitSlide = ref()
+const gotoSlide = (idx) => {
+  kitSlide.value.goTo(idx)
 }
 </script>
 

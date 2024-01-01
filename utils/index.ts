@@ -8,11 +8,17 @@ export const keycapProfiles = {
     keykobo: 'Key Kobo',
     pbtfans: 'PBTfans',
   },
-  MTNU: {
-    'gmk-mtnu': 'GMK MTNU',
-  },
   SA: {
     sa: 'Signature Plastics',
+  },
+  Others: {
+    dcs: 'DCS',
+    dsa: 'DSA',
+    'gmk-mtnu': 'GMK MTNU',
+    kat: 'KAT',
+    kam: 'KAM',
+    mt3: 'MT3',
+    xda: 'XDA',
   },
 }
 

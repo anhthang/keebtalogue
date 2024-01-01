@@ -28,15 +28,18 @@
             :xl="6"
           >
             <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
-              <a-card
-                hoverable
-                :title="keycap.name"
-                :head-style="artisanCardHeadStyle"
-              >
+              <a-card hoverable :head-style="artisanCardHeadStyle">
                 <template #cover>
                   <img loading="lazy" :alt="keycap.name" :src="keycap.img" />
                 </template>
-                <!-- <a-card-meta :title="keycap.name" :description="keycap.designer" /> -->
+                <a-card-meta :title="keycap.name">
+                  <template #description>
+                    <a-flex justify="space-between">
+                      <span>{{ keycap.designer }}</span>
+                      <span>{{ keycap.start }} - {{ keycap.end }}</span>
+                    </a-flex>
+                  </template>
+                </a-card-meta>
               </a-card>
             </nuxt-link>
           </a-col>
