@@ -35,8 +35,8 @@
                 <a-card-meta :title="keycap.name">
                   <template #description>
                     <a-flex justify="space-between">
-                      <span>{{ keycap.designer }}</span>
-                      <span>{{ keycap.start }} - {{ keycap.end }}</span>
+                      <span><bg-colors-outlined /> {{ keycap.designer }}</span>
+                      <span><calendar-outlined /> {{ keycap.timeline }} </span>
                     </a-flex>
                   </template>
                 </a-card-meta>

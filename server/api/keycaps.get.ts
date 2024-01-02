@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import dayjs from 'dayjs'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -14,6 +15,18 @@ export default defineEventHandler(async (event) => {
     .like('profile_keycap_id', `${query}%`)
     .order('name')
     .range(from, to)
+
+  data.forEach((keycap) => {
+    const from = dayjs(keycap.start, 'YYYY-MM-DD')
+    const to = dayjs(keycap.end, 'YYYY-MM-DD')
+
+    if (from.isValid() && to.isValid()) {
+      keycap.timeline =
+        from.get('year') === to.get('year')
+          ? `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
+          : `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
+    }
+  })
 
   return {
     keycaps: data,

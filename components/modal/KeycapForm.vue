@@ -83,7 +83,7 @@
     <a-form-item label="Status">
       <a-select v-model:value="keycap.status">
         <a-select-option
-          v-for="status in statuses"
+          v-for="status in Object.keys(keycapStatuses)"
           :key="status"
           :value="status"
         >
@@ -159,14 +159,6 @@ onBeforeMount(() => {
   }
 })
 
-const statuses = [
-  'Interest Check',
-  'Live',
-  'In Production',
-  'Shipping',
-  'Complete',
-]
-
 const formRef = ref()
 const formRules = ref({
   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
@@ -188,7 +180,7 @@ const formRules = ref({
     {
       required: false,
       type: 'enum',
-      enum: statuses,
+      enum: Object.keys(keycapStatuses),
       trigger: ['change', 'blur'],
     },
   ],

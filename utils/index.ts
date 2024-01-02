@@ -22,6 +22,15 @@ export const keycapProfiles = {
   },
 }
 
+export const keycapStatuses = {
+  'Interest Check': 'gray',
+  Cancelled: 'red',
+  Live: 'yellow',
+  'In Production': 'blue',
+  Shipping: 'green',
+  Complete: 'purple',
+}
+
 export const allProfiles = Object.values(keycapProfiles).reduce(
   (curr, prev) => {
     Object.assign(curr, prev)

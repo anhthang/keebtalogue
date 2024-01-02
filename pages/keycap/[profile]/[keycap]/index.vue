@@ -102,11 +102,11 @@
                   <a-descriptions-item v-if="data.sculpt" label="Sculpt">
                     {{ data.sculpt }}
                   </a-descriptions-item>
-                  <a-descriptions-item label="Time">
-                    {{ data.start }} - {{ data.end }}
+                  <a-descriptions-item label="Timeline">
+                    {{ data.timeline }}
                   </a-descriptions-item>
                   <a-descriptions-item v-if="data.status" label="Status">
-                    <a-tag :color="statusMap[data.status]">
+                    <a-tag :color="keycapStatuses[data.status]">
                       {{ data.status }}
                     </a-tag>
                   </a-descriptions-item>
@@ -233,14 +233,6 @@
 
 <script setup>
 import groupBy from 'lodash.groupby'
-
-const statusMap = {
-  'Interest Check': 'gray',
-  Live: 'yellow',
-  'In Production': 'blue',
-  Shipping: 'green',
-  Complete: 'purple',
-}
 
 const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
