@@ -36,7 +36,9 @@
                   <template #description>
                     <a-flex justify="space-between">
                       <span><bg-colors-outlined /> {{ keycap.designer }}</span>
-                      <span><calendar-outlined /> {{ keycap.timeline }} </span>
+                      <span>
+                        <clock-circle-outlined /> {{ keycap.timeline }}
+                      </span>
                     </a-flex>
                   </template>
                 </a-card-meta>

@@ -61,19 +61,26 @@
 
         <a-row v-if="data.kits.length" :gutter="[16, 16]" type="flex">
           <a-col :sm="16">
-            <a-carousel
-              ref="kitSlide"
-              arrows
-              dots-class="slick-thumb"
-              autoplay
-              effect="fade"
-            >
-              <a-card v-for="kit in data.kits" :key="kit.id">
-                <template #cover>
-                  <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
-                </template>
-              </a-card>
-            </a-carousel>
+            <a-flex vertical gap="small">
+              <a-carousel
+                ref="kitSlide"
+                arrows
+                dots-class="slick-thumb"
+                autoplay
+                effect="fade"
+                :before-change="beforeChangeSlide"
+              >
+                <a-card v-for="kit in data.kits" :key="kit.id">
+                  <template #cover>
+                    <a-image loading="lazy" :alt="kit.name" :src="kit.img" />
+                  </template>
+                </a-card>
+              </a-carousel>
+
+              <a-typography-text style="text-align: center">
+                {{ activeKit.description }}
+              </a-typography-text>
+            </a-flex>
           </a-col>
           <a-col :sm="8">
             <a-collapse v-model:activeKey="activeKey" :bordered="false">
@@ -119,6 +126,7 @@
                   <a-button
                     v-for="(kit, idx) in data.kits"
                     :key="kit.id"
+                    :type="activeKitIdx === idx ? 'primary' : 'default'"
                     @click="gotoSlide(idx)"
                   >
                     {{ kit.name }}
@@ -295,8 +303,18 @@ const updateKeycap = async () => {
 }
 
 const kitSlide = ref()
+const activeKitIdx = ref(0)
+const activeKit = computed(() => {
+  return data.value?.kits[activeKitIdx.value] || {}
+})
+
 const gotoSlide = (idx) => {
   kitSlide.value.goTo(idx)
+  activeKitIdx.value = idx
+}
+
+const beforeChangeSlide = (from, to) => {
+  activeKitIdx.value = to
 }
 </script>
 

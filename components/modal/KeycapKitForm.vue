@@ -6,9 +6,11 @@
       v-bind="validateInfos.name"
       label="Name"
     >
-      <a-input v-model:value="kit.name">
-        <template #prefix><font-size-outlined /></template>
-      </a-input>
+      <a-auto-complete
+        v-model:value="kit.name"
+        :options="suggestionKits.map((value) => ({ value }))"
+        @change="onSearchKit"
+      />
     </a-form-item>
 
     <a-form-item ref="img" name="img" v-bind="validateInfos.img" label="Image">
@@ -62,6 +64,35 @@ const { metadata, isEdit } = defineProps({
   },
   isEdit: Boolean,
 })
+
+const predefinedKits = [
+  'Base',
+  'Novelties',
+  'Spacebars',
+  '40s',
+  'Numpad',
+  'Extension',
+  'Addons',
+  'Accents',
+  'Hiragana',
+  'Katakana',
+  'Hangul',
+  'Cyrillic',
+  'NorDe',
+  'NorDeUK',
+  'Forties',
+  'ISO',
+  'Colevrak',
+  '40s/Ortho',
+]
+
+const suggestionKits = ref(predefinedKits)
+
+const onSearchKit = (text) => {
+  suggestionKits.value = predefinedKits.filter((k) =>
+    k.toLowerCase().includes(text.toLowerCase()),
+  )
+}
 
 const route = useRoute()
 const kit = ref({
