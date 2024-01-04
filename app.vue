@@ -1,12 +1,14 @@
 <template>
   <a-config-provider :theme="themeCfg">
     <NuxtLayout :name="layout">
+      <SpeedInsights />
       <NuxtPage />
     </NuxtLayout>
   </a-config-provider>
 </template>
 
 <script setup>
+import { SpeedInsights } from "@vercel/speed-insights/nuxt"
 import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import 'ant-design-vue/dist/reset.css'
