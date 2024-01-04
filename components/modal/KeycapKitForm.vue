@@ -46,6 +46,15 @@
       </a-col>
     </a-row>
 
+    <a-form-item
+      ref="description"
+      name="description"
+      v-bind="validateInfos.description"
+      label="Description"
+    >
+      <a-textarea v-model:value="kit.description" auto-size />
+    </a-form-item>
+
     <a-form-item>
       <a-checkbox v-model:checked="kit.cancelled">Cancelled</a-checkbox>
     </a-form-item>
@@ -111,6 +120,7 @@ const formRules = ref({
   qty: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
   price: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
+  description: [{ type: 'string', trigger: ['change', 'blur'] }],
 })
 
 const { useForm } = Form

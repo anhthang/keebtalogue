@@ -61,6 +61,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth',
+})
+
 const columns = [
   {
     title: 'Name',

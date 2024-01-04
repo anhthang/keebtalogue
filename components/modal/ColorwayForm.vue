@@ -185,7 +185,7 @@ const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 const route = useRoute()
 const colorway = ref({
   name: '',
-  image: '',
+  img: '',
 })
 
 const formRef = ref()
@@ -203,7 +203,7 @@ const formRules = ref({
     },
   ],
   description: [{ type: 'string', trigger: ['change', 'blur'] }],
-  image: [{ required: true, type: 'url' }],
+  img: [{ required: true, type: 'url' }],
 })
 
 onBeforeMount(() => {

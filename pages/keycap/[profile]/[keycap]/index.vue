@@ -37,7 +37,7 @@
             v-if="data.order_graph || data.order_history"
             @click="toggleShowChart"
           >
-            <bar-chart-outlined /> Sales
+            <bar-chart-outlined /> Sales Chart
           </a-button>
 
           <a v-if="data.url" :href="data.url" target="_blank">

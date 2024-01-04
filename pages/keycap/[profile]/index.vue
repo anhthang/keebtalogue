@@ -91,7 +91,7 @@ const { data, pending, refresh } = await useAsyncData(
   () =>
     $fetch('/api/keycaps', {
       query: {
-        query: route.params.profile,
+        profile_id: route.params.profile,
         page: page.value,
         size: size.value,
       },

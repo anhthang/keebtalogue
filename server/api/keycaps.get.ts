@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
-  const { query, page, size } = getQuery(event)
+  const { profile_id, page, size } = getQuery(event)
 
   const from = (page - 1) * size
   const to = page * size - 1
@@ -12,13 +12,13 @@ export default defineEventHandler(async (event) => {
   const { data, count } = await client
     .from('keycaps')
     .select('*', { count: 'exact' })
-    .like('profile_keycap_id', `${query}%`)
+    .eq('profile_id', profile_id)
     .order('name')
     .range(from, to)
 
   data.forEach((keycap) => {
-    const from = dayjs(keycap.start, 'YYYY-MM-DD')
-    const to = dayjs(keycap.end, 'YYYY-MM-DD')
+    const from = dayjs(keycap.start_date, 'YYYY-MM-DD')
+    const to = dayjs(keycap.end_date, 'YYYY-MM-DD')
 
     if (from.isValid() && to.isValid()) {
       keycap.timeline =

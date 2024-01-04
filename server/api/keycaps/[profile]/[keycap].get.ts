@@ -17,8 +17,8 @@ export default defineEventHandler(async (event) => {
     data.kits = sortBy(data.kits, 'id')
   }
 
-  const from = dayjs(data.start, 'YYYY-MM-DD')
-  const to = dayjs(data.end, 'YYYY-MM-DD')
+  const from = dayjs(data.start_date, 'YYYY-MM-DD')
+  const to = dayjs(data.end_date, 'YYYY-MM-DD')
 
   if (from.isValid() && to.isValid()) {
     data.timeline =

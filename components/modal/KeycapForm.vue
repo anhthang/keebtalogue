@@ -151,11 +151,11 @@ const keycap = ref({
 
 onBeforeMount(() => {
   Object.assign(keycap.value, metadata)
-  if (metadata.start) {
-    keycap.value.dates[0] = dayjs(metadata.start, 'YYYY-MM-DD')
+  if (metadata.start_date) {
+    keycap.value.dates[0] = dayjs(metadata.start_date, 'YYYY-MM-DD')
   }
-  if (metadata.end) {
-    keycap.value.dates[1] = dayjs(metadata.end, 'YYYY-MM-DD')
+  if (metadata.end_date) {
+    keycap.value.dates[1] = dayjs(metadata.end_date, 'YYYY-MM-DD')
   }
 })
 
@@ -174,8 +174,8 @@ const formRules = ref({
   ],
   url: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-  start: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
-  end: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
+  start_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
+  end_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   status: [
     {
       required: false,
@@ -192,8 +192,8 @@ const formRules = ref({
 })
 
 const onChangeDates = () => {
-  keycap.value.start = keycap.value.dates[0].format('YYYY-MM-DD')
-  keycap.value.end = keycap.value.dates[1].format('YYYY-MM-DD')
+  keycap.value.start_date = keycap.value.dates[0].format('YYYY-MM-DD')
+  keycap.value.end_date = keycap.value.dates[1].format('YYYY-MM-DD')
 }
 
 const { useForm } = Form
