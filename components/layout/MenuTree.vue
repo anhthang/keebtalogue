@@ -48,6 +48,13 @@
     </a-sub-menu>
 
     <a-sub-menu key="keycap" title="Keycap">
+      <a-menu-item key="interest-check">
+        <nuxt-link to="/keycap/interest-check">
+          <schedule-outlined /> Interest Check
+        </nuxt-link>
+      </a-menu-item>
+      <a-menu-divider />
+
       <a-sub-menu
         v-for="[profile, manufacturers] of Object.entries(keycapProfiles)"
         :key="profile"

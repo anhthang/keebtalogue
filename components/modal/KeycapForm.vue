@@ -72,6 +72,17 @@
       </a-input>
     </a-form-item>
 
+    <a-form-item
+      ref="cover"
+      name="cover"
+      label="Cover"
+      v-bind="validateInfos.cover"
+    >
+      <a-input v-model:value="keycap.cover">
+        <template #prefix><picture-outlined /></template>
+      </a-input>
+    </a-form-item>
+
     <a-form-item label="Time">
       <a-range-picker
         v-model:value="keycap.dates"
@@ -173,7 +184,8 @@ const formRules = ref({
     },
   ],
   url: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-  img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
+  img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
+  cover: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
   start_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   status: [

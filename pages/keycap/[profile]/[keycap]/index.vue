@@ -126,6 +126,7 @@
                   <a-button
                     v-for="(kit, idx) in data.kits"
                     :key="kit.id"
+                    :ghost="activeKitIdx === idx"
                     :type="activeKitIdx === idx ? 'primary' : 'default'"
                     @click="gotoSlide(idx)"
                   >

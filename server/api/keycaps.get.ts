@@ -4,17 +4,28 @@ import dayjs from 'dayjs'
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
-  const { profile_id, page, size } = getQuery(event)
+  const { profile_id, page, size, ic } = getQuery(event)
 
   const from = (page - 1) * size
   const to = page * size - 1
+  console.log('ic', ic)
+  const query =
+    ic === 'true'
+      ? client
+          .from('keycaps')
+          .select('*', { count: 'exact' })
+          .eq('status', 'Interest Check')
+          .order('name')
+          .range(from, to)
+      : client
+          .from('keycaps')
+          .select('*', { count: 'exact' })
+          .eq('profile_id', profile_id)
+          .neq('status', 'Interest Check')
+          .order('name')
+          .range(from, to)
 
-  const { data, count } = await client
-    .from('keycaps')
-    .select('*', { count: 'exact' })
-    .eq('profile_id', profile_id)
-    .order('name')
-    .range(from, to)
+  const { data, count } = await query
 
   data.forEach((keycap) => {
     const from = dayjs(keycap.start_date, 'YYYY-MM-DD')

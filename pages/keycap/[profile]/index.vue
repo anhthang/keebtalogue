@@ -36,7 +36,10 @@
                   <template #description>
                     <a-flex justify="space-between">
                       <span><bg-colors-outlined /> {{ keycap.designer }}</span>
-                      <span>
+                      <span v-if="ic">
+                        <calendar-outlined /> {{ keycap.timeline }}
+                      </span>
+                      <span v-else>
                         <clock-circle-outlined /> {{ keycap.timeline }}
                       </span>
                     </a-flex>
@@ -77,8 +80,11 @@ const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
 const route = useRoute()
+const { profile } = route.params
 
-const title = allProfiles[route.params.profile]
+const ic = profile === 'interest-check'
+
+const title = ic ? 'Interest Check' : allProfiles[profile]
 
 useSeoMeta({
   title,
@@ -94,6 +100,7 @@ const { data, pending, refresh } = await useAsyncData(
         profile_id: route.params.profile,
         page: page.value,
         size: size.value,
+        ic,
       },
     }),
   {
