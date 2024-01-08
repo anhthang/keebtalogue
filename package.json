@@ -33,7 +33,7 @@
     "@ant-design/icons-vue": "7.0.1",
     "@pinia/nuxt": "^0.5.1",
     "@vercel/speed-insights": "^1.0.2",
-    "ant-design-vue": "^4.0.8",
+    "ant-design-vue": "^4.1.0",
     "crc": "4.3.2",
     "html2canvas": "^1.4.1",
     "lodash.groupby": "^4.6.0",
@@ -62,7 +62,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.2",
     "eslint-plugin-vue": "^9.19.2",
-    "nuxt": "^3.9.0",
+    "nuxt": "^3.9.1",
     "nuxt-icon": "^0.6.8",
     "prettier": "^3.1.1"
   }

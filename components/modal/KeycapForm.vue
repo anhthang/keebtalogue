@@ -66,19 +66,24 @@
       </a-input>
     </a-form-item>
 
-    <a-form-item ref="img" name="img" label="Image" v-bind="validateInfos.img">
-      <a-input v-model:value="keycap.img">
+    <a-form-item
+      ref="render_img"
+      name="render_img"
+      label="Render"
+      v-bind="validateInfos.render_img"
+    >
+      <a-input v-model:value="keycap.render_img">
         <template #prefix><picture-outlined /></template>
       </a-input>
     </a-form-item>
 
     <a-form-item
-      ref="cover"
-      name="cover"
+      ref="cover_img"
+      name="cover_img"
       label="Cover"
-      v-bind="validateInfos.cover"
+      v-bind="validateInfos.cover_img"
     >
-      <a-input v-model:value="keycap.cover">
+      <a-input v-model:value="keycap.cover_img">
         <template #prefix><picture-outlined /></template>
       </a-input>
     </a-form-item>
@@ -155,7 +160,7 @@ const route = useRoute()
 const keycap = ref({
   name: '',
   url: '',
-  img: '',
+  render_img: '',
   dates: [],
   profile_id: route.params.profile,
 })
@@ -184,8 +189,8 @@ const formRules = ref({
     },
   ],
   url: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-  img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
-  cover: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
+  render_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
+  cover_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
   start_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   status: [

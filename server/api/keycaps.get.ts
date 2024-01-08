@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const from = (page - 1) * size
   const to = page * size - 1
-  console.log('ic', ic)
+
   const query =
     ic === 'true'
       ? client

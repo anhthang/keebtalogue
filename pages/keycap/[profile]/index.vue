@@ -22,9 +22,10 @@
           <a-col
             v-for="keycap in data.keycaps"
             :key="keycap.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
+            :xs="24"
+            :sm="24"
+            :md="12"
+            :lg="8"
             :xl="6"
           >
             <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
@@ -139,7 +140,7 @@ const addKeycap = async () => {
     overflow: hidden;
 
     @media (max-width: 480px) {
-      height: 150px;
+      height: 200px;
     }
   }
 
