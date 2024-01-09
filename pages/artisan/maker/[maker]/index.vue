@@ -140,14 +140,12 @@ const {
   { watch: () => route.params.maker },
 )
 
-const cfg = useRuntimeConfig()
-
 useSeoMeta({
-  title: maker.value?.name,
-  description: maker.value?.intro || cfg.public.appDesc,
-  ogDescription: maker.value?.intro || cfg.public.appDesc,
+  title: maker.value && maker.value.name,
+  description: maker.value && maker.value.intro,
+  ogDescription: maker.value && maker.value.intro,
   ogImage: `/logo/${route.params.maker}.png`,
-  twitterDescription: maker.value?.intro || cfg.public.appDesc,
+  twitterDescription: maker.value && maker.value.intro,
   twitterImage: `/logo/${route.params.maker}.png`,
 })
 

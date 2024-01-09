@@ -198,17 +198,15 @@ const {
   },
 )
 
-const cfg = useRuntimeConfig()
-
 useSeoMeta({
   title: sculpt.value
     ? `${sculpt.value.name} • ${sculpt.value.maker_name}`
     : '',
-  description: sculpt.value?.story || cfg.public.appDesc,
-  ogDescription: sculpt.value?.story || cfg.public.appDesc,
-  ogImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
-  twitterDescription: sculpt.value?.story || cfg.public.appDesc,
-  twitterImage: sculpt.value?.img || `${cfg.app.baseURL}/website-card.png`,
+  description: sculpt.value && sculpt.value.story,
+  ogDescription: sculpt.value && sculpt.value.story,
+  ogImage: sculpt.value && sculpt.value.img,
+  twitterDescription: sculpt.value && sculpt.value.story,
+  twitterImage: sculpt.value && sculpt.value.img,
 })
 
 watch(

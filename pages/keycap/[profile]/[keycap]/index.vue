@@ -7,7 +7,7 @@
             <a-breadcrumb-item> Keycap </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/keycap/${data.profile_id}`">
-                {{ allProfiles[data.profile_id] }}
+                {{ manufacturers[data.profile_id] }}
               </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
@@ -266,8 +266,8 @@ const { data, pending, refresh } = await useAsyncData(
 
 useSeoMeta({
   title: data.value
-    ? `${allProfiles[profile]} ${data.value.name}`
-    : allProfiles[profile],
+    ? `${manufacturers[profile]} ${data.value.name}`
+    : manufacturers[profile],
   description: data.value && data.value.description,
   ogDescription: data.value && data.value.description,
   ogImage: data.value && data.value.img,

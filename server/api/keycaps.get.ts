@@ -39,8 +39,15 @@ export default defineEventHandler(async (event) => {
     }
   })
 
+  const { data: profile } = await client
+    .from('keycap_profiles')
+    .select()
+    .eq('id', profile_id)
+    .single()
+
   return {
     keycaps: data,
+    profile,
     count,
   }
 })

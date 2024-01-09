@@ -18,6 +18,15 @@
           <modal-keycap-form ref="keycapForm" />
         </a-modal>
 
+        <a-typography v-if="data.profile && data.profile.description">
+          <a-typography-paragraph
+            v-for="(line, idx) in data.profile.description.split('\n')"
+            :key="idx"
+          >
+            {{ line }}
+          </a-typography-paragraph>
+        </a-typography>
+
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
             v-for="keycap in data.keycaps"
@@ -33,7 +42,13 @@
                 <template #cover>
                   <img loading="lazy" :alt="keycap.name" :src="keycap.img" />
                 </template>
-                <a-card-meta :title="keycap.name">
+                <a-card-meta
+                  :title="
+                    ic
+                      ? `${manufacturers[keycap.profile_id]} ${keycap.name}`
+                      : keycap.name
+                  "
+                >
                   <template #description>
                     <a-flex justify="space-between">
                       <span><bg-colors-outlined /> {{ keycap.designer }}</span>
@@ -85,11 +100,7 @@ const { profile } = route.params
 
 const ic = profile === 'interest-check'
 
-const title = ic ? 'Interest Check' : allProfiles[profile]
-
-useSeoMeta({
-  title,
-})
+const title = ic ? 'Interest Check' : manufacturers[profile]
 
 const page = ref(1)
 const size = ref(24)
@@ -108,6 +119,15 @@ const { data, pending, refresh } = await useAsyncData(
     watch: [page, size],
   },
 )
+
+useSeoMeta({
+  title,
+  description: data.value.profile && data.value.profile.description,
+  ogDescription: data.value.profile && data.value.profile.description,
+  // ogImage: data.value.profile && data.value.profile.img,
+  twitterDescription: data.value.profile && data.value.profile.description,
+  // twitterImage: data.value.profile && data.value.profile.img,
+})
 
 const confirmLoading = ref(false)
 const visible = ref(false)

@@ -31,7 +31,7 @@ export const keycapStatuses = {
   Complete: 'purple',
 }
 
-export const allProfiles = Object.values(keycapProfiles).reduce(
+export const manufacturers = Object.values(keycapProfiles).reduce(
   (curr, prev) => {
     Object.assign(curr, prev)
     return curr

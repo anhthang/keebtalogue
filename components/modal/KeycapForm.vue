@@ -37,7 +37,7 @@
         >
           <a-select v-model:value="keycap.profile_id">
             <a-select-option
-              v-for="[key, value] in Object.entries(allProfiles)"
+              v-for="[key, value] in Object.entries(manufacturers)"
               :key="key"
               :value="key"
             >
@@ -88,25 +88,55 @@
       </a-input>
     </a-form-item>
 
-    <a-form-item label="Time">
-      <a-range-picker
-        v-model:value="keycap.dates"
-        style="width: 100%"
-        @change="onChangeDates"
-      />
-    </a-form-item>
-
-    <a-form-item label="Status">
-      <a-select v-model:value="keycap.status">
-        <a-select-option
-          v-for="status in Object.keys(keycapStatuses)"
-          :key="status"
-          :value="status"
-        >
-          {{ status }}
-        </a-select-option>
-      </a-select>
-    </a-form-item>
+    <a-row v-if="ic" :gutter="[8, 8]">
+      <a-col :xs="12">
+        <a-form-item label="Status">
+          <a-select v-model:value="keycap.status" disabled>
+            <a-select-option
+              v-for="status in Object.keys(keycapStatuses)"
+              :key="status"
+              :value="status"
+            >
+              {{ status }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="12">
+        <a-form-item label="Time">
+          <a-date-picker
+            v-model:value="keycap.dates[0]"
+            style="width: 100%"
+            @change="onChangeDates"
+          />
+        </a-form-item>
+      </a-col>
+    </a-row>
+    <a-row v-else>
+      <a-col :xs="24">
+        <a-form-item label="Status">
+          <a-select v-model:value="keycap.status">
+            <a-select-option
+              v-for="status in Object.keys(keycapStatuses)"
+              :key="status"
+              :value="status"
+              :disabled="status === 'Interest Check'"
+            >
+              {{ status }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="24">
+        <a-form-item label="Time">
+          <a-range-picker
+            v-model:value="keycap.dates"
+            style="width: 100%"
+            @change="onChangeDates"
+          />
+        </a-form-item>
+      </a-col>
+    </a-row>
 
     <a-form-item
       ref="order_graph"
@@ -157,12 +187,15 @@ const { metadata, isEdit } = defineProps({
 })
 
 const route = useRoute()
+const ic = route.params.profile === 'interest-check'
+
 const keycap = ref({
   name: '',
   url: '',
   render_img: '',
   dates: [],
-  profile_id: route.params.profile,
+  profile_id: ic ? '' : route.params.profile,
+  status: ic ? 'Interest Check' : '',
 })
 
 onBeforeMount(() => {
@@ -184,7 +217,7 @@ const formRules = ref({
     {
       required: true,
       type: 'enum',
-      enum: Object.keys(allProfiles),
+      enum: Object.keys(manufacturers),
       trigger: ['change', 'blur'],
     },
   ],
@@ -209,8 +242,13 @@ const formRules = ref({
 })
 
 const onChangeDates = () => {
-  keycap.value.start_date = keycap.value.dates[0].format('YYYY-MM-DD')
-  keycap.value.end_date = keycap.value.dates[1].format('YYYY-MM-DD')
+  const [start, end] = keycap.value.dates
+  if (start) {
+    keycap.value.start_date = keycap.value.dates[0].format('YYYY-MM-DD')
+  }
+  if (end) {
+    keycap.value.end_date = keycap.value.dates[1].format('YYYY-MM-DD')
+  }
 }
 
 const { useForm } = Form
