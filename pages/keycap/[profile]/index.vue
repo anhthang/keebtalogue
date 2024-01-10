@@ -40,7 +40,11 @@
             <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
               <a-card hoverable :head-style="artisanCardHeadStyle">
                 <template #cover>
-                  <img loading="lazy" :alt="keycap.name" :src="keycap.img" />
+                  <img
+                    loading="lazy"
+                    :alt="keycap.name"
+                    :src="keycap.img || keycap.render_img"
+                  />
                 </template>
                 <a-card-meta
                   :title="
@@ -67,7 +71,7 @@
         </a-row>
 
         <a-flex
-          v-if="data.count > 24"
+          v-if="data.count > size"
           justify="center"
           style="margin-top: 16px"
         >
@@ -103,7 +107,7 @@ const ic = profile === 'interest-check'
 const title = ic ? 'Interest Check' : manufacturers[profile]
 
 const page = ref(1)
-const size = ref(24)
+const size = ref(16)
 
 const { data, pending, refresh } = await useAsyncData(
   () =>

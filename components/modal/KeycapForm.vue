@@ -35,7 +35,7 @@
           label="Profile"
           v-bind="validateInfos.profile_id"
         >
-          <a-select v-model:value="keycap.profile_id">
+          <a-select v-model:value="keycap.profile_id" :disabled="isEdit">
             <a-select-option
               v-for="[key, value] in Object.entries(manufacturers)"
               :key="key"
@@ -262,6 +262,17 @@ const addKeycap = async () => {
 
     if (!isEdit) {
       keycap.value.profile_keycap_id = `${keycap.value.profile_id}/${slug}`
+    }
+
+    /**
+     * FIXME: maybe we need to change this
+     * this is workaroundto handle updating render_img and refresh cdn image
+     */
+    if (
+      metadata.render_img &&
+      metadata.render_img !== keycap.value.render_img
+    ) {
+      keycap.value.img = ''
     }
 
     $fetch(`/api/keycaps/${route.params.profile}/${slug}`, {

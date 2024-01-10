@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
           .select('*', { count: 'exact' })
           .eq('profile_id', profile_id)
           .neq('status', 'Interest Check')
-          .order('name')
+          .order('profile_keycap_id')
           .range(from, to)
 
   const { data, count } = await query

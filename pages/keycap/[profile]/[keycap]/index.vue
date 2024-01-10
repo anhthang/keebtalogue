@@ -131,6 +131,12 @@
                     @click="gotoSlide(idx)"
                   >
                     {{ kit.name }}
+
+                    <template v-if="kit.cancelled" #icon>
+                      <a-tooltip title="Cancelled">
+                        <stop-outlined />
+                      </a-tooltip>
+                    </template>
                   </a-button>
                 </a-flex>
               </a-collapse-panel>
@@ -260,7 +266,7 @@ const { data, pending, refresh } = await useAsyncData(
       return data
     }),
   {
-    watch: [profile, keycap],
+    watch: [() => profile, () => keycap],
   },
 )
 
