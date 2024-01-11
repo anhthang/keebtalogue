@@ -2,7 +2,7 @@
   <a-list
     item-layout="horizontal"
     :pagination="{ pageSize: 5, size: 'small' }"
-    :data-source="data"
+    :data-source="makers"
   >
     <template #renderItem="{ item }">
       <nuxt-link :to="`/artisan/maker/${item.id}`">
@@ -36,7 +36,14 @@
 </template>
 
 <script setup>
-const { data } = await useAsyncData(() => $fetch('/api/statistics'))
+const { makers } = defineProps({
+  makers: {
+    type: Object,
+    default() {
+      return {}
+    },
+  },
+})
 </script>
 
 <style>
