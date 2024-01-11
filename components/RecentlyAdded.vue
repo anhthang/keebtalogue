@@ -1,7 +1,7 @@
 <template>
   <a-list
     item-layout="horizontal"
-    :pagination="{ pageSize: 5, size: 'small' }"
+    :pagination="makers.length > 5 ? { pageSize: 5, size: 'small' } : false"
     :data-source="makers"
   >
     <template #renderItem="{ item }">

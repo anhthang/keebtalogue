@@ -42,6 +42,6 @@ const onSelect = async (path) => {
   value.value = ''
   dataSources.value = []
 
-  router.push(`/artisan/maker/${path}`)
+  router.push(path)
 }
 </script>

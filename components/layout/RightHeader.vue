@@ -1,6 +1,6 @@
 <template>
   <a-flex gap="small">
-    <artisan-search v-if="!$device.isMobile" />
+    <search-box v-if="!$device.isMobile" />
 
     <layout-appearance />
 

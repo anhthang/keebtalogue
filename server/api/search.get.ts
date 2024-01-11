@@ -25,24 +25,41 @@ export default defineEventHandler(async (event) => {
     .textSearch('name', `${fts}`)
     .limit(10)
 
+  const { data: keycaps } = await client
+    .from('keycaps')
+    .select('*, profile:keycap_profiles(name)')
+    .textSearch('name', `${fts}`)
+    .order('profile_keycap_id')
+    .limit(10)
+
   return {
     data: [
       {
         name: 'Makers',
-        options: makers?.map((m: any) => ({ name: m.name, value: m.id })),
+        options: makers?.map((m: any) => ({
+          name: m.name,
+          value: `/artisan/maker/${m.id}`,
+        })),
       },
       {
         name: 'Sculpts',
         options: sculpts?.map((s: any) => ({
           name: `${s.maker.name} > ${s.name}`,
-          value: `${s.maker_id}/${s.sculpt_id}`,
+          value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}`,
         })),
       },
       {
         name: 'Colorways',
         options: colorways?.map((s: any) => ({
           name: `${s.maker.name} > ${s.sculpt.name} > ${s.name}`,
-          value: `${s.maker_id}/${s.sculpt_id}?cid=${s.colorway_id}`,
+          value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}?cid=${s.colorway_id}`,
+        })),
+      },
+      {
+        name: 'Keycaps',
+        options: keycaps?.map((kc: any) => ({
+          name: `${kc.profile.name} ${kc.name}`,
+          value: `/keycap/${kc.profile_keycap_id}`,
         })),
       },
     ].filter((c) => c.options?.length),
