@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       'Bungee+Spice': true,
-      'Noto+Sans+Display': true,
+      Cabin: true,
     },
   },
 

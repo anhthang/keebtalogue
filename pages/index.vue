@@ -13,14 +13,14 @@
 
         <a-col :xs="24" :md="8">
           <a-flex vertical gap="middle">
-            <a-card v-if="data.makers.length" class="recently-added">
+            <a-card v-if="data.makers.length" class="recently-added-artisans">
               <a-typography-title :level="5">
                 <history-outlined /> Recently Added Artisans
               </a-typography-title>
               <recently-added :makers="data.makers" />
             </a-card>
 
-            <a-card v-if="data.keycaps.length" class="recently-added">
+            <a-card v-if="data.keycaps.length" class="live-gb-keycaps">
               <a-typography-title :level="5">
                 <rise-outlined /> Live Group Buys Keycaps
               </a-typography-title>
@@ -50,7 +50,7 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   height: 100%;
 }
 
-.recently-added {
+.recently-added-artisans {
   height: 100%;
 
   .ant-spin-nested-loading {

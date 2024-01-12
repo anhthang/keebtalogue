@@ -25,7 +25,7 @@ if (isMobile) {
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,
   token: {
-    fontFamily: '"Noto Sans Display", sans-serif;',
+    fontFamily: 'Cabin, sans-serif;',
   },
 })
 
