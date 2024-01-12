@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { SpeedInsights } from "@vercel/speed-insights/nuxt"
+import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import 'ant-design-vue/dist/reset.css'
@@ -25,8 +25,7 @@ if (isMobile) {
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,
   token: {
-    // fontFamily: "'Titillium Web', sans-serif;",
-    fontFamily: 'Dosis, sans-serif;',
+    fontFamily: '"Noto Sans Display", sans-serif;',
   },
 })
 

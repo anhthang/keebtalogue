@@ -1,36 +1,33 @@
 <template>
   <div class="container">
-    <a-page-header title="Overview">
-      <a-flex vertical gap="middle">
-        <a-row :gutter="[16, 16]">
-          <a-col :xs="24" :md="12">
-            <a-card class="recently-added">
+    <a-page-header title="Home">
+      <a-flex gap="middle">
+        <a-col :xs="24" :md="16">
+          <a-card class="guides">
+            <a-typography-title :level="5">
+              <read-outlined /> Artisan Collector Guides
+            </a-typography-title>
+            <artisan-collector-guide />
+          </a-card>
+        </a-col>
+
+        <a-col :xs="24" :md="8">
+          <a-flex vertical gap="middle">
+            <a-card v-if="data.makers.length" class="recently-added">
               <a-typography-title :level="5">
-                <history-outlined /> Artisans - Recently Added
+                <history-outlined /> Recently Added Artisans
               </a-typography-title>
               <recently-added :makers="data.makers" />
             </a-card>
-          </a-col>
-          <a-col :xs="24" :md="12">
-            <a-card class="recently-added">
+
+            <a-card v-if="data.keycaps.length" class="recently-added">
               <a-typography-title :level="5">
-                <history-outlined /> Keycaps - Live Group Buys
+                <rise-outlined /> Live Group Buys Keycaps
               </a-typography-title>
               <keycap-live-group-buys :keycaps="data.keycaps" />
             </a-card>
-          </a-col>
-        </a-row>
-
-        <a-row :gutter="[16, 16]">
-          <a-col :xs="24">
-            <a-card class="guides">
-              <a-typography-title :level="5">
-                <read-outlined /> Artisan Collector Guides
-              </a-typography-title>
-              <artisan-collector-guide />
-            </a-card>
-          </a-col>
-        </a-row>
+          </a-flex>
+        </a-col>
       </a-flex>
     </a-page-header>
   </div>
@@ -55,5 +52,9 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 
 .recently-added {
   height: 100%;
+
+  .ant-spin-nested-loading {
+    min-height: auto;
+  }
 }
 </style>

@@ -12,14 +12,18 @@
             :description="item.designer"
           >
             <template #avatar>
-              <a-avatar :src="item.img || item.render_img" shape="square">
+              <a-avatar
+                :src="`/logo/${item.profile_id}.png`"
+                shape="square"
+                :class="$colorMode.value === 'dark' ? 'invertible-logo' : ''"
+              >
                 {{ item.name.charAt(0).toUpperCase() }}
               </a-avatar>
             </template>
           </a-list-item-meta>
-          <div>
+          <template #extra>
             {{ item.timeline }}
-          </div>
+          </template>
         </a-list-item>
       </nuxt-link>
     </template>

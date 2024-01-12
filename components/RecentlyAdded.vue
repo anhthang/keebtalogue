@@ -22,13 +22,13 @@
               </a-avatar>
             </template>
           </a-list-item-meta>
-          <div>
+          <template #extra>
             {{
               item.additions === 1
                 ? '1 addition'
                 : `${item.additions} additions`
             }}
-          </div>
+          </template>
         </a-list-item>
       </nuxt-link>
     </template>

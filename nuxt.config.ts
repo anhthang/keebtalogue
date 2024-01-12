@@ -27,8 +27,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       'Bungee+Spice': true,
-      // 'Titillium+Web': true,
-      Dosis: true,
+      'Noto+Sans+Display': true,
     },
   },
 
