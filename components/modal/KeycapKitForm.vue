@@ -78,6 +78,8 @@ const predefinedKits = [
   'Base',
   'Novelties',
   'Spacebars',
+  'Alphas',
+  'Modifiers',
   '40s',
   'Numpad',
   'Extension',
@@ -93,6 +95,7 @@ const predefinedKits = [
   'ISO',
   'Colevrak',
   '40s/Ortho',
+  'International',
 ]
 
 const suggestionKits = ref(predefinedKits)

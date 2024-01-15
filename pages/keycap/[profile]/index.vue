@@ -57,10 +57,13 @@
                     <a-flex justify="space-between">
                       <span><bg-colors-outlined /> {{ keycap.designer }}</span>
                       <span v-if="ic">
-                        <calendar-outlined /> {{ keycap.timeline }}
+                        <calendar-outlined /> {{ formatDate(keycap.ic_date) }}
                       </span>
                       <span v-else>
-                        <clock-circle-outlined /> {{ keycap.timeline }}
+                        <clock-circle-outlined />
+                        {{
+                          formatDateRange(keycap.start_date, keycap.end_date)
+                        }}
                       </span>
                     </a-flex>
                   </template>

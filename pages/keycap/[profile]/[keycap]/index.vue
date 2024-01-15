@@ -6,7 +6,13 @@
           <a-breadcrumb>
             <a-breadcrumb-item> Keycap </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link :to="`/keycap/${data.profile_id}`">
+              <nuxt-link
+                v-if="data.status === 'Interest Check'"
+                to="/keycap/interest-check"
+              >
+                Interest Check
+              </nuxt-link>
+              <nuxt-link v-else :to="`/keycap/${data.profile_id}`">
                 {{ manufacturers[data.profile_id] }}
               </nuxt-link>
             </a-breadcrumb-item>
@@ -109,8 +115,14 @@
                   <a-descriptions-item v-if="data.sculpt" label="Sculpt">
                     {{ data.sculpt }}
                   </a-descriptions-item>
-                  <a-descriptions-item label="Timeline">
-                    {{ data.timeline }}
+                  <a-descriptions-item
+                    v-if="data.status === 'Interest Check'"
+                    label="IC Date"
+                  >
+                    {{ formatDate(data.ic_date) }}
+                  </a-descriptions-item>
+                  <a-descriptions-item v-else label="Timeline">
+                    {{ formatDateRange(data.start_date, data.end_date) }}
                   </a-descriptions-item>
                   <a-descriptions-item v-if="data.status" label="Status">
                     <a-tag :color="keycapStatuses[data.status]">

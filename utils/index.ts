@@ -1,4 +1,22 @@
+import dayjs from 'dayjs'
 import html2canvas from 'html2canvas'
+
+export const formatDate = (date: Date) => {
+  return date ? dayjs(date).format('DD MMM YYYY') : ''
+}
+
+export const formatDateRange = (fromDate: Date, toDate: Date) => {
+  const from = dayjs(fromDate, 'YYYY-MM-DD')
+  const to = dayjs(toDate, 'YYYY-MM-DD')
+
+  if (from.isValid() && to.isValid()) {
+    return from.get('year') === to.get('year')
+      ? `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
+      : `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
+  }
+
+  return ''
+}
 
 export const keycapProfiles = {
   Cherry: {

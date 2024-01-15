@@ -22,7 +22,7 @@
             </template>
           </a-list-item-meta>
           <template #extra>
-            {{ item.timeline }}
+            {{ formatDateRange(item.start_date, item.end_date) }}
           </template>
         </a-list-item>
       </nuxt-link>

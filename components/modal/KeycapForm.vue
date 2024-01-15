@@ -35,7 +35,11 @@
           label="Profile"
           v-bind="validateInfos.profile_id"
         >
-          <a-select v-model:value="keycap.profile_id" :disabled="isEdit">
+          <a-select
+            v-model:value="keycap.profile_id"
+            :disabled="isEdit"
+            show-search
+          >
             <a-select-option
               v-for="[key, value] in Object.entries(manufacturers)"
               :key="key"
@@ -139,6 +143,7 @@
     </a-row>
 
     <a-form-item
+      v-if="!ic"
       ref="order_graph"
       name="order_graph"
       label="Order Graph"
@@ -150,6 +155,7 @@
     </a-form-item>
 
     <a-form-item
+      v-if="!ic"
       ref="order_history"
       name="order_history"
       label="Order History"
@@ -187,16 +193,6 @@ const { metadata, isEdit } = defineProps({
 })
 
 const route = useRoute()
-const ic = route.params.profile === 'interest-check'
-
-const keycap = ref({
-  name: '',
-  url: '',
-  render_img: '',
-  dates: [],
-  profile_id: ic ? '' : route.params.profile,
-  status: ic ? 'Interest Check' : '',
-})
 
 onBeforeMount(() => {
   Object.assign(keycap.value, metadata)
@@ -206,6 +202,19 @@ onBeforeMount(() => {
   if (metadata.end_date) {
     keycap.value.dates[1] = dayjs(metadata.end_date, 'YYYY-MM-DD')
   }
+})
+
+const ic =
+  route.params.profile === 'interest-check' ||
+  metadata.status === 'Interest Check'
+
+const keycap = ref({
+  name: '',
+  url: '',
+  render_img: '',
+  dates: [],
+  profile_id: ic ? '' : route.params.profile,
+  status: ic ? 'Interest Check' : '',
 })
 
 const formRef = ref()
@@ -224,6 +233,7 @@ const formRules = ref({
   url: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
   render_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
   cover_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
+  ic_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   start_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   end_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
   status: [
@@ -243,11 +253,16 @@ const formRules = ref({
 
 const onChangeDates = () => {
   const [start, end] = keycap.value.dates
+
   if (start) {
-    keycap.value.start_date = keycap.value.dates[0].format('YYYY-MM-DD')
+    if (ic) {
+      keycap.value.ic_date = start.format('YYYY-MM-DD')
+    } else {
+      keycap.value.start_date = start.format('YYYY-MM-DD')
+    }
   }
   if (end) {
-    keycap.value.end_date = keycap.value.dates[1].format('YYYY-MM-DD')
+    keycap.value.end_date = end.format('YYYY-MM-DD')
   }
 }
 

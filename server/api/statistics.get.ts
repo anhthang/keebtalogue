@@ -28,18 +28,6 @@ export default defineEventHandler(async (event) => {
   // .lte('start_date', dayjs().startOf('day'))
   // .gte('end_date', dayjs().startOf('day'))
 
-  keycaps.forEach((keycap) => {
-    const from = dayjs(keycap.start_date, 'YYYY-MM-DD')
-    const to = dayjs(keycap.end_date, 'YYYY-MM-DD')
-
-    if (from.isValid() && to.isValid()) {
-      keycap.timeline =
-        from.get('year') === to.get('year')
-          ? `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
-          : `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
-    }
-  })
-
   return {
     makers: sortBy(makers, 'name'),
     keycaps: sortBy(keycaps, 'profile_keycap_id'),

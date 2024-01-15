@@ -1,5 +1,4 @@
 import { serverSupabaseClient } from '#supabase/server'
-import dayjs from 'dayjs'
 import sortBy from 'lodash.sortby'
 
 export default defineEventHandler(async (event) => {
@@ -15,16 +14,6 @@ export default defineEventHandler(async (event) => {
 
   if (data && Array.isArray(data.kits)) {
     data.kits = sortBy(data.kits, 'id')
-  }
-
-  const from = dayjs(data.start_date, 'YYYY-MM-DD')
-  const to = dayjs(data.end_date, 'YYYY-MM-DD')
-
-  if (from.isValid() && to.isValid()) {
-    data.timeline =
-      from.get('year') === to.get('year')
-        ? `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
-        : `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
   }
 
   // // get unique maker_id
