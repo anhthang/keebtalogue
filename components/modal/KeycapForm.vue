@@ -92,10 +92,10 @@
       </a-input>
     </a-form-item>
 
-    <a-row v-if="ic" :gutter="[8, 8]">
+    <a-row v-if="keycap.status === 'Interest Check'" :gutter="[8, 8]">
       <a-col :xs="12">
         <a-form-item label="Status">
-          <a-select v-model:value="keycap.status" disabled>
+          <a-select v-model:value="keycap.status">
             <a-select-option
               v-for="status in Object.keys(keycapStatuses)"
               :key="status"
@@ -107,7 +107,7 @@
         </a-form-item>
       </a-col>
       <a-col :xs="12">
-        <a-form-item label="Time">
+        <a-form-item label="IC Date">
           <a-date-picker
             v-model:value="keycap.dates[0]"
             style="width: 100%"
@@ -124,7 +124,6 @@
               v-for="status in Object.keys(keycapStatuses)"
               :key="status"
               :value="status"
-              :disabled="status === 'Interest Check'"
             >
               {{ status }}
             </a-select-option>
@@ -194,19 +193,25 @@ const { metadata, isEdit } = defineProps({
 
 const route = useRoute()
 
+const ic =
+  route.params.profile === 'interest-check' ||
+  metadata.status === 'Interest Check'
+
 onBeforeMount(() => {
   Object.assign(keycap.value, metadata)
-  if (metadata.start_date) {
+
+  if (ic) {
+    if (metadata.ic_date) {
+      keycap.value.dates[0] = dayjs(metadata.ic_date, 'YYYY-MM-DD')
+    }
+  } else if (metadata.start_date) {
     keycap.value.dates[0] = dayjs(metadata.start_date, 'YYYY-MM-DD')
   }
+
   if (metadata.end_date) {
     keycap.value.dates[1] = dayjs(metadata.end_date, 'YYYY-MM-DD')
   }
 })
-
-const ic =
-  route.params.profile === 'interest-check' ||
-  metadata.status === 'Interest Check'
 
 const keycap = ref({
   name: '',
