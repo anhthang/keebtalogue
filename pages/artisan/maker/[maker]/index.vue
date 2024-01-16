@@ -15,8 +15,9 @@
       >
         <template #breadcrumb>
           <a-breadcrumb>
+            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link to="/artisan/maker">Artisan Makers</nuxt-link>
+              <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>{{ maker.name }}</a-breadcrumb-item>
           </a-breadcrumb>
@@ -34,11 +35,10 @@
             ghost
             @click="showEditMakerModal"
           >
-            <template #icon><edit-outlined /></template>
-            Edit
+            <edit-outlined /> Edit
           </a-button>
           <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
-            <template #icon><calendar-outlined /></template> Sales
+            <calendar-outlined /> Sales
           </a-button>
 
           <maker-helpful-links :maker="maker" />

@@ -4,8 +4,9 @@
       <a-page-header v-if="sculpt" :title="sculpt.name">
         <template #breadcrumb>
           <a-breadcrumb>
+            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
             <a-breadcrumb-item>
-              <nuxt-link to="/artisan/maker">Artisan Makers</nuxt-link>
+              <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
               <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
@@ -26,7 +27,7 @@
             type="primary"
             @click="showAddColorwayModal"
           >
-            <template #icon><file-add-outlined /></template> Add
+            <file-add-outlined /> Add
           </a-button>
 
           <a-button

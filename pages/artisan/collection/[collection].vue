@@ -2,6 +2,15 @@
   <div class="container artisan-container">
     <a-spin :spinning="pending">
       <a-page-header :title="collection.name || 'Colllection'">
+        <template #breadcrumb>
+          <a-breadcrumb>
+            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
+            <a-breadcrumb-item>
+              <nuxt-link to="/artisan/collection"> Collection </nuxt-link>
+            </a-breadcrumb-item>
+          </a-breadcrumb>
+        </template>
+
         <template #extra>
           <a-tooltip title="Click to copy URL">
             <a-button
@@ -23,20 +32,8 @@
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
 
-          <a-button
-            v-if="user.email_verified && !collection.published"
-            type="primary"
-            @click="publishCollection"
-          >
-            <cloud-upload-outlined /> Publish
-          </a-button>
-
-          <a-button
-            v-if="user.email_verified && collection.published"
-            danger
-            @click="delPublishedCollection"
-          >
-            <cloud-download-outlined /> Unpublish
+          <a-button type="primary" ghost @click="toggleShowEdit">
+            <edit-outlined /> Edit
           </a-button>
 
           <a-button
@@ -73,6 +70,21 @@
             </a-card>
           </a-col>
         </a-row>
+
+        <a-modal
+          v-model:open="visible"
+          title="Edit Collection"
+          destroy-on-close
+          :confirm-loading="confirmLoading"
+          @ok="editCollection"
+        >
+          <modal-collection-form
+            ref="collectionForm"
+            :metadata="collection"
+            :uid="user.uid"
+            :is-edit="true"
+          />
+        </a-modal>
       </a-page-header>
     </a-spin>
   </div>
@@ -192,61 +204,30 @@ const deleteCollection = (collection) => {
   })
 }
 
-const delPublishedCollection = () => {
-  Modal.confirm({
-    title: 'Unpublish Collection',
-    content: 'Are you sure you want to continue?',
-    onOk() {
-      $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-        {
-          method: 'post',
-          body: {
-            published: false,
-          },
-        },
-      )
-        .then(() => {
-          collection.published = false
-          message.success('The collection was unpublished.')
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
-    },
-  })
-}
-
-const publishCollection = () => {
-  Modal.confirm({
-    title: 'Publish Collection',
-    content:
-      'Anyone on the internet with the link can view. Are you sure you want to continue?',
-    okText: 'Publish',
-    onOk() {
-      $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-        {
-          method: 'post',
-          body: {
-            published: true,
-          },
-        },
-      )
-        .then(() => {
-          collection.published = true
-          message.success('The collection was published.')
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
-    },
-  })
-}
-
 const copyShareUrl = () => {
   copy(config.public.baseUrl + route.fullPath)
   message.success('Copied to clipboard!')
+}
+
+const visible = ref(false)
+const toggleShowEdit = () => {
+  visible.value = !visible.value
+}
+
+const confirmLoading = ref(false)
+const collectionForm = ref()
+const editCollection = async () => {
+  confirmLoading.value = true
+
+  await collectionForm.value
+    .addCollection()
+    .then(() => {
+      confirmLoading.value = false
+      toggleShowEdit()
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 </script>
 
