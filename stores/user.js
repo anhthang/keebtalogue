@@ -1,3 +1,4 @@
+import sortBy from 'lodash.sortby'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
@@ -61,7 +62,7 @@ export const useUserStore = defineStore('user', {
 
       if (data) {
         this.favorites = data.favorite_makers || []
-        this.collections = data.collections
+        this.collections = sortBy(data.collections, 'name')
         this.social = {
           discord: data.discord,
           reddit: data.reddit,

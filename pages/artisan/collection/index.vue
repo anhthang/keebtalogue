@@ -12,14 +12,7 @@
         :confirm-loading="loading"
         @ok="addCollection"
       >
-        <a-form :ref="formRef" :model="formModel" :rules="formRules">
-          <a-form-item ref="name" name="name" v-bind="validateInfos.name">
-            <a-input
-              v-model:value="formModel.name"
-              placeholder="Collection Name"
-            />
-          </a-form-item>
-        </a-form>
+        <modal-collection-form ref="collectionForm" :uid="user.uid" />
       </a-modal>
 
       <a-row v-if="!user.email_verified" type="flex">
@@ -58,16 +51,6 @@ useSeoMeta({
   title: 'Collection',
 })
 
-import { Form } from 'ant-design-vue'
-
-const formRef = ref()
-const formModel = ref({
-  name: '',
-})
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-})
-
 const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)
 
@@ -77,38 +60,21 @@ const showModal = () => {
 }
 
 const loading = ref(false)
-
-const { useForm } = Form
-const { validate, validateInfos } = useForm(formModel, formRules)
-
+const collectionForm = ref()
 const addCollection = async () => {
   loading.value = true
 
-  await validate()
-    .then(async () => {
-      const { name } = formModel.value
-
-      await $fetch(`/api/users/${user.value.uid}/collections`, {
-        method: 'post',
-        body: {
-          name,
-          uid: user.value.uid,
-        },
-      })
-        .then(() => {
-          message.success(`Collection [${name}] added successfully!`)
-          userStore.getUserDocument(user.value.uid)
-          showModal()
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
+  await collectionForm.value
+    .addCollection()
+    .then(() => {
+      loading.value = false
+      showModal()
     })
     .catch(() => {
-      // ignore
+      loading.value = false
     })
 
-  loading.value = false
+  await userStore.getUserDocument(user.value.uid)
 }
 </script>
 
