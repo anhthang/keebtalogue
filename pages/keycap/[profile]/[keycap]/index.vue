@@ -339,7 +339,7 @@ const beforeChangeSlide = (from, to) => {
 
 <style scoped>
 :deep(.slick-slide img) {
-  border: 4px solid #fff;
+  border: 2px solid #fff;
   display: block;
   margin: auto;
   /* max-width: 80%; */

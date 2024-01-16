@@ -92,7 +92,7 @@
       </a-input>
     </a-form-item>
 
-    <a-row v-if="keycap.status === 'Interest Check'" :gutter="[8, 8]">
+    <a-row :gutter="[8, 8]">
       <a-col :xs="12">
         <a-form-item label="Status">
           <a-select v-model:value="keycap.status">
@@ -109,37 +109,21 @@
       <a-col :xs="12">
         <a-form-item label="IC Date">
           <a-date-picker
-            v-model:value="keycap.dates[0]"
+            v-model:value="keycap.date"
             style="width: 100%"
             @change="onChangeDates"
           />
         </a-form-item>
       </a-col>
     </a-row>
-    <a-row v-else>
-      <a-col :xs="24">
-        <a-form-item label="Status">
-          <a-select v-model:value="keycap.status">
-            <a-select-option
-              v-for="status in Object.keys(keycapStatuses)"
-              :key="status"
-              :value="status"
-            >
-              {{ status }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24">
-        <a-form-item label="Time">
-          <a-range-picker
-            v-model:value="keycap.dates"
-            style="width: 100%"
-            @change="onChangeDates"
-          />
-        </a-form-item>
-      </a-col>
-    </a-row>
+
+    <a-form-item v-if="keycap.status !== 'Interest Check'" label="GB Time">
+      <a-range-picker
+        v-model:value="keycap.dates"
+        style="width: 100%"
+        @change="onChangeDates"
+      />
+    </a-form-item>
 
     <a-form-item
       v-if="!ic"
@@ -200,11 +184,11 @@ const ic =
 onBeforeMount(() => {
   Object.assign(keycap.value, metadata)
 
-  if (ic) {
-    if (metadata.ic_date) {
-      keycap.value.dates[0] = dayjs(metadata.ic_date, 'YYYY-MM-DD')
-    }
-  } else if (metadata.start_date) {
+  if (metadata.ic_date) {
+    keycap.value.date = dayjs(metadata.ic_date, 'YYYY-MM-DD')
+  }
+
+  if (metadata.start_date) {
     keycap.value.dates[0] = dayjs(metadata.start_date, 'YYYY-MM-DD')
   }
 
@@ -218,6 +202,7 @@ const keycap = ref({
   url: '',
   render_img: '',
   dates: [],
+  date: '',
   profile_id: ic ? '' : route.params.profile,
   status: ic ? 'Interest Check' : '',
 })
@@ -259,14 +244,14 @@ const formRules = ref({
 const onChangeDates = () => {
   const [start, end] = keycap.value.dates
 
-  if (start) {
-    if (ic) {
-      keycap.value.ic_date = start.format('YYYY-MM-DD')
-    } else {
-      keycap.value.start_date = start.format('YYYY-MM-DD')
-    }
+  if (keycap.value.date.isValid()) {
+    keycap.value.ic_date = keycap.value.date.format('YYYY-MM-DD')
   }
-  if (end) {
+
+  if (start.isValid()) {
+    keycap.value.start_date = start.format('YYYY-MM-DD')
+  }
+  if (end.isValid()) {
     keycap.value.end_date = end.format('YYYY-MM-DD')
   }
 }
