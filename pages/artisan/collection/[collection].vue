@@ -1,7 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="false">
-      <a-page-header :title="collection.name || 'Colllection'">
+      <a-page-header :title="data.name || 'Colllection'">
         <template #breadcrumb>
           <a-breadcrumb>
             <a-breadcrumb-item> Artisan </a-breadcrumb-item>
@@ -13,7 +13,7 @@
 
         <template #extra>
           <a-button
-            v-if="collection.published"
+            v-if="authenticated && data.published"
             type="dashed"
             @click="copyShareUrl"
           >
@@ -43,14 +43,14 @@
             v-if="user.email_verified"
             type="primary"
             danger
-            @click="deleteCollection(collection)"
+            @click="deleteCollection(data)"
           >
             <delete-outlined /> Delete
           </a-button>
         </template>
 
         <a-row
-          v-if="collection.published && collection.type === 'share'"
+          v-if="authenticated && data.published && data.type === 'share'"
           type="flex"
         >
           <a-alert
@@ -95,7 +95,7 @@
         >
           <modal-collection-form
             ref="collectionForm"
-            :metadata="collection"
+            :metadata="data"
             :uid="user.uid"
             :is-edit="true"
           />
@@ -121,30 +121,33 @@ const router = useRouter()
 
 const sort = ref('sculpt_name')
 
-const collection =
-  collections.value.find((c) => c.id === route.params.collection) || {}
-
-useSeoMeta({
-  title: collection.name ? `${collection.name} • Collection` : 'Collection',
-})
-
-const { data, refresh } = await useAsyncData(() => {
+const { data, pending, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
     return $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}/items`,
+      `/api/users/${user.value.uid}/collections/${route.params.collection}`,
     )
-  } else if (localIds.includes(route.params.collection)) {
-    return []
   } else {
     return $fetch(`/api/collections/${route.params.collection}`)
   }
 })
 
+useSeoMeta({
+  title: data.name ? `${data.name} • Collection` : 'Collection',
+})
+
 onMounted(() => {
   if (localIds.includes(route.params.collection)) {
-    data.value = JSON.parse(
+    const collection = collections.value.find(
+      (c) => c.id === route.params.collection,
+    )
+    const items = JSON.parse(
       localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
     )
+
+    data.value = {
+      ...collection,
+      items,
+    }
   }
 })
 
@@ -155,7 +158,7 @@ const onChangeSortType = (e) => {
 }
 
 const sortedCollections = computed(() => {
-  return sortBy(data.value, ['maker_id', sort.value])
+  return sortBy(data.value.items, ['maker_id', sort.value])
 })
 
 const removeCap = (clw) => {
@@ -239,6 +242,7 @@ const editCollection = async () => {
     .addCollection()
     .then(() => {
       confirmLoading.value = false
+      refresh()
       toggleShowEdit()
     })
     .catch(() => {

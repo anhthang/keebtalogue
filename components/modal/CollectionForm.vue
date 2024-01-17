@@ -1,5 +1,10 @@
 <template>
-  <a-form :ref="formRef" :rules="formRules" :model="colorway" layout="vertical">
+  <a-form
+    :ref="formRef"
+    :rules="formRules"
+    :model="collection"
+    layout="vertical"
+  >
     <a-form-item
       ref="name"
       name="name"

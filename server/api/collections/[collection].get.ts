@@ -9,15 +9,18 @@ export default defineEventHandler(async (event) => {
     .eq('id', event.context.params.collection)
     .single()
 
-  if (collection && collection.published && collection.type === 'share') {
-    const { data } = await client
-      .from('user_collection_items')
-      .select()
-      .eq('collection_id', event.context.params.collection)
+  if (collection) {
+    collection.items = []
 
-    return sortBy(data, 'sculpt_name')
+    if (collection.published && collection.type === 'share') {
+      const { data } = await client
+        .from('user_collection_items')
+        .select()
+        .eq('collection_id', event.context.params.collection)
+
+      collection.items = sortBy(data, 'sculpt_name')
+    }
   }
 
-  // TODO: need to show error message
-  return []
+  return collection
 })
