@@ -1,6 +1,6 @@
 <template>
   <div class="container artisan-container">
-    <a-spin :spinning="pending">
+    <a-spin :spinning="false">
       <a-page-header :title="collection.name || 'Colllection'">
         <template #breadcrumb>
           <a-breadcrumb>
@@ -48,6 +48,18 @@
             <delete-outlined /> Delete
           </a-button>
         </template>
+
+        <a-row
+          v-if="collection.published && collection.type === 'share'"
+          type="flex"
+        >
+          <a-alert
+            class="collection-alert"
+            type="warning"
+            message="Public access granted. Anyone with the link will be able to see it."
+            banner
+          />
+        </a-row>
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
@@ -97,6 +109,8 @@
 import sortBy from 'lodash.sortby'
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 
+const localIds = ['want', 'have']
+
 const config = useRuntimeConfig()
 
 const userStore = useUserStore()
@@ -114,15 +128,12 @@ useSeoMeta({
   title: collection.name ? `${collection.name} • Collection` : 'Collection',
 })
 
-const { data, pending, refresh } = await useAsyncData(() => {
+const { data, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
     return $fetch(
       `/api/users/${user.value.uid}/collections/${route.params.collection}/items`,
     )
-  } else if (
-    route.params.collection === 'want' ||
-    route.params.collection === 'have'
-  ) {
+  } else if (localIds.includes(route.params.collection)) {
     return []
   } else {
     return $fetch(`/api/collections/${route.params.collection}`)
@@ -130,9 +141,11 @@ const { data, pending, refresh } = await useAsyncData(() => {
 })
 
 onMounted(() => {
-  data.value = JSON.parse(
-    localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
-  )
+  if (localIds.includes(route.params.collection)) {
+    data.value = JSON.parse(
+      localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
+    )
+  }
 })
 
 watchEffect(() => route.params.collection, refresh())

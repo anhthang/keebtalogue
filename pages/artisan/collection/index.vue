@@ -74,8 +74,6 @@ const addCollection = async () => {
     .catch(() => {
       loading.value = false
     })
-
-  await userStore.getUserDocument(user.value.uid)
 }
 </script>
 

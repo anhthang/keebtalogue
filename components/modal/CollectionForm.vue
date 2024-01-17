@@ -13,7 +13,7 @@
 
     <a-divider />
 
-    <a-form-item label="Collection Type">
+    <a-form-item label="Visibility">
       <template #extra>
         <a-typography-text v-if="collection.published" type="danger">
           Anyone can now discover the treasures you've assembled in this public
@@ -66,6 +66,8 @@ const { metadata, uid, isEdit } = defineProps({
   // eslint-disable-next-line vue/require-default-prop
   uid: String,
 })
+
+const userStore = useUserStore()
 
 const collection = ref({
   name: '',
@@ -121,6 +123,8 @@ const addCollection = async () => {
     .catch(() => {
       // ignore
     })
+
+  await userStore.getUserDocument(uid)
 }
 
 defineExpose({
