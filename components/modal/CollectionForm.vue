@@ -54,6 +54,22 @@
         </a-typography-text>
       </template>
     </a-form-item>
+
+    <a-form-item
+      ref="message"
+      name="message"
+      label="Message"
+      v-bind="validateInfos.message"
+    >
+      <a-input v-model:value="collection.message">
+        <template #prefix><field-string-outlined /></template>
+      </a-input>
+      <template #extra>
+        Describe what you're offering and/or help others understand what types
+        of offers you are looking for. Your message should be applicable to many
+        people using the marketplace, not just a specific person.
+      </template>
+    </a-form-item>
   </a-form>
 </template>
 
@@ -96,6 +112,7 @@ const formRules = ref({
       trigger: ['change', 'blur'],
     },
   ],
+  message: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
 })
 
 const { useForm } = Form
