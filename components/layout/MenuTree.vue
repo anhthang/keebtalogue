@@ -45,6 +45,11 @@
           <shopping-outlined /> Trading
         </nuxt-link>
       </a-menu-item>
+      <a-menu-item key="artisan.marketplace">
+        <nuxt-link to="/artisan/marketplace">
+          <shop-outlined /> Marketplace
+        </nuxt-link>
+      </a-menu-item>
     </a-sub-menu>
 
     <a-sub-menu key="keycap" title="Keycap">
