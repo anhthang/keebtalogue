@@ -12,15 +12,13 @@
         </template>
 
         <template #extra>
-          <a-tooltip title="Click to copy URL">
-            <a-button
-              v-if="collection.published"
-              type="dashed"
-              @click="copyShareUrl"
-            >
-              <share-alt-outlined /> Share
-            </a-button>
-          </a-tooltip>
+          <a-button
+            v-if="collection.published"
+            type="dashed"
+            @click="copyShareUrl"
+          >
+            <link-outlined /> Copy Link
+          </a-button>
 
           <a-dropdown placement="bottomRight">
             <template #overlay>
@@ -32,7 +30,12 @@
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
 
-          <a-button type="primary" ghost @click="toggleShowEdit">
+          <a-button
+            v-if="authenticated"
+            type="primary"
+            ghost
+            @click="toggleShowEdit"
+          >
             <edit-outlined /> Edit
           </a-button>
 

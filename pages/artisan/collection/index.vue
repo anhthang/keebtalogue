@@ -18,7 +18,8 @@
       <a-row v-if="!user.email_verified" type="flex">
         <a-alert
           class="collection-alert"
-          message="You must log in to use this feature and sync the collections across your devices."
+          type="info"
+          message="Level up your experience! Login and unlock exclusive features, unlimited collections, and enjoy seamless syncing across all your devices."
           banner
         />
       </a-row>

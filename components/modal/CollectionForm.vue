@@ -6,7 +6,9 @@
       label="Name"
       v-bind="validateInfos.name"
     >
-      <a-input v-model:value="collection.name" />
+      <a-input v-model:value="collection.name">
+        <template #prefix><font-size-outlined /></template>
+      </a-input>
     </a-form-item>
 
     <a-divider />
@@ -23,13 +25,13 @@
         </a-typography-text>
       </template>
       <a-radio-group v-model:value="collection.published">
-        <a-radio :value="false">Private</a-radio>
-        <a-radio :value="true">Public</a-radio>
+        <a-radio :value="false"><lock-outlined /> Private</a-radio>
+        <a-radio :value="true"><unlock-outlined /> Public</a-radio>
       </a-radio-group>
     </a-form-item>
 
     <a-form-item v-if="collection.published">
-      <a-radio-group v-model:value="collection.type" disabled>
+      <a-radio-group v-model:value="collection.type">
         <a-radio value="share">Sharing Only</a-radio>
         <a-radio value="buy">Buying</a-radio>
         <a-radio value="sell">Selling</a-radio>
@@ -106,7 +108,11 @@ const addCollection = async () => {
         body: collection.value,
       })
         .then(() => {
-          message.success(`Collection [${name}] added successfully!`)
+          if (isEdit) {
+            message.success(`Collection [${name}] updated successfully!`)
+          } else {
+            message.success(`Collection [${name}] added successfully!`)
+          }
         })
         .catch((error) => {
           message.error(error.message)
