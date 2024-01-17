@@ -104,21 +104,21 @@ const { validate, validateInfos } = useForm(collection, formRules)
 const addCollection = async () => {
   await validate()
     .then(async () => {
-      const { name } = collection.value
+      const { items, ...rest } = collection.value
 
       const url = isEdit
-        ? `/api/users/${uid}/collections/${collection.value.id}`
+        ? `/api/users/${uid}/collections/${rest.id}`
         : `/api/users/${uid}/collections`
 
       await $fetch(url, {
         method: 'post',
-        body: collection.value,
+        body: rest,
       })
         .then(() => {
           if (isEdit) {
-            message.success(`Collection [${name}] updated successfully!`)
+            message.success(`Collection [${rest.name}] updated successfully!`)
           } else {
-            message.success(`Collection [${name}] added successfully!`)
+            message.success(`Collection [${rest.name}] added successfully!`)
           }
         })
         .catch((error) => {

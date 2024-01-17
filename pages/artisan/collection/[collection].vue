@@ -1,7 +1,7 @@
 <template>
   <div class="container artisan-container">
     <a-spin :spinning="false">
-      <a-page-header :title="data.name || 'Colllection'">
+      <a-page-header v-if="data" :title="data.name || 'Colllection'">
         <template #breadcrumb>
           <a-breadcrumb>
             <a-breadcrumb-item> Artisan </a-breadcrumb-item>
