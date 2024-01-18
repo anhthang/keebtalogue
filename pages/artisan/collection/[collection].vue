@@ -53,12 +53,14 @@
           v-if="authenticated && data.published && data.type === 'share'"
           type="flex"
         >
-          <a-alert
-            class="collection-alert"
-            type="warning"
-            message="Public access granted. Anyone with the link will be able to see it."
-            banner
-          />
+          <a-alert class="collection-alert" banner>
+            <template #message>
+              <a-typography-text strong>
+                Public access granted.
+              </a-typography-text>
+              Anyone with the link will be able to see it.
+            </template>
+          </a-alert>
         </a-row>
 
         <a-row :gutter="[8, 8]" type="flex">
@@ -121,7 +123,7 @@ const router = useRouter()
 
 const sort = ref('sculpt_name')
 
-const { data, pending, refresh } = await useAsyncData(() => {
+const { data, refresh } = await useAsyncData(() => {
   if (authenticated.value) {
     return $fetch(
       `/api/users/${user.value.uid}/collections/${route.params.collection}`,

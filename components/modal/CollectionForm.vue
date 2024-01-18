@@ -56,6 +56,7 @@
     </a-form-item>
 
     <a-form-item
+      v-if="collection.published && collection.type !== 'share'"
       ref="message"
       name="message"
       label="Message"
@@ -68,6 +69,26 @@
         Describe what you're offering and/or help others understand what types
         of offers you are looking for. Your message should be applicable to many
         people using the marketplace, not just a specific person.
+      </template>
+    </a-form-item>
+
+    <a-form-item
+      v-if="collection.published && collection.type !== 'share'"
+      ref="contact"
+      name="contact"
+      label="Contact"
+      v-bind="validateInfos.contact"
+    >
+      <a-input v-model:value="collection.contact">
+        <template #prefix>
+          <span class="anticon">
+            <icon name="la:discord" />
+          </span>
+        </template>
+      </a-input>
+      <template #extra>
+        Please enter your Discord username so that buyer/seller can reach you
+        directly.
       </template>
     </a-form-item>
   </a-form>
@@ -113,6 +134,7 @@ const formRules = ref({
     },
   ],
   message: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
+  contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
 })
 
 const { useForm } = Form

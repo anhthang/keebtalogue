@@ -52,7 +52,7 @@
       >
         <modal-keycap-kit-form
           ref="keycapKitForm"
-          :is-edit="selectedKit?.id"
+          :is-edit="!!selectedKit?.id"
           :metadata="selectedKit"
         />
       </a-modal>

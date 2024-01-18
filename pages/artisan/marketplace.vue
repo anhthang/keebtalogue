@@ -1,25 +1,31 @@
 <template>
   <div class="container">
     <a-page-header title="Marketplace">
-      <a-list item-layout="horizontal" :data-source="data">
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <a-list-item-meta :title="item.name" :description="item.message" />
+      <a-row type="flex">
+        <a-alert class="collection-alert" type="info" banner>
+          <template #message>
+            <a-typography-text strong> Early Access: </a-typography-text>
+            This feature is still under development, so you may experience bugs
+            or incomplete functionality.
+          </template>
+        </a-alert>
+      </a-row>
 
-            <template #extra>
-              <a-avatar-group shape="square">
-                <a-tooltip
-                  v-for="cap in item.items"
-                  :key="cap.id"
-                  :title="colorwayTitle(cap)"
-                >
-                  <a-avatar :alt="colorwayTitle(cap)" :src="cap.img" />
-                </a-tooltip>
-              </a-avatar-group>
-            </template>
-          </a-list-item>
-        </template>
-      </a-list>
+      <a-row :gutter="[8, 8]">
+        <a-col :xs="24" :md="12">
+          <a-card title="Buying">
+            <marketplace-listing :data="data.filter((c) => c.type === 'buy')" />
+          </a-card>
+        </a-col>
+
+        <a-col :xs="24" :md="12">
+          <a-card title="Selling">
+            <marketplace-listing
+              :data="data.filter((c) => c.type === 'sell')"
+            />
+          </a-card>
+        </a-col>
+      </a-row>
     </a-page-header>
   </div>
 </template>
