@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
     .select()
     .eq('published', true)
     .in('type', ['buy', 'sell'])
+    .order('created_at', { ascending: false })
 
   if (collections?.length) {
     const { data: items } = await client

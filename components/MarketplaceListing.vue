@@ -1,12 +1,14 @@
 <template>
-  <a-list item-layout="vertical" :data-source="data">
+  <a-list
+    item-layout="vertical"
+    :data-source="data"
+    :pagination="{ pageSize: 10, size: 'small' }"
+  >
     <template #renderItem="{ item }">
       <a-list-item>
         <template #actions>
           <span> <comment-outlined /> {{ item.contact }} </span>
         </template>
-
-        <a-list-item-meta :title="item.name" />
 
         <a-typography-text strong>Wants:</a-typography-text>
         {{ item.message }}

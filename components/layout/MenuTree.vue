@@ -37,12 +37,7 @@
       </a-menu-item>
       <a-menu-item key="artisan.collection">
         <nuxt-link to="/artisan/collection">
-          <book-outlined /> Collection
-        </nuxt-link>
-      </a-menu-item>
-      <a-menu-item key="artisan.trading">
-        <nuxt-link to="/artisan/trading">
-          <shopping-outlined /> Trading
+          <book-outlined /> Collections
         </nuxt-link>
       </a-menu-item>
       <a-menu-item key="artisan.marketplace">

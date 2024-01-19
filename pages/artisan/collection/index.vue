@@ -1,6 +1,6 @@
 <template>
   <div class="container artisan-container">
-    <a-page-header title="Collection">
+    <a-page-header title="Manage Collections">
       <template #extra>
         <a-button v-if="user.email_verified" type="primary" @click="showModal">
           <file-add-outlined /> Add
@@ -49,7 +49,7 @@
 
 <script setup>
 useSeoMeta({
-  title: 'Collection',
+  title: 'Manage Collections',
 })
 
 const userStore = useUserStore()
