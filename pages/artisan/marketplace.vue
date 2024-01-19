@@ -29,13 +29,19 @@
 
       <a-row :gutter="[8, 8]">
         <a-col :xs="24" :md="12">
-          <a-card title="Buying">
+          <a-card>
+            <a-typography-title :level="5">
+              <shopping-cart-outlined /> Buying
+            </a-typography-title>
             <marketplace-listing :data="data.filter((c) => c.type === 'buy')" />
           </a-card>
         </a-col>
 
         <a-col :xs="24" :md="12">
-          <a-card title="Selling">
+          <a-card>
+            <a-typography-title :level="5">
+              <shop-outlined /> Selling
+            </a-typography-title>
             <marketplace-listing
               :data="data.filter((c) => c.type === 'sell')"
             />

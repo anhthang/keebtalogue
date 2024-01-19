@@ -5,6 +5,10 @@ export const formatDate = (date: Date) => {
   return date ? dayjs(date).format('DD MMM YYYY') : ''
 }
 
+export const formatDateTime = (date: Date) => {
+  return date ? dayjs(date).format('DD MMM YYYY HH:mm') : ''
+}
+
 export const formatDateRange = (fromDate: Date, toDate: Date) => {
   const from = dayjs(fromDate, 'YYYY-MM-DD')
   const to = dayjs(toDate, 'YYYY-MM-DD')

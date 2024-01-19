@@ -11,7 +11,12 @@ export default defineEventHandler(async (event) => {
     .eq('uid', event.context.params.id)
 
   if (body.published) {
-    await client.from('user_shared_collections').insert(body)
+    body.created_at = new Date()
+
+    await client
+      .from('user_shared_collections')
+      .upsert(body)
+      .eq('id', event.context.params.collection)
   } else {
     await client
       .from('user_shared_collections')

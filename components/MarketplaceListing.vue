@@ -8,6 +8,9 @@
       <a-list-item>
         <template #actions>
           <span> <comment-outlined /> {{ item.contact }} </span>
+          <span>
+            <history-outlined /> {{ formatDateTime(item.created_at) }}
+          </span>
         </template>
 
         <a-typography-text strong>Wants:</a-typography-text>

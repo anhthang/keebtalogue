@@ -13,7 +13,7 @@
 
         <template #extra>
           <a-button
-            v-if="authenticated && data.published"
+            v-if="authenticated && data.published && data.type === 'share'"
             type="dashed"
             @click="copyShareUrl"
           >
