@@ -128,13 +128,13 @@ const { data, refresh } = await useAsyncData(() => {
     return $fetch(
       `/api/users/${user.value.uid}/collections/${route.params.collection}`,
     )
-  } else {
+  } else if (!localIds.includes(route.params.collection)) {
     return $fetch(`/api/collections/${route.params.collection}`)
   }
 })
 
 useSeoMeta({
-  title: data.name ? `${data.name} • Collection` : 'Collection',
+  title: data.value.name ? `${data.value.name} • Collection` : 'Collection',
 })
 
 onMounted(() => {
