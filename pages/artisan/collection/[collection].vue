@@ -11,6 +11,11 @@
           </a-breadcrumb>
         </template>
 
+        <template #subTitle>
+          <a-tag v-if="data.published">Public</a-tag>
+          <a-tag v-else>Private</a-tag>
+        </template>
+
         <template #extra>
           <a-button
             v-if="authenticated && data.published && data.type === 'share'"

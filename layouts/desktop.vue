@@ -1,5 +1,7 @@
 <template>
   <a-layout>
+    <SpeedInsights />
+
     <a-layout-header>
       <nuxt-link to="/">
         <div class="logo">
@@ -28,6 +30,8 @@
 </template>
 
 <script setup>
+import { SpeedInsights } from '@vercel/speed-insights/nuxt'
+
 const config = useRuntimeConfig()
 </script>
 

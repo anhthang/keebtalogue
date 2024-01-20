@@ -1,5 +1,7 @@
 <template>
   <a-layout>
+    <SpeedInsights />
+
     <a-layout-header class="mobile">
       <a-button type="text" @click="sidebarToogle">
         <template #icon>
@@ -33,6 +35,8 @@
 </template>
 
 <script setup>
+import { SpeedInsights } from '@vercel/speed-insights/nuxt'
+
 const visible = ref(false)
 const sidebarToogle = () => {
   visible.value = !visible.value

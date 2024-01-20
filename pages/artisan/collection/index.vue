@@ -39,7 +39,11 @@
               hoverable
               :title="collection.name"
               :head-style="artisanCardHeadStyle"
-            />
+            >
+              <template v-if="!collection.published" #extra>
+                <lock-outlined />
+              </template>
+            </a-card>
           </nuxt-link>
         </a-col>
       </a-row>
