@@ -139,7 +139,7 @@ const { data, refresh } = await useAsyncData(() => {
 })
 
 useSeoMeta({
-  title: data.value.name ? `${data.value.name} • Collection` : 'Collection',
+  title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
 })
 
 onMounted(() => {
