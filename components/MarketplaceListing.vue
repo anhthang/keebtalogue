@@ -17,13 +17,13 @@
         {{ item.message }}
 
         <template #extra>
-          <a-avatar-group shape="square">
+          <a-avatar-group shape="square" :max-count="8" size="large">
             <a-tooltip
-              v-for="cap in item.items.slice(0, 10)"
+              v-for="cap in item.items"
               :key="cap.id"
               :title="colorwayTitle(cap)"
             >
-              <a-avatar :alt="colorwayTitle(cap)" :src="cap.img" size="large" />
+              <a-avatar :alt="colorwayTitle(cap)" :src="cap.img" />
             </a-tooltip>
           </a-avatar-group>
         </template>
