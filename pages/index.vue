@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <a-page-header title="Home">
-      <a-flex gap="middle">
+      <a-flex gap="small">
         <a-col :xs="24" :md="16">
           <a-card class="guides">
             <a-typography-title :level="5">
@@ -12,7 +12,7 @@
         </a-col>
 
         <a-col :xs="24" :md="8">
-          <a-flex vertical gap="middle">
+          <a-flex vertical gap="small">
             <a-card v-if="data.makers.length" class="recently-added-artisans">
               <a-typography-title :level="5">
                 <history-outlined /> Recently Added Artisans

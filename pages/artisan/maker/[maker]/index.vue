@@ -19,7 +19,6 @@
             <a-breadcrumb-item>
               <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>{{ maker.name }}</a-breadcrumb-item>
           </a-breadcrumb>
         </template>
 

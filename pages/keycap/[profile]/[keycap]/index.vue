@@ -16,7 +16,6 @@
                 {{ manufacturers[data.profile_id] }}
               </nuxt-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>{{ data.name }}</a-breadcrumb-item>
           </a-breadcrumb>
         </template>
 

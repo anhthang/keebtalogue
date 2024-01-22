@@ -15,7 +15,6 @@
                 {{ data.name }}
               </nuxt-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>Kits</a-breadcrumb-item>
           </a-breadcrumb>
         </template>
 

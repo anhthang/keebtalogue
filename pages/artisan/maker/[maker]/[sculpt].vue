@@ -13,7 +13,6 @@
                 {{ sculpt.maker_name }}
               </nuxt-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>{{ sculpt.name }}</a-breadcrumb-item>
           </a-breadcrumb>
         </template>
 
