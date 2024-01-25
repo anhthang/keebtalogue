@@ -22,7 +22,7 @@
       <a :href="config.public.baseUrl" target="_blank">
         {{ config.public.appName }}
       </a>
-      ©2021 - Made with ☕️ in Hanoi
+      ©{{ new Date().getFullYear() }} - Made with ☕️ in Hanoi
     </div>
   </div>
 </template>

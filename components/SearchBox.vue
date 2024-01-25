@@ -3,7 +3,6 @@
     v-model:value="value"
     allow-clear
     :options="dataSources"
-    :style="{ width: '350px' }"
     @select="onSelect"
     @search="handleSearch"
   >
