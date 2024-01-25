@@ -7,7 +7,13 @@
     <template #renderItem="{ item }">
       <a-list-item>
         <template #actions>
-          <span> <comment-outlined /> {{ item.contact }} </span>
+          <span v-if="authenticated">
+            <comment-outlined /> {{ item.contact }}
+          </span>
+          <span v-else>
+            <comment-outlined />
+            <a-button type="link" @click="toggleShowLogin">Login</a-button>
+          </span>
           <span>
             <history-outlined /> {{ formatDateTime(item.created_at) }}
           </span>
@@ -29,6 +35,10 @@
         </template>
       </a-list-item>
     </template>
+
+    <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
+      <modal-login />
+    </a-modal>
   </a-list>
 </template>
 
@@ -41,4 +51,12 @@ const { data } = defineProps({
     },
   },
 })
+
+const userStore = useUserStore()
+const { authenticated } = storeToRefs(userStore)
+
+const showLoginModal = ref(false)
+const toggleShowLogin = () => {
+  showLoginModal.value = !showLoginModal.value
+}
 </script>

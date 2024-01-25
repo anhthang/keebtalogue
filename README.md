@@ -1,5 +1,5 @@
 # Keebtalogue
-The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Ant Design Vue 4
+**Driven by a passion for artisan keycaps and keyboards, Keebtalogue is a project designed for enthusiasts like you.**
 
 # Development
 

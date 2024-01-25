@@ -49,7 +49,7 @@
       </a-menu-item>
     </a-menu>
 
-    <a-menu :selected-keys="[$colorMode.value]" @click="onChangeMenu">
+    <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
       <a-sub-menu key="profile" title="Profile">
         <template #icon><user-outlined /> </template>
         <a-menu-item v-if="authenticated" key="/account/settings">
@@ -70,34 +70,7 @@
     </a-menu>
 
     <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
-      <a-flex vertical gap="large">
-        <a-typography-title :level="2">Welcome back</a-typography-title>
-
-        <a-flex vertical gap="small">
-          <a-button block @click="login('google')">
-            <span class="custom-icon">
-              <icon name="logos:google-icon" />
-            </span>
-            Continue with Google
-          </a-button>
-          <a-button block @click="login('discord')">
-            <span class="custom-icon">
-              <icon name="logos:discord-icon" />
-            </span>
-            Continue with Discord
-          </a-button>
-        </a-flex>
-
-        <a-flex justify="center">
-          <a-typography-text>
-            By clicking continue, you agree to our
-            <a-typography-link href="/policy" target="_blank">
-              Privacy Policy
-            </a-typography-link>
-            and Terms of Service.
-          </a-typography-text>
-        </a-flex>
-      </a-flex>
+      <modal-login />
     </a-modal>
   </a-flex>
 </template>
@@ -136,25 +109,6 @@ const onChangeMenu = (e) => {
     logout()
   } else {
     colorMode.preference = e.key
-  }
-}
-
-const login = async (provider) => {
-  const { user, error } = await client.auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo: window.location.origin,
-    },
-  })
-
-  if (error) {
-    message.warning(err.message)
-  } else if (user) {
-    message.success(
-      `Hello, ${user.name}. You successfully logged into this website.`,
-    )
-
-    router.back()
   }
 }
 

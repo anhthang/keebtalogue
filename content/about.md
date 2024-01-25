@@ -2,11 +2,9 @@
 title: About
 ---
 
-**Keebtalogue** is a project made for artisan keycap and keyboard enthusiasts.
+**Driven by a passion for artisan keycaps and keyboards, Keebtalogue is a project designed for enthusiasts like you.**
 
-It's inspired from [KeycapLendar](https://keycaplendar.firebaseapp.com/) and [Keycap Archivist](https://keycap-archivist.com)
-which I want to have full managed of the database instead of uploading to Google Docs file.
-And I want to have a catalogue of all keyboard related things available here (keyboard, keycap set, artisan keycap...)
+Inspired by [KeycapLendar](https://keycaplendar.firebaseapp.com/) and [Keycap Archivist](https://keycap-archivist.com), it aims to go beyond Google Docs by offering a fully managed database specifically for the keyboard community. Here, you'll find a comprehensive catalogue of everything keyboard-related, including keyboards, keycap sets, and much-coveted artisan keycaps.
 
 ## Features
 - **Home**
