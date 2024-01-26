@@ -18,7 +18,7 @@
         </div>
       </template>
     </template>
-    <a-input placeholder="Search for artisan keycaps, keysets and more">
+    <a-input placeholder="Search for artisan keycaps, keycap sets and more">
       <template #prefix><search-outlined /></template>
     </a-input>
   </a-auto-complete>
