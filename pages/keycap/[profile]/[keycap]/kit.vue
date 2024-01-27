@@ -34,9 +34,19 @@
             </template>
 
             <template v-if="column.key === 'action'">
-              <a-button @click="toggleShowEditKit(record)">
-                <edit-outlined /> Edit
-              </a-button>
+              <a-flex gap="small">
+                <a-button @click="toggleShowEditKit(record)">
+                  <edit-outlined /> Edit
+                </a-button>
+
+                <a-button
+                  v-if="data.status === 'Interest Check'"
+                  danger
+                  @click="showConfirmDelete(record)"
+                >
+                  <delete-row-outlined /> Delete
+                </a-button>
+              </a-flex>
             </template>
           </template>
         </a-table>
@@ -134,5 +144,27 @@ const addKeycapKit = async () => {
     .catch(() => {
       confirmLoading.value = false
     })
+}
+
+const showConfirmDelete = (kit) => {
+  Modal.confirm({
+    title: `Confirm to delete ${kit.name} kit`,
+    content:
+      'Are you sure you want to delete this kit? This action cannot be undone.',
+    okText: 'Delete',
+    okType: 'danger',
+    onOk() {
+      $fetch(`/api/keycaps/${kit.profile_keycap_id}/kits/${kit.id}`, {
+        method: 'delete',
+      })
+        .then(() => {
+          message.success(`Kit [${kit.name}] was deleted.`)
+          refresh()
+        })
+        .catch((error) => {
+          message.error(error.message)
+        })
+    },
+  })
 }
 </script>
