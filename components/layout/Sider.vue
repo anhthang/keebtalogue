@@ -50,6 +50,9 @@
     </a-menu>
 
     <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
+      <a-menu-item key="feedback">
+        <message-outlined /> <span>Feedback</span>
+      </a-menu-item>
       <a-sub-menu key="profile" title="Profile">
         <template #icon><user-outlined /> </template>
         <a-menu-item v-if="authenticated" key="/account/settings">
@@ -71,6 +74,15 @@
 
     <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
       <modal-login />
+    </a-modal>
+
+    <a-modal
+      v-model:open="showFeedback"
+      title="Share your thoughts!"
+      destroy-on-close
+      ok-text="Send Feedback"
+    >
+      <modal-feedback-form />
     </a-modal>
   </a-flex>
 </template>
@@ -100,9 +112,16 @@ const toggleShowLogin = () => {
   showLoginModal.value = !showLoginModal.value
 }
 
+const showFeedback = ref(false)
+const toggleShowFeedback = () => {
+  showFeedback.value = !showFeedback.value
+}
+
 const onChangeMenu = (e) => {
   if (e.key.startsWith('/')) {
     router.push(e.key)
+  } else if (e.key === 'feedback') {
+    toggleShowFeedback()
   } else if (e.key === 'login') {
     toggleShowLogin()
   } else if (e.key === 'logout') {

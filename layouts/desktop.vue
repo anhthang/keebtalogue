@@ -21,7 +21,7 @@
           <search-box style="width: 40%; max-width: 800px" />
         </a-flex>
       </a-layout-header>
-      <a-layout-content :style="{ overflow: 'initial' }">
+      <a-layout-content>
         <NuxtPage />
       </a-layout-content>
       <a-layout-footer>
