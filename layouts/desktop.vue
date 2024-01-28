@@ -3,14 +3,14 @@
     <SpeedInsights />
 
     <a-layout-sider
-      :style="{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        bottom: 0,
-      }"
+      style="
+        overflow: auto;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+      "
       collapsed
     >
       <layout-sider style="height: 100%" />

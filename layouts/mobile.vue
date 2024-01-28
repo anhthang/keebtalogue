@@ -14,7 +14,7 @@
 
       <nuxt-link to="/">
         <div class="logo">
-          {{ config.public.appName }}
+          {{ $config.public.appName }}
         </div>
       </nuxt-link>
       <layout-right-header />
@@ -41,8 +41,6 @@ const visible = ref(false)
 const sidebarToogle = () => {
   visible.value = !visible.value
 }
-
-const config = useRuntimeConfig()
 </script>
 
 <style>

@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <a-page-header title="Home">
-      <a-flex gap="small">
+      <a-flex :vertical="$device.isMobile" gap="small">
         <a-col :xs="24" :md="16">
           <a-card class="guides">
             <a-typography-title :level="5">
-              <read-outlined /> Artisan Collector Guides
+              <read-outlined /> ArtisanCollector's Guides
             </a-typography-title>
             <artisan-collector-guide />
           </a-card>

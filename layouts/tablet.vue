@@ -5,7 +5,7 @@
     <a-layout-header class="tablet">
       <nuxt-link to="/">
         <div class="logo">
-          {{ config.public.appName }}
+          {{ $config.public.appName }}
         </div>
       </nuxt-link>
 
@@ -30,8 +30,6 @@
 
 <script setup>
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
-
-const config = useRuntimeConfig()
 </script>
 
 <style>

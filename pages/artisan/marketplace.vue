@@ -31,7 +31,7 @@
       </a-typography>
 
       <a-row :gutter="[8, 8]">
-        <a-col :xs="24" :md="12">
+        <a-col :xs="24" :xl="12">
           <a-card>
             <a-typography-title :level="5">
               <shopping-cart-outlined /> Buying
@@ -40,7 +40,7 @@
           </a-card>
         </a-col>
 
-        <a-col :xs="24" :md="12">
+        <a-col :xs="24" :xl="12">
           <a-card>
             <a-typography-title :level="5">
               <shop-outlined /> Selling
