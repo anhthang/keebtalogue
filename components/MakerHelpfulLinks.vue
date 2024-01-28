@@ -10,7 +10,7 @@
             Linktree
           </a>
         </a-menu-item>
-        <a-menu-item v-else key="website">
+        <a-menu-item v-else-if="maker.website" key="website">
           <a :href="maker.website" target="_blank">
             <global-outlined /> Website
           </a>

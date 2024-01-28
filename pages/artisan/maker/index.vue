@@ -51,7 +51,7 @@
 
         <a-row :gutter="[8, 8]" type="flex">
           <a-col
-            v-for="maker in otherMakers"
+            v-for="maker in currentPageMakers"
             :key="maker.id"
             :xs="12"
             :sm="12"
@@ -62,6 +62,20 @@
             <maker-card :maker="maker" />
           </a-col>
         </a-row>
+
+        <a-flex
+          v-if="otherMakers.length > size"
+          justify="center"
+          style="margin-top: 16px"
+        >
+          <a-pagination
+            v-model:current="page"
+            :total="otherMakers.length"
+            :page-size="size"
+            :show-size-changer="false"
+            :show-quick-jumper="otherMakers.length > size * 10"
+          />
+        </a-flex>
       </a-page-header>
     </a-spin>
   </div>
@@ -71,6 +85,9 @@
 useSeoMeta({
   title: 'Artisan Makers',
 })
+
+const page = ref(1)
+const size = ref(24)
 
 const { data: makers, pending } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
@@ -90,6 +107,13 @@ const favoriteMakers = computed(() => {
 
 const otherMakers = computed(() => {
   return makers.value.filter((m) => !favorites.value.includes(m.id))
+})
+
+const currentPageMakers = computed(() => {
+  return otherMakers.value.slice(
+    (page.value - 1) * size.value,
+    page.value * size.value,
+  )
 })
 
 const makerForm = ref()
