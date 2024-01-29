@@ -89,7 +89,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data: makers, pending } = await useAsyncData('artisan-makers', () =>
+const { data, pending, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 
@@ -102,11 +102,11 @@ const showModal = () => {
 }
 
 const favoriteMakers = computed(() => {
-  return makers.value.filter((m) => favorites.value.includes(m.id))
+  return data.value.filter((m) => favorites.value.includes(m.id))
 })
 
 const otherMakers = computed(() => {
-  return makers.value.filter((m) => !favorites.value.includes(m.id))
+  return data.value.filter((m) => !favorites.value.includes(m.id))
 })
 
 const currentPageMakers = computed(() => {
@@ -126,6 +126,7 @@ const addMaker = async () => {
     .then(() => {
       confirmLoading.value = false
       showModal()
+      refresh()
     })
     .catch(() => {
       confirmLoading.value = false

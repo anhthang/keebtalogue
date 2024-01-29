@@ -187,8 +187,6 @@ const addMaker = async () => {
   await validate().then(() => {
     const { sculpts, ...rest } = maker.value
 
-    rest.document_ids = rest.document_ids.split(',')
-
     const makerId = isEdit
       ? rest.id
       : slugify(maker.value.name, { lower: true })
