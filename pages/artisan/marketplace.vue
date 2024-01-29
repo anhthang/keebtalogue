@@ -4,7 +4,7 @@
       <!-- <template #subTitle>
         <a-tag color="orange">Experiment</a-tag>
       </template> -->
-      <template #extra>
+      <template v-if="$device.isDesktop" #extra>
         <nuxt-link to="/artisan/wishlist">
           <a-button type="primary">
             <file-image-outlined /> Create Wishlist
@@ -13,7 +13,7 @@
       </template>
 
       <a-row :gutter="[8, 8]" type="flex">
-        <a-alert class="collection-alert" type="info" banner>
+        <a-alert class="alert-banner" type="info" banner>
           <template #message>
             <a-typography-text strong> Early Access: </a-typography-text>
             This feature is still under development, so you may experience bugs

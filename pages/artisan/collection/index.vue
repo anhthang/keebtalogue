@@ -17,7 +17,7 @@
 
       <a-row v-if="!user.email_verified" type="flex">
         <a-alert
-          class="collection-alert"
+          class="alert-banner"
           type="info"
           message="Level up your experience! Login and unlock exclusive features, unlimited collections, and enjoy seamless syncing across all your devices."
           banner
@@ -80,11 +80,3 @@ const addCollection = async () => {
     })
 }
 </script>
-
-<style>
-.collection-alert {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
-}
-</style>

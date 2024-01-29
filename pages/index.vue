@@ -57,4 +57,11 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
     min-height: auto;
   }
 }
+
+/* Global */
+.alert-banner {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
 </style>

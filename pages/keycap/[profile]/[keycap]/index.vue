@@ -29,12 +29,7 @@
             </a-button>
           </nuxt-link>
 
-          <a-button
-            v-if="isEditor"
-            type="primary"
-            ghost
-            @click="toggleShowEditKeycap"
-          >
+          <a-button v-if="isEditor" @click="toggleShowEditKeycap">
             <edit-outlined /> Edit
           </a-button>
 

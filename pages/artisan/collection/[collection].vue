@@ -35,18 +35,12 @@
             <a-button><sort-ascending-outlined /> Sort</a-button>
           </a-dropdown>
 
-          <a-button
-            v-if="authenticated"
-            type="primary"
-            ghost
-            @click="toggleShowEdit"
-          >
+          <a-button v-if="authenticated" @click="toggleShowEdit">
             <edit-outlined /> Edit
           </a-button>
 
           <a-button
             v-if="user.email_verified"
-            type="primary"
             danger
             @click="deleteCollection(data)"
           >
@@ -58,7 +52,7 @@
           v-if="authenticated && data.published && data.type === 'share'"
           type="flex"
         >
-          <a-alert class="collection-alert" banner>
+          <a-alert class="alert-banner" banner>
             <template #message>
               <a-typography-text strong>
                 Public access granted.

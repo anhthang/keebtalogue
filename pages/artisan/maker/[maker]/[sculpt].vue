@@ -29,12 +29,7 @@
             <file-add-outlined /> Add
           </a-button>
 
-          <a-button
-            v-if="isEditor"
-            type="primary"
-            ghost
-            @click="showEditSculptModal"
-          >
+          <a-button v-if="isEditor" @click="showEditSculptModal">
             <edit-outlined /> Edit
           </a-button>
 

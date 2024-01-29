@@ -27,13 +27,7 @@
         </template>
 
         <template #extra>
-          <a-button
-            v-if="isEditor"
-            key="edit"
-            type="primary"
-            ghost
-            @click="showEditMakerModal"
-          >
+          <a-button v-if="isEditor" key="edit" @click="showEditMakerModal">
             <edit-outlined /> Edit
           </a-button>
           <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
