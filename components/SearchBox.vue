@@ -1,6 +1,6 @@
 <template>
   <a-auto-complete
-    v-model:value="value"
+    v-model:value="searchText"
     allow-clear
     :options="dataSources"
     @select="onSelect"
@@ -9,12 +9,12 @@
     <template #option="item">
       <template v-if="item.options">
         <span>
-          {{ item.name }}
+          {{ item.title }}
         </span>
       </template>
       <template v-else>
         <div :style="{ display: 'flex', justifyContent: 'space-between' }">
-          {{ item.name }}
+          {{ item.title }}
         </div>
       </template>
     </template>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-const value = ref('')
+const searchText = ref('')
 const dataSources = ref([])
 
 const handleSearch = async (query) => {
@@ -38,7 +38,7 @@ const handleSearch = async (query) => {
 
 const router = useRouter()
 const onSelect = async (path) => {
-  value.value = ''
+  searchText.value = ''
   dataSources.value = []
 
   router.push(path)

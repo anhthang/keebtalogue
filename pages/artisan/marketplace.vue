@@ -30,25 +30,12 @@
         </a-typography-paragraph>
       </a-typography>
 
-      <a-row :gutter="[8, 8]">
-        <a-col :xs="24" :xl="12">
-          <a-card>
-            <a-typography-title :level="5">
-              <shopping-cart-outlined /> Buying
-            </a-typography-title>
-            <marketplace-listing :data="data.filter((c) => c.type === 'buy')" />
-          </a-card>
+      <a-row :gutter="[8, 8]" type="flex">
+        <a-col :xs="24" :md="6">
+          <marketplace-filter />
         </a-col>
-
-        <a-col :xs="24" :xl="12">
-          <a-card>
-            <a-typography-title :level="5">
-              <shop-outlined /> Selling
-            </a-typography-title>
-            <marketplace-listing
-              :data="data.filter((c) => c.type === 'sell')"
-            />
-          </a-card>
+        <a-col :xs="24" :md="18">
+          <marketplace-listing />
         </a-col>
       </a-row>
     </a-page-header>
@@ -60,6 +47,4 @@ useSeoMeta({
   title: 'Marketplace',
   description: 'Unlock potential buyers/sellers for your artisan keycaps!',
 })
-
-const { data } = await useAsyncData(() => $fetch('/api/marketplace'))
 </script>

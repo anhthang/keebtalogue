@@ -28,6 +28,9 @@ export const useUserStore = defineStore('user', {
       },
       type: 'oneway',
     },
+    marketplaceCfg: {
+      type: 'any',
+    },
   }),
   getters: {
     authenticated: (state) => state.user && state.user.email_verified,

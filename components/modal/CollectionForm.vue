@@ -62,7 +62,7 @@
       label="Message"
       v-bind="validateInfos.message"
     >
-      <a-input v-model:value="collection.message">
+      <a-input v-model:value="collection.message" :maxlength="100">
         <template #prefix><field-string-outlined /></template>
       </a-input>
       <template #extra>
@@ -87,8 +87,10 @@
         </template>
       </a-input>
       <template #extra>
-        Please enter your Discord username so that buyer/seller can reach you
-        directly.
+        <a-typography-text type="warning">
+          Please enter your Discord username so that buyer/seller can reach you
+          directly.
+        </a-typography-text>
       </template>
     </a-form-item>
   </a-form>
@@ -133,7 +135,9 @@ const formRules = ref({
       trigger: ['change', 'blur'],
     },
   ],
-  message: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
+  message: [
+    { required: false, type: 'string', max: 100, trigger: ['change', 'blur'] },
+  ],
   contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
 })
 

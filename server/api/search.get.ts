@@ -35,30 +35,42 @@ export default defineEventHandler(async (event) => {
   return {
     data: [
       {
-        name: 'Makers',
+        title: 'Makers',
         options: makers?.map((m: any) => ({
-          name: m.name,
+          title: m.name,
           value: `/artisan/maker/${m.id}`,
+          maker_id: m.id,
+          maker_name: m.name,
         })),
       },
       {
-        name: 'Sculpts',
+        title: 'Sculpts',
         options: sculpts?.map((s: any) => ({
-          name: `${s.maker.name} > ${s.name}`,
+          title: `${s.maker.name} > ${s.name}`,
           value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}`,
+          maker_id: s.maker.id,
+          maker_name: s.maker.name,
+          sculpt_id: s.sculpt_id,
+          sculpt_name: s.name,
         })),
       },
       {
-        name: 'Colorways',
-        options: colorways?.map((s: any) => ({
-          name: `${s.maker.name} > ${s.sculpt.name} > ${s.name}`,
-          value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}?cid=${s.colorway_id}`,
+        title: 'Colorways',
+        options: colorways?.map((c: any) => ({
+          title: `${c.maker.name} > ${c.sculpt.name} > ${c.name}`,
+          value: `/artisan/maker/${c.maker_id}/${c.sculpt_id}?cid=${c.colorway_id}`,
+          maker_id: c.maker.id,
+          maker_name: c.maker.name,
+          sculpt_id: c.sculpt_id,
+          sculpt_name: c.sculpt.name,
+          colorway_id: c.colorway_id,
+          colorway_name: c.name,
         })),
       },
       {
-        name: 'Keycaps',
+        title: 'Keycaps',
         options: keycaps?.map((kc: any) => ({
-          name: `${kc.profile.name} ${kc.name}`,
+          title: `${kc.profile.name} ${kc.name}`,
           value: `/keycap/${kc.profile_keycap_id}`,
         })),
       },
