@@ -13,8 +13,10 @@
         <template #renderItem="{ item }">
           <a-list-item>
             <template #actions>
-              <a-tag v-if="item.type === 'buy'" color="blue">Buying</a-tag>
-              <a-tag v-else color="orange">Selling</a-tag>
+              <a-tag v-if="item.type === 'buy'" :bordered="false" color="blue">
+                Buying
+              </a-tag>
+              <a-tag v-else :bordered="false" color="orange">Selling</a-tag>
 
               <span v-if="authenticated">
                 <comment-outlined /> {{ item.contact }}
@@ -86,5 +88,9 @@ const toggleShowLogin = () => {
 <style>
 .marketplace-listing {
   height: 100%;
+}
+
+.ant-avatar-group-popover {
+  max-width: 800px;
 }
 </style>

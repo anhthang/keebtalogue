@@ -81,8 +81,10 @@
       title="Share your thoughts!"
       destroy-on-close
       ok-text="Send Feedback"
+      :confirm-loading="confirmLoading"
+      @ok="addFeedback"
     >
-      <modal-feedback-form />
+      <modal-feedback-form ref="feedbackForm" />
     </a-modal>
   </a-flex>
 </template>
@@ -129,6 +131,21 @@ const onChangeMenu = (e) => {
   } else {
     colorMode.preference = e.key
   }
+}
+
+const feedbackForm = ref()
+const confirmLoading = ref(false)
+const addFeedback = async () => {
+  confirmLoading.value = true
+
+  await feedbackForm.value
+    .addFeedback()
+    .then(() => {
+      confirmLoading.value = false
+    })
+    .catch(() => {
+      confirmLoading.value = false
+    })
 }
 
 const logout = async () => {
