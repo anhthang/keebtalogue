@@ -61,7 +61,7 @@
 const userStore = useUserStore()
 const { marketplaceCfg } = storeToRefs(userStore)
 
-watch(marketplaceCfg.value, () => {
+watch(marketplaceCfg, () => {
   userStore.$patch({
     marketplaceCfg: marketplaceCfg.value,
   })

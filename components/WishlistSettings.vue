@@ -78,7 +78,7 @@ const twowayTrading = computed(() => {
   return tradingConfig.value.type === 'twoway'
 })
 
-watch(tradingConfig.value, () => {
+watch(tradingConfig, () => {
   userStore.$patch({
     tradingConfig: tradingConfig.value,
   })

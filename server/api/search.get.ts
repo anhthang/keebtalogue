@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
         options: sculpts?.map((s: any) => ({
           title: `${s.maker.name} > ${s.name}`,
           value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}`,
-          maker_id: s.maker.id,
+          maker_id: s.maker_id,
           maker_name: s.maker.name,
           sculpt_id: s.sculpt_id,
           sculpt_name: s.name,
@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
         options: colorways?.map((c: any) => ({
           title: `${c.maker.name} > ${c.sculpt.name} > ${c.name}`,
           value: `/artisan/maker/${c.maker_id}/${c.sculpt_id}?cid=${c.colorway_id}`,
-          maker_id: c.maker.id,
+          maker_id: c.maker_id,
           maker_name: c.maker.name,
           sculpt_id: c.sculpt_id,
           sculpt_name: c.sculpt.name,

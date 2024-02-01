@@ -43,6 +43,9 @@
         <a-descriptions-item label="Reddit">
           {{ tradingConfig.social.reddit }}
         </a-descriptions-item>
+        <a-descriptions-item label="QQ">
+          {{ tradingConfig.social.qq }}
+        </a-descriptions-item>
       </a-descriptions>
 
       <a-alert
