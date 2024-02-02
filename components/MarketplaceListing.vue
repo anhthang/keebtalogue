@@ -6,6 +6,7 @@
 
     <a-spin :spinning="pending">
       <a-list
+        v-if="trades.length"
         item-layout="vertical"
         :data-source="trades"
         :pagination="{ pageSize: 10 }"
@@ -52,6 +53,12 @@
           <modal-login />
         </a-modal>
       </a-list>
+      <a-result
+        v-else
+        status="404"
+        title="¯\_(ツ)_/¯"
+        sub-title="We couldn't find any results matching your search."
+      />
     </a-spin>
   </a-card>
 </template>

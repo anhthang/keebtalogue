@@ -5,38 +5,49 @@ export default defineEventHandler(async (event) => {
 
   const { query } = getQuery(event)
 
-  const fts = query?.toString().split(' ').join(' | ')
+  const fts = query
+    ?.toString()
+    .trim()
+    .split(/[\s,\t,\n]+/) // split and remove more than 1 space
+    .join(' | ')
 
-  const { data: makers } = await client
+  const makerSearch = client
     .from('makers')
     .select()
-    .textSearch('name', `${fts}`)
+    .textSearch('fts', `${fts}`)
     .limit(10)
 
-  const { data: sculpts } = await client
+  const sculptSearch = client
     .from('sculpts')
     .select('*, maker:makers(name)')
-    .textSearch('name', `${fts}`)
+    .textSearch('fts', `${fts}`)
     .limit(10)
 
-  const { data: colorways } = await client
+  const colorwaySearch = client
     .from('colorways')
     .select('*, maker:makers(name), sculpt:sculpts(name)')
-    .textSearch('name', `${fts}`)
+    .textSearch('fts', `${fts}`)
     .limit(10)
 
-  const { data: keycaps } = await client
+  const keycapSearch = client
     .from('keycaps')
     .select('*, profile:keycap_profiles(name)')
-    .textSearch('name', `${fts}`)
+    .textSearch('fts', `${fts}`)
     .order('profile_keycap_id')
     .limit(10)
+
+  const [makers, sculpts, colorways, keycaps] = await Promise.all([
+    makerSearch,
+    sculptSearch,
+    colorwaySearch,
+    keycapSearch,
+  ])
 
   return {
     data: [
       {
         title: 'Makers',
-        options: makers?.map((m: any) => ({
+        options: makers.data?.map((m: any) => ({
           title: m.name,
           value: `/artisan/maker/${m.id}`,
           maker_id: m.id,
@@ -45,7 +56,7 @@ export default defineEventHandler(async (event) => {
       },
       {
         title: 'Sculpts',
-        options: sculpts?.map((s: any) => ({
+        options: sculpts.data?.map((s: any) => ({
           title: `${s.maker.name} > ${s.name}`,
           value: `/artisan/maker/${s.maker_id}/${s.sculpt_id}`,
           maker_id: s.maker_id,
@@ -56,7 +67,7 @@ export default defineEventHandler(async (event) => {
       },
       {
         title: 'Colorways',
-        options: colorways?.map((c: any) => ({
+        options: colorways.data?.map((c: any) => ({
           title: `${c.maker.name} > ${c.sculpt.name} > ${c.name}`,
           value: `/artisan/maker/${c.maker_id}/${c.sculpt_id}?cid=${c.colorway_id}`,
           maker_id: c.maker_id,
@@ -69,7 +80,7 @@ export default defineEventHandler(async (event) => {
       },
       {
         title: 'Keycaps',
-        options: keycaps?.map((kc: any) => ({
+        options: keycaps.data?.map((kc: any) => ({
           title: `${kc.profile.name} ${kc.name}`,
           value: `/keycap/${kc.profile_keycap_id}`,
         })),
