@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import { omitSensitive } from '~/utils'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event) => {
     .single()
 
   return {
-    keycaps: data,
+    keycaps: data?.map(omitSensitive),
     profile,
     count,
   }

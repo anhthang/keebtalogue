@@ -2,6 +2,7 @@ import { serverSupabaseClient } from '#supabase/server'
 import groupBy from 'lodash.groupby'
 import keyBy from 'lodash.keyby'
 import sortBy from 'lodash.sortby'
+import { omitSensitive } from '~/utils'
 
 export default defineEventHandler(async (event) => {
   const makerId = event.context.params?.maker
@@ -21,7 +22,7 @@ export default defineEventHandler(async (event) => {
     .eq('maker_id', makerId)
     .eq('sculpt_id', sculptId)
 
-  const colorwayMap = groupBy(colorways, 'sculpt_id')
+  const colorwayMap = groupBy(colorways?.map(omitSensitive), 'sculpt_id')
 
   if (!profile) return
 
@@ -30,10 +31,10 @@ export default defineEventHandler(async (event) => {
 
     sculpt.colorways = sortBy(colorways, 'order')
 
-    return sculpt
+    return omitSensitive(sculpt)
   })
 
   profile.sculpts = keyBy(sortBy(sculpts, 'name'), 'sculpt_id')
 
-  return profile
+  return omitSensitive(profile)
 })

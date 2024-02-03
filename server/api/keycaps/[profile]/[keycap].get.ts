@@ -1,5 +1,6 @@
 import { serverSupabaseClient } from '#supabase/server'
 import sortBy from 'lodash.sortby'
+import { omitSensitive } from '~/utils'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -37,5 +38,5 @@ export default defineEventHandler(async (event) => {
   //     cap.sculpt_name = sculptMap[`${cap.maker_id}/${cap.sculpt_id}`].name
   // })
 
-  return data
+  return omitSensitive(data)
 })
