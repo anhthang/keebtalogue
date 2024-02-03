@@ -57,6 +57,7 @@
         :title="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
         destroy-on-close
         :confirm-loading="confirmLoading"
+        :ok-text="selectedKit?.id ? 'Save' : 'Add'"
         @ok="addKeycapKit"
       >
         <modal-keycap-kit-form

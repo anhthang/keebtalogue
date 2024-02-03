@@ -50,6 +50,7 @@
           title="Edit Keycap"
           destroy-on-close
           :confirm-loading="confirmLoading"
+          ok-text="Save"
           @ok="updateKeycap"
         >
           <modal-keycap-form

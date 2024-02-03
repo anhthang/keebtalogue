@@ -20,14 +20,14 @@
           {{ sculpt.release }}
         </template>
         <template #extra>
-          <a-button
+          <!-- <a-button
             v-if="isEditor"
             key="submission"
             type="primary"
             @click="showAddColorwayModal"
           >
             <file-add-outlined /> Add
-          </a-button>
+          </a-button> -->
 
           <a-button v-if="isEditor" @click="showEditSculptModal">
             <edit-outlined /> Edit
@@ -121,6 +121,7 @@
           title="Edit Sculpt"
           destroy-on-close
           :confirm-loading="confirmLoading"
+          ok-text="Save"
           @ok="updateSculptProfile"
         >
           <modal-sculpt-form
@@ -135,7 +136,7 @@
           :title="
             selectedColorway && selectedColorway.name
               ? `Edit ${colorwayTitle}`
-              : 'Add New Colorway'
+              : 'Add Colorway'
           "
           destroy-on-close
           :confirm-loading="confirmLoading"
@@ -154,6 +155,7 @@
           :closable="false"
           destroy-on-close
           :footer="null"
+          ok-text="Save"
         >
           <modal-colorway-card
             :colorway="selectedColorway"

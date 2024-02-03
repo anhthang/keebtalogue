@@ -8,7 +8,7 @@
       </template>
       <a-modal
         v-model:open="visible"
-        title="New Collection"
+        title="Add Collection"
         :confirm-loading="loading"
         @ok="addCollection"
       >

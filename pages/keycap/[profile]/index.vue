@@ -10,9 +10,10 @@
 
         <a-modal
           v-model:open="visible"
-          title="New Keycap"
+          title="Add Keycap"
           destroy-on-close
           :confirm-loading="confirmLoading"
+          ok-text="Add"
           @ok="addKeycap"
         >
           <modal-keycap-form ref="keycapForm" />

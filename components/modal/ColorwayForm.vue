@@ -194,7 +194,8 @@ const formRules = ref({
   release: [{ type: 'string', trigger: ['change', 'blur'] }],
   qty: [{ type: 'number', trigger: ['change', 'blur'] }],
   order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
-  price: [{ type: 'string', trigger: ['change', 'blur'] }],
+  currency: [{ type: 'enum', enum: currencies, trigger: ['change', 'blur'] }],
+  price: [{ type: 'number', trigger: ['change', 'blur'] }],
   sale_type: [
     {
       type: 'enum',

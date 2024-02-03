@@ -90,6 +90,7 @@
           title="Edit Maker"
           destroy-on-close
           :confirm-loading="confirmLoading"
+          ok-text="Save"
           @ok="updateMakerProfile"
         >
           <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />

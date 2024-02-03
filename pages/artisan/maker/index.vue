@@ -9,9 +9,10 @@
         </template>
         <a-modal
           v-model:open="visible"
-          title="New Maker"
+          title="Add Maker"
           destroy-on-close
           :confirm-loading="confirmLoading"
+          ok-text="Add"
           @ok="addMaker"
         >
           <modal-maker-form ref="makerForm" />
