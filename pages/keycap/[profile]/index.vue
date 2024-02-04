@@ -16,7 +16,7 @@
           ok-text="Add"
           @ok="addKeycap"
         >
-          <modal-keycap-form ref="keycapForm" />
+          <modal-keycap-form ref="keycapForm" :metadata="query" />
         </a-modal>
 
         <a-typography v-if="data.profile && data.profile.description">
@@ -49,7 +49,7 @@
                 </template>
                 <a-card-meta
                   :title="
-                    ic
+                    ['Interest Check', 'Live'].includes(query.status)
                       ? `${manufacturers[keycap.profile_id]} ${keycap.name}`
                       : keycap.name
                   "
@@ -57,8 +57,14 @@
                   <template #description>
                     <a-flex justify="space-between">
                       <span><bg-colors-outlined /> {{ keycap.designer }}</span>
-                      <span v-if="ic">
+                      <span v-if="query.status === 'Interest Check'">
                         <calendar-outlined /> {{ formatDate(keycap.ic_date) }}
+                      </span>
+                      <span v-else-if="query.status === 'Live'">
+                        <calendar-outlined />
+                        {{
+                          formatDateRange(keycap.start_date, keycap.end_date)
+                        }}
                       </span>
                       <span v-else>
                         <clock-circle-outlined />
@@ -106,23 +112,30 @@ const { isEditor } = storeToRefs(userStore)
 const route = useRoute()
 const { profile } = route.params
 
-const ic = profile === 'interest-check'
-
-const title = ic ? 'Interest Check' : manufacturers[profile]
-
 const page = ref(1)
 const size = ref(16)
 
+const query = {
+  page: page.value,
+  size: size.value,
+}
+
+const statusMap = {
+  'interest-check': 'Interest Check',
+  live: 'Live',
+}
+
+let title
+if (manufacturers[profile]) {
+  query.profile_id = profile
+  title = manufacturers[profile]
+} else {
+  query.status = statusMap[profile]
+  title = profile === 'live' ? 'Live Group Buys' : statusMap[profile]
+}
+
 const { data, pending, refresh } = await useAsyncData(
-  () =>
-    $fetch('/api/keycaps', {
-      query: {
-        profile_id: route.params.profile,
-        page: page.value,
-        size: size.value,
-        ic,
-      },
-    }),
+  () => $fetch('/api/keycaps', { query }),
   {
     watch: [page, size],
   },

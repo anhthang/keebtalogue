@@ -117,7 +117,7 @@
       </a-col>
     </a-row>
 
-    <a-form-item v-if="keycap.status !== 'Interest Check'" label="GB Time">
+    <a-form-item v-if="!ic" label="GB Time">
       <a-range-picker
         v-model:value="keycap.dates"
         style="width: 100%"
@@ -177,12 +177,9 @@ const { metadata, isEdit } = defineProps({
 
 const route = useRoute()
 
-const ic =
-  route.params.profile === 'interest-check' ||
-  metadata.status === 'Interest Check'
-
 onBeforeMount(() => {
-  Object.assign(keycap.value, metadata)
+  const { page, size, ...rest } = metadata
+  Object.assign(keycap.value, rest)
 
   if (metadata.ic_date) {
     keycap.value.date = dayjs(metadata.ic_date, 'YYYY-MM-DD')
@@ -203,9 +200,9 @@ const keycap = ref({
   render_img: '',
   dates: [],
   date: '',
-  profile_id: ic ? '' : route.params.profile,
-  status: ic ? 'Interest Check' : '',
 })
+
+const ic = computed(() => keycap.value.status === 'Interest Check')
 
 const formRef = ref()
 const formRules = ref({

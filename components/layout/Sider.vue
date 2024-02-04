@@ -27,6 +27,9 @@
       <a-menu-item key="/keycap/interest-check">
         <schedule-outlined /> <span>Interest Check</span>
       </a-menu-item>
+      <a-menu-item key="/keycap/live">
+        <stock-outlined /> <span>Live Group Buys</span>
+      </a-menu-item>
       <a-sub-menu key="keycap" title="Keycap">
         <template #icon><appstore-outlined /></template>
         <a-sub-menu
