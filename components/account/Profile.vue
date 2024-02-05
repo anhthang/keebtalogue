@@ -41,7 +41,7 @@
               :disabled="discordVerified"
             >
               <template #prefix>
-                <icon name="la:discord" />
+                <icon name="radix-icons:discord-logo" />
               </template>
               <template v-if="discordVerified" #suffix>
                 <check-circle-outlined

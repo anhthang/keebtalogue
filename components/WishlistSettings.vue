@@ -55,9 +55,7 @@
           placeholder="Discord#0000"
         >
           <template #prefix>
-            <span class="anticon">
-              <icon name="la:discord" />
-            </span>
+            <icon name="radix-icons:discord-logo" />
           </template>
         </a-input>
       </a-form-item>

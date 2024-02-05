@@ -4,16 +4,14 @@
 
     <a-flex vertical gap="small">
       <a-button block @click="login('google')">
-        <span class="custom-icon">
-          <icon name="logos:google-icon" />
-        </span>
-        Continue with Google
+        <a-flex gap="small" justify="center" align="center">
+          <icon name="logos:google-icon" /> Continue with Google
+        </a-flex>
       </a-button>
       <a-button block @click="login('discord')">
-        <span class="custom-icon">
-          <icon name="logos:discord-icon" />
-        </span>
-        Continue with Discord
+        <a-flex gap="small" justify="center" align="center">
+          <icon name="logos:discord-icon" /> Continue with Discord
+        </a-flex>
       </a-button>
     </a-flex>
 

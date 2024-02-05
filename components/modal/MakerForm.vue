@@ -89,9 +89,7 @@
     >
       <a-input v-model:value="maker.discord">
         <template #prefix>
-          <span class="anticon">
-            <icon name="la:discord" />
-          </span>
+          <icon name="radix-icons:discord-logo" />
         </template>
       </a-input>
     </a-form-item>

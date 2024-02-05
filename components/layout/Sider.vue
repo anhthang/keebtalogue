@@ -174,9 +174,4 @@ const logout = async () => {
   margin-bottom: 2rem;
   margin-top: 3rem;
 }
-
-.custom-icon {
-  margin-right: 0.5rem;
-  vertical-align: 0.125rem;
-}
 </style>

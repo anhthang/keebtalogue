@@ -5,7 +5,7 @@
         <a-menu-item v-if="isLinktree" key="linktree">
           <a :href="maker.website" target="_blank">
             <span class="anticon anticon-custom-icon">
-              <icon name="LinktreeIcon" size="18" />
+              <icon name="simple-icons:linktree" />
             </span>
             Linktree
           </a>
@@ -23,7 +23,7 @@
         <a-menu-item v-if="maker.discord" key="discord">
           <a :href="maker.discord" target="_blank">
             <span class="anticon anticon-custom-icon">
-              <icon name="la:discord" />
+              <icon name="radix-icons:discord-logo" />
             </span>
             Discord
           </a>

@@ -63,7 +63,7 @@
       v-bind="validateInfos.message"
     >
       <a-input v-model:value="collection.message" :maxlength="100">
-        <template #prefix><field-string-outlined /></template>
+        <template #prefix><message-outlined /></template>
       </a-input>
       <template #extra>
         Describe what you're offering and/or help others understand what types
@@ -81,9 +81,7 @@
     >
       <a-input v-model:value="collection.contact">
         <template #prefix>
-          <span class="anticon">
-            <icon name="la:discord" />
-          </span>
+          <icon name="radix-icons:discord-logo" />
         </template>
       </a-input>
       <template #extra>
