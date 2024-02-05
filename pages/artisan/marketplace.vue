@@ -1,9 +1,14 @@
 <template>
   <div class="container">
     <a-page-header title="Marketplace">
-      <!-- <template #subTitle>
-        <a-tag color="orange">Experiment</a-tag>
-      </template> -->
+      <template #subTitle>
+        <a-tooltip
+          title="This feature is still under development, so you may experience bugs
+            or incomplete functionality."
+        >
+          <a-tag color="blue">Experiment</a-tag>
+        </a-tooltip>
+      </template>
       <template v-if="$device.isDesktop" #extra>
         <nuxt-link to="/artisan/wishlist">
           <a-button type="primary">
@@ -12,21 +17,12 @@
         </nuxt-link>
       </template>
 
-      <a-row :gutter="[8, 8]" type="flex">
-        <a-alert class="alert-banner" type="info" banner>
-          <template #message>
-            <a-typography-text strong> Early Access: </a-typography-text>
-            This feature is still under development, so you may experience bugs
-            or incomplete functionality.
-          </template>
-        </a-alert>
-      </a-row>
-
       <a-typography>
         <a-typography-paragraph>
           To make your collections available in the marketplace, please publish
-          them by visiting 'Manage Collections'. This will make them visible to
-          potential buyers/sellers.
+          them by visiting
+          <nuxt-link to="/artisan/collection">Collections</nuxt-link>. This will
+          make them visible to potential buyers/sellers.
         </a-typography-paragraph>
       </a-typography>
 

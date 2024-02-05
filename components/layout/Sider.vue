@@ -110,7 +110,7 @@ const selectedKeys = computed(() => {
   const third = route.path.indexOf('/', second + 1)
 
   return third === -1 ? [route.path] : [route.path.substring(0, third)]
-}, [route.path])
+})
 
 const showLoginModal = ref(false)
 const toggleShowLogin = () => {

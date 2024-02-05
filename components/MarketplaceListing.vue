@@ -84,7 +84,7 @@ watch(marketplaceCfg, () => {
 const trades = computed(() => {
   const { type } = marketplaceCfg.value
   return type === 'any' ? data.value : data.value.filter((i) => i.type === type)
-}, [marketplaceCfg.value.type])
+})
 
 const showLoginModal = ref(false)
 const toggleShowLogin = () => {

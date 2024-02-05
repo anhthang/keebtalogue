@@ -115,27 +115,28 @@ const { profile } = route.params
 const page = ref(1)
 const size = ref(16)
 
-const query = {
-  page: page.value,
-  size: size.value,
-}
-
 const statusMap = {
   'interest-check': 'Interest Check',
   live: 'Live',
 }
 
-let title
-if (manufacturers[profile]) {
-  query.profile_id = profile
-  title = manufacturers[profile]
-} else {
-  query.status = statusMap[profile]
-  title = profile === 'live' ? 'Live Group Buys' : statusMap[profile]
-}
+const query = computed(() => {
+  return {
+    page: page.value,
+    size: size.value,
+    profile_id: manufacturers[profile] && profile,
+    status: statusMap[profile],
+  }
+})
+
+const title = manufacturers[profile]
+  ? manufacturers[profile]
+  : profile === 'live'
+    ? 'Live Group Buys'
+    : statusMap[profile]
 
 const { data, pending, refresh } = await useAsyncData(
-  () => $fetch('/api/keycaps', { query }),
+  () => $fetch('/api/keycaps', { query: query.value }),
   {
     watch: [page, size],
   },
