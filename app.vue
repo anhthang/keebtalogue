@@ -1,6 +1,6 @@
 <template>
   <a-config-provider :theme="themeCfg">
-    <NuxtLayout :name="layout">
+    <NuxtLayout :name="$device.isMobile ? 'mobile' : 'desktop'">
       <NuxtPage />
     </NuxtLayout>
   </a-config-provider>
@@ -10,15 +10,6 @@
 import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import 'ant-design-vue/dist/reset.css'
-
-const { isMobile, isTablet } = useDevice()
-
-let layout = 'desktop'
-if (isMobile) {
-  layout = 'mobile'
-} else if (isTablet) {
-  layout = 'tablet'
-}
 
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,

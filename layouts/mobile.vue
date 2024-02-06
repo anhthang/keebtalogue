@@ -2,21 +2,27 @@
   <a-layout>
     <SpeedInsights />
 
-    <a-layout-header class="mobile">
+    <a-layout-header
+      class="mobile"
+      :style="{ background: token.colorBgLayout }"
+    >
       <a-button type="text" @click="sidebarToogle">
         <template #icon>
-          <menu-unfold-outlined style="color: #f0f0f4" />
+          <menu-unfold-outlined />
         </template>
       </a-button>
-      <a-drawer v-model:open="visible" placement="top">
-        <layout-menu-tree mode="inline" @click="sidebarToogle" />
+      <a-drawer
+        v-model:open="visible"
+        placement="left"
+        :style="{ background: token.colorBgLayout }"
+      >
+        <layout-sider @click="sidebarToogle" />
       </a-drawer>
 
       <nuxt-link to="/">
-        <div class="logo">
-          {{ $config.public.appName }}
-        </div>
+        <img src="/icon.png" alt="logo" height="40px" />
       </nuxt-link>
+
       <layout-right-header />
     </a-layout-header>
 
@@ -35,6 +41,9 @@
 </template>
 
 <script setup>
+import { theme } from 'ant-design-vue'
+const { token } = theme.useToken()
+
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 
 const visible = ref(false)
