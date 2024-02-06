@@ -11,7 +11,9 @@
       }"
     >
       <a-flex justify="space-between" align="center" style="width: 100%">
-        <img src="/logo-text.png" alt="logo" height="40px" />
+        <nuxt-link to="/">
+          <img src="/logo-text.png" alt="logo" height="40px" />
+        </nuxt-link>
 
         <search-box style="width: 40%; max-width: 800px" />
 
@@ -45,6 +47,8 @@
         </a-layout>
       </a-layout>
     </a-layout-content>
+
+    <a-back-top />
   </a-layout>
 </template>
 

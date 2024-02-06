@@ -3,7 +3,8 @@
     <a-page-header title="Settings">
       <a-card>
         <a-tabs v-model:activeKey="activeKey" :tab-position="tabPosition">
-          <a-tab-pane key="profile" tab="Profile">
+          <a-tab-pane key="profile">
+            <template #tab><user-outlined /> Public Profile </template>
             <account-profile />
           </a-tab-pane>
         </a-tabs>

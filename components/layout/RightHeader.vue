@@ -15,7 +15,7 @@
           <a-menu-divider />
 
           <a-menu-item key="/account/settings">
-            <template #icon><setting-outlined /></template> Account Preferences
+            <template #icon><setting-outlined /></template> Settings
           </a-menu-item>
           <a-sub-menu title="Appearance">
             <template #icon>
