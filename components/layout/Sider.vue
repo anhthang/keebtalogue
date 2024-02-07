@@ -4,6 +4,9 @@
     :style="{ height: '100%', background: token.colorBgLayout }"
     @click="onChangeMenu"
   >
+    <a-menu-item key="/"><home-outlined /> <span>Home</span></a-menu-item>
+    <a-menu-divider />
+
     <a-menu-item key="/artisan/maker">
       <usergroup-add-outlined /> <span>Makers</span>
     </a-menu-item>

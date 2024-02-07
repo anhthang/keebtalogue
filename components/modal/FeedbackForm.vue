@@ -22,6 +22,10 @@
         :auto-size="{ minRows: 5 }"
         placeholder="What can we do to make your experience even better?"
       />
+      <template #extra>
+        Please don't include any sensitive information like passwords, or
+        personal details.
+      </template>
     </a-form-item>
 
     <a-form-item>

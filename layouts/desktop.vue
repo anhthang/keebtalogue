@@ -33,7 +33,8 @@
             bottom: 0;
             margin-top: 64px;
           "
-          collapsed
+          breakpoint="xxxl"
+          collapsed-width="80"
         >
           <layout-sider style="height: 100%" />
         </a-layout-sider>

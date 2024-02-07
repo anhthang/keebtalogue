@@ -5,7 +5,7 @@
     </a-button>
 
     <a-dropdown v-if="user.email_verified">
-      <a-avatar :src="user.picture" />
+      <a-avatar :src="user.picture" style="cursor: pointer" />
 
       <template #overlay>
         <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
@@ -14,12 +14,9 @@
           </a-menu-item>
           <a-menu-divider />
 
-          <a-menu-item key="/account/settings">
-            <template #icon><setting-outlined /></template> Settings
-          </a-menu-item>
           <a-sub-menu title="Appearance">
             <template #icon>
-              <icon name="pajamas:appearance" />
+              <desktop-outlined />
             </template>
             <a-menu-item key="system"> System </a-menu-item>
             <a-menu-item key="light"> Light </a-menu-item>
@@ -27,10 +24,13 @@
           </a-sub-menu>
           <a-menu-divider />
 
+          <a-menu-item key="/account/settings">
+            <template #icon><setting-outlined /></template> Settings
+          </a-menu-item>
           <a-menu-item v-if="$device.isMobile" key="feedback">
             <template #icon><message-outlined /></template> Feedback
           </a-menu-item>
-          <a-menu-divider v-if="$device.isMobile" />
+          <a-menu-divider />
 
           <a-menu-item key="logout">
             <template #icon><logout-outlined /></template> Logout
