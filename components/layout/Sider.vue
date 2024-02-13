@@ -8,7 +8,7 @@
     <a-menu-divider />
 
     <a-menu-item key="/artisan/maker">
-      <usergroup-add-outlined /> <span>Makers</span>
+      <team-outlined /> <span>Makers</span>
     </a-menu-item>
     <a-menu-item key="/artisan/collection">
       <book-outlined /> <span>Collections</span>

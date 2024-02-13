@@ -40,7 +40,7 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 <style>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: calc(100vh - 128px); /** minus header & footer */
   display: flex;
   flex-direction: column;
   max-width: 1600px;
