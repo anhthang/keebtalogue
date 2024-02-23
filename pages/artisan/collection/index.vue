@@ -40,8 +40,10 @@
               :title="collection.name"
               :head-style="artisanCardHeadStyle"
             >
-              <template v-if="!collection.published" #extra>
-                <lock-outlined />
+              <template v-if="collection.published" #extra>
+                <a-button type="link" danger>
+                  <unlock-outlined />
+                </a-button>
               </template>
             </a-card>
           </nuxt-link>

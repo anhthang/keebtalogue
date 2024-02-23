@@ -51,7 +51,9 @@
       </a-form-item>
 
       <a-form-item>
-        <a-button @click="onClearFilter"><clear-outlined /> Clear</a-button>
+        <a-button block @click="onClearFilter">
+          <clear-outlined /> Clear
+        </a-button>
       </a-form-item>
     </a-form>
   </a-card>

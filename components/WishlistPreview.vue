@@ -255,8 +255,7 @@ const copyToClipboard = () => {
   }
 
   .ant-divider-inner-text {
-    font-family: 'Bungee Spice', cursive;
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   .trading-card-hide {

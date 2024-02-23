@@ -56,20 +56,4 @@ const sidebarToogle = () => {
 .mobile {
   justify-content: space-between;
 }
-
-.mobile .logo {
-  margin-right: 0;
-}
-
-.logo {
-  height: 100%;
-  font-size: 24px;
-  margin-right: 24px;
-  font-family: 'Bungee Spice', cursive;
-}
-
-.logo img {
-  width: 48px;
-  margin-right: 16px;
-}
 </style>

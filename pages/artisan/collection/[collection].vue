@@ -48,16 +48,18 @@
           </a-button>
         </template>
 
-        <a-row
-          v-if="authenticated && data.published && data.type === 'share'"
-          type="flex"
-        >
+        <a-row v-if="authenticated && data.published" type="flex">
           <a-alert class="alert-banner" banner>
-            <template #message>
+            <template v-if="data.type === 'share'" #message>
               <a-typography-text strong>
                 Public access granted.
               </a-typography-text>
               Anyone with the link will be able to see it.
+            </template>
+            <template v-else #message>
+              <a-typography-text strong> Heads up! </a-typography-text>
+              This collection is listed for buying and selling. It's visible to
+              others on our marketplace.
             </template>
           </a-alert>
         </a-row>
@@ -80,8 +82,11 @@
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
               </template>
-              <template v-if="authenticated" #extra>
-                <delete-outlined @click="removeCap(colorway)" />
+
+              <template #actions>
+                <div @click="removeCap(colorway)">
+                  <delete-outlined /> Remove
+                </div>
               </template>
             </a-card>
           </a-col>
@@ -166,7 +171,7 @@ const removeCap = (clw) => {
   Modal.confirm({
     title: 'Remove Artisan',
     content: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
-    okText: 'Delete',
+    okText: 'Remove',
     okType: 'danger',
     onOk() {
       if (authenticated.value) {
@@ -253,10 +258,6 @@ const editCollection = async () => {
 </script>
 
 <style>
-.anticon-delete:hover svg {
-  fill: #f5222d;
-}
-
 .artisan-container {
   .ant-card-cover {
     height: 250px;

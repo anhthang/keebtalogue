@@ -14,6 +14,12 @@
           </a-menu-item>
           <a-menu-divider />
 
+          <a-menu-item-group key="appearance" title="Appearance">
+            <a-menu-item key="system"> System </a-menu-item>
+            <a-menu-item key="light"> Light </a-menu-item>
+            <a-menu-item key="dark"> Dark </a-menu-item>
+          </a-menu-item-group>
+
           <a-sub-menu title="Appearance">
             <template #icon>
               <desktop-outlined />
