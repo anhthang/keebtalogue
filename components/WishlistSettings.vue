@@ -54,9 +54,7 @@
           v-model:value="tradingConfig.social.discord"
           placeholder="Discord#0000"
         >
-          <template #prefix>
-            <icon name="radix-icons:discord-logo" />
-          </template>
+          <template #prefix><discord-outlined /></template>
         </a-input>
       </a-form-item>
       <a-form-item label="QQ">

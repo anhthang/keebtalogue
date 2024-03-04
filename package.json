@@ -1,7 +1,7 @@
 {
   "name": "keebtalogue",
   "version": "1.0.0",
-  "description": "The next version of [Keeb Catalogue](https://github.com/anhthang/keeb-catalogue) using Nuxt 3 and Ant Design Vue 4",
+  "description": "Driven by a passion for artisan keycaps and keyboards, Keebtalogue is a project designed for enthusiasts like you.",
   "private": true,
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@ant-design-vue/nuxt": "^1.4.1",
+    "@buianhthang/nuxt": "^1.4.2",
     "@nuxt/content": "^2.12.0",
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/color-mode": "^3.3.2",
@@ -59,7 +59,7 @@
     "@types/lodash.orderby": "^4.6.9",
     "@types/lodash.sample": "^4.2.9",
     "@types/lodash.sortby": "^4.7.9",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-vue": "^9.22.0",
@@ -67,5 +67,6 @@
     "nuxt": "^3.10.3",
     "nuxt-icon": "^0.6.8",
     "prettier": "^3.2.5"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }

@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    '@ant-design-vue/nuxt',
+    '@buianhthang/nuxt',
     '@nuxt/content',
     '@nuxtjs/color-mode',
     '@nuxtjs/device',
@@ -40,5 +40,11 @@ export default defineNuxtConfig({
       appDesc: process.env.APP_DESC,
       baseUrl: process.env.BASE_URL,
     },
+  },
+
+  routeRules: {
+    // pages generated on demand once until next deployment, cached on CDN
+    '/about': { isr: true },
+    '/policy': { isr: true },
   },
 })

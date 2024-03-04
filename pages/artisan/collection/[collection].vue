@@ -22,7 +22,7 @@
             type="dashed"
             @click="copyShareUrl"
           >
-            <link-outlined /> Copy Link
+            <link-outlined /> Copy
           </a-button>
 
           <a-dropdown placement="bottomRight">

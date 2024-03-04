@@ -39,9 +39,7 @@
             placeholder="Discord#0000"
             :disabled="discordVerified"
           >
-            <template #prefix>
-              <icon name="radix-icons:discord-logo" />
-            </template>
+            <template #prefix><discord-outlined /></template>
             <template v-if="discordVerified" #suffix>
               <check-circle-outlined
                 v-if="user.email_verified"

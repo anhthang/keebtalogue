@@ -80,9 +80,7 @@
       v-bind="validateInfos.contact"
     >
       <a-input v-model:value="collection.contact">
-        <template #prefix>
-          <icon name="radix-icons:discord-logo" />
-        </template>
+        <template #prefix><discord-outlined /></template>
       </a-input>
       <template #extra>
         <a-typography-text type="warning">

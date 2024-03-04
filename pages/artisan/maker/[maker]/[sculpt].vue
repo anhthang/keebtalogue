@@ -33,12 +33,7 @@
             <edit-outlined /> Edit
           </a-button>
 
-          <a-button
-            v-if="sculpt.href"
-            :href="sculpt.href"
-            target="_blank"
-            type="dashed"
-          >
+          <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank">
             <link-outlined /> Visit
           </a-button>
 

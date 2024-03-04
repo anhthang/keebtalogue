@@ -88,9 +88,7 @@
       label="Discord"
     >
       <a-input v-model:value="maker.discord">
-        <template #prefix>
-          <icon name="radix-icons:discord-logo" />
-        </template>
+        <template #prefix><discord-outlined /></template>
       </a-input>
     </a-form-item>
 

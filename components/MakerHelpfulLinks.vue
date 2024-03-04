@@ -22,10 +22,7 @@
         </a-menu-item>
         <a-menu-item v-if="maker.discord" key="discord">
           <a :href="maker.discord" target="_blank">
-            <span class="anticon anticon-custom-icon">
-              <icon name="radix-icons:discord-logo" />
-            </span>
-            Discord
+            <discord-outlined /> Discord
           </a>
         </a-menu-item>
         <a-menu-item v-if="maker.artisancollector" key="artisancollector">
