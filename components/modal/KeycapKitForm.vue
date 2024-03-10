@@ -28,7 +28,7 @@
           label="Price"
         >
           <a-input-number v-model:value="kit.price">
-            <template #prefix><number-outlined /></template>
+            <template #prefix><tag-outlined /></template>
           </a-input-number>
         </a-form-item>
       </a-col>
