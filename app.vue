@@ -114,10 +114,6 @@ useSeoMeta({
   flex: 1;
 }
 
-.nuxt-icon svg {
-  font-size: 18px;
-}
-
 .ant-typography {
   text-align: justify;
 }

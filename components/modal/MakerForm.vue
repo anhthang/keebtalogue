@@ -99,11 +99,7 @@
       label="Artisan Collector"
     >
       <a-input v-model:value="maker.artisancollector">
-        <template #prefix>
-          <span class="anticon">
-            <icon name="ArtisanCollectorIcon" size="18" />
-          </span>
-        </template>
+        <template #prefix><artisan-collector-outlined /></template>
       </a-input>
     </a-form-item>
 

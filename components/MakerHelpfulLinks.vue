@@ -2,15 +2,7 @@
   <a-dropdown>
     <template #overlay>
       <a-menu>
-        <a-menu-item v-if="isLinktree" key="linktree">
-          <a :href="maker.website" target="_blank">
-            <span class="anticon anticon-custom-icon">
-              <icon name="simple-icons:linktree" />
-            </span>
-            Linktree
-          </a>
-        </a-menu-item>
-        <a-menu-item v-else-if="maker.website" key="website">
+        <a-menu-item v-if="maker.website" key="website">
           <template #icon><global-outlined /></template>
           <a :href="maker.website" target="_blank">Website</a>
         </a-menu-item>
@@ -23,11 +15,7 @@
           <a :href="maker.discord" target="_blank">Discord</a>
         </a-menu-item>
         <a-menu-item v-if="maker.artisancollector" key="artisancollector">
-          <template #icon>
-            <span class="anticon anticon-custom-icon">
-              <icon name="ArtisanCollectorIcon" size="18" />
-            </span>
-          </template>
+          <template #icon><artisan-collector-outlined /></template>
           <a :href="maker.artisancollector" target="_blank">
             Artisan Collector
           </a>
@@ -74,6 +62,5 @@ const { maker } = defineProps({
   },
 })
 
-const isLinktree = maker.website && maker.website.includes('linktr.ee')
 const isMultipleDocs = maker.document_ids.length > 1
 </script>
