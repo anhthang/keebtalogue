@@ -14,32 +14,7 @@
           </a-menu-item>
           <a-menu-divider />
 
-          <!-- <a-menu-item-group key="appearance" title="Appearance">
-            <a-menu-item key="system">
-              <template #icon><desktop-outlined /></template> System
-            </a-menu-item>
-            <a-menu-item key="light">
-              <template #icon><sun-outlined /></template> Light
-            </a-menu-item>
-            <a-menu-item key="dark">
-              <template #icon><moon-outlined /></template> Dark
-            </a-menu-item>
-          </a-menu-item-group> -->
-
-          <a-sub-menu title="Appearance">
-            <template #icon>
-              <desktop-outlined />
-            </template>
-            <a-menu-item key="system">
-              <template #icon><desktop-outlined /></template> System
-            </a-menu-item>
-            <a-menu-item key="light">
-              <template #icon><sun-outlined /></template> Light
-            </a-menu-item>
-            <a-menu-item key="dark">
-              <template #icon><moon-outlined /></template> Dark
-            </a-menu-item>
-          </a-sub-menu>
+          <layout-appearance />
           <a-menu-divider />
 
           <a-menu-item key="/account/settings">
@@ -63,25 +38,12 @@
 
       <template #overlay>
         <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
-          <a-sub-menu title="Appearance">
-            <template #icon>
-              <desktop-outlined />
-            </template>
-            <a-menu-item key="system">
-              <template #icon><desktop-outlined /></template> System
-            </a-menu-item>
-            <a-menu-item key="light">
-              <template #icon><sun-outlined /></template> Light
-            </a-menu-item>
-            <a-menu-item key="dark">
-              <template #icon><moon-outlined /></template> Dark
-            </a-menu-item>
-          </a-sub-menu>
-          <a-menu-divider />
-
           <a-menu-item key="login">
             <template #icon><login-outlined /></template> Login
           </a-menu-item>
+          <a-menu-divider />
+
+          <layout-appearance />
         </a-menu>
       </template>
       <a-button type="link" @click="toggleShowLogin">
