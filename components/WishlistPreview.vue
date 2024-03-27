@@ -69,17 +69,20 @@
       >
         <template #item="{ element }">
           <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-            <a-card
-              :title="colorwayTitle(element)"
-              :bordered="false"
-              :head-style="artisanCardHeadStyle"
-            >
+            <a-card>
               <template #cover>
                 <img loading="lazy" :alt="element.name" :src="element.img" />
               </template>
-              <template #extra>
-                <delete-outlined @click="removeCap(element, 'want')" />
+              <template #actions>
+                <div @click="removeCap(element, 'want')">
+                  <delete-outlined /> Remove
+                </div>
               </template>
+
+              <a-card-meta
+                :title="colorwayTitle(element)"
+                style="text-align: center"
+              />
             </a-card>
           </a-col>
         </template>
@@ -97,17 +100,20 @@
       >
         <template #item="{ element }">
           <a-col :key="element.id" :xs="12" :md="8" :xl="6">
-            <a-card
-              :title="colorwayTitle(element)"
-              :bordered="false"
-              :head-style="artisanCardHeadStyle"
-            >
+            <a-card>
               <template #cover>
                 <img loading="lazy" :alt="element.name" :src="element.img" />
               </template>
-              <template #extra>
-                <delete-outlined @click="removeCap(element, 'have')" />
+              <template #actions>
+                <div @click="removeCap(element, 'have')">
+                  <delete-outlined /> Remove
+                </div>
               </template>
+
+              <a-card-meta
+                :title="colorwayTitle(element)"
+                style="text-align: center"
+              />
             </a-card>
           </a-col>
         </template>
@@ -177,12 +183,12 @@ const screenshot = async (download = false) => {
 
   // hide some items for rendering
   const cardHead = card.getElementsByClassName('ant-card-head')[0]
-  const bodyExtras = card
+  const bodyActions = card
     .getElementsByClassName('ant-card-body')[0]
-    .getElementsByClassName('ant-card-extra')
+    .getElementsByClassName('ant-card-actions')
 
   cardHead.classList.add('trading-card-hide')
-  bodyExtras.forEach((ex) => {
+  bodyActions.forEach((ex) => {
     ex.classList.add('trading-card-hide')
   })
 
@@ -198,7 +204,7 @@ const screenshot = async (download = false) => {
 
   // revert
   cardHead.classList.remove('trading-card-hide')
-  bodyExtras.forEach((ex) => {
+  bodyActions.forEach((ex) => {
     ex.classList.remove('trading-card-hide')
   })
 }
@@ -247,12 +253,6 @@ const copyToClipboard = () => {
 <style>
 .trading-preview {
   height: 100%;
-
-  .ant-card-extra {
-    button {
-      margin-left: 0.5rem;
-    }
-  }
 
   .ant-divider-inner-text {
     font-size: 3rem;

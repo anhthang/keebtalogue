@@ -86,7 +86,7 @@
         </a-flex>
 
         <a-modal
-          v-model:open="showEditMaker"
+          v-model:open="visible.edit"
           title="Edit Maker"
           destroy-on-close
           :confirm-loading="confirmLoading"
@@ -97,7 +97,7 @@
         </a-modal>
 
         <a-modal
-          v-model:open="showAddSale"
+          v-model:open="visible.add_sale"
           title="Add Upcoming Sale"
           destroy-on-close
           :confirm-loading="confirmLoading"
@@ -121,8 +121,10 @@ const userStore = useUserStore()
 const { isEditor } = storeToRefs(userStore)
 
 const route = useRoute()
-const showEditMaker = ref(false)
-const showAddSale = ref(false)
+const visible = ref({
+  edit: false,
+  add_sale: false,
+})
 
 const {
   data: maker,
@@ -144,7 +146,7 @@ useSeoMeta({
 })
 
 const showEditMakerModal = () => {
-  showEditMaker.value = !showEditMaker.value
+  visible.value.edit = !visible.value.edit
 }
 
 const confirmLoading = ref(false)
@@ -166,7 +168,7 @@ const updateMakerProfile = async () => {
 }
 
 const showAddSaleModal = () => {
-  showAddSale.value = !showAddSale.value
+  visible.value.add_sale = !visible.value.add_sale
 }
 
 const saleForm = ref()
@@ -211,7 +213,7 @@ const getFlagEmoji = (isoCode) => {
 
 <style>
 .artisan-container {
-  .ant-card-meta-description {
+  .ant-card-meta-title {
     text-align: center;
   }
 

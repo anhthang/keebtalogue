@@ -112,7 +112,7 @@
         </a-row>
 
         <a-modal
-          v-model:open="showEditSculpt"
+          v-model:open="visible.edit"
           title="Edit Sculpt"
           destroy-on-close
           :confirm-loading="confirmLoading"
@@ -127,7 +127,7 @@
         </a-modal>
 
         <a-modal
-          v-model:open="showAddNewColorway"
+          v-model:open="visible.add"
           :title="
             selectedColorway && selectedColorway.name
               ? `Edit ${colorwayTitle}`
@@ -144,7 +144,7 @@
         </a-modal>
 
         <a-modal
-          v-model:open="showColorwayCard"
+          v-model:open="visible.card"
           class="colorway-card"
           :width="isShowAsMeta ? '512px' : '1024px'"
           :closable="false"
@@ -233,10 +233,15 @@ const colorways = computed(() => {
 
 const confirmLoading = ref(false)
 
+const visible = ref({
+  edit: false,
+  add: false,
+  card: false,
+})
+
 // edit sculpt
-const showEditSculpt = ref(false)
 const showEditSculptModal = () => {
-  showEditSculpt.value = !showEditSculpt.value
+  visible.value.edit = !visible.value.edit
 }
 
 const sculptForm = ref()
@@ -254,9 +259,8 @@ const updateSculptProfile = async () => {
  * New colorway submission
  * Currently, just add/update colorway description
  */
-const showAddNewColorway = ref(false)
 const showAddColorwayModal = () => {
-  showAddNewColorway.value = !showAddNewColorway.value
+  visible.value.add = !visible.value.add
 }
 
 const colorwayForm = ref()
@@ -276,11 +280,10 @@ const newColorwaySubmission = async () => {
 }
 
 // show colorway card popup
-const showColorwayCard = ref(false)
 const selectedColorway = ref({})
 
 const showColorwayCardModal = (clw) => {
-  showColorwayCard.value = !showColorwayCard.value
+  visible.value.card = !visible.value.card
   selectedColorway.value = clw
   selectedColorway.value.sculpt_name = sculpt.value.name
 }

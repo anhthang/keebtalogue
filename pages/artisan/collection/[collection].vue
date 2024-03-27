@@ -74,11 +74,7 @@
             :lg="6"
             :xl="4"
           >
-            <a-card
-              hoverable
-              :title="colorwayTitle(colorway)"
-              :head-style="artisanCardHeadStyle"
-            >
+            <a-card hoverable>
               <template #cover>
                 <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
               </template>
@@ -88,6 +84,8 @@
                   <delete-outlined /> Remove
                 </div>
               </template>
+
+              <a-card-meta :title="colorwayTitle(colorway)" />
             </a-card>
           </a-col>
         </a-row>

@@ -51,12 +51,12 @@
       </a-button>
     </a-dropdown>
 
-    <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
+    <a-modal v-model:open="visible.login" destroy-on-close :footer="null">
       <modal-login />
     </a-modal>
 
     <a-modal
-      v-model:open="showFeedback"
+      v-model:open="visible.feedback"
       title="Share your thoughts!"
       destroy-on-close
       ok-text="Send Feedback"
@@ -76,9 +76,13 @@ const { user } = storeToRefs(userStore)
 
 const client = useSupabaseClient()
 
-const showFeedback = ref(false)
+const visible = ref({
+  feedback: false,
+  login: false,
+})
+
 const toggleShowFeedback = () => {
-  showFeedback.value = !showFeedback.value
+  visible.value.feedback = !visible.value.feedback
 }
 
 const feedbackForm = ref()
@@ -96,9 +100,8 @@ const addFeedback = async () => {
     })
 }
 
-const showLoginModal = ref(false)
 const toggleShowLogin = () => {
-  showLoginModal.value = !showLoginModal.value
+  visible.value.login = !visible.value.login
 }
 
 const logout = async () => {

@@ -49,7 +49,7 @@
           </a-list-item>
         </template>
 
-        <a-modal v-model:open="showLoginModal" destroy-on-close :footer="null">
+        <a-modal v-model:open="visible" destroy-on-close :footer="null">
           <modal-login />
         </a-modal>
       </a-list>
@@ -86,9 +86,9 @@ const trades = computed(() => {
   return type === 'any' ? data.value : data.value.filter((i) => i.type === type)
 })
 
-const showLoginModal = ref(false)
+const visible = ref(false)
 const toggleShowLogin = () => {
-  showLoginModal.value = !showLoginModal.value
+  visible.value = !visible.value
 }
 </script>
 
