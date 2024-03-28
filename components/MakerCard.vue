@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
-    <a-card hoverable :title="maker.name" :head-style="artisanCardHeadStyle">
+    <a-card hoverable :title="maker.name" :head-style="{ textAlign: 'center' }">
       <template v-if="authenticated" #extra>
         <pushpin-filled
           v-if="favorite"

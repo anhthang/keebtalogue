@@ -28,7 +28,7 @@
           </a-typography-paragraph>
         </a-typography>
 
-        <a-row :gutter="[8, 8]" type="flex">
+        <a-row :gutter="[16, 16]" type="flex">
           <a-col
             v-for="keycap in data.keycaps"
             :key="keycap.id"
@@ -39,7 +39,7 @@
             :xl="6"
           >
             <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
-              <a-card hoverable :head-style="artisanCardHeadStyle">
+              <a-card hoverable>
                 <template #cover>
                   <img
                     loading="lazy"

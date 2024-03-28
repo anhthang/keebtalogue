@@ -46,7 +46,7 @@
           </a-typography-paragraph>
         </a-typography>
 
-        <a-row :gutter="[8, 8]" type="flex">
+        <a-row :gutter="[16, 16]" type="flex">
           <a-col
             v-for="sculpt in maker.sculpts"
             :key="sculpt.id"
@@ -57,14 +57,11 @@
             :xl="4"
           >
             <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
-              <a-card
-                hoverable
-                :title="sculpt.name"
-                :head-style="artisanCardHeadStyle"
-              >
+              <a-card hoverable>
                 <template #cover>
                   <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
                 </template>
+                <a-card-meta :title="sculpt.name" />
               </a-card>
             </nuxt-link>
           </a-col>

@@ -11,7 +11,7 @@
       </a-input>
     </a-form-item>
 
-    <a-row :gutter="8">
+    <a-row :gutter="[8, 8]">
       <a-col :xs="24" :md="12">
         <a-form-item
           ref="nationality"

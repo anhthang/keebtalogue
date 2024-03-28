@@ -74,7 +74,7 @@
           </a-descriptions-item>
         </a-descriptions>
 
-        <a-row :gutter="[8, 8]" type="flex">
+        <a-row :gutter="[16, 16]" type="flex">
           <a-col
             v-for="colorway in colorways"
             :key="colorway.colorway_id"
@@ -84,12 +84,8 @@
             :lg="6"
             :xl="4"
           >
-            <a-card
-              hoverable
-              :title="colorway.name || '-'"
-              :head-style="artisanCardHeadStyle"
-            >
-              <template #extra>
+            <a-card hoverable>
+              <!-- <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
                   :style="{ color: 'palevioletred' }"
@@ -98,7 +94,7 @@
                   v-if="colorway.giveaway"
                   :style="{ color: 'goldenrod' }"
                 />
-              </template>
+              </template> -->
               <template #cover>
                 <img
                   loading="lazy"
@@ -107,6 +103,8 @@
                   @click="showColorwayCardModal(colorway)"
                 />
               </template>
+
+              <a-card-meta :title="colorway.name || '-'" />
             </a-card>
           </a-col>
         </a-row>

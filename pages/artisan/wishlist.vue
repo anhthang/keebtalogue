@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <a-page-header v-if="$device.isDesktop" title="Wishlist">
-      <a-row :gutter="[8, 8]" type="flex">
+      <a-row :gutter="[16, 16]" type="flex">
         <a-alert class="alert-banner" banner>
           <template #message>
             <a-typography-text strong> Attention: </a-typography-text>

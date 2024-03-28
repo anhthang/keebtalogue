@@ -27,7 +27,7 @@
 
         <a-row
           v-if="authenticated && favoriteMakers.length"
-          :gutter="[8, 8]"
+          :gutter="[16, 16]"
           type="flex"
         >
           <a-col
@@ -50,7 +50,7 @@
           Others
         </a-divider>
 
-        <a-row :gutter="[8, 8]" type="flex">
+        <a-row :gutter="[16, 16]" type="flex">
           <a-col
             v-for="maker in currentPageMakers"
             :key="maker.id"
