@@ -3,14 +3,16 @@
     <a-typography-title :level="2">Welcome back</a-typography-title>
 
     <a-flex vertical gap="small">
-      <a-button block @click="login('google')">
+      <a-button size="large" block @click="login('google')">
         <a-flex gap="small" justify="center" align="center">
-          <google-square-filled style="color: #ea4335" /> Continue with Google
+          <google-square-filled style="color: #ea4335; font-size: 20px" />
+          Continue with Google
         </a-flex>
       </a-button>
-      <a-button block @click="login('discord')">
+      <a-button size="large" block @click="login('discord')">
         <a-flex gap="small" justify="center" align="center">
-          <discord-filled style="color: #5865f2" /> Continue with Discord
+          <discord-filled style="color: #5865f2; font-size: 20px" />
+          Continue with Discord
         </a-flex>
       </a-button>
     </a-flex>
