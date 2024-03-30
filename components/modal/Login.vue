@@ -1,6 +1,28 @@
 <template>
   <a-flex vertical gap="large">
-    <a-typography-title :level="2">Welcome back</a-typography-title>
+    <a-typography-title
+      :level="2"
+      style="
+        background-image: linear-gradient(
+          74deg,
+          var(--color-text-gradient-stop-1) 0,
+          var(--color-text-gradient-stop-2) 9%,
+          var(--color-text-gradient-stop-3) 20%,
+          var(--color-text-gradient-stop-3) 24%,
+          var(--color-text-gradient-stop-2) 35%,
+          var(--color-text-gradient-stop-1) 44%,
+          var(--color-text-gradient-stop-2) 50%,
+          var(--color-text-gradient-stop-3) 56%,
+          var(--color-surface) 75%,
+          var(--color-surface) 100%
+        );
+        background-size: 100%;
+        color: transparent;
+        background-clip: text;
+      "
+    >
+      Welcome back
+    </a-typography-title>
 
     <a-flex vertical gap="small">
       <a-button size="large" block @click="login('google')">

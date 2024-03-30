@@ -38,6 +38,13 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 </script>
 
 <style>
+:root {
+  --color-text-gradient-stop-1: #4285f4;
+  --color-text-gradient-stop-2: #9b72cb;
+  --color-text-gradient-stop-3: #d96570;
+  --color-surface: #fff;
+}
+
 .container {
   margin: 0 auto;
   min-height: calc(100vh - 128px); /** minus header & footer */

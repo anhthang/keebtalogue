@@ -80,17 +80,14 @@
           </a-col>
         </a-row>
 
-        <a-flex
-          v-if="data.count > size"
-          justify="center"
-          style="margin-top: 16px"
-        >
+        <a-flex justify="center" style="margin-top: 16px">
           <a-pagination
             v-model:current="page"
             :total="data.count"
             :page-size="size"
             :show-size-changer="false"
             :show-quick-jumper="data.count > size * 10"
+            hide-on-single-page
           />
         </a-flex>
 

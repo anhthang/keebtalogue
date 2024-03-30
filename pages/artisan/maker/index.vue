@@ -64,17 +64,14 @@
           </a-col>
         </a-row>
 
-        <a-flex
-          v-if="otherMakers.length > size"
-          justify="center"
-          style="margin-top: 16px"
-        >
+        <a-flex justify="center" style="margin-top: 16px">
           <a-pagination
             v-model:current="page"
             :total="otherMakers.length"
             :page-size="size"
             :show-size-changer="false"
             :show-quick-jumper="otherMakers.length > size * 10"
+            hide-on-single-page
           />
         </a-flex>
       </a-page-header>
