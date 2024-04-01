@@ -1,116 +1,111 @@
 <template>
-  <div class="container artisan-container">
-    <a-spin :spinning="pending">
-      <a-page-header
-        v-if="maker"
-        :title="maker.name"
-        :avatar="{
-          src: `/logo/${maker.id}.png`,
-          shape: 'square',
-          class:
-            maker.invertible_logo && $colorMode.value === 'dark'
-              ? 'invertible-logo'
-              : '',
-        }"
+  <a-spin :spinning="pending">
+    <a-page-header
+      v-if="maker"
+      class="container artisan-container"
+      :title="maker.name"
+      :avatar="{
+        src: `/logo/${maker.id}.png`,
+        shape: 'square',
+        class:
+          maker.invertible_logo && $colorMode.value === 'dark'
+            ? 'invertible-logo'
+            : '',
+      }"
+    >
+      <template #breadcrumb>
+        <a-breadcrumb>
+          <a-breadcrumb-item> Artisan </a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+      </template>
+
+      <template v-if="maker.nationality" #tags>
+        {{ getFlagEmoji(maker.nationality) }}
+      </template>
+
+      <template #extra>
+        <a-button v-if="isEditor" key="edit" @click="showEditMakerModal">
+          <edit-outlined /> Edit
+        </a-button>
+        <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
+          <calendar-outlined /> Sales
+        </a-button>
+
+        <maker-helpful-links :maker="maker" />
+      </template>
+
+      <a-typography v-if="maker.intro">
+        <a-typography-paragraph
+          v-for="(line, idx) in maker.intro.split('\n')"
+          :key="idx"
+        >
+          {{ line }}
+        </a-typography-paragraph>
+      </a-typography>
+
+      <a-row :gutter="[16, 16]" type="flex">
+        <a-col
+          v-for="sculpt in maker.sculpts"
+          :key="sculpt.id"
+          :xs="12"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
+        >
+          <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
+            <a-card hoverable>
+              <template #cover>
+                <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
+              </template>
+              <a-card-meta :title="sculpt.name" />
+            </a-card>
+          </nuxt-link>
+        </a-col>
+      </a-row>
+
+      <a-flex justify="space-between" align="center" style="margin-top: 48px">
+        <a-avatar-group class="contributors">
+          <a-tooltip
+            v-for="contributor in maker.contributors"
+            :key="contributor.name"
+            :title="contributor.name"
+          >
+            <a-avatar :alt="contributor.name" :src="contributor.picture" />
+          </a-tooltip>
+        </a-avatar-group>
+        <span>
+          Last updated: {{ new Date(maker.updated_at).toDateString() }}
+        </span>
+      </a-flex>
+
+      <a-modal
+        v-model:open="visible.edit"
+        title="Edit Maker"
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        ok-text="Save"
+        @ok="updateMakerProfile"
       >
-        <template #breadcrumb>
-          <a-breadcrumb>
-            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
-            </a-breadcrumb-item>
-          </a-breadcrumb>
-        </template>
+        <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
+      </a-modal>
 
-        <template v-if="maker.nationality" #tags>
-          {{ getFlagEmoji(maker.nationality) }}
-        </template>
+      <a-modal
+        v-model:open="visible.add_sale"
+        title="Add Upcoming Sale"
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        @ok="addUpcomingSale"
+      >
+        <modal-sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
+      </a-modal>
+    </a-page-header>
 
-        <template #extra>
-          <a-button v-if="isEditor" key="edit" @click="showEditMakerModal">
-            <edit-outlined /> Edit
-          </a-button>
-          <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
-            <calendar-outlined /> Sales
-          </a-button>
-
-          <maker-helpful-links :maker="maker" />
-        </template>
-
-        <a-typography v-if="maker.intro">
-          <a-typography-paragraph
-            v-for="(line, idx) in maker.intro.split('\n')"
-            :key="idx"
-          >
-            {{ line }}
-          </a-typography-paragraph>
-        </a-typography>
-
-        <a-row :gutter="[16, 16]" type="flex">
-          <a-col
-            v-for="sculpt in maker.sculpts"
-            :key="sculpt.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
-              <a-card hoverable>
-                <template #cover>
-                  <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
-                </template>
-                <a-card-meta :title="sculpt.name" />
-              </a-card>
-            </nuxt-link>
-          </a-col>
-        </a-row>
-
-        <a-flex justify="space-between" align="center" style="margin-top: 48px">
-          <a-avatar-group class="contributors">
-            <a-tooltip
-              v-for="contributor in maker.contributors"
-              :key="contributor.name"
-              :title="contributor.name"
-            >
-              <a-avatar :alt="contributor.name" :src="contributor.picture" />
-            </a-tooltip>
-          </a-avatar-group>
-          <span>
-            Last updated: {{ new Date(maker.updated_at).toDateString() }}
-          </span>
-        </a-flex>
-
-        <a-modal
-          v-model:open="visible.edit"
-          title="Edit Maker"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          ok-text="Save"
-          @ok="updateMakerProfile"
-        >
-          <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
-        </a-modal>
-
-        <a-modal
-          v-model:open="visible.add_sale"
-          title="Add Upcoming Sale"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="addUpcomingSale"
-        >
-          <modal-sale-form
-            ref="saleForm"
-            :is-edit="true"
-            :metadata="sculptLst"
-          />
-        </a-modal>
-      </a-page-header>
-
-      <back-to-artisan-makers v-else />
-    </a-spin>
-  </div>
+    <back-to-artisan-makers v-else />
+  </a-spin>
 </template>
 
 <script setup>

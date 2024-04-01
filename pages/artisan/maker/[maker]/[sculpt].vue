@@ -1,91 +1,94 @@
 <template>
-  <div class="container artisan-container">
-    <a-spin :spinning="pending">
-      <a-page-header v-if="sculpt" :title="sculpt.name">
-        <template #breadcrumb>
-          <a-breadcrumb>
-            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
-            </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
-                {{ sculpt.maker_name }}
-              </nuxt-link>
-            </a-breadcrumb-item>
-          </a-breadcrumb>
-        </template>
+  <a-spin :spinning="pending">
+    <a-page-header
+      v-if="sculpt"
+      :title="sculpt.name"
+      class="container artisan-container"
+    >
+      <template #breadcrumb>
+        <a-breadcrumb>
+          <a-breadcrumb-item> Artisan </a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
+              {{ sculpt.maker_name }}
+            </nuxt-link>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+      </template>
 
-        <template v-if="sculpt.release" #subTitle>
-          {{ sculpt.release }}
-        </template>
-        <template #extra>
-          <!-- <a-button
-            v-if="isEditor"
-            key="submission"
-            type="primary"
-            @click="showAddColorwayModal"
-          >
-            <file-add-outlined /> Add
-          </a-button> -->
+      <template v-if="sculpt.release" #subTitle>
+        {{ sculpt.release }}
+      </template>
+      <template #extra>
+        <!-- <a-button
+          v-if="isEditor"
+          key="submission"
+          type="primary"
+          @click="showAddColorwayModal"
+        >
+          <file-add-outlined /> Add
+        </a-button> -->
 
-          <a-button v-if="isEditor" @click="showEditSculptModal">
-            <edit-outlined /> Edit
-          </a-button>
+        <a-button v-if="isEditor" @click="showEditSculptModal">
+          <edit-outlined /> Edit
+        </a-button>
 
-          <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank">
-            <link-outlined /> Visit
-          </a-button>
+        <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank">
+          <link-outlined /> Visit
+        </a-button>
 
-          <a-select v-model:value="sort">
-            <a-select-option value="name|asc">
-              <sort-ascending-outlined /> Name (A-Z)
-            </a-select-option>
-            <a-select-option value="name|desc">
-              <sort-descending-outlined /> Name (Z-A)
-            </a-select-option>
-            <a-select-option value="order|asc">
-              <ordered-list-outlined /> Oldest First
-            </a-select-option>
-            <a-select-option value="order|desc">
-              <ordered-list-outlined /> Newest First
-            </a-select-option>
-          </a-select>
-        </template>
+        <a-select v-model:value="sort">
+          <a-select-option value="name|asc">
+            <sort-ascending-outlined /> Name (A-Z)
+          </a-select-option>
+          <a-select-option value="name|desc">
+            <sort-descending-outlined /> Name (Z-A)
+          </a-select-option>
+          <a-select-option value="order|asc">
+            <ordered-list-outlined /> Oldest First
+          </a-select-option>
+          <a-select-option value="order|desc">
+            <ordered-list-outlined /> Newest First
+          </a-select-option>
+        </a-select>
+      </template>
 
-        <a-typography v-if="sculpt.story">
-          <a-typography-paragraph
-            v-for="(line, idx) in sculpt.story.split('\n')"
-            :key="idx"
-          >
-            {{ line }}
-          </a-typography-paragraph>
-        </a-typography>
+      <a-typography v-if="sculpt.story">
+        <a-typography-paragraph
+          v-for="(line, idx) in sculpt.story.split('\n')"
+          :key="idx"
+        >
+          {{ line }}
+        </a-typography-paragraph>
+      </a-typography>
 
-        <a-descriptions>
-          <a-descriptions-item v-if="sculpt.profile" label="Profile">
-            {{ sculpt.profile }}
-          </a-descriptions-item>
-          <a-descriptions-item v-if="sculpt.design" label="Design">
-            {{ sculpt.design }}
-          </a-descriptions-item>
-          <a-descriptions-item v-if="sculpt.cast" label="Cast">
-            {{ sculpt.cast }}
-          </a-descriptions-item>
-        </a-descriptions>
+      <a-descriptions>
+        <a-descriptions-item v-if="sculpt.profile" label="Profile">
+          {{ sculpt.profile }}
+        </a-descriptions-item>
+        <a-descriptions-item v-if="sculpt.design" label="Design">
+          {{ sculpt.design }}
+        </a-descriptions-item>
+        <a-descriptions-item v-if="sculpt.cast" label="Cast">
+          {{ sculpt.cast }}
+        </a-descriptions-item>
+      </a-descriptions>
 
-        <a-row :gutter="[16, 16]" type="flex">
-          <a-col
-            v-for="colorway in colorways"
-            :key="colorway.colorway_id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <a-card hoverable>
-              <!-- <template #extra>
+      <a-row :gutter="[16, 16]" type="flex">
+        <a-col
+          v-for="colorway in colorways"
+          :key="colorway.colorway_id"
+          :xs="12"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
+        >
+          <a-card hoverable>
+            <!-- <template #extra>
                 <bg-colors-outlined
                   v-if="colorway.commissioned"
                   :style="{ color: 'palevioletred' }"
@@ -95,71 +98,67 @@
                   :style="{ color: 'goldenrod' }"
                 />
               </template> -->
-              <template #cover>
-                <img
-                  loading="lazy"
-                  :alt="colorway.name"
-                  :src="colorway.img"
-                  @click="showColorwayCardModal(colorway)"
-                />
-              </template>
+            <template #cover>
+              <img
+                loading="lazy"
+                :alt="colorway.name"
+                :src="colorway.img"
+                @click="showColorwayCardModal(colorway)"
+              />
+            </template>
 
-              <a-card-meta :title="colorway.name || '-'" />
-            </a-card>
-          </a-col>
-        </a-row>
+            <a-card-meta :title="colorway.name || '-'" />
+          </a-card>
+        </a-col>
+      </a-row>
 
-        <a-modal
-          v-model:open="visible.edit"
-          title="Edit Sculpt"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          ok-text="Save"
-          @ok="updateSculptProfile"
-        >
-          <modal-sculpt-form
-            ref="sculptForm"
-            :is-edit="true"
-            :metadata="sculpt"
-          />
-        </a-modal>
+      <a-modal
+        v-model:open="visible.edit"
+        title="Edit Sculpt"
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        ok-text="Save"
+        @ok="updateSculptProfile"
+      >
+        <modal-sculpt-form
+          ref="sculptForm"
+          :is-edit="true"
+          :metadata="sculpt"
+        />
+      </a-modal>
 
-        <a-modal
-          v-model:open="visible.add"
-          :title="
-            selectedColorway && selectedColorway.name
-              ? `Edit ${colorwayTitle}`
-              : 'Add Colorway'
-          "
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="newColorwaySubmission"
-        >
-          <modal-colorway-form
-            ref="colorwayForm"
-            :metadata="selectedColorway"
-          />
-        </a-modal>
+      <a-modal
+        v-model:open="visible.add"
+        :title="
+          selectedColorway && selectedColorway.name
+            ? `Edit ${colorwayTitle}`
+            : 'Add Colorway'
+        "
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        @ok="newColorwaySubmission"
+      >
+        <modal-colorway-form ref="colorwayForm" :metadata="selectedColorway" />
+      </a-modal>
 
-        <a-modal
-          v-model:open="visible.card"
-          class="colorway-card"
-          :width="isShowAsMeta ? '512px' : '1024px'"
-          :closable="false"
-          destroy-on-close
-          :footer="null"
-          ok-text="Save"
-        >
-          <modal-colorway-card
-            :colorway="selectedColorway"
-            @edit-colorway="toggleEditColorway"
-          />
-        </a-modal>
-      </a-page-header>
+      <a-modal
+        v-model:open="visible.card"
+        class="colorway-card"
+        :width="isShowAsMeta ? '512px' : '1024px'"
+        :closable="false"
+        destroy-on-close
+        :footer="null"
+        ok-text="Save"
+      >
+        <modal-colorway-card
+          :colorway="selectedColorway"
+          @edit-colorway="toggleEditColorway"
+        />
+      </a-modal>
+    </a-page-header>
 
-      <back-to-artisan-makers v-else />
-    </a-spin>
-  </div>
+    <back-to-artisan-makers v-else />
+  </a-spin>
 </template>
 
 <script setup>

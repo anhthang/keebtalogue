@@ -1,31 +1,29 @@
 <template>
-  <div class="container">
-    <a-page-header title="Calendar">
-      <a-result
-        v-if="isMobile"
-        status="warning"
-        sub-title="Calendar is not compatible for your device. Please use tablet or desktop."
-      >
-        <template #extra>
-          <nuxt-link to="/artisan/maker">
-            <a-button type="primary"> Go Artisan Makers </a-button>
-          </nuxt-link>
+  <a-page-header title="Calendar" class="container">
+    <a-result
+      v-if="isMobile"
+      status="warning"
+      sub-title="Calendar is not compatible for your device. Please use tablet or desktop."
+    >
+      <template #extra>
+        <nuxt-link to="/artisan/maker">
+          <a-button type="primary"> Go Artisan Makers </a-button>
+        </nuxt-link>
+      </template>
+    </a-result>
+    <a-spin v-else :spinning="pending">
+      <a-calendar v-model:value="currentDate" @change="onChange">
+        <template #dateCellRender="{ current }">
+          <a-badge
+            v-for="sale in salesOnCell(current)"
+            :key="sale.maker_id"
+            :status="sale.type"
+            :text="`${sale.maker.name} - ${sale.sculpt_name} - ${sale.title}`"
+          />
         </template>
-      </a-result>
-      <a-spin v-else :spinning="pending">
-        <a-calendar v-model:value="currentDate" @change="onChange">
-          <template #dateCellRender="{ current }">
-            <a-badge
-              v-for="sale in salesOnCell(current)"
-              :key="sale.maker_id"
-              :status="sale.type"
-              :text="`${sale.maker.name} - ${sale.sculpt_name} - ${sale.title}`"
-            />
-          </template>
-        </a-calendar>
-      </a-spin>
-    </a-page-header>
-  </div>
+      </a-calendar>
+    </a-spin>
+  </a-page-header>
 </template>
 
 <script setup>

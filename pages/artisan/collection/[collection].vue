@@ -1,112 +1,112 @@
 <template>
-  <div class="container artisan-container">
-    <a-spin :spinning="false">
-      <a-page-header v-if="data" :title="data.name || 'Colllection'">
-        <template #breadcrumb>
-          <a-breadcrumb>
-            <a-breadcrumb-item> Artisan </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <nuxt-link to="/artisan/collection"> Collection </nuxt-link>
-            </a-breadcrumb-item>
-          </a-breadcrumb>
-        </template>
+  <a-spin :spinning="false">
+    <a-page-header
+      v-if="data"
+      :title="data.name || 'Colllection'"
+      class="container artisan-container"
+    >
+      <template #breadcrumb>
+        <a-breadcrumb>
+          <a-breadcrumb-item> Artisan </a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <nuxt-link to="/artisan/collection"> Collection </nuxt-link>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+      </template>
 
-        <template #subTitle>
-          <a-tag v-if="data.published">Public</a-tag>
-          <a-tag v-else>Private</a-tag>
-        </template>
+      <template #subTitle>
+        <a-tag v-if="data.published">Public</a-tag>
+        <a-tag v-else>Private</a-tag>
+      </template>
 
-        <template #extra>
-          <a-button
-            v-if="authenticated && data.published && data.type === 'share'"
-            type="dashed"
-            @click="copyShareUrl"
-          >
-            <link-outlined /> Copy
-          </a-button>
-
-          <a-dropdown placement="bottomRight">
-            <template #overlay>
-              <a-menu @click="onChangeSortType">
-                <a-menu-item key="sculpt_name"> Sort by Sculpt </a-menu-item>
-                <a-menu-item key="name"> Sort by Colorway </a-menu-item>
-              </a-menu>
-            </template>
-            <a-button><sort-ascending-outlined /> Sort</a-button>
-          </a-dropdown>
-
-          <a-button v-if="authenticated" @click="toggleShowEdit">
-            <edit-outlined /> Edit
-          </a-button>
-
-          <a-button
-            v-if="user.email_verified"
-            danger
-            @click="deleteCollection(data)"
-          >
-            <delete-outlined /> Delete
-          </a-button>
-        </template>
-
-        <a-row v-if="authenticated && data.published" type="flex">
-          <a-alert class="alert-banner" banner>
-            <template v-if="data.type === 'share'" #message>
-              <a-typography-text strong>
-                Public access granted.
-              </a-typography-text>
-              Anyone with the link will be able to see it.
-            </template>
-            <template v-else #message>
-              <a-typography-text strong> Heads up! </a-typography-text>
-              This collection is listed for buying and selling. It's visible to
-              others on our marketplace.
-            </template>
-          </a-alert>
-        </a-row>
-
-        <a-row :gutter="[16, 16]" type="flex">
-          <a-col
-            v-for="colorway in sortedCollections"
-            :key="colorway.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <a-card hoverable>
-              <template #cover>
-                <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
-              </template>
-
-              <template #actions>
-                <div @click="removeCap(colorway)">
-                  <delete-outlined /> Remove
-                </div>
-              </template>
-
-              <a-card-meta :title="colorwayTitle(colorway)" />
-            </a-card>
-          </a-col>
-        </a-row>
-
-        <a-modal
-          v-model:open="visible"
-          title="Edit Collection"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          @ok="editCollection"
+      <template #extra>
+        <a-button
+          v-if="authenticated && data.published && data.type === 'share'"
+          type="dashed"
+          @click="copyShareUrl"
         >
-          <modal-collection-form
-            ref="collectionForm"
-            :metadata="data"
-            :uid="user.uid"
-            :is-edit="true"
-          />
-        </a-modal>
-      </a-page-header>
-    </a-spin>
-  </div>
+          <link-outlined /> Copy
+        </a-button>
+
+        <a-dropdown placement="bottomRight">
+          <template #overlay>
+            <a-menu @click="onChangeSortType">
+              <a-menu-item key="sculpt_name"> Sort by Sculpt </a-menu-item>
+              <a-menu-item key="name"> Sort by Colorway </a-menu-item>
+            </a-menu>
+          </template>
+          <a-button><sort-ascending-outlined /> Sort</a-button>
+        </a-dropdown>
+
+        <a-button v-if="authenticated" @click="toggleShowEdit">
+          <edit-outlined /> Edit
+        </a-button>
+
+        <a-button
+          v-if="user.email_verified"
+          danger
+          @click="deleteCollection(data)"
+        >
+          <delete-outlined /> Delete
+        </a-button>
+      </template>
+
+      <a-row v-if="authenticated && data.published" type="flex">
+        <a-alert class="alert-banner" banner>
+          <template v-if="data.type === 'share'" #message>
+            <a-typography-text strong>
+              Public access granted.
+            </a-typography-text>
+            Anyone with the link will be able to see it.
+          </template>
+          <template v-else #message>
+            <a-typography-text strong> Heads up! </a-typography-text>
+            This collection is listed for buying and selling. It's visible to
+            others on our marketplace.
+          </template>
+        </a-alert>
+      </a-row>
+
+      <a-row :gutter="[16, 16]" type="flex">
+        <a-col
+          v-for="colorway in sortedCollections"
+          :key="colorway.id"
+          :xs="12"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
+        >
+          <a-card hoverable>
+            <template #cover>
+              <img loading="lazy" :alt="colorway.name" :src="colorway.img" />
+            </template>
+
+            <template #actions>
+              <div @click="removeCap(colorway)"><delete-outlined /> Remove</div>
+            </template>
+
+            <a-card-meta :title="colorwayTitle(colorway)" />
+          </a-card>
+        </a-col>
+      </a-row>
+
+      <a-modal
+        v-model:open="visible"
+        title="Edit Collection"
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        @ok="editCollection"
+      >
+        <modal-collection-form
+          ref="collectionForm"
+          :metadata="data"
+          :uid="user.uid"
+          :is-edit="true"
+        />
+      </a-modal>
+    </a-page-header>
+  </a-spin>
 </template>
 
 <script setup>

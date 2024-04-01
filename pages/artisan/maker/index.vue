@@ -1,82 +1,80 @@
 <template>
-  <div class="container maker-container">
-    <a-spin :spinning="pending">
-      <a-page-header title="Artisan Makers">
-        <template v-if="isAdmin" #extra>
-          <a-button type="primary" @click="showModal">
-            <user-add-outlined /> Add
-          </a-button>
-        </template>
-        <a-modal
-          v-model:open="visible"
-          title="Add Maker"
-          destroy-on-close
-          :confirm-loading="confirmLoading"
-          ok-text="Add"
-          @ok="addMaker"
+  <a-spin :spinning="pending">
+    <a-page-header title="Artisan Makers" class="container maker-container">
+      <template v-if="isAdmin" #extra>
+        <a-button type="primary" @click="showModal">
+          <user-add-outlined /> Add
+        </a-button>
+      </template>
+      <a-modal
+        v-model:open="visible"
+        title="Add Maker"
+        destroy-on-close
+        :confirm-loading="confirmLoading"
+        ok-text="Add"
+        @ok="addMaker"
+      >
+        <modal-maker-form ref="makerForm" />
+      </a-modal>
+
+      <a-divider
+        v-if="authenticated && favoriteMakers.length"
+        orientation="left"
+      >
+        Pinned
+      </a-divider>
+
+      <a-row
+        v-if="authenticated && favoriteMakers.length"
+        :gutter="[16, 16]"
+        type="flex"
+      >
+        <a-col
+          v-for="maker in favoriteMakers"
+          :key="maker.id"
+          :xs="12"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
         >
-          <modal-maker-form ref="makerForm" />
-        </a-modal>
+          <maker-card :favorite="true" :maker="maker" />
+        </a-col>
+      </a-row>
 
-        <a-divider
-          v-if="authenticated && favoriteMakers.length"
-          orientation="left"
+      <a-divider
+        v-if="authenticated && favoriteMakers.length"
+        orientation="left"
+      >
+        Others
+      </a-divider>
+
+      <a-row :gutter="[16, 16]" type="flex">
+        <a-col
+          v-for="maker in currentPageMakers"
+          :key="maker.id"
+          :xs="12"
+          :sm="12"
+          :md="8"
+          :lg="6"
+          :xl="4"
         >
-          Pinned
-        </a-divider>
+          <maker-card :maker="maker" />
+        </a-col>
+      </a-row>
 
-        <a-row
-          v-if="authenticated && favoriteMakers.length"
-          :gutter="[16, 16]"
-          type="flex"
-        >
-          <a-col
-            v-for="maker in favoriteMakers"
-            :key="maker.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <maker-card :favorite="true" :maker="maker" />
-          </a-col>
-        </a-row>
-
-        <a-divider
-          v-if="authenticated && favoriteMakers.length"
-          orientation="left"
-        >
-          Others
-        </a-divider>
-
-        <a-row :gutter="[16, 16]" type="flex">
-          <a-col
-            v-for="maker in currentPageMakers"
-            :key="maker.id"
-            :xs="12"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :xl="4"
-          >
-            <maker-card :maker="maker" />
-          </a-col>
-        </a-row>
-
-        <a-flex justify="center" style="margin-top: 16px">
-          <a-pagination
-            v-model:current="page"
-            :total="otherMakers.length"
-            :page-size="size"
-            :show-size-changer="false"
-            :show-quick-jumper="otherMakers.length > size * 10"
-            hide-on-single-page
-          />
-        </a-flex>
-      </a-page-header>
-    </a-spin>
-  </div>
+      <a-flex justify="center" style="margin-top: 16px">
+        <a-pagination
+          v-model:current="page"
+          :total="otherMakers.length"
+          :page-size="size"
+          :show-size-changer="false"
+          :show-quick-jumper="otherMakers.length > size * 10"
+          hide-on-single-page
+        />
+      </a-flex>
+    </a-page-header>
+  </a-spin>
 </template>
 
 <script setup>

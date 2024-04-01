@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
-    <ContentDoc>
-      <template #default="{ doc }">
-        <a-page-header :title="doc.title">
-          <ContentRenderer :value="doc" />
-        </a-page-header>
-      </template>
-      <template #not-found>
+  <ContentDoc>
+    <template #default="{ doc }">
+      <a-page-header :title="doc.title" class="container">
+        <ContentRenderer :value="doc" />
+      </a-page-header>
+    </template>
+    <template #not-found>
+      <a-page-header class="container">
         <a-result
           status="404"
           title="404"
@@ -18,7 +18,7 @@
             </nuxt-link>
           </template>
         </a-result>
-      </template>
-    </ContentDoc>
-  </div>
+      </a-page-header>
+    </template>
+  </ContentDoc>
 </template>
