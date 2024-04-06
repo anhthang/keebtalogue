@@ -88,16 +88,6 @@
           :xl="4"
         >
           <a-card hoverable>
-            <!-- <template #extra>
-                <bg-colors-outlined
-                  v-if="colorway.commissioned"
-                  :style="{ color: 'palevioletred' }"
-                />
-                <gift-filled
-                  v-if="colorway.giveaway"
-                  :style="{ color: 'goldenrod' }"
-                />
-              </template> -->
             <template #cover>
               <img
                 loading="lazy"
@@ -107,7 +97,19 @@
               />
             </template>
 
-            <a-card-meta :title="colorway.name || '-'" />
+            <a-card-meta>
+              <template #title>
+                {{ colorway.name || '-' }}
+                <bg-colors-outlined
+                  v-if="colorway.commissioned"
+                  :style="{ color: 'palevioletred' }"
+                />
+                <gift-filled
+                  v-if="colorway.giveaway"
+                  :style="{ color: 'goldenrod' }"
+                />
+              </template>
+            </a-card-meta>
           </a-card>
         </a-col>
       </a-row>

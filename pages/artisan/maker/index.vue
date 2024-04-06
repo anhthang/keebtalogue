@@ -138,6 +138,10 @@ const addMaker = async () => {
     flex-direction: column;
   }
 
+  .ant-card-meta-title {
+    text-align: center;
+  }
+
   .ant-card-cover {
     display: flex;
     align-items: center;
