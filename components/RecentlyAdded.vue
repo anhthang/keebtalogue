@@ -39,9 +39,7 @@
 const { makers } = defineProps({
   makers: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
 })
 </script>

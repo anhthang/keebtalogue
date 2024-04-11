@@ -56,9 +56,7 @@
 const { maker } = defineProps({
   maker: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
 })
 

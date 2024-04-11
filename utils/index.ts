@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import html2canvas from 'html2canvas'
 import omit from 'lodash.omit'
 
-export const omitSensitive = (obj: Object) => omit(obj, ['fts'])
+export const omitSensitive = (obj: any) => omit(obj, ['fts'])
 
 export const formatDate = (date: Date) => {
   return date ? dayjs(date).format('DD MMM YYYY') : ''
@@ -69,7 +69,7 @@ export const colorwayTitle = (colorway: any) =>
 
 export const copyScreenshot = async (
   element: HTMLElement,
-  openInNewTab: Boolean,
+  openInNewTab: boolean,
 ) => {
   const options = {
     type: 'dataURL',

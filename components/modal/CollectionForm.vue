@@ -98,9 +98,7 @@ import { Form } from 'ant-design-vue'
 const { metadata, uid, isEdit } = defineProps({
   metadata: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
   isEdit: Boolean,
   // eslint-disable-next-line vue/require-default-prop

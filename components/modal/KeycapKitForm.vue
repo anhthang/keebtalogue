@@ -67,9 +67,7 @@ import { Form } from 'ant-design-vue'
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
   isEdit: Boolean,
 })

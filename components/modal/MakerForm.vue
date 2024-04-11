@@ -121,9 +121,7 @@ import { Form } from 'ant-design-vue'
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
   isKeeb: Boolean,
   isEdit: Boolean,
@@ -134,7 +132,7 @@ const maker = ref({
 })
 
 onBeforeMount(() => {
-  if (metadata && Object.keys(metadata).length) {
+  if (Object.keys(metadata).length) {
     maker.value = { ...metadata }
   }
 })

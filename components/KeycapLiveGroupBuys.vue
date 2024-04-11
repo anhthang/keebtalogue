@@ -34,9 +34,7 @@
 const { keycaps } = defineProps({
   keycaps: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
 })
 </script>

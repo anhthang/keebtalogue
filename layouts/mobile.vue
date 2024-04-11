@@ -42,9 +42,9 @@
 
 <script setup>
 import { theme } from 'ant-design-vue'
-const { token } = theme.useToken()
 
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
+const { token } = theme.useToken()
 
 const visible = ref(false)
 const sidebarToogle = () => {

@@ -33,9 +33,7 @@
 const { colorway } = defineProps({
   colorway: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
 })
 

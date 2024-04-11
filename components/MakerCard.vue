@@ -49,9 +49,7 @@
 const { maker, favorite } = defineProps({
   maker: {
     type: Object,
-    default() {
-      return {}
-    },
+    default: () => ({}),
   },
   favorite: Boolean,
 })
