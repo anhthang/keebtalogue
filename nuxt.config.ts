@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
+// https://nuxt.com/docs/api/nuxt-config
 export default defineNuxtConfig({
   build: {
     // fixing @babel/runtime issue in production build

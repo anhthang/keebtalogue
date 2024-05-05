@@ -6,7 +6,7 @@
       class="mobile"
       :style="{ background: token.colorBgLayout }"
     >
-      <a-button type="text" @click="sidebarToogle">
+      <a-button type="text" @click="sidebarToggle">
         <template #icon>
           <menu-unfold-outlined />
         </template>
@@ -16,7 +16,7 @@
         placement="left"
         :style="{ background: token.colorBgLayout }"
       >
-        <layout-sider @click="sidebarToogle" />
+        <layout-sider @click="sidebarToggle" />
       </a-drawer>
 
       <nuxt-link to="/">
@@ -47,7 +47,7 @@ import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 const { token } = theme.useToken()
 
 const visible = ref(false)
-const sidebarToogle = () => {
+const sidebarToggle = () => {
   visible.value = !visible.value
 }
 </script>
