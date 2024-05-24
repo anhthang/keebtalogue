@@ -1,21 +1,23 @@
 <template>
   <a-card title="Preview" class="trading-preview">
     <template #extra>
-      <a-tooltip title="Copy text to clipboard">
-        <a-button @click="copyToClipboard"> <copy-outlined /> </a-button>
-      </a-tooltip>
+      <a-flex gap="small">
+        <a-tooltip title="Copy text to clipboard">
+          <a-button @click="copyToClipboard"> <copy-outlined /> </a-button>
+        </a-tooltip>
 
-      <a-tooltip title="Copy screenshot to clipboard">
-        <a-button @click="screenshot(false)">
-          <picture-outlined />
-        </a-button>
-      </a-tooltip>
+        <a-tooltip title="Copy screenshot to clipboard">
+          <a-button @click="screenshot(false)">
+            <picture-outlined />
+          </a-button>
+        </a-tooltip>
 
-      <a-tooltip title="Download screenshot">
-        <a-button v-if="isDesktop" @click="screenshot(true)">
-          <download-outlined />
-        </a-button>
-      </a-tooltip>
+        <a-tooltip title="Download screenshot">
+          <a-button v-if="isDesktop" @click="screenshot(true)">
+            <download-outlined />
+          </a-button>
+        </a-tooltip>
+      </a-flex>
     </template>
 
     <a-result

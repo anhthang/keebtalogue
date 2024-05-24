@@ -20,7 +20,7 @@
       </a-drawer>
 
       <nuxt-link to="/">
-        <img src="/icon.png" alt="logo" height="40px" />
+        <img src="/logo-filled.png" alt="logo" height="40px" />
       </nuxt-link>
 
       <layout-right-header />
