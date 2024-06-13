@@ -58,10 +58,6 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
 
 .recently-added-artisans {
   height: 100%;
-
-  .ant-spin-nested-loading {
-    min-height: auto;
-  }
 }
 
 /* Global */

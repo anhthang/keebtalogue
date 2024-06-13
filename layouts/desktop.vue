@@ -42,7 +42,9 @@
           <a-layout-content>
             <NuxtPage />
           </a-layout-content>
-          <a-layout-footer>
+          <a-layout-footer
+            :style="{ borderBlockStart: `1px solid ${token.colorSplit}` }"
+          >
             <layout-footer />
           </a-layout-footer>
         </a-layout>
