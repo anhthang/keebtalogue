@@ -35,10 +35,12 @@
           "
           breakpoint="xxxl"
           collapsed-width="80"
+          @breakpoint="onBreakpoint"
+          @collapse="onCollapse"
         >
           <layout-sider style="height: 100%" />
         </a-layout-sider>
-        <a-layout style="margin-left: 80px">
+        <a-layout :style="{ marginLeft }">
           <a-layout-content>
             <NuxtPage />
           </a-layout-content>
@@ -60,4 +62,17 @@ import { theme } from 'ant-design-vue'
 
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 const { token } = theme.useToken()
+
+const marginLeft = ref('80px')
+const onBreakpoint = (broken) => {
+  if (!broken) {
+    marginLeft.value = '200px'
+  }
+}
+
+const onCollapse = (collapse) => {
+  if (collapse) {
+    marginLeft.value = '80px'
+  }
+}
 </script>
