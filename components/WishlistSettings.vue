@@ -68,17 +68,27 @@
 
 <script setup>
 const userStore = useUserStore()
-const { collections, tradingConfig } = storeToRefs(userStore)
+const { collections, social } = storeToRefs(userStore)
 
-const twowayTrading = computed(() => {
-  return tradingConfig.value.type === 'twoway'
+const tradingConfig = useState('trading-config', () => {
+  return {
+    have: {
+      collection: '',
+      title: 'WTT',
+    },
+    want: {
+      collection: '',
+      title: 'WTB',
+    },
+    social,
+    type: 'oneway',
+  }
 })
 
-watch(tradingConfig, () => {
-  userStore.$patch({
-    tradingConfig: tradingConfig.value,
-  })
-})
+const twowayTrading = useState(
+  'twoway-trading',
+  () => tradingConfig.value.type === 'twoway',
+)
 </script>
 
 <style>

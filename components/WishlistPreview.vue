@@ -130,7 +130,10 @@ import groupBy from 'lodash.groupby'
 import draggable from 'vuedraggable'
 
 const userStore = useUserStore()
-const { authenticated, user, tradingConfig } = storeToRefs(userStore)
+const { authenticated, user } = storeToRefs(userStore)
+
+const tradingConfig = useState('trading-config')
+const twowayTrading = useState('twoway-trading')
 
 const draggableWantList = ref([])
 const draggableHaveList = ref([])
@@ -173,10 +176,6 @@ watch(
 )
 
 watch(authenticated, () => refresh())
-
-const twowayTrading = computed(() => {
-  return tradingConfig.value.type === 'twoway'
-})
 
 const errorText = ref()
 

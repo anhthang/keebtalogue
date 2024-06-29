@@ -60,14 +60,9 @@
 </template>
 
 <script setup>
-const userStore = useUserStore()
-const { marketplaceCfg } = storeToRefs(userStore)
-
-watch(marketplaceCfg, () => {
-  userStore.$patch({
-    marketplaceCfg: marketplaceCfg.value,
-  })
-})
+const marketplaceCfg = useState('marketplace-config', () => ({
+  type: 'any',
+}))
 
 const tradeTypeOptions = [
   { label: 'Any', value: 'any' },

@@ -12,25 +12,6 @@ export const useUserStore = defineStore('user', {
     ],
     favorites: [],
     social: {},
-    tradingConfig: {
-      have: {
-        collection: '',
-        title: 'WTT',
-      },
-      want: {
-        collection: '',
-        title: 'WTB',
-      },
-      social: {
-        discord: '',
-        reddit: '',
-        qq: '',
-      },
-      type: 'oneway',
-    },
-    marketplaceCfg: {
-      type: 'any',
-    },
   }),
   getters: {
     authenticated: (state) => state.user && state.user.email_verified,
@@ -71,7 +52,7 @@ export const useUserStore = defineStore('user', {
           reddit: data.reddit,
           qq: data.qq,
         }
-        this.tradingConfig.social = this.social
+
         this.isAdmin = data.role === 'admin'
         this.isEditor = ['admin', 'editor'].includes(data.role)
       } else {

@@ -65,7 +65,9 @@
 
 <script setup>
 const userStore = useUserStore()
-const { authenticated, marketplaceCfg } = storeToRefs(userStore)
+const { authenticated } = storeToRefs(userStore)
+
+const marketplaceCfg = useState('marketplace-config')
 
 const { data, pending, refresh } = await useAsyncData(() =>
   $fetch('/api/marketplace', {
