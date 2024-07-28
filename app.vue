@@ -50,26 +50,11 @@ const userStore = useUserStore()
 
 const client = useSupabaseClient()
 
-client.auth.getSession().then(({ data }) => {
-  if (data.session && data.session.user) {
-    userStore.setCurrentUser(data.session.user)
-  }
-})
-
-client.auth.onAuthStateChange((event, session) => {
-  switch (event) {
-    case 'SIGNED_IN':
-      userStore.setCurrentUser(session.user)
-      break
-    case 'SIGNED_OUT':
-      userStore.$reset()
-      break
-    case 'TOKEN_REFRESHED':
-    case 'USER_UPDATED':
-    case 'USER_DELETED':
-    case 'PASSWORD_RECOVERY':
-    default:
-      break
+client.auth.getUser().then(({ data }) => {
+  if (data.user) {
+    userStore.setCurrentUser(data.user)
+  } else {
+    userStore.$reset()
   }
 })
 
