@@ -41,6 +41,9 @@
     </a-sub-menu>
     <a-menu-divider />
 
+    <a-menu-item :key="$config.public.donate">
+      <coffee-outlined /> <span>Donate</span>
+    </a-menu-item>
     <a-menu-item key="/about">
       <info-circle-outlined /> <span>About</span>
     </a-menu-item>
@@ -68,6 +71,8 @@ const selectedKeys = computed(() => {
 const onChangeMenu = (e) => {
   if (e.key.startsWith('/')) {
     router.push(e.key)
+  } else if (e.key.startsWith('https://')) {
+    window.open(e.key)
   }
 }
 </script>

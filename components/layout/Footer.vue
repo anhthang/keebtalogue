@@ -4,11 +4,7 @@
       <span>
         ©{{ new Date().getFullYear() }} {{ $config.public.appName }}
       </span>
-      <NuxtLink
-        to="https://www.buymeacoffee.com/anhthang"
-        target="_blank"
-        external
-      >
+      <NuxtLink :to="$config.public.donate" target="_blank" external>
         <coffee-outlined /> Buy Me a Coffee
       </NuxtLink>
     </a-flex>

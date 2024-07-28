@@ -37,6 +37,7 @@ export default defineNuxtConfig({
       appName: process.env.APP_NAME,
       appDesc: process.env.APP_DESC,
       baseUrl: process.env.BASE_URL,
+      donate: process.env.DONATE || 'https://www.buymeacoffee.com/anhthang',
     },
   },
 

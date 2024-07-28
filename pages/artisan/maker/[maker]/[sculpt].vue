@@ -79,7 +79,7 @@
 
       <a-row :gutter="[16, 16]" type="flex">
         <a-col
-          v-for="colorway in colorways"
+          v-for="(colorway, idx) in colorways"
           :key="colorway.colorway_id"
           :xs="12"
           :sm="12"
@@ -87,7 +87,7 @@
           :lg="6"
           :xl="4"
         >
-          <a-card hoverable>
+          <a-card hoverable class="colorway-card">
             <template #cover>
               <img
                 loading="lazy"
@@ -110,6 +110,40 @@
                 />
               </template>
             </a-card-meta>
+
+            <template #actions>
+              <a-tooltip v-if="isEditor" title="Edit">
+                <div @click="toggleEditColorway(colorway)">
+                  <edit-outlined />
+                </div>
+              </a-tooltip>
+
+              <a-tooltip title="Copy Card">
+                <div @click="copyColorwayCard(idx)"><copy-outlined /></div>
+              </a-tooltip>
+
+              <a-dropdown
+                v-if="collections.length"
+                :trigger="['click']"
+                placement="top"
+              >
+                <a-tooltip title="Add to Collection">
+                  <div><folder-add-outlined /></div>
+                </a-tooltip>
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item
+                      v-for="collection in collections"
+                      :key="collection.id"
+                      :disabled="!collections.length"
+                      @click="addToCollection(collection, colorway)"
+                    >
+                      {{ collection.name }}
+                    </a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </template>
           </a-card>
         </a-col>
       </a-row>
@@ -145,7 +179,7 @@
 
       <a-modal
         v-model:open="visible.card"
-        class="colorway-card"
+        class="colorway-details-card"
         :width="isShowAsMeta ? '512px' : '1024px'"
         :closable="false"
         destroy-on-close
@@ -155,6 +189,8 @@
         <modal-colorway-card
           :colorway="selectedColorway"
           @edit-colorway="toggleEditColorway"
+          @add-to-collection="addToCollection"
+          @copy-colorway-card="copyColorwayCard"
         />
       </a-modal>
     </a-page-header>
@@ -222,7 +258,7 @@ onMounted(() => {
 })
 
 const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
+const { authenticated, collections, isEditor, user } = storeToRefs(userStore)
 
 const sort = ref('order|desc')
 
@@ -281,10 +317,14 @@ const newColorwaySubmission = async () => {
 // show colorway card popup
 const selectedColorway = ref({})
 
-const showColorwayCardModal = (clw) => {
-  visible.value.card = !visible.value.card
+const setSelectedColorway = (clw) => {
   selectedColorway.value = clw
   selectedColorway.value.sculpt_name = sculpt.value.name
+}
+
+const showColorwayCardModal = (clw) => {
+  setSelectedColorway(clw)
+  visible.value.card = !visible.value.card
 }
 
 const colorwayTitle = computed(() => {
@@ -296,8 +336,79 @@ const isShowAsMeta = computed(() => {
 })
 
 // edit colorway
-const toggleEditColorway = () => {
-  showColorwayCardModal(selectedColorway.value)
+const toggleEditColorway = (clw) => {
+  setSelectedColorway(clw)
   showAddColorwayModal()
 }
+
+// add to collection
+const addToCollection = (collection, colorway) => {
+  const clw = {
+    colorway_id: colorway.colorway_id,
+    name: colorway.name,
+    img: colorway.img,
+    sculpt_name: colorway.sculpt_name || sculpt.value.name,
+    maker_id: colorway.maker_id,
+    uid: user.value.uid,
+    collection_id: collection.id,
+  }
+
+  if (authenticated.value) {
+    $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
+      method: 'post',
+      body: clw,
+    })
+      .then(() => {
+        message.success(
+          `${clw.name} has been added to [${collection.name}] collection!`,
+        )
+      })
+      .catch((error) => {
+        message.error(error.message)
+      })
+  } else {
+    const collectionMap =
+      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || []
+
+    collectionMap.push(clw)
+
+    localStorage.setItem(
+      `Keebtalogue_${collection.id}`,
+      JSON.stringify(collectionMap),
+    )
+
+    message.success(
+      `${clw.name} has been added to [${collection.name}] collection!`,
+    )
+  }
+}
+
+// copy card
+const copyColorwayCard = async (idx) => {
+  const elements = idx
+    ? document.getElementsByClassName('ant-card-hoverable')
+    : document.getElementsByClassName('ant-modal-content')
+
+  const card = elements[idx || 0]
+
+  const cardActions = card.getElementsByClassName('ant-card-actions')[0]
+  cardActions.classList.add('hide-actions')
+
+  try {
+    await copyScreenshot(card)
+  } catch (error) {
+    message.error(error.message)
+  }
+
+  cardActions.classList.remove('hide-actions')
+}
 </script>
+
+<style>
+.colorway-card,
+.colorway-details-card {
+  .hide-actions {
+    display: none;
+  }
+}
+</style>
