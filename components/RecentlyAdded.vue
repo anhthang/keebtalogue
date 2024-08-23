@@ -12,6 +12,7 @@
               <a-avatar
                 :src="`/logo/${item.id}.png`"
                 shape="square"
+                size="large"
                 :class="
                   item.invertible_logo && $colorMode.value === 'dark'
                     ? 'invertible-logo'
@@ -21,14 +22,14 @@
                 {{ item.name.charAt(0).toUpperCase() }}
               </a-avatar>
             </template>
+            <template #description>
+              {{
+                item.additions === 1
+                  ? '1 addition'
+                  : `${item.additions} additions`
+              }}
+            </template>
           </a-list-item-meta>
-          <template #extra>
-            {{
-              item.additions === 1
-                ? '1 addition'
-                : `${item.additions} additions`
-            }}
-          </template>
         </a-list-item>
       </nuxt-link>
     </template>

@@ -67,21 +67,6 @@
         </a-col>
       </a-row>
 
-      <a-flex justify="space-between" align="center" style="margin-top: 48px">
-        <a-avatar-group class="contributors">
-          <a-tooltip
-            v-for="contributor in maker.contributors"
-            :key="contributor.name"
-            :title="contributor.name"
-          >
-            <a-avatar :alt="contributor.name" :src="contributor.picture" />
-          </a-tooltip>
-        </a-avatar-group>
-        <span>
-          Last updated: {{ new Date(maker.updated_at).toDateString() }}
-        </span>
-      </a-flex>
-
       <a-modal
         v-model:open="visible.edit"
         title="Edit Maker"

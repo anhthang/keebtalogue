@@ -85,9 +85,9 @@ useSeoMeta({
 </script>
 
 <style>
-.ant-spin-nested-loading {
+/* .ant-spin-nested-loading {
   min-height: 300px;
-}
+} */
 
 .ant-layout-header {
   display: flex;
