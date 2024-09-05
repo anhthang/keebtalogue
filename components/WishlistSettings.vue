@@ -85,10 +85,8 @@ const tradingConfig = useState('trading-config', () => {
   }
 })
 
-const twowayTrading = useState(
-  'twoway-trading',
-  () => tradingConfig.value.type === 'twoway',
-)
+const isTrade = computed(() => tradingConfig.value.type === 'twoway')
+const twowayTrading = useState('twoway-trading', () => isTrade)
 </script>
 
 <style>
