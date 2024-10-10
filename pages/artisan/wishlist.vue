@@ -11,11 +11,11 @@
       </a-alert>
     </a-row>
 
-    <a-row :gutter="8" type="flex">
-      <a-col :xs="24" :md="8" :lg="6">
+    <a-row :gutter="[16, 16]" type="flex">
+      <a-col :xs="24">
         <wishlist-settings />
       </a-col>
-      <a-col :xs="24" :md="16" :lg="18">
+      <a-col :xs="24">
         <wishlist-preview />
       </a-col>
     </a-row>

@@ -70,7 +70,7 @@
         class="ant-row draggable-row"
       >
         <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+          <a-col :key="element.id" :xs="12" :md="8" :lg="6" :xl="4">
             <a-card>
               <template #cover>
                 <img loading="lazy" :alt="element.name" :src="element.img" />
@@ -90,7 +90,7 @@
         </template>
       </draggable>
 
-      <a-divider v-if="draggableHaveList.length && twowayTrading">
+      <a-divider v-if="draggableHaveList.length && trading">
         {{ tradingConfig.have.title }}
       </a-divider>
 
@@ -101,7 +101,7 @@
         class="ant-row draggable-row"
       >
         <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :xl="6">
+          <a-col :key="element.id" :xs="12" :md="8" :lg="6" :xl="4">
             <a-card>
               <template #cover>
                 <img loading="lazy" :alt="element.name" :src="element.img" />
@@ -133,7 +133,8 @@ const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
 const tradingConfig = useState('trading-config')
-const twowayTrading = useState('twoway-trading')
+
+const trading = computed(() => tradingConfig.value.type === 'twoway')
 
 const draggableWantList = ref([])
 const draggableHaveList = ref([])
@@ -215,7 +216,7 @@ const tradingText = computed(() => {
     `**${tradingConfig.value.want.title}**\n` +
     `${draggableWantList.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
 
-  if (twowayTrading.value) {
+  if (trading.value) {
     text +=
       `\n\n` +
       `**${tradingConfig.value.have.title}**\n` +

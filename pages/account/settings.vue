@@ -1,7 +1,7 @@
 <template>
   <a-page-header title="Settings" class="container">
     <a-card>
-      <a-tabs v-model:activeKey="activeKey" :tab-position="tabPosition">
+      <a-tabs v-model:active-key="activeKey" :tab-position="tabPosition">
         <a-tab-pane key="profile">
           <template #tab><user-outlined /> Public Profile </template>
           <account-profile />
