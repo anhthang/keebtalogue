@@ -38,7 +38,7 @@
       :width="248"
       :image="`/watermark-${$colorMode.value}.png`"
     >
-      <a-descriptions title="Information">
+      <a-descriptions title="Contact">
         <a-descriptions-item label="Discord">
           {{ tradingConfig.social.discord }}
         </a-descriptions-item>
@@ -49,6 +49,12 @@
           {{ tradingConfig.social.qq }}
         </a-descriptions-item>
       </a-descriptions>
+
+      <a-typography-text v-if="tradingConfig.fnf_only" type="warning" strong>
+        Please note that the seller does not accept PayPal Goods & Services
+        (G&S). This means that if you choose to proceed with the transaction,
+        you will not have PayPal's buyer protection in place.
+      </a-typography-text>
 
       <a-alert
         v-if="errorText"
@@ -82,7 +88,8 @@
               </template>
 
               <a-card-meta
-                :title="colorwayTitle(element)"
+                :description="element.name"
+                :title="element.sculpt_name"
                 style="text-align: center"
               />
             </a-card>
@@ -113,7 +120,8 @@
               </template>
 
               <a-card-meta
-                :title="colorwayTitle(element)"
+                :description="element.name"
+                :title="element.sculpt_name"
                 style="text-align: center"
               />
             </a-card>

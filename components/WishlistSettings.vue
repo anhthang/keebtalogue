@@ -83,6 +83,12 @@
           </a-form-item>
         </a-col>
       </a-row>
+
+      <a-form-item>
+        <a-checkbox v-model:checked="tradingConfig.fnf_only">
+          I do not accept PayPal G&S
+        </a-checkbox>
+      </a-form-item>
     </a-form>
   </a-card>
 </template>
@@ -103,6 +109,7 @@ const tradingConfig = useState('trading-config', () => {
     },
     social,
     type: 'oneway',
+    fnf_only: false,
   }
 })
 
