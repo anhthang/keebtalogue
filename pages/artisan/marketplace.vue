@@ -8,13 +8,6 @@
         <a-tag color="blue">Experiment</a-tag>
       </a-tooltip>
     </template>
-    <template v-if="$device.isDesktop" #extra>
-      <nuxt-link to="/artisan/wishlist">
-        <a-button type="primary">
-          <file-image-outlined /> Create Wishlist
-        </a-button>
-      </nuxt-link>
-    </template>
 
     <a-typography>
       <a-typography-paragraph>

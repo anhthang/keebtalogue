@@ -1,8 +1,8 @@
 <template>
   <a-page-header title="Home" class="container">
-    <a-flex :vertical="$device.isMobile" gap="small">
+    <a-flex :vertical="$device.isMobile" gap="middle">
       <a-col :xs="24" :md="18">
-        <a-card class="guides">
+        <a-card style="height: 100%">
           <a-typography-title :level="5">
             <read-outlined /> ArtisanCollector's Guides
           </a-typography-title>
@@ -11,7 +11,7 @@
       </a-col>
 
       <a-col :xs="24" :md="6">
-        <a-flex vertical gap="small">
+        <a-flex vertical gap="middle">
           <a-card v-if="data.makers.length" class="recently-added-artisans">
             <a-typography-title :level="5">
               <history-outlined /> Recently Added Artisans
@@ -51,14 +51,6 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   flex-direction: column;
   max-width: 1600px;
 }
-
-.guides {
-  height: 100%;
-}
-
-/* .recently-added-artisans {
-  height: 100%;
-} */
 
 /* Global */
 .alert-banner {

@@ -13,9 +13,16 @@
     <a-menu-item key="/artisan/collection">
       <book-outlined /> <span>Collections</span>
     </a-menu-item>
-    <a-menu-item key="/artisan/marketplace">
-      <shop-outlined /> <span>Marketplace</span>
-    </a-menu-item>
+    <a-sub-menu key="marketplace" title="Marketplace">
+      <template #icon><shopping-cart-outlined /></template>
+
+      <a-menu-item key="/artisan/marketplace">
+        <shop-outlined /> <span>Trading Hub</span>
+      </a-menu-item>
+      <a-menu-item key="/artisan/wishlist">
+        <file-image-outlined /> <span>Wishlist Image</span>
+      </a-menu-item>
+    </a-sub-menu>
     <a-menu-divider />
 
     <a-menu-item key="/keycap/interest-check">
