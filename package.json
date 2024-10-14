@@ -26,7 +26,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "ant-design-vue": "^4.2.5",
     "crc": "4.3.2",
-    "html2canvas": "^1.4.1",
+    "modern-screenshot": "^4.4.39",
     "pinia": "^2.2.4",
     "slugify": "^1.6.6",
     "vuedraggable": "^4.1.0"

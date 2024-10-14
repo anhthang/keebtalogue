@@ -12,14 +12,14 @@
 
       <a-col :xs="24" :md="6">
         <a-flex vertical gap="middle">
-          <a-card v-if="data.makers.length" class="recently-added-artisans">
+          <a-card v-if="data.makers.length">
             <a-typography-title :level="5">
               <history-outlined /> Recently Added Artisans
             </a-typography-title>
             <recently-added :makers="data.makers" />
           </a-card>
 
-          <a-card v-if="data.keycaps.length" class="live-gb-keycaps">
+          <a-card v-if="data.keycaps.length">
             <a-typography-title :level="5">
               <rise-outlined /> Live Group Buys Keycaps
             </a-typography-title>
