@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import Aura from '@primevue/themes/aura'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -18,6 +19,8 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
     '@nuxtjs/supabase',
     '@pinia/nuxt',
+    '@primevue/nuxt-module',
+    '@nuxtjs/tailwindcss',
   ],
 
   colorMode: {
@@ -30,6 +33,14 @@ export default defineNuxtConfig({
 
   supabase: {
     redirect: false,
+  },
+
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura,
+      },
+    },
   },
 
   runtimeConfig: {

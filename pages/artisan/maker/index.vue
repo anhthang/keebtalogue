@@ -2,9 +2,7 @@
   <a-spin :spinning="pending">
     <a-page-header title="Artisan Makers" class="container maker-container">
       <template v-if="isAdmin" #extra>
-        <a-button type="primary" @click="showModal">
-          <user-add-outlined /> Add
-        </a-button>
+        <Button label="Add" icon="pi pi-user-plus" @click="showModal" />
       </template>
       <a-modal
         v-model:open="visible"
@@ -17,62 +15,46 @@
         <modal-maker-form ref="makerForm" />
       </a-modal>
 
-      <a-divider
-        v-if="authenticated && favoriteMakers.length"
-        orientation="left"
-      >
+      <Divider v-if="authenticated && favoriteMakers.length" align="left">
         Pinned
-      </a-divider>
+      </Divider>
 
-      <a-row
-        v-if="authenticated && favoriteMakers.length"
-        :gutter="[16, 16]"
-        type="flex"
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
       >
-        <a-col
+        <maker-card
           v-for="maker in favoriteMakers"
           :key="maker.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <maker-card :favorite="true" :maker="maker" />
-        </a-col>
-      </a-row>
+          :favorite="true"
+          :maker="maker"
+        />
+      </div>
 
-      <a-divider
-        v-if="authenticated && favoriteMakers.length"
-        orientation="left"
-      >
+      <Divider v-if="authenticated && favoriteMakers.length" align="left">
         Others
-      </a-divider>
+      </Divider>
 
-      <a-row :gutter="[16, 16]" type="flex">
-        <a-col
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <maker-card
           v-for="maker in currentPageMakers"
           :key="maker.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <maker-card :maker="maker" />
-        </a-col>
-      </a-row>
-
-      <a-flex justify="center" style="margin-top: 16px">
-        <a-pagination
-          v-model:current="page"
-          :total="otherMakers.length"
-          :page-size="size"
-          :show-size-changer="false"
-          :show-quick-jumper="otherMakers.length > size * 10"
-          hide-on-single-page
+          :maker="maker"
         />
-      </a-flex>
+      </div>
+
+      <Paginator
+        class="mt-4"
+        :rows="size"
+        :total-records="otherMakers.length"
+        pt:root:class="!bg-transparent"
+        @page="
+          (e) => {
+            page = e.page + 1
+          }
+        "
+      />
     </a-page-header>
   </a-spin>
 </template>
@@ -129,25 +111,3 @@ const addMaker = async () => {
     })
 }
 </script>
-
-<style>
-.maker-container {
-  .ant-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ant-card-meta-title {
-    text-align: center;
-  }
-
-  .ant-card-cover {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    margin: 25px;
-    /* background: white; */
-  }
-}
-</style>

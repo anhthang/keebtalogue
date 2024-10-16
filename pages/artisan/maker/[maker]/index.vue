@@ -46,26 +46,29 @@
         </a-typography-paragraph>
       </a-typography>
 
-      <a-row :gutter="[16, 16]" type="flex">
-        <a-col
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <nuxt-link
           v-for="sculpt in maker.sculpts"
           :key="sculpt.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
+          :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
         >
-          <nuxt-link :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`">
-            <a-card hoverable>
-              <template #cover>
-                <img loading="lazy" :alt="sculpt.name" :src="sculpt.img" />
-              </template>
-              <a-card-meta :title="sculpt.name" />
-            </a-card>
-          </nuxt-link>
-        </a-col>
-      </a-row>
+          <Card
+            class="flex items-center flex-1 overflow-hidden"
+            pt:header:class="h-[250px]"
+          >
+            <template #header>
+              <img
+                :alt="sculpt.name"
+                :src="sculpt.img"
+                class="h-full object-cover"
+              />
+            </template>
+            <template #title>{{ sculpt.name }}</template>
+          </Card>
+        </nuxt-link>
+      </div>
 
       <a-modal
         v-model:open="visible.edit"
