@@ -1,10 +1,27 @@
 <template>
-  <a-page-header title="Manage Collections" class="container artisan-container">
-    <template #extra>
-      <a-button v-if="user.email_verified" type="primary" @click="showModal">
-        <file-add-outlined /> Add
-      </a-button>
+  <Panel
+    class="container artisan-container"
+    pt:root:class="!border-0 !bg-transparent"
+  >
+    <template #header>
+      <div
+        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
+      >
+        Manage Collections
+      </div>
     </template>
+
+    <template #icons>
+      <div class="flex gap-2">
+        <Button
+          v-if="user.email_verified"
+          icon="pi pi-folder-plus"
+          label="Add"
+          @click="showModal"
+        />
+      </div>
+    </template>
+
     <a-modal
       v-model:open="visible"
       title="Add Collection"
@@ -14,41 +31,34 @@
       <modal-collection-form ref="collectionForm" :uid="user.uid" />
     </a-modal>
 
-    <a-row v-if="!user.email_verified" type="flex">
-      <a-alert
-        class="alert-banner"
-        type="info"
-        message="Level up your experience! Login and unlock exclusive features, unlimited collections, and enjoy seamless syncing across all your devices."
-        banner
-      />
-    </a-row>
+    <Message v-if="!user.email_verified" class="mx-auto mb-4" severity="info">
+      Level up your experience! Login and unlock exclusive features, unlimited
+      collections, and enjoy seamless syncing across all your devices.
+    </Message>
 
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-col
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <nuxt-link
         v-for="collection in collections"
         :key="collection.id"
-        :xs="12"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        :xl="4"
+        :to="`/artisan/collection/${collection.id}`"
       >
-        <nuxt-link :to="`/artisan/collection/${collection.id}`">
-          <a-card
-            hoverable
-            :title="collection.name"
-            :head-style="{ textAlign: 'center' }"
-          >
-            <template v-if="collection.published" #extra>
-              <a-button type="link" danger>
-                <unlock-outlined />
-              </a-button>
-            </template>
-          </a-card>
-        </nuxt-link>
-      </a-col>
-    </a-row>
-  </a-page-header>
+        <Card pt:title:class="text-center" class="h-full">
+          <template #title>
+            {{ collection.name }}
+            <Button
+              v-if="collection.published"
+              text
+              disabled
+              severity="danger"
+              icon="pi pi-unlock"
+            />
+          </template>
+        </Card>
+      </nuxt-link>
+    </div>
+  </Panel>
 </template>
 
 <script setup>

@@ -10,11 +10,12 @@
 import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
 import 'ant-design-vue/dist/reset.css'
+import 'primeicons/primeicons.css'
 
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,
   token: {
-    fontFamily: 'Cabin, sans-serif;',
+    fontFamily: 'Dosis, sans-serif;',
   },
 })
 
