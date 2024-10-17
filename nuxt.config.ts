@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   },
 
   fonts: {
-    families: [{ name: 'Cabin', provider: 'google' }],
+    families: [{ name: 'Dosis', provider: 'google' }],
   },
 
   supabase: {

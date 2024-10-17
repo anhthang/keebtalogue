@@ -15,7 +15,7 @@ import 'primeicons/primeicons.css'
 const themeCfg = ref({
   algorithm: theme.defaultAlgorithm,
   token: {
-    fontFamily: 'Cabin, sans-serif;',
+    fontFamily: 'Dosis, sans-serif;',
   },
 })
 

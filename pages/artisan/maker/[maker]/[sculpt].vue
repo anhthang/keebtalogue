@@ -4,7 +4,7 @@
     pt:root:class="!border-0 !bg-transparent"
   >
     <template #header>
-      <div class="text-2xl leading-8 text-color font-medium">
+      <div class="text-2xl leading-8 text-color font-bold">
         {{ sculpt.name }}
       </div>
     </template>
@@ -49,7 +49,7 @@
         :key="colorway.colorway_id"
         class="flex items-center flex-1 overflow-hidden"
         pt:header:class="h-[250px]"
-        pt:body:class="text-center"
+        pt:body:class="items-center"
       >
         <template #header>
           <img
@@ -64,6 +64,7 @@
         <template #footer>
           <div class="flex gap-4">
             <Button
+              v-if="isEditor"
               text
               severity="secondary"
               icon="pi pi-pen-to-square"
@@ -75,7 +76,26 @@
               icon="pi pi-copy"
               @click="copyColorwayCard(idx)"
             />
-            <Button text severity="secondary" icon="pi pi-folder-plus" />
+
+            <Button
+              text
+              severity="secondary"
+              icon="pi pi-folder-plus"
+              @click="(e) => toggle(e, idx)"
+            />
+
+            <Popover ref="op">
+              <ul class="list-none p-0 m-0 flex flex-col">
+                <li
+                  v-for="collection in collections"
+                  :key="collection.id"
+                  class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border"
+                  @click="addToCollection(collection, colorway)"
+                >
+                  {{ collection.name }}
+                </li>
+              </ul>
+            </Popover>
           </div>
         </template>
       </Card>
@@ -127,6 +147,11 @@
 
 <script setup>
 import orderBy from 'lodash.orderby'
+
+const op = ref()
+const toggle = (event, idx) => {
+  op.value[idx].toggle(event)
+}
 
 const route = useRoute()
 const { isMobile } = useDevice()
@@ -188,7 +213,7 @@ onMounted(() => {
 })
 
 const userStore = useUserStore()
-const { authenticated, isEditor, user } = storeToRefs(userStore)
+const { authenticated, collections, isEditor, user } = storeToRefs(userStore)
 
 const colorways = computed(() => {
   return orderBy(sculpt.value.colorways, ...sort.value.split('|'))

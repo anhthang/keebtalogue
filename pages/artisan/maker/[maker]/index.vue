@@ -1,99 +1,95 @@
 <template>
-  <a-spin :spinning="pending">
-    <a-page-header
-      v-if="maker"
-      class="container artisan-container"
-      :title="maker.name"
-      :avatar="{
-        src: `/logo/${maker.id}.png`,
-        shape: 'square',
-        class:
-          maker.invertible_logo && $colorMode.value === 'dark'
-            ? 'invertible-logo'
-            : '',
-      }"
-    >
-      <template #breadcrumb>
-        <a-breadcrumb>
-          <a-breadcrumb-item> Artisan </a-breadcrumb-item>
-          <a-breadcrumb-item>
-            <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
-          </a-breadcrumb-item>
-        </a-breadcrumb>
-      </template>
-
-      <template v-if="maker.nationality" #tags>
-        {{ getFlagEmoji(maker.nationality) }}
-      </template>
-
-      <template #extra>
-        <a-button v-if="isEditor" key="edit" @click="showEditMakerModal">
-          <edit-outlined /> Edit
-        </a-button>
-        <a-button v-if="isEditor" key="sale" @click="showAddSaleModal">
-          <calendar-outlined /> Sales
-        </a-button>
-
-        <maker-helpful-links :maker="maker" />
-      </template>
-
-      <a-typography v-if="maker.intro">
-        <a-typography-paragraph
-          v-for="(line, idx) in maker.intro.split('\n')"
-          :key="idx"
-        >
-          {{ line }}
-        </a-typography-paragraph>
-      </a-typography>
-
+  <Panel
+    class="container artisan-container"
+    pt:root:class="!border-0 !bg-transparent"
+  >
+    <template #header>
       <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
       >
-        <nuxt-link
-          v-for="sculpt in maker.sculpts"
-          :key="sculpt.id"
-          :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
-        >
-          <Card
-            class="flex items-center flex-1 overflow-hidden"
-            pt:header:class="h-[250px]"
-          >
-            <template #header>
-              <img
-                :alt="sculpt.name"
-                :src="sculpt.img"
-                class="h-full object-cover"
-              />
-            </template>
-            <template #title>{{ sculpt.name }}</template>
-          </Card>
-        </nuxt-link>
+        <Avatar
+          :image="`/logo/${maker.id}.png`"
+          :class="
+            maker.invertible_logo && $colorMode.value === 'dark'
+              ? 'invertible-logo'
+              : ''
+          "
+          size="large"
+          pt:image:class="object-contain"
+        />
+        {{ maker.name }}
       </div>
+    </template>
 
-      <a-modal
-        v-model:open="visible.edit"
-        title="Edit Maker"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        ok-text="Save"
-        @ok="updateMakerProfile"
+    <div v-if="maker.intro" class="mb-4 leading-6 text-muted-color">
+      {{ maker.intro }}
+    </div>
+
+    <template #icons>
+      <div class="flex gap-2">
+        <Button
+          v-if="isEditor"
+          icon="pi pi-pen-to-square"
+          label="Edit"
+          @click="showEditMakerModal"
+        />
+
+        <Button
+          v-if="isEditor"
+          icon="pi pi-calendar"
+          label="Sales"
+          @click="showAddSaleModal"
+        />
+
+        <MakerHelpfulLinks :maker="maker" />
+      </div>
+    </template>
+
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <nuxt-link
+        v-for="sculpt in maker.sculpts"
+        :key="sculpt.id"
+        :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
       >
-        <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
-      </a-modal>
+        <Card
+          class="flex items-center flex-1 overflow-hidden"
+          pt:header:class="h-[250px]"
+        >
+          <template #header>
+            <img
+              :alt="sculpt.name"
+              :src="sculpt.img"
+              class="h-full object-cover"
+            />
+          </template>
+          <template #title>{{ sculpt.name }}</template>
+        </Card>
+      </nuxt-link>
+    </div>
 
-      <a-modal
-        v-model:open="visible.add_sale"
-        title="Add Upcoming Sale"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        @ok="addUpcomingSale"
-      >
-        <modal-sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
-      </a-modal>
-    </a-page-header>
+    <a-modal
+      v-model:open="visible.edit"
+      title="Edit Maker"
+      destroy-on-close
+      :confirm-loading="confirmLoading"
+      ok-text="Save"
+      @ok="updateMakerProfile"
+    >
+      <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
+    </a-modal>
 
-    <back-to-artisan-makers v-else />
-  </a-spin>
+    <a-modal
+      v-model:open="visible.add_sale"
+      title="Add Upcoming Sale"
+      destroy-on-close
+      :confirm-loading="confirmLoading"
+      @ok="addUpcomingSale"
+    >
+      <modal-sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
+    </a-modal>
+  </Panel>
 </template>
 
 <script setup>
@@ -106,11 +102,7 @@ const visible = ref({
   add_sale: false,
 })
 
-const {
-  data: maker,
-  pending,
-  refresh,
-} = await useAsyncData(
+const { data: maker, refresh } = await useAsyncData(
   `maker:${route.params.maker}`,
   () => $fetch(`/api/makers/${route.params.maker}`),
   {
@@ -172,55 +164,28 @@ const sculptLst = computed(() => {
     : {}
 })
 
-const getFlagEmoji = (isoCode) => {
-  if (isoCode === 'GB-ENG') {
-    return '🏴󠁧󠁢󠁥󠁮󠁧󠁿'
-  }
-  if (isoCode === 'GB-WLS') {
-    return '🏴󠁧󠁢󠁷󠁬󠁳󠁿'
-  }
-  if (isoCode === 'GB-SCT') {
-    return '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
-  }
-  if (isoCode === 'GB-NIR') {
-    // The only official flag in Northern Ireland is the Union Flag of the United Kingdom.
-    return '🇬🇧'
-  }
+// const getFlagEmoji = (isoCode) => {
+//   if (isoCode === 'GB-ENG') {
+//     return '🏴󠁧󠁢󠁥󠁮󠁧󠁿'
+//   }
+//   if (isoCode === 'GB-WLS') {
+//     return '🏴󠁧󠁢󠁷󠁬󠁳󠁿'
+//   }
+//   if (isoCode === 'GB-SCT') {
+//     return '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
+//   }
+//   if (isoCode === 'GB-NIR') {
+//     // The only official flag in Northern Ireland is the Union Flag of the United Kingdom.
+//     return '🇬🇧'
+//   }
 
-  return isoCode
-    .toUpperCase()
-    .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)))
-}
+//   return isoCode
+//     .toUpperCase()
+//     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)))
+// }
 </script>
 
 <style>
-.artisan-container {
-  .ant-card-meta-title {
-    text-align: center;
-  }
-
-  .ant-card-cover {
-    height: 250px;
-    overflow: hidden;
-
-    @media (max-width: 480px) {
-      height: 150px;
-    }
-  }
-
-  /* iPad */
-  .ant-card-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .anticon-custom-icon {
-    vertical-align: 0.1rem;
-    font-size: 16px;
-  }
-}
-
 .contributors span,
 .contributors .ant-avatar + .ant-avatar {
   -webkit-transition: all 0.3s;

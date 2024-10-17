@@ -1,62 +1,66 @@
 <template>
-  <a-spin :spinning="pending">
-    <a-page-header title="Artisan Makers" class="container maker-container">
-      <template v-if="isAdmin" #extra>
-        <Button label="Add" icon="pi pi-user-plus" @click="showModal" />
-      </template>
-      <a-modal
-        v-model:open="visible"
-        title="Add Maker"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        ok-text="Add"
-        @ok="addMaker"
-      >
-        <modal-maker-form ref="makerForm" />
-      </a-modal>
-
-      <Divider v-if="authenticated && favoriteMakers.length" align="left">
-        Pinned
-      </Divider>
-
+  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
+    <template #header>
       <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
       >
-        <maker-card
-          v-for="maker in favoriteMakers"
-          :key="maker.id"
-          :favorite="true"
-          :maker="maker"
-        />
+        Artisan Makers
       </div>
+    </template>
 
-      <Divider v-if="authenticated && favoriteMakers.length" align="left">
-        Others
-      </Divider>
+    <template v-if="isAdmin" #icons>
+      <Button label="Add" icon="pi pi-user-plus" @click="showModal" />
+    </template>
 
-      <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-      >
-        <maker-card
-          v-for="maker in currentPageMakers"
-          :key="maker.id"
-          :maker="maker"
-        />
-      </div>
-
-      <Paginator
-        class="mt-4"
-        :rows="size"
-        :total-records="otherMakers.length"
-        pt:root:class="!bg-transparent"
-        @page="
-          (e) => {
-            page = e.page + 1
-          }
-        "
+    <div
+      v-if="authenticated && favoriteMakers.length"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <maker-card
+        v-for="maker in favoriteMakers"
+        :key="maker.id"
+        :favorite="true"
+        :maker="maker"
       />
-    </a-page-header>
-  </a-spin>
+    </div>
+
+    <Divider v-if="authenticated && favoriteMakers.length" align="left">
+      Others
+    </Divider>
+
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <maker-card
+        v-for="maker in currentPageMakers"
+        :key="maker.id"
+        :maker="maker"
+      />
+    </div>
+
+    <Paginator
+      class="mt-4"
+      :rows="size"
+      :total-records="otherMakers.length"
+      pt:root:class="!bg-transparent"
+      @page="
+        (e) => {
+          page = e.page + 1
+        }
+      "
+    />
+
+    <a-modal
+      v-model:open="visible"
+      title="Add Maker"
+      destroy-on-close
+      :confirm-loading="confirmLoading"
+      ok-text="Add"
+      @ok="addMaker"
+    >
+      <modal-maker-form ref="makerForm" />
+    </a-modal>
+  </Panel>
 </template>
 
 <script setup>
@@ -67,7 +71,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data, pending, refresh } = await useAsyncData('artisan-makers', () =>
+const { data, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 
