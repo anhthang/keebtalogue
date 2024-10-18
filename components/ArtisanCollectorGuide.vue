@@ -1,15 +1,18 @@
 <template>
-  <a-list item-layout="horizontal" :data-source="guides">
-    <template #renderItem="{ item }">
-      <a-list-item>
-        <a-list-item-meta :description="item.summary">
-          <template #title>
-            <a :href="item.url" target="_blank">{{ item.title }}</a>
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
+  <Fieldset legend="ArtisanCollector's Guides" pt:legend:class="w-auto">
+    <nuxt-link
+      v-for="guide in guides"
+      :key="guide.url"
+      :to="guide.url"
+      target="_blank"
+      external
+    >
+      <Card class="!shadow-none">
+        <template #title>{{ guide.title }}</template>
+        <template #content>{{ guide.summary }}</template>
+      </Card>
+    </nuxt-link>
+  </Fieldset>
 </template>
 
 <script setup>

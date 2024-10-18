@@ -1,39 +1,34 @@
 <template>
-  <a-list
-    item-layout="horizontal"
-    :pagination="makers.length > 5 ? { pageSize: 5, size: 'small' } : false"
-    :data-source="makers"
-  >
-    <template #renderItem="{ item }">
-      <nuxt-link :to="`/artisan/maker/${item.id}`">
-        <a-list-item>
-          <a-list-item-meta :title="item.name">
-            <template #avatar>
-              <a-avatar
-                :src="`/logo/${item.id}.png`"
-                shape="square"
-                size="large"
-                :class="
-                  item.invertible_logo && $colorMode.value === 'dark'
-                    ? 'invertible-logo'
-                    : ''
-                "
-              >
-                {{ item.name.charAt(0).toUpperCase() }}
-              </a-avatar>
-            </template>
-            <template #description>
-              {{
-                item.additions === 1
-                  ? '1 addition'
-                  : `${item.additions} additions`
-              }}
-            </template>
-          </a-list-item-meta>
-        </a-list-item>
-      </nuxt-link>
-    </template>
-  </a-list>
+  <Fieldset legend="Recently Added Artisans" pt:legend:class="w-auto">
+    <nuxt-link
+      v-for="maker in makers"
+      :key="maker.url"
+      :to="`/artisan/maker/${maker.id}`"
+    >
+      <div class="flex items-center">
+        <Avatar
+          :image="`/logo/${maker.id}.png`"
+          :class="
+            maker.invertible_logo && $colorMode.value === 'dark'
+              ? 'invertible-logo'
+              : ''
+          "
+          size="large"
+          pt:image:class="object-contain"
+        />
+        <Card class="!shadow-none">
+          <template #title>{{ maker.name }}</template>
+          <template #content>
+            {{
+              maker.additions === 1
+                ? '1 addition'
+                : `${maker.additions} additions`
+            }}
+          </template>
+        </Card>
+      </div>
+    </nuxt-link>
+  </Fieldset>
 </template>
 
 <script setup>

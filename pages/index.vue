@@ -1,34 +1,16 @@
 <template>
-  <a-page-header title="Home" class="container">
-    <a-flex :vertical="$device.isMobile" gap="middle">
-      <a-col :xs="24" :md="18">
-        <a-card style="height: 100%">
-          <a-typography-title :level="5">
-            <read-outlined /> ArtisanCollector's Guides
-          </a-typography-title>
-          <artisan-collector-guide />
-        </a-card>
-      </a-col>
-
-      <a-col :xs="24" :md="6">
-        <a-flex vertical gap="middle">
-          <a-card v-if="data.makers.length">
-            <a-typography-title :level="5">
-              <history-outlined /> Recently Added Artisans
-            </a-typography-title>
-            <recently-added :makers="data.makers" />
-          </a-card>
-
-          <a-card v-if="data.keycaps.length">
-            <a-typography-title :level="5">
-              <rise-outlined /> Live Group Buys Keycaps
-            </a-typography-title>
-            <keycap-live-group-buys :keycaps="data.keycaps" />
-          </a-card>
-        </a-flex>
-      </a-col>
-    </a-flex>
-  </a-page-header>
+  <Panel
+    class="container artisan-container"
+    pt:root:class="!border-0 !bg-transparent"
+  >
+    <template #header>
+      <div class="text-2xl leading-8 text-color font-bold">Home</div>
+    </template>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <artisan-collector-guide class="col-span-4 md:col-span-3" />
+      <recently-added class="col-span-4 md:col-span-1" :makers="data.makers" />
+    </div>
+  </Panel>
 </template>
 
 <script setup>
@@ -42,7 +24,8 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   --color-text-gradient-stop-3: #d96570;
   --color-surface: #fff;
   font-family: Dosis, sans-serif;
-  /* --p-card-title-font-size: 1rem; */
+  --p-card-body-padding: 1rem;
+  --p-card-title-font-size: 1.1rem;
 }
 
 .container {
