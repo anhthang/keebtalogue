@@ -1,69 +1,43 @@
 <template>
-  <a-form :ref="formRef" :rules="formRules" :model="kit" layout="vertical">
-    <a-form-item
-      ref="name"
-      name="name"
-      v-bind="validateInfos.name"
-      label="Name"
-    >
-      <a-auto-complete
-        v-model:value="kit.name"
-        :options="suggestionKits.map((value) => ({ value }))"
-        @change="onSearchKit"
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="kit_name">Name</label>
+      <InputText id="kit_name" v-model.trim="kit.name" type="text" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="kit_img">Image</label>
+      <InputText id="kit_img" v-model.trim="kit.img" type="url" />
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2">
+        <label for="kit_price">Price</label>
+        <InputText id="kit_price" v-model="kit.price" v-keyfilter.money />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="kit_qty">Quantity</label>
+        <InputText id="kit_qty" v-model="kit.qty" v-keyfilter.num />
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="kit_description">Description</label>
+      <Textarea
+        id="kit_description"
+        v-model.trim="kit.description"
+        :rows="5"
+        auto-resize
       />
-    </a-form-item>
-
-    <a-form-item ref="img" name="img" v-bind="validateInfos.img" label="Image">
-      <a-input v-model:value="kit.img">
-        <template #prefix><link-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item
-          ref="price"
-          name="price"
-          v-bind="validateInfos.price"
-          label="Price"
-        >
-          <a-input-number v-model:value="kit.price">
-            <template #prefix><tag-outlined /></template>
-          </a-input-number>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="12">
-        <a-form-item
-          ref="qty"
-          name="qty"
-          v-bind="validateInfos.qty"
-          label="Quantity"
-        >
-          <a-input-number v-model:value="kit.qty">
-            <template #prefix><number-outlined /></template>
-          </a-input-number>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-form-item
-      ref="description"
-      name="description"
-      v-bind="validateInfos.description"
-      label="Description"
-    >
-      <a-textarea v-model:value="kit.description" auto-size />
-    </a-form-item>
-
-    <a-form-item>
-      <a-checkbox v-model:checked="kit.cancelled">Cancelled</a-checkbox>
-    </a-form-item>
-  </a-form>
+    </div>
+    <div class="flex items-center gap-2">
+      <Checkbox id="kit_cancelled" v-model="kit.cancelled" binary />
+      <label for="kit_cancelled">Cancelled</label>
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="addKit" />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { Form } from 'ant-design-vue'
-
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,
@@ -72,37 +46,29 @@ const { metadata, isEdit } = defineProps({
   isEdit: Boolean,
 })
 
-const predefinedKits = [
-  'Base',
-  'Novelties',
-  'Spacebars',
-  'Alphas',
-  'Modifiers',
-  '40s',
-  'Numpad',
-  'Extension',
-  'Addons',
-  'Accents',
-  'Hiragana',
-  'Katakana',
-  'Hangul',
-  'Cyrillic',
-  'NorDe',
-  'NorDeUK',
-  'Forties',
-  'ISO',
-  'Colevrak',
-  '40s/Ortho',
-  'International',
-]
-
-const suggestionKits = ref(predefinedKits)
-
-const onSearchKit = (text) => {
-  suggestionKits.value = predefinedKits.filter((k) =>
-    k.toLowerCase().includes(text.toLowerCase()),
-  )
-}
+// const predefinedKits = [
+//   'Base',
+//   'Novelties',
+//   'Spacebars',
+//   'Alphas',
+//   'Modifiers',
+//   '40s',
+//   'Numpad',
+//   'Extension',
+//   'Addons',
+//   'Accents',
+//   'Hiragana',
+//   'Katakana',
+//   'Hangul',
+//   'Cyrillic',
+//   'NorDe',
+//   'NorDeUK',
+//   'Forties',
+//   'ISO',
+//   'Colevrak',
+//   '40s/Ortho',
+//   'International',
+// ]
 
 const route = useRoute()
 const kit = ref({
@@ -115,43 +81,29 @@ onBeforeMount(() => {
   Object.assign(kit.value, metadata)
 })
 
-const formRef = ref()
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-  qty: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
-  price: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
-  img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-  description: [{ type: 'string', trigger: ['change', 'blur'] }],
-})
+// const formRules = ref({
+//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+//   qty: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
+//   price: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
+//   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
+//   description: [{ type: 'string', trigger: ['change', 'blur'] }],
+// })
 
-const { useForm } = Form
-const { validate, validateInfos } = useForm(kit, formRules)
-
-const addKit = async () => {
-  await validate()
+const addKit = () => {
+  $fetch(`/api/keycaps/${kit.value.profile_keycap_id}/kits`, {
+    method: 'post',
+    body: kit.value,
+  })
     .then(() => {
-      $fetch(`/api/keycaps/${kit.value.profile_keycap_id}/kits`, {
-        method: 'post',
-        body: kit.value,
-      })
-        .then(() => {
-          if (isEdit) {
-            message.success(`[${kit.value.name}] kit updated successfully!`)
-          } else {
-            message.success(`[${kit.value.name}] kit added successfully!`)
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-          message.error(error.message)
-        })
+      if (isEdit) {
+        message.success(`[${kit.value.name}] kit updated successfully!`)
+      } else {
+        message.success(`[${kit.value.name}] kit added successfully!`)
+      }
     })
-    .catch(() => {
-      // ignore
+    .catch((error) => {
+      console.error(error)
+      message.error(error.message)
     })
 }
-
-defineExpose({
-  addKit,
-})
 </script>

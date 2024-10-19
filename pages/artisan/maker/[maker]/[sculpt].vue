@@ -106,9 +106,9 @@
       modal
       header="Edit Sculpt"
       dismissable-mask
-      @ok="updateSculptProfile"
+      class="w-[35rem]"
     >
-      <modal-sculpt-form ref="sculptForm" :is-edit="true" :metadata="sculpt" />
+      <modal-sculpt-form :is-edit="true" :metadata="sculpt" />
     </Dialog>
 
     <Dialog
@@ -119,10 +119,10 @@
           ? `Edit ${colorwayTitle}`
           : 'Add Colorway'
       "
+      class="w-[35rem]"
       dismissable-mask
-      @ok="newColorwaySubmission"
     >
-      <modal-colorway-form ref="colorwayForm" :metadata="selectedColorway" />
+      <modal-colorway-form :metadata="selectedColorway" />
     </Dialog>
 
     <Dialog
@@ -164,7 +164,7 @@ const sortOptions = ref([
   { label: 'Newest First', value: 'order|desc' },
 ])
 
-const { data: sculpt, refresh } = await useAsyncData(
+const { data: sculpt } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,
   () =>
     $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
@@ -219,8 +219,6 @@ const colorways = computed(() => {
   return orderBy(sculpt.value.colorways, ...sort.value.split('|'))
 })
 
-const confirmLoading = ref(false)
-
 const visible = ref({
   edit: false,
   add: false,
@@ -232,39 +230,12 @@ const showEditSculptModal = () => {
   visible.value.edit = !visible.value.edit
 }
 
-const sculptForm = ref()
-const updateSculptProfile = async () => {
-  confirmLoading.value = true
-
-  await sculptForm.value.addSculptProfile()
-
-  showEditSculptModal()
-  confirmLoading.value = false
-  refresh()
-}
-
 /**
  * New colorway submission
  * Currently, just add/update colorway description
  */
 const showAddColorwayModal = () => {
   visible.value.add = !visible.value.add
-}
-
-const colorwayForm = ref()
-const newColorwaySubmission = async () => {
-  confirmLoading.value = true
-
-  await colorwayForm.value
-    .addColorway()
-    .then(() => {
-      confirmLoading.value = false
-      showAddColorwayModal()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
 }
 
 // show colorway card popup

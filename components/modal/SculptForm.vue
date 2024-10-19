@@ -1,71 +1,62 @@
 <template>
-  <a-form layout="vertical">
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="24">
-        <a-form-item label="Name">
-          <a-input v-model:value="sculpt.name">
-            <template #prefix><font-size-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item label="Release">
-          <a-input v-model:value="sculpt.release">
-            <template #prefix><calendar-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="12">
-        <a-form-item label="Profile">
-          <a-select v-model:value="sculpt.profile">
-            <a-select-option key="sculpted" value="sculpted"
-              >sculpted</a-select-option
-            >
-            <a-select-option key="blank" value="blank">blank</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item label="Cast">
-          <a-select v-model:value="sculpt.cast">
-            <a-select-option key="resin" value="resin">resin</a-select-option>
-            <a-select-option key="mixed" value="mixed">mixed</a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="12">
-        <a-form-item label="Design">
-          <a-select v-model:value="sculpt.design">
-            <a-select-option key="physical" value="physical"
-              >physical</a-select-option
-            >
-            <a-select-option key="digital" value="digital"
-              >digital</a-select-option
-            >
-            <a-select-option key="hybrid" value="hybrid"
-              >hybrid</a-select-option
-            >
-          </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-form-item label="URL">
-      <a-input v-model:value="sculpt.href">
-        <template #prefix><link-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item label="Story">
-      <a-textarea v-model:value="sculpt.story" auto-size />
-    </a-form-item>
-  </a-form>
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="sculpt_name">Name</label>
+      <InputText id="sculpt_name" v-model.trim="sculpt.name" type="text" />
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2">
+        <label for="sculpt_release">Release</label>
+        <InputText
+          id="sculpt_release"
+          v-model.trim="sculpt.release"
+          type="text"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="sculpt_profile">Profile</label>
+        <Select
+          id="sculpt_profile"
+          v-model="sculpt.profile"
+          :options="['sculpted', 'blank']"
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2">
+        <label for="sculpt_cast">Cast</label>
+        <Select
+          id="sculpt_cast"
+          v-model="sculpt.cast"
+          :options="['resin', 'mixed']"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="sculpt_design">Design</label>
+        <Select
+          id="sculpt_design"
+          v-model="sculpt.design"
+          :options="['physical', 'digital', 'hybrid']"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="sculpt_url">URL</label>
+      <InputText id="sculpt_url" v-model.trim="sculpt.href" type="url" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="sculpt_story">Storyline</label>
+      <Textarea
+        id="sculpt_story"
+        v-model.trim="sculpt.story"
+        :rows="5"
+        auto-resize
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="addSculptProfile" />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -105,8 +96,4 @@ const addSculptProfile = () => {
       message.error(error.message)
     })
 }
-
-defineExpose({
-  addSculptProfile,
-})
 </script>

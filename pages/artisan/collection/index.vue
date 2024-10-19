@@ -22,14 +22,15 @@
       </div>
     </template>
 
-    <a-modal
-      v-model:open="visible"
-      title="Add Collection"
-      :confirm-loading="loading"
-      @ok="addCollection"
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Add Collection"
+      class="w-[35rem]"
+      dismissable-mask
     >
-      <modal-collection-form ref="collectionForm" :uid="user.uid" />
-    </a-modal>
+      <modal-collection-form :uid="user.uid" />
+    </Dialog>
 
     <Message v-if="!user.email_verified" class="mx-auto mb-4" severity="info">
       Level up your experience! Login and unlock exclusive features, unlimited
@@ -72,21 +73,5 @@ const { user, collections } = storeToRefs(userStore)
 const visible = ref(false)
 const showModal = () => {
   visible.value = !visible.value
-}
-
-const loading = ref(false)
-const collectionForm = ref()
-const addCollection = async () => {
-  loading.value = true
-
-  await collectionForm.value
-    .addCollection()
-    .then(() => {
-      loading.value = false
-      showModal()
-    })
-    .catch(() => {
-      loading.value = false
-    })
 }
 </script>

@@ -51,20 +51,25 @@
       </a-button>
     </a-dropdown>
 
-    <a-modal v-model:open="visible.login" destroy-on-close :footer="null">
-      <modal-login />
-    </a-modal>
-
-    <a-modal
-      v-model:open="visible.feedback"
-      title="Share your thoughts!"
-      destroy-on-close
-      ok-text="Send Feedback"
-      :confirm-loading="confirmLoading"
-      @ok="addFeedback"
+    <Dialog
+      v-model:visible="visible.login"
+      modal
+      class="w-[35rem]"
+      :closable="false"
+      dismissable-mask
     >
-      <modal-feedback-form ref="feedbackForm" />
-    </a-modal>
+      <modal-login />
+    </Dialog>
+
+    <Dialog
+      v-model:visible="visible.feedback"
+      modal
+      header="Share your thoughts!"
+      dismissable-mask
+      class="w-[35rem]"
+    >
+      <modal-feedback-form />
+    </Dialog>
   </a-flex>
 </template>
 
@@ -83,21 +88,6 @@ const visible = ref({
 
 const toggleShowFeedback = () => {
   visible.value.feedback = !visible.value.feedback
-}
-
-const feedbackForm = ref()
-const confirmLoading = ref(false)
-const addFeedback = async () => {
-  confirmLoading.value = true
-
-  await feedbackForm.value
-    .addFeedback()
-    .then(() => {
-      confirmLoading.value = false
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
 }
 
 const toggleShowLogin = () => {

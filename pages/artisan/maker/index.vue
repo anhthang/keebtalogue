@@ -50,16 +50,15 @@
       "
     />
 
-    <a-modal
-      v-model:open="visible"
-      title="Add Maker"
-      destroy-on-close
-      :confirm-loading="confirmLoading"
-      ok-text="Add"
-      @ok="addMaker"
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Add Maker"
+      class="w-[35rem]"
+      dismissable-mask
     >
-      <modal-maker-form ref="makerForm" />
-    </a-modal>
+      <modal-maker-form />
+    </Dialog>
   </Panel>
 </template>
 
@@ -71,7 +70,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data, refresh } = await useAsyncData('artisan-makers', () =>
+const { data } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 
@@ -97,21 +96,4 @@ const currentPageMakers = computed(() => {
     page.value * size.value,
   )
 })
-
-const makerForm = ref()
-const confirmLoading = ref(false)
-const addMaker = async () => {
-  confirmLoading.value = true
-
-  await makerForm.value
-    .addMaker()
-    .then(() => {
-      confirmLoading.value = false
-      showModal()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
-}
 </script>

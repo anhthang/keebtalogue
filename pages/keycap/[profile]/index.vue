@@ -1,99 +1,96 @@
 <template>
-  <a-spin :spinning="pending">
-    <a-page-header :title="title" class="container keycap-container">
-      <template #extra>
-        <a-button v-if="isEditor" type="primary" @click="showAddKeycap">
-          <folder-add-outlined /> Add
-        </a-button>
-      </template>
+  <a-page-header :title="title" class="container keycap-container">
+    <template #extra>
+      <a-button v-if="isEditor" type="primary" @click="showAddKeycap">
+        <folder-add-outlined /> Add
+      </a-button>
+    </template>
 
-      <a-modal
-        v-model:open="visible"
-        title="Add Keycap"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        ok-text="Add"
-        @ok="addKeycap"
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Add Keycap"
+      dismissable-mask
+      class="w-[35rem]"
+    >
+      <modal-keycap-form :metadata="query" />
+    </Dialog>
+
+    <a-typography v-if="data.profile && data.profile.description">
+      <a-typography-paragraph
+        v-for="(line, idx) in data.profile.description.split('\n')"
+        :key="idx"
       >
-        <modal-keycap-form ref="keycapForm" :metadata="query" />
-      </a-modal>
+        {{ line }}
+      </a-typography-paragraph>
+    </a-typography>
 
-      <a-typography v-if="data.profile && data.profile.description">
-        <a-typography-paragraph
-          v-for="(line, idx) in data.profile.description.split('\n')"
-          :key="idx"
-        >
-          {{ line }}
-        </a-typography-paragraph>
-      </a-typography>
-
-      <a-row :gutter="[16, 16]" type="flex">
-        <a-col
-          v-for="keycap in data.keycaps"
-          :key="keycap.id"
-          :xs="24"
-          :sm="24"
-          :md="12"
-          :lg="8"
-          :xl="6"
-        >
-          <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
-            <a-card hoverable>
-              <template #cover>
-                <img
-                  loading="lazy"
-                  :alt="keycap.name"
-                  :src="keycap.img || keycap.render_img"
-                />
+    <a-row :gutter="[16, 16]" type="flex">
+      <a-col
+        v-for="keycap in data.keycaps"
+        :key="keycap.id"
+        :xs="24"
+        :sm="24"
+        :md="12"
+        :lg="8"
+        :xl="6"
+      >
+        <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
+          <a-card hoverable>
+            <template #cover>
+              <img
+                loading="lazy"
+                :alt="keycap.name"
+                :src="keycap.img || keycap.render_img"
+              />
+            </template>
+            <a-card-meta
+              :title="
+                ['Interest Check', 'Live'].includes(query.status)
+                  ? `${manufacturers[keycap.profile_id]} ${keycap.name}`
+                  : keycap.name
+              "
+            >
+              <template #description>
+                <a-flex justify="space-between">
+                  <span><bg-colors-outlined /> {{ keycap.designer }}</span>
+                  <span v-if="query.status === 'Interest Check'">
+                    <calendar-outlined /> {{ formatDate(keycap.ic_date) }}
+                  </span>
+                  <span v-else-if="query.status === 'Live'">
+                    <calendar-outlined />
+                    {{ formatDateRange(keycap.start_date, keycap.end_date) }}
+                  </span>
+                  <span v-else>
+                    <clock-circle-outlined />
+                    {{ formatDateRange(keycap.start_date, keycap.end_date) }}
+                  </span>
+                </a-flex>
               </template>
-              <a-card-meta
-                :title="
-                  ['Interest Check', 'Live'].includes(query.status)
-                    ? `${manufacturers[keycap.profile_id]} ${keycap.name}`
-                    : keycap.name
-                "
-              >
-                <template #description>
-                  <a-flex justify="space-between">
-                    <span><bg-colors-outlined /> {{ keycap.designer }}</span>
-                    <span v-if="query.status === 'Interest Check'">
-                      <calendar-outlined /> {{ formatDate(keycap.ic_date) }}
-                    </span>
-                    <span v-else-if="query.status === 'Live'">
-                      <calendar-outlined />
-                      {{ formatDateRange(keycap.start_date, keycap.end_date) }}
-                    </span>
-                    <span v-else>
-                      <clock-circle-outlined />
-                      {{ formatDateRange(keycap.start_date, keycap.end_date) }}
-                    </span>
-                  </a-flex>
-                </template>
-              </a-card-meta>
-            </a-card>
-          </nuxt-link>
-        </a-col>
-      </a-row>
+            </a-card-meta>
+          </a-card>
+        </nuxt-link>
+      </a-col>
+    </a-row>
 
-      <a-flex justify="center" style="margin-top: 16px">
-        <a-pagination
-          v-model:current="page"
-          :total="data.count"
-          :page-size="size"
-          :show-size-changer="false"
-          :show-quick-jumper="data.count > size * 10"
-          hide-on-single-page
-        />
-      </a-flex>
-
-      <a-result
-        v-if="!data.keycaps.length"
-        status="404"
-        title="We're currently updating our catalog"
-        sub-title="There are no keycaps available right now. Check back soon for exciting new additions!"
+    <a-flex justify="center" style="margin-top: 16px">
+      <a-pagination
+        v-model:current="page"
+        :total="data.count"
+        :page-size="size"
+        :show-size-changer="false"
+        :show-quick-jumper="data.count > size * 10"
+        hide-on-single-page
       />
-    </a-page-header>
-  </a-spin>
+    </a-flex>
+
+    <a-result
+      v-if="!data.keycaps.length"
+      status="404"
+      title="We're currently updating our catalog"
+      sub-title="There are no keycaps available right now. Check back soon for exciting new additions!"
+    />
+  </a-page-header>
 </template>
 
 <script setup>
@@ -126,7 +123,7 @@ const title = manufacturers[profile]
     ? 'Live Group Buys'
     : statusMap[profile]
 
-const { data, pending, refresh } = await useAsyncData(
+const { data } = await useAsyncData(
   () => $fetch('/api/keycaps', { query: query.value }),
   {
     watch: [page, size],
@@ -142,27 +139,9 @@ useSeoMeta({
   // twitterImage: data.value.profile && data.value.profile.img,
 })
 
-const confirmLoading = ref(false)
 const visible = ref(false)
-const keycapForm = ref()
-
 const showAddKeycap = () => {
   visible.value = !visible.value
-}
-
-const addKeycap = async () => {
-  confirmLoading.value = true
-
-  await keycapForm.value
-    .addKeycap()
-    .then(() => {
-      confirmLoading.value = false
-      showAddKeycap()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
 }
 </script>
 

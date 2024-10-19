@@ -69,26 +69,25 @@
       </nuxt-link>
     </div>
 
-    <a-modal
-      v-model:open="visible.edit"
-      title="Edit Maker"
-      destroy-on-close
-      :confirm-loading="confirmLoading"
-      ok-text="Save"
-      @ok="updateMakerProfile"
+    <Dialog
+      v-model:visible="visible.edit"
+      modal
+      header="Edit Maker"
+      class="w-[35rem]"
+      dismissable-mask
     >
-      <modal-maker-form ref="makerForm" :is-edit="true" :metadata="maker" />
-    </a-modal>
+      <modal-maker-form :is-edit="true" :metadata="maker" />
+    </Dialog>
 
-    <a-modal
-      v-model:open="visible.add_sale"
-      title="Add Upcoming Sale"
-      destroy-on-close
-      :confirm-loading="confirmLoading"
-      @ok="addUpcomingSale"
+    <Dialog
+      v-model:visible="visible.add_sale"
+      modal
+      header="Add Upcoming Sale"
+      class="w-[35rem]"
+      dismissable-mask
     >
-      <modal-sale-form ref="saleForm" :is-edit="true" :metadata="sculptLst" />
-    </a-modal>
+      <modal-sale-form :is-edit="true" :metadata="sculptLst" />
+    </Dialog>
   </Panel>
 </template>
 
@@ -102,7 +101,7 @@ const visible = ref({
   add_sale: false,
 })
 
-const { data: maker, refresh } = await useAsyncData(
+const { data: maker } = await useAsyncData(
   `maker:${route.params.maker}`,
   () => $fetch(`/api/makers/${route.params.maker}`),
   {
@@ -123,36 +122,8 @@ const showEditMakerModal = () => {
   visible.value.edit = !visible.value.edit
 }
 
-const confirmLoading = ref(false)
-
-const makerForm = ref()
-const updateMakerProfile = async () => {
-  confirmLoading.value = true
-
-  await makerForm.value
-    .addMaker()
-    .then(() => {
-      confirmLoading.value = false
-      showEditMakerModal()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
-}
-
 const showAddSaleModal = () => {
   visible.value.add_sale = !visible.value.add_sale
-}
-
-const saleForm = ref()
-const addUpcomingSale = async () => {
-  confirmLoading.value = true
-
-  await saleForm.value.addSale()
-
-  showAddSaleModal()
-  confirmLoading.value = false
 }
 
 const sculptLst = computed(() => {

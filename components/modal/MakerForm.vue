@@ -1,43 +1,62 @@
 <template>
-  <a-form :ref="formRef" layout="vertical" :model="maker" :rules="formRules">
-    <a-form-item
-      ref="name"
-      name="name"
-      v-bind="validateInfos.name"
-      label="Name"
-    >
-      <a-input v-model:value="maker.name" placeholder="Maker Name">
-        <template #prefix><file-text-outlined /></template>
-      </a-input>
-    </a-form-item>
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="maker_name">Name</label>
+      <InputText id="maker_name" v-model.trim="maker.name" type="text" />
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex flex-col gap-2">
+        <label for="maker_nationality">Nationality</label>
+        <InputText
+          id="maker_nationality"
+          v-model.trim="maker.nationality"
+          type="text"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="maker_founded">Founded</label>
+        <InputText id="maker_founded" v-model="maker.founded" v-keyfilter.num />
+      </div>
+    </div>
 
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="24" :md="12">
-        <a-form-item
-          ref="nationality"
-          name="nationality"
-          v-bind="validateInfos.nationality"
-          label="Nationality"
-        >
-          <a-input v-model:value="maker.nationality" :maxlength="2">
-            <template #prefix><flag-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="24" :md="12">
-        <a-form-item
-          ref="founded"
-          name="founded"
-          v-bind="validateInfos.founded"
-          label="Founded"
-        >
-          <a-input v-model:value="maker.founded">
-            <template #prefix><calendar-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
+    <div class="flex flex-col gap-2">
+      <label for="maker_website">Website</label>
+      <InputText id="maker_website" v-model.trim="maker.website" type="url" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="maker_instagram">Instagram</label>
+      <InputText
+        id="maker_instagram"
+        v-model.trim="maker.instagram"
+        type="url"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="maker_discord">Discord</label>
+      <InputText id="maker_discord" v-model.trim="maker.discord" type="url" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="maker_artisancollector">ArtisanCollector</label>
+      <InputText
+        id="maker_artisancollector"
+        v-model.trim="maker.artisancollector"
+        type="url"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="maker_intro">Intro</label>
+      <Textarea
+        id="maker_intro"
+        v-model.trim="maker.intro"
+        :rows="5"
+        auto-resize
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="addMaker" />
+    </div>
+  </div>
+  <!-- <a-form :ref="formRef" layout="vertical" :model="maker" :rules="formRules">
     <a-form-item
       v-for="(docId, idx) in maker.document_ids"
       :key="idx"
@@ -58,65 +77,11 @@
         <plus-circle-outlined /> Add Document Id
       </a-button>
     </a-form-item>
-
-    <a-form-item
-      ref="website"
-      name="website"
-      v-bind="validateInfos.website"
-      label="Website"
-    >
-      <a-input v-model:value="maker.website">
-        <template #prefix><global-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-      ref="instagram"
-      name="instagram"
-      v-bind="validateInfos.instagram"
-      label="Instagram"
-    >
-      <a-input v-model:value="maker.instagram">
-        <template #prefix><instagram-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-      ref="discord"
-      name="discord"
-      v-bind="validateInfos.discord"
-      label="Discord"
-    >
-      <a-input v-model:value="maker.discord">
-        <template #prefix><discord-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-      ref="artisancollector"
-      name="artisancollector"
-      v-bind="validateInfos.artisancollector"
-      label="Artisan Collector"
-    >
-      <a-input v-model:value="maker.artisancollector">
-        <template #prefix><artisan-collector-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-      ref="intro"
-      name="intro"
-      v-bind="validateInfos.intro"
-      label="Introduce"
-    >
-      <a-textarea v-model:value="maker.intro" auto-size />
-    </a-form-item>
-  </a-form>
+  </a-form> -->
 </template>
 
 <script setup>
 import slugify from 'slugify'
-import { Form } from 'ant-design-vue'
 
 const { metadata, isEdit } = defineProps({
   metadata: {
@@ -137,71 +102,59 @@ onBeforeMount(() => {
   }
 })
 
-const formRef = ref()
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-  nationality: [{ len: 2, trigger: ['change', 'blur'] }],
-  founded: [{ required: false, trigger: ['change', 'blur'] }],
-  // document_ids: [
-  //   {
-  //     required: true,
-  //     type: 'array',
-  //     defaultField: { type: 'string', required: true },
-  //   },
-  // ],
-  website: [{ type: 'url', trigger: ['change', 'blur'] }],
-  instagram: [{ type: 'url', trigger: ['change', 'blur'] }],
-  discord: [{ type: 'url', trigger: ['change', 'blur'] }],
-  artisancollector: [{ type: 'url', trigger: ['change', 'blur'] }],
-  intro: [{ type: 'string', trigger: ['change', 'blur'] }],
-})
+// const formRules = ref({
+//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+//   nationality: [{ len: 2, trigger: ['change', 'blur'] }],
+//   founded: [{ required: false, trigger: ['change', 'blur'] }],
+//   // document_ids: [
+//   //   {
+//   //     required: true,
+//   //     type: 'array',
+//   //     defaultField: { type: 'string', required: true },
+//   //   },
+//   // ],
+//   website: [{ type: 'url', trigger: ['change', 'blur'] }],
+//   instagram: [{ type: 'url', trigger: ['change', 'blur'] }],
+//   discord: [{ type: 'url', trigger: ['change', 'blur'] }],
+//   artisancollector: [{ type: 'url', trigger: ['change', 'blur'] }],
+//   intro: [{ type: 'string', trigger: ['change', 'blur'] }],
+// })
 
-const addDocId = () => {
-  if (!Array.isArray(maker.value.document_ids)) {
-    maker.value.document_ids = ['']
-  } else {
-    maker.value.document_ids.push('')
-  }
-}
+// const addDocId = () => {
+//   if (!Array.isArray(maker.value.document_ids)) {
+//     maker.value.document_ids = ['']
+//   } else {
+//     maker.value.document_ids.push('')
+//   }
+// }
 
-const removeDocId = (docIdx) => {
-  maker.value.document_ids = maker.value.document_ids.filter(
-    (d) => d !== docIdx,
-  )
-}
-
-const { useForm } = Form
-const { validate, validateInfos } = useForm(maker, formRules)
+// const removeDocId = (docIdx) => {
+//   maker.value.document_ids = maker.value.document_ids.filter(
+//     (d) => d !== docIdx,
+//   )
+// }
 
 const addMaker = async () => {
-  await validate().then(() => {
-    const { sculpts, ...rest } = maker.value
+  const { sculpts, ...rest } = maker.value
 
-    const makerId = isEdit
-      ? rest.id
-      : slugify(maker.value.name, { lower: true })
+  const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true })
 
-    $fetch(`/api/makers/${makerId}`, {
-      method: 'post',
-      body: {
-        ...rest,
-        id: makerId,
-      },
-    })
-      .then(() => {
-        if (isEdit) {
-          message.success(`[${rest.name}] updated successfully!`)
-        } else {
-          message.success(`[${rest.name}] added successfully!`)
-        }
-      })
-      .catch((error) => {
-        message.error(error.message)
-      })
+  $fetch(`/api/makers/${makerId}`, {
+    method: 'post',
+    body: {
+      ...rest,
+      id: makerId,
+    },
   })
+    .then(() => {
+      if (isEdit) {
+        message.success(`[${rest.name}] updated successfully!`)
+      } else {
+        message.success(`[${rest.name}] added successfully!`)
+      }
+    })
+    .catch((error) => {
+      message.error(error.message)
+    })
 }
-
-defineExpose({
-  addMaker,
-})
 </script>
