@@ -28,7 +28,7 @@
       />
     </div>
     <div class="flex items-center gap-2">
-      <Checkbox id="kit_cancelled" v-model="kit.cancelled" binary />
+      <Checkbox v-model="kit.cancelled" input-id="kit_cancelled" binary />
       <label for="kit_cancelled">Cancelled</label>
     </div>
     <div class="flex flex-col gap-2">

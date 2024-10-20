@@ -28,11 +28,19 @@
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex items-center gap-2">
-        <Checkbox v-model="colorway.giveaway" binary />
+        <Checkbox
+          v-model="colorway.giveaway"
+          input-id="colorway_giveaway"
+          binary
+        />
         <label for="colorway_giveaway">Giveaway</label>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox v-model="colorway.commissioned" binary />
+        <Checkbox
+          v-model="colorway.commissioned"
+          input-id="colorway_commission"
+          binary
+        />
         <label for="colorway_commission">Commission</label>
       </div>
     </div>

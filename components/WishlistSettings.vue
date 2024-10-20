@@ -85,8 +85,8 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox v-model="tradingConfig.fnf_only" binary />
-        <label>I do not accept PayPal G&S</label>
+        <Checkbox v-model="tradingConfig.fnf_only" input-id="fnf_only" binary />
+        <label for="fnf_only">I do not accept PayPal G&S</label>
       </div>
     </div>
   </Panel>
