@@ -6,7 +6,7 @@
           v-for="(maker, index) in slotProps.items"
           :key="index"
           :class="{
-            'border-t border-surface-100 dark:border-surface-600': index !== 0,
+            'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
           }"
         >
           <nuxt-link :to="`/artisan/maker/${maker.id}`">

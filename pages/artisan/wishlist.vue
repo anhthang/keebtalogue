@@ -5,11 +5,7 @@
     pt:root:class="!border-0 !bg-transparent"
   >
     <template #header>
-      <div
-        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
-      >
-        Wishlist
-      </div>
+      <div class="flex items-center gap-4 font-medium text-3xl">Wishlist</div>
     </template>
 
     <Message class="w-fit mx-auto mb-4" severity="warn">

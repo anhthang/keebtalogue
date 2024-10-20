@@ -4,16 +4,12 @@
     pt:root:class="!border-0 !bg-transparent"
   >
     <template #header>
-      <div
-        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
-      >
+      <div class="flex items-center gap-4 font-medium text-3xl">
         <Avatar
           :image="`/logo/${maker.id}.png`"
-          :class="
-            maker.invertible_logo && $colorMode.value === 'dark'
-              ? 'invertible-logo'
-              : ''
-          "
+          :class="{
+            invert: maker.invertible_logo && $colorMode.value === 'dark',
+          }"
           size="large"
           pt:image:class="object-contain"
         />

@@ -4,7 +4,7 @@
     pt:root:class="!border-0 !bg-transparent"
   >
     <template #header>
-      <div class="text-2xl leading-8 text-color font-bold">Home</div>
+      <div class="flex items-center gap-4 font-medium text-3xl">Home</div>
     </template>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <artisan-collector-guide class="col-span-4 md:col-span-3" />

@@ -11,7 +11,7 @@
           :key="index"
           class="flex flex-col p-4"
           :class="{
-            'border-t border-surface-100 dark:border-surface-600': index !== 0,
+            'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
           }"
         >
           <div class="flex flex-col gap-2">

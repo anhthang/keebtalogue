@@ -4,9 +4,7 @@
     pt:root:class="!border-0 !bg-transparent"
   >
     <template #header>
-      <div
-        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
-      >
+      <div class="flex items-center gap-4 font-medium text-3xl">
         Manage Collections
       </div>
     </template>

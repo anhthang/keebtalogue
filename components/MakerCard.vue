@@ -7,11 +7,9 @@
     >
       <template #header>
         <img
-          :class="
-            maker.invertible_logo && $colorMode.value === 'dark'
-              ? 'invertible-logo'
-              : ''
-          "
+          :class="{
+            invert: maker.invertible_logo && $colorMode.value === 'dark',
+          }"
           :alt="maker.name"
           :src="`/logo/${maker.id}.png`"
           width="100%"

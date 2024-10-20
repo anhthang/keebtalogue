@@ -1,77 +1,85 @@
 <template>
-  <a-row>
-    <a-col :xs="24" :sm="16">
-      <a-form :layout="layout">
-        <a-form-item label="Name">
-          <a-input v-model:value="user.name" disabled>
-            <template #prefix><user-outlined /></template>
-          </a-input>
-        </a-form-item>
-        <a-form-item label="Email">
-          <a-input v-model:value="user.email" disabled>
-            <template #prefix><mail-outlined /></template>
-            <template #suffix>
-              <check-circle-outlined
-                v-if="user.email_verified"
-                class="email-verified"
-              />
-            </template>
-          </a-input>
-        </a-form-item>
-      </a-form>
-    </a-col>
-    <a-col :xs="0" :sm="8">
-      <img class="avatar" :src="user.picture" />
-    </a-col>
-  </a-row>
-
-  <a-row>
-    <a-col :xs="24" :sm="16">
-      <a-form :layout="layout">
-        <a-form-item label="Reddit">
-          <a-input v-model:value="social.reddit" placeholder="u/username">
-            <template #prefix><reddit-outlined /></template>
-          </a-input>
-        </a-form-item>
-        <a-form-item label="Discord">
-          <a-input
-            v-model:value="social.discord"
-            placeholder="Discord#0000"
-            :disabled="discordVerified"
-          >
-            <template #prefix><discord-outlined /></template>
-            <template v-if="discordVerified" #suffix>
-              <check-circle-outlined
-                v-if="user.email_verified"
-                class="email-verified"
-              />
-            </template>
-          </a-input>
-        </a-form-item>
-        <a-form-item label="QQ">
-          <a-input v-model:value="social.qq" placeholder="00000000">
-            <template #prefix><qq-outlined /></template>
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-button
-            type="primary"
-            :loading="loading"
+  <div class="grid grid-cols-4 gap-4">
+    <div class="col-span-2 md:col-span-2">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="profile_name">Name</label>
+          <IconField>
+            <InputIcon class="pi pi-user" />
+            <InputText
+              id="profile_name"
+              v-model.trim="user.name"
+              disabled
+              fluid
+            />
+          </IconField>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="profile_email">Email</label>
+          <IconField>
+            <InputIcon class="pi pi-inbox" />
+            <InputText
+              id="profile_email"
+              v-model.trim="user.email"
+              disabled
+              fluid
+            />
+            <InputIcon v-if="user.email_verified" class="pi pi-verified" />
+          </IconField>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="social_reddit">Reddit</label>
+          <IconField>
+            <InputIcon class="pi pi-reddit" />
+            <InputText
+              id="social_reddit"
+              v-model.trim="social.reddit"
+              placeholder="u/username"
+              fluid
+            />
+          </IconField>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="social_discord">Discord</label>
+          <IconField>
+            <InputIcon class="pi pi-discord" />
+            <InputText
+              id="social_discord"
+              v-model.trim="social.discord"
+              placeholder="username#0000"
+              :disabled="discordVerified"
+              fluid
+            />
+            <InputIcon v-if="discordVerified" class="pi pi-verified" />
+          </IconField>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="social_qq">QQ</label>
+          <IconField>
+            <InputIcon class="pi pi-comment" />
+            <InputText
+              id="social_qq"
+              v-model.trim="social.qq"
+              placeholder="00000000"
+              fluid
+            />
+          </IconField>
+        </div>
+        <div class="flex flex-col gap-2">
+          <Button
+            label="Save"
+            icon="pi pi-save"
             @click="saveSettings('social')"
-          >
-            <save-outlined /> Save
-          </a-button>
-        </a-form-item>
-      </a-form>
-    </a-col>
-  </a-row>
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 const userStore = useUserStore()
 const { user, social } = storeToRefs(userStore)
-
-const layout = 'vertical'
 
 const loading = ref(false)
 const saveSettings = () => {

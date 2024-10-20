@@ -15,7 +15,7 @@
                 :src="`/logo/${item.profile_id}.png`"
                 shape="square"
                 size="large"
-                :class="$colorMode.value === 'dark' ? 'invertible-logo' : ''"
+                :class="{ invert: $colorMode.value === 'dark' }"
               >
                 {{ item.name.charAt(0).toUpperCase() }}
               </a-avatar>
