@@ -1,17 +1,23 @@
 <template>
   <Fieldset legend="ArtisanCollector's Guides" pt:legend:class="w-auto">
-    <nuxt-link
-      v-for="guide in guides"
-      :key="guide.url"
-      :to="guide.url"
-      target="_blank"
-      external
-    >
-      <Card class="!shadow-none">
-        <template #title>{{ guide.title }}</template>
-        <template #content>{{ guide.summary }}</template>
-      </Card>
-    </nuxt-link>
+    <DataView :value="guides">
+      <template #list="slotProps">
+        <div
+          v-for="(guide, index) in slotProps.items"
+          :key="index"
+          :class="{
+            'border-t border-surface-100 dark:border-surface-600': index !== 0,
+          }"
+        >
+          <nuxt-link :to="guide.url" target="_blank" external>
+            <Card class="!shadow-none">
+              <template #title>{{ guide.title }}</template>
+              <template #content>{{ guide.summary }}</template>
+            </Card>
+          </nuxt-link>
+        </div>
+      </template>
+    </DataView>
   </Fieldset>
 </template>
 

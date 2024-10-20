@@ -70,6 +70,7 @@
               icon="pi pi-pen-to-square"
               @click="toggleEditColorway(colorway)"
             />
+
             <Button
               text
               severity="secondary"
@@ -128,12 +129,9 @@
     <Dialog
       v-model:visible="visible.card"
       modal
-      class="colorway-details-card"
-      :width="isShowAsMeta ? '512px' : '1024px'"
+      class="colorway-details-card w-[35rem]"
       :closable="false"
       dismissable-mask
-      :footer="null"
-      ok-text="Save"
     >
       <modal-colorway-card
         :colorway="selectedColorway"
@@ -154,7 +152,6 @@ const toggle = (event, idx) => {
 }
 
 const route = useRoute()
-const { isMobile } = useDevice()
 
 const sort = ref('order|desc')
 const sortOptions = ref([
@@ -253,10 +250,6 @@ const showColorwayCardModal = (clw) => {
 
 const colorwayTitle = computed(() => {
   return `${selectedColorway.value.name} ${sculpt.value.name}`
-})
-
-const isShowAsMeta = computed(() => {
-  return isMobile || !selectedColorway.value.description
 })
 
 // edit colorway

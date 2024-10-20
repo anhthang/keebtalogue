@@ -32,7 +32,11 @@
       <modal-collection-form :uid="user.uid" />
     </Dialog>
 
-    <Message v-if="!user.email_verified" class="mx-auto mb-4" severity="info">
+    <Message
+      v-if="!user.email_verified"
+      class="w-fit mx-auto mb-4"
+      severity="info"
+    >
       Level up your experience! Login and unlock exclusive features, unlimited
       collections, and enjoy seamless syncing across all your devices.
     </Message>

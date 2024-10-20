@@ -1,75 +1,71 @@
 <template>
-  <a-card class="marketplace-listing">
-    <a-typography-title :level="5">
-      <shop-outlined /> Public Trades
-    </a-typography-title>
-
-    <a-spin :spinning="pending">
-      <a-list
-        v-if="trades.length"
-        item-layout="vertical"
-        :data-source="trades"
-        :pagination="{ pageSize: 10 }"
-      >
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <template #actions>
-              <a-tag v-if="item.type === 'buy'" :bordered="false" color="blue">
-                Buying
-              </a-tag>
-              <a-tag v-else :bordered="false" color="orange">Selling</a-tag>
-
-              <span v-if="authenticated">
-                <comment-outlined /> {{ item.contact }}
-              </span>
-              <span v-else>
-                <comment-outlined />
-                <a-button type="link" @click="toggleShowLogin">Login</a-button>
-              </span>
-
-              <span>
-                <history-outlined /> {{ formatDateTime(item.created_at) }}
-              </span>
-            </template>
-
-            <a-typography-text strong>Wants:</a-typography-text>
+  <Panel
+    header="Public Trades"
+    pt:root:class="h-full"
+    pt:header:class="text-xl"
+  >
+    <DataView :value="trades">
+      <template #list="slotProps">
+        <div
+          v-for="(item, index) in slotProps.items"
+          :key="index"
+          class="flex flex-col p-4"
+          :class="{
+            'border-t border-surface-100 dark:border-surface-600': index !== 0,
+          }"
+        >
+          <div class="flex flex-col gap-2">
             {{ item.message }}
+            <div class="flex items-center gap-2">
+              <Tag
+                v-if="item.type === 'buy'"
+                severity="info"
+                icon="pi pi-shopping-bag"
+                value="Buying"
+                pt:label:class="font-normal"
+              />
+              <Tag
+                v-else
+                severity="warn"
+                icon="pi pi-shop"
+                value="Selling"
+                pt:label:class="font-normal"
+              />
 
-            <template #extra>
-              <a-avatar-group shape="square" :max-count="15" size="large">
-                <a-tooltip
-                  v-for="cap in item.items"
-                  :key="cap.id"
-                  :title="colorwayTitle(cap)"
-                >
-                  <a-avatar :alt="colorwayTitle(cap)" :src="cap.img" />
-                </a-tooltip>
-              </a-avatar-group>
-            </template>
-          </a-list-item>
-        </template>
+              <Tag
+                v-if="item.contact"
+                severity="secondary"
+                icon="pi pi-user"
+                :value="item.contact"
+                pt:label:class="font-normal"
+              />
 
-        <a-modal v-model:open="visible" destroy-on-close :footer="null">
-          <modal-login />
-        </a-modal>
-      </a-list>
-      <a-result
-        v-else
-        status="404"
-        title="¯\_(ツ)_/¯"
-        sub-title="We couldn't find any results matching your search."
-      />
-    </a-spin>
-  </a-card>
+              <Tag
+                severity="secondary"
+                icon="pi pi-clock"
+                :value="formatDateTime(item.created_at)"
+                pt:label:class="font-normal"
+              />
+            </div>
+            <AvatarGroup>
+              <Avatar
+                v-for="cap in item.items"
+                :key="cap.id"
+                :image="cap.img"
+                size="large"
+              />
+            </AvatarGroup>
+          </div>
+        </div>
+      </template>
+    </DataView>
+  </Panel>
 </template>
 
 <script setup>
-const userStore = useUserStore()
-const { authenticated } = storeToRefs(userStore)
-
 const marketplaceCfg = useState('marketplace-config')
 
-const { data, pending, refresh } = await useAsyncData(() =>
+const { data, refresh } = await useAsyncData(() =>
   $fetch('/api/marketplace', {
     query: {
       maker_id: marketplaceCfg.value.maker_id,
@@ -87,19 +83,4 @@ const trades = computed(() => {
   const { type } = marketplaceCfg.value
   return type === 'any' ? data.value : data.value.filter((i) => i.type === type)
 })
-
-const visible = ref(false)
-const toggleShowLogin = () => {
-  visible.value = !visible.value
-}
 </script>
-
-<style>
-.marketplace-listing {
-  height: 100%;
-}
-
-.ant-avatar-group-popover {
-  max-width: 800px;
-}
-</style>

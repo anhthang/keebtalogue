@@ -66,6 +66,7 @@
         <template v-if="authenticated" #footer>
           <Button
             text
+            size="small"
             severity="danger"
             label="Remove"
             icon="pi pi-trash"

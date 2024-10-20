@@ -1,62 +1,44 @@
 <template>
-  <a-card class="marketplace-filter">
-    <a-typography-title :level="5">
-      <filter-outlined /> Filter
-    </a-typography-title>
+  <Panel header="Filter" pt:root:class="h-full" pt:header:class="text-xl">
+    <div class="flex flex-col gap-4">
+      <AutoComplete
+        v-model="searchText"
+        :suggestions="dataSources"
+        fluid
+        @complete="handleSearch"
+      />
 
-    <a-form layout="vertical">
-      <a-form-item>
-        <a-auto-complete
-          v-model:value="searchText"
-          allow-clear
-          :options="dataSources"
-          @select="onSelect"
-          @search="handleSearch"
-        >
-          <template #option="item">
-            <template v-if="item.options">
-              <span>
-                {{ item.title }}
-              </span>
-            </template>
-            <template v-else>
-              <div
-                :style="{ display: 'flex', justifyContent: 'space-between' }"
-              >
-                {{ item.title }}
-              </div>
-            </template>
-          </template>
-          <a-input placeholder="Search" />
-        </a-auto-complete>
-      </a-form-item>
-
-      <a-form-item label="Type">
-        <a-radio-group
-          v-model:value="marketplaceCfg.type"
+      <div class="flex flex-col gap-2">
+        <label>Type</label>
+        <SelectButton
+          v-model="marketplaceCfg.type"
+          option-label="label"
+          option-value="value"
           :options="tradeTypeOptions"
         />
-      </a-form-item>
-
-      <a-form-item label="Maker">
-        <a-input v-model:value="marketplaceCfg.maker_name" disabled />
-      </a-form-item>
-
-      <a-form-item label="Sculpt">
-        <a-input v-model:value="marketplaceCfg.sculpt_name" disabled />
-      </a-form-item>
-
-      <a-form-item label="Colorway">
-        <a-input v-model:value="marketplaceCfg.colorway_name" disabled />
-      </a-form-item>
-
-      <a-form-item>
-        <a-button block @click="onClearFilter">
-          <clear-outlined /> Clear
-        </a-button>
-      </a-form-item>
-    </a-form>
-  </a-card>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label>Maker</label>
+        <InputText v-model="marketplaceCfg.maker_name" disabled />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label>Sculpt</label>
+        <InputText v-model="marketplaceCfg.sculpt_name" disabled />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label>Colorway</label>
+        <InputText v-model="marketplaceCfg.colorway_name" disabled />
+      </div>
+      <div class="flex flex-col gap-2">
+        <Button
+          label="Clear"
+          icon="pi pi-eraser"
+          severity="primary"
+          @click="onClearFilter"
+        />
+      </div>
+    </div>
+  </Panel>
 </template>
 
 <script setup>
@@ -73,7 +55,7 @@ const tradeTypeOptions = [
 const searchText = ref('')
 const dataSources = ref([])
 
-const handleSearch = async (query) => {
+const handleSearch = async ({ query }) => {
   const { data } = await useAsyncData(() =>
     $fetch('/api/search', { params: { query } }),
   )
@@ -81,17 +63,17 @@ const handleSearch = async (query) => {
   dataSources.value = data.value.data
 }
 
-const onSelect = async (path, option) => {
-  searchText.value = ''
-  dataSources.value = []
+// const onSelect = async (path, option) => {
+//   searchText.value = ''
+//   dataSources.value = []
 
-  const { title, value, ...rest } = option
+//   const { title, value, ...rest } = option
 
-  marketplaceCfg.value = {
-    type: marketplaceCfg.value.type,
-    ...rest,
-  }
-}
+//   marketplaceCfg.value = {
+//     type: marketplaceCfg.value.type,
+//     ...rest,
+//   }
+// }
 
 const onClearFilter = () => {
   marketplaceCfg.value = {
@@ -99,9 +81,3 @@ const onClearFilter = () => {
   }
 }
 </script>
-
-<style>
-.marketplace-filter {
-  height: 100%;
-}
-</style>

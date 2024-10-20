@@ -1,25 +1,28 @@
 <template>
-  <a-page-header v-if="$device.isDesktop" title="Wishlist" class="container">
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-alert class="alert-banner" banner>
-        <template #message>
-          <a-typography-text strong> Attention: </a-typography-text>
-          We're phasing out this feature. Check out the
-          <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
-          powerful alternatives!
-        </template>
-      </a-alert>
-    </a-row>
+  <Panel
+    v-if="$device.isDesktop"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+  >
+    <template #header>
+      <div
+        class="flex items-center gap-4 text-2xl leading-8 text-color font-bold"
+      >
+        Wishlist
+      </div>
+    </template>
 
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-col :xs="24">
-        <wishlist-settings />
-      </a-col>
-      <a-col :xs="24">
-        <wishlist-preview />
-      </a-col>
-    </a-row>
-  </a-page-header>
+    <Message class="w-fit mx-auto mb-4" severity="warn">
+      <strong>Attention:</strong> We're phasing out this feature. Check out the
+      <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
+      powerful alternatives!
+    </Message>
+
+    <div class="flex flex-col gap-4">
+      <wishlist-settings />
+      <wishlist-preview />
+    </div>
+  </Panel>
   <a-page-header v-else class="container">
     <a-result
       status="404"
