@@ -77,28 +77,6 @@
 
     <Toast />
   </div>
-  <!-- <a-form :ref="formRef" layout="vertical" :model="maker" :rules="formRules">
-    <a-form-item
-      v-for="(docId, idx) in maker.document_ids"
-      :key="idx"
-      :label="idx == 0 ? 'Document Id' : undefined"
-      :name="['document_ids', idx]"
-      v-bind="validateInfos.document_ids"
-      :rules="{ required: true, type: 'string', trigger: ['change', 'blur'] }"
-    >
-      <a-input v-model:value="maker.document_ids[idx]">
-        <template #prefix><file-word-outlined /></template>
-        <template #suffix>
-          <minus-circle-outlined @click="removeDocId(docId)" />
-        </template>
-      </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-button type="dashed" style="width: 100%" @click="addDocId">
-        <plus-circle-outlined /> Add Document Id
-      </a-button>
-    </a-form-item>
-  </a-form> -->
 </template>
 
 <script setup>

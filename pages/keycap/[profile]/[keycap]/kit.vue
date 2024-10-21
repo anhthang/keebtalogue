@@ -6,7 +6,7 @@
     pt:header:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template #icons>
-      <Button label="Add" icon="pi pi-file-plus" @click="toggleShowEditKit" />
+      <Button label="Add" icon="pi pi-file-plus" @click="toggleShowEditKit()" />
     </template>
 
     <DataTable

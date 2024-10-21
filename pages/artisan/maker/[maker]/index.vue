@@ -49,6 +49,7 @@
         <Card
           class="flex items-center flex-1 overflow-hidden"
           pt:header:class="h-[250px]"
+          pt:root:class="h-full"
         >
           <template #header>
             <img

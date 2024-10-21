@@ -19,7 +19,7 @@
         <label for="keycap_profile">Profile</label>
         <Select
           id="keycap_profile"
-          v-model="keycap.profile"
+          v-model="keycap.profile_id"
           option-label="label"
           option-value="value"
           :options="
@@ -137,7 +137,6 @@ const keycap = ref({
   url: '',
   render_img: '',
   dates: [],
-  date: '',
 })
 
 const ic = computed(() => keycap.value.status === 'Interest Check')
@@ -184,11 +183,11 @@ const addKeycap = async () => {
     keycap.value.profile_keycap_id = `${keycap.value.profile_id}/${slug}`
   }
 
-  keycap.value.ic_date = keycap.value.ic_date.slice(0, 10)
-
-  if (!ic.value) {
-    keycap.value.start_date = keycap.value.dates[0].slice(0, 10)
-    keycap.value.end_date = keycap.value.dates[0].slice(0, 10)
+  if (ic.value) {
+    keycap.value.ic_date = keycap.value.ic_date.toISOString().slice(0, 10)
+  } else {
+    keycap.value.start_date = keycap.value.dates[0].toISOString().slice(0, 10)
+    keycap.value.end_date = keycap.value.dates[1].toISOString().slice(0, 10)
   }
 
   /**

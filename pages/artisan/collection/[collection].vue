@@ -72,20 +72,15 @@
       </Card>
     </div>
 
-    <a-modal
-      v-model:open="visible"
-      title="Edit Collection"
-      destroy-on-close
-      :confirm-loading="confirmLoading"
-      @ok="editCollection"
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Edit Collection"
+      dismissable-mask
+      class="w-[35rem]"
     >
-      <modal-collection-form
-        ref="collectionForm"
-        :metadata="data"
-        :uid="user.uid"
-        :is-edit="true"
-      />
-    </a-modal>
+      <modal-collection-form :metadata="data" :uid="user.uid" :is-edit="true" />
+    </Dialog>
   </Panel>
 </template>
 
@@ -253,22 +248,5 @@ const copyShareUrl = () => {
 const visible = ref(false)
 const toggleShowEdit = () => {
   visible.value = !visible.value
-}
-
-const confirmLoading = ref(false)
-const collectionForm = ref()
-const editCollection = async () => {
-  confirmLoading.value = true
-
-  await collectionForm.value
-    .addCollection()
-    .then(() => {
-      confirmLoading.value = false
-      refresh()
-      toggleShowEdit()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
 }
 </script>

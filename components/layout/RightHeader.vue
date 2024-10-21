@@ -4,51 +4,21 @@
       <a-tooltip title="Feedback"><message-outlined /></a-tooltip>
     </a-button>
 
-    <a-dropdown v-if="user.email_verified">
+    <a-dropdown>
       <a-avatar :src="user.picture" style="cursor: pointer" />
 
       <template #overlay>
-        <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
-          <a-menu-item>
-            👋 <strong>{{ user.name }}</strong>
-          </a-menu-item>
-          <a-menu-divider />
-
-          <layout-appearance />
-          <a-menu-divider />
-
-          <a-menu-item key="/account/settings">
-            <template #icon><setting-outlined /></template> Settings
-          </a-menu-item>
-          <a-menu-item v-if="$device.isMobile" key="feedback">
-            <template #icon><message-outlined /></template> Feedback
-          </a-menu-item>
-          <a-menu-divider />
-
-          <a-menu-item key="logout">
-            <template #icon><logout-outlined /></template> Logout
-          </a-menu-item>
-        </a-menu>
+        <Menu :model="menu" pt:end:class="ml-4">
+          <template v-if="authenticated" #end>
+            <div class="flex items-center">
+              <Avatar :image="user.picture" shape="circle" />
+              <Card class="!shadow-none">
+                <template #title>{{ user.name }}</template>
+              </Card>
+            </div>
+          </template>
+        </Menu>
       </template>
-    </a-dropdown>
-    <a-dropdown v-else>
-      <a-avatar>
-        <template #icon><user-outlined /> </template>
-      </a-avatar>
-
-      <template #overlay>
-        <a-menu :selected-keys="[$colorMode.preference]" @click="onChangeMenu">
-          <a-menu-item key="login">
-            <template #icon><login-outlined /></template> Login
-          </a-menu-item>
-          <a-menu-divider />
-
-          <layout-appearance />
-        </a-menu>
-      </template>
-      <a-button type="link" @click="toggleShowLogin">
-        <login-outlined /> Login
-      </a-button>
     </a-dropdown>
 
     <Dialog
@@ -77,12 +47,83 @@
 
 <script setup>
 const router = useRouter()
-const colorMode = useColorMode()
 const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+const { authenticated, user } = storeToRefs(userStore)
 
 const client = useSupabaseClient()
 const toast = useToast()
+
+const menu = computed(() => {
+  const items = [
+    {
+      label: 'Appearance',
+      items: [
+        {
+          label: 'System',
+          icon: 'pi pi-desktop',
+        },
+        {
+          label: 'Light',
+          icon: 'pi pi-sun',
+        },
+        {
+          label: 'Dark',
+          icon: 'pi pi-moon',
+        },
+      ],
+    },
+  ]
+
+  if (authenticated.value) {
+    items.push(
+      {
+        separator: true,
+      },
+      {
+        label: 'Profile',
+        items: [
+          {
+            label: 'Settings',
+            icon: 'pi pi-cog',
+            command: () => {
+              router.push('/account/settings')
+            },
+          },
+          {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            command: () => {
+              logout()
+            },
+          },
+        ],
+      },
+      {
+        separator: true,
+      },
+    )
+  } else {
+    items.unshift(
+      {
+        label: 'Welcome',
+        items: [
+          {
+            label: 'Login',
+            icon: 'pi pi-sign-in',
+            command: () => {
+              toggleShowLogin()
+            },
+          },
+        ],
+      },
+      {
+        separator: true,
+      },
+    )
+  }
+
+  return items
+})
 
 const visible = ref({
   feedback: false,
@@ -110,22 +151,6 @@ const logout = async () => {
     })
 
     navigateTo('/')
-  }
-}
-
-const onChangeMenu = (e) => {
-  if (!e.key) {
-    // nothing
-  } else if (e.key.startsWith('/')) {
-    router.push(e.key)
-  } else if (e.key === 'feedback') {
-    toggleShowFeedback()
-  } else if (e.key === 'login') {
-    toggleShowLogin()
-  } else if (e.key === 'logout') {
-    logout()
-  } else {
-    colorMode.preference = e.key
   }
 }
 </script>

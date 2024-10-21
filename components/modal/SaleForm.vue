@@ -59,7 +59,7 @@ watch(
 const addSale = () => {
   const body = {
     ...sale.value,
-    date: sale.value.date.slice(0, 10),
+    date: sale.value.date.toISOString().slice(0, 10),
   }
 
   $fetch('/api/sales', {
