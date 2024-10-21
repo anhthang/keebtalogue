@@ -4,7 +4,7 @@
     header="Wishlist"
     class="container"
     pt:root:class="!border-0 !bg-transparent"
-    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <Message class="w-fit mx-auto mb-4" severity="warn">
       <strong>Attention:</strong> We're phasing out this feature. Check out the

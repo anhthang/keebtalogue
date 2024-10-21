@@ -1,11 +1,10 @@
 <template>
-  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
-    <template #header>
-      <div class="text-2xl leading-8 text-color font-bold">
-        {{ sculpt.name }}
-      </div>
-    </template>
-
+  <Panel
+    :header="sculpt.name"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
     <div v-if="sculpt.story" class="mb-4 leading-6 text-muted-color">
       {{ sculpt.story }}
     </div>

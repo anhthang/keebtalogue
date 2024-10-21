@@ -1,5 +1,9 @@
 <template>
-  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
+  <Panel
+    v-if="maker"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+  >
     <template #header>
       <div class="flex items-center gap-4 font-medium text-3xl">
         <Avatar
@@ -83,6 +87,7 @@
       <modal-sale-form :is-edit="true" :metadata="sculptLst" />
     </Dialog>
   </Panel>
+  <BackToArtisanMakers v-else />
 </template>
 
 <script setup>

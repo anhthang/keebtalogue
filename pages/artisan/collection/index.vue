@@ -3,7 +3,7 @@
     header="Manage Collections"
     class="container"
     pt:root:class="!border-0 !bg-transparent"
-    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template #icons>
       <div class="flex gap-2">
@@ -43,15 +43,24 @@
         :key="collection.id"
         :to="`/artisan/collection/${collection.id}`"
       >
-        <Card pt:title:class="text-center" class="h-full">
-          <template #title>
-            {{ collection.name }}
+        <Card class="h-full" pt:body:class="flex items-center">
+          <template #title>{{ collection.name }}</template>
+          <template #footer>
             <Button
               v-if="collection.published"
               text
+              label="Public"
               disabled
-              severity="danger"
+              severity="warn"
               icon="pi pi-unlock"
+            />
+            <Button
+              v-else
+              text
+              label="Private"
+              disabled
+              severity="secondary"
+              icon="pi pi-lock"
             />
           </template>
         </Card>

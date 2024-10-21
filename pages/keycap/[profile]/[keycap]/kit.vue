@@ -3,7 +3,7 @@
     header="Manage Kits"
     class="container"
     pt:root:class="!border-0 !bg-transparent"
-    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template #icons>
       <Button label="Add" icon="pi pi-file-plus" @click="toggleShowEditKit()" />

@@ -3,7 +3,7 @@
     header="Home"
     class="container"
     pt:root:class="!border-0 !bg-transparent"
-    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <artisan-collector-guide class="col-span-4 md:col-span-3" />

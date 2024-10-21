@@ -11,9 +11,10 @@
         <Menu :model="menu" pt:end:class="ml-4">
           <template v-if="authenticated" #end>
             <div class="flex items-center">
-              <Avatar :image="user.picture" shape="circle" />
+              <Avatar :image="user.picture" shape="circle" size="large" />
               <Card class="!shadow-none">
                 <template #title>{{ user.name }}</template>
+                <template #subtitle>{{ user.email }}</template>
               </Card>
             </div>
           </template>

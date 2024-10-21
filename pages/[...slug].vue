@@ -5,7 +5,7 @@
         :header="doc.title"
         class="container"
         pt:root:class="!border-0 !bg-transparent"
-        pt:header:class="flex items-center gap-4 font-medium text-3xl"
+        pt:title:class="flex items-center gap-4 font-medium text-3xl"
       >
         <ContentRenderer :value="doc" />
       </Panel>
