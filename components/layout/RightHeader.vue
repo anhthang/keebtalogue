@@ -70,6 +70,8 @@
     >
       <modal-feedback-form />
     </Dialog>
+
+    <Toast />
   </a-flex>
 </template>
 
@@ -80,6 +82,7 @@ const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
 const client = useSupabaseClient()
+const toast = useToast()
 
 const visible = ref({
   feedback: false,
@@ -97,10 +100,14 @@ const toggleShowLogin = () => {
 const logout = async () => {
   const { error } = await client.auth.signOut()
   if (error) {
-    message.error(error.message)
+    toast.add({ severity: 'error', summary: error.message, life: 3000 })
   } else {
     userStore.$reset()
-    message.success('You have been logged out successfully.')
+    toast.add({
+      severity: 'success',
+      summary: 'You have been logged out successfully.',
+      life: 3000,
+    })
 
     navigateTo('/')
   }

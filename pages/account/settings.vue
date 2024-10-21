@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    class="container artisan-container"
-    pt:root:class="!border-0 !bg-transparent"
-  >
+  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
     <template #header>
       <div class="text-2xl leading-8 text-color font-bold">
         Account Settings

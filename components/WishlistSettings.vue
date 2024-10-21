@@ -112,5 +112,7 @@ const tradingConfig = useState('trading-config', () => {
   }
 })
 
+tradingConfig.value.social = social.value
+
 const trading = computed(() => tradingConfig.value.type === 'twoway')
 </script>

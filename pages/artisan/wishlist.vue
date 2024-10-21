@@ -1,13 +1,11 @@
 <template>
   <Panel
     v-if="$device.isDesktop"
+    header="Wishlist"
     class="container"
     pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">Wishlist</div>
-    </template>
-
     <Message class="w-fit mx-auto mb-4" severity="warn">
       <strong>Attention:</strong> We're phasing out this feature. Check out the
       <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
@@ -19,19 +17,23 @@
       <wishlist-preview />
     </div>
   </Panel>
-  <a-page-header v-else class="container">
-    <a-result
-      status="404"
-      title="This feature is currently unavailable on mobile devices."
-      sub-title="Please use your desktop for full access. Or check out the Marketplace for powerful alternatives!"
-    >
-      <template #extra>
-        <nuxt-link to="/artisan/marketplace">
-          <a-button type="primary"><shop-outlined /> Marketplace</a-button>
-        </nuxt-link>
-      </template>
-    </a-result>
-  </a-page-header>
+  <Panel v-else class="container" pt:root:class="!border-0 !bg-transparent">
+    <div class="flex flex-col items-center">
+      <div
+        class="text-3xl font-medium text-surface-900 dark:text-surface-0 mb-2"
+      >
+        This feature is currently unavailable on mobile devices.
+      </div>
+      <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">
+        Please use your desktop for full access. Or check out the Marketplace
+        for powerful alternatives!
+      </div>
+
+      <nuxt-link to="/artisan/marketplace">
+        <Button label="Marketplace" icon="pi pi-shop" />
+      </nuxt-link>
+    </div>
+  </Panel>
 </template>
 
 <script setup>

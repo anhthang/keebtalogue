@@ -56,6 +56,8 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addSculptProfile" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
@@ -67,6 +69,8 @@ const { metadata, isEdit } = defineProps({
   },
   isEdit: Boolean,
 })
+
+const toast = useToast()
 
 const route = useRoute()
 const sculpt = ref({
@@ -87,13 +91,21 @@ const addSculptProfile = () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success('Sculpt updated successfully!')
+        toast.add({
+          severity: 'success',
+          summary: 'Sculpt updated successfully!',
+          life: 3000,
+        })
       } else {
-        message.success('New sculpt added successfully!')
+        toast.add({
+          severity: 'success',
+          summary: 'New sculpt added successfully!',
+          life: 3000,
+        })
       }
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

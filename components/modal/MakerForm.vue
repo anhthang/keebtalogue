@@ -20,6 +20,25 @@
     </div>
 
     <div class="flex flex-col gap-2">
+      <label for="maker_doc_id">Document ID</label>
+      <IconField
+        v-for="(docId, idx) in maker.document_ids"
+        id="maker_doc_id"
+        :key="docId"
+      >
+        <InputText :key="idx" v-model.trim="maker.document_ids[idx]" fluid />
+        <InputIcon class="pi pi-minus-circle" @click="removeDocId(docId)" />
+      </IconField>
+      <Button
+        severity="secondary"
+        outlined
+        label="Add Document Id"
+        icon="pi pi-file-plus"
+        @click="addDocId"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
       <label for="maker_website">Website</label>
       <InputText id="maker_website" v-model.trim="maker.website" type="url" />
     </div>
@@ -55,6 +74,8 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addMaker" />
     </div>
+
+    <Toast />
   </div>
   <!-- <a-form :ref="formRef" layout="vertical" :model="maker" :rules="formRules">
     <a-form-item
@@ -82,6 +103,8 @@
 
 <script setup>
 import slugify from 'slugify'
+
+const toast = useToast()
 
 const { metadata, isEdit } = defineProps({
   metadata: {
@@ -120,19 +143,19 @@ onBeforeMount(() => {
 //   intro: [{ type: 'string', trigger: ['change', 'blur'] }],
 // })
 
-// const addDocId = () => {
-//   if (!Array.isArray(maker.value.document_ids)) {
-//     maker.value.document_ids = ['']
-//   } else {
-//     maker.value.document_ids.push('')
-//   }
-// }
+const addDocId = () => {
+  if (!Array.isArray(maker.value.document_ids)) {
+    maker.value.document_ids = ['']
+  } else {
+    maker.value.document_ids.push('')
+  }
+}
 
-// const removeDocId = (docIdx) => {
-//   maker.value.document_ids = maker.value.document_ids.filter(
-//     (d) => d !== docIdx,
-//   )
-// }
+const removeDocId = (docIdx) => {
+  maker.value.document_ids = maker.value.document_ids.filter(
+    (d) => d !== docIdx,
+  )
+}
 
 const addMaker = async () => {
   const { sculpts, ...rest } = maker.value
@@ -148,13 +171,21 @@ const addMaker = async () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success(`[${rest.name}] updated successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${rest.name}] updated successfully!`,
+          life: 3000,
+        })
       } else {
-        message.success(`[${rest.name}] added successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${rest.name}] added successfully!`,
+          life: 3000,
+        })
       }
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

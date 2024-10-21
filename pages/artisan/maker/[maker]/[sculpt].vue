@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    class="container artisan-container"
-    pt:root:class="!border-0 !bg-transparent"
-  >
+  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
     <template #header>
       <div class="text-2xl leading-8 text-color font-bold">
         {{ sculpt.name }}
@@ -140,11 +137,15 @@
         @copy-colorway-card="copyColorwayCard"
       />
     </Dialog>
+
+    <Toast />
   </Panel>
 </template>
 
 <script setup>
 import orderBy from 'lodash.orderby'
+
+const toast = useToast()
 
 const op = ref()
 const toggle = (event, idx) => {
@@ -276,12 +277,14 @@ const addToCollection = (collection, colorway) => {
       body: clw,
     })
       .then(() => {
-        message.success(
-          `${clw.name} has been added to [${collection.name}] collection!`,
-        )
+        toast.add({
+          severity: 'success',
+          summary: `${clw.name} has been added to [${collection.name}] collection!`,
+          life: 3000,
+        })
       })
       .catch((error) => {
-        message.error(error.message)
+        toast.add({ severity: 'error', summary: error.message, life: 3000 })
       })
   } else {
     const collectionMap =
@@ -294,9 +297,11 @@ const addToCollection = (collection, colorway) => {
       JSON.stringify(collectionMap),
     )
 
-    message.success(
-      `${clw.name} has been added to [${collection.name}] collection!`,
-    )
+    toast.add({
+      severity: 'success',
+      summary: `${clw.name} has been added to [${collection.name}] collection!`,
+      life: 3000,
+    })
   }
 }
 
@@ -314,18 +319,9 @@ const copyColorwayCard = async (idx) => {
   try {
     await copyScreenshot(card)
   } catch (error) {
-    message.error(error.message)
+    toast.add({ severity: 'error', summary: error.message, life: 3000 })
   }
 
   cardActions.classList.remove('hide-actions')
 }
 </script>
-
-<style>
-.colorway-card,
-.colorway-details-card {
-  .hide-actions {
-    display: none;
-  }
-}
-</style>

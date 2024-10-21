@@ -74,12 +74,16 @@
         </div>
       </div>
     </div>
+
+    <Toast />
   </div>
 </template>
 
 <script setup>
 const userStore = useUserStore()
 const { user, social } = storeToRefs(userStore)
+
+const toast = useToast()
 
 const loading = ref(false)
 const saveSettings = () => {
@@ -89,11 +93,15 @@ const saveSettings = () => {
     body: social.value,
   })
     .then(() => {
-      message.success('Your profile has been updated.')
+      toast.add({
+        severity: 'success',
+        summary: 'Your profile has been updated.',
+        life: 3000,
+      })
       loading.value = false
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
       loading.value = false
     })
 }
@@ -102,18 +110,3 @@ const discordVerified = computed(() => {
   return user.value && user.value.providers?.includes('discord')
 })
 </script>
-
-<style>
-.avatar {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
-  margin-bottom: 0;
-  border-radius: 9999px;
-}
-
-.email-verified {
-  color: #50d71e;
-}
-</style>

@@ -1,24 +1,32 @@
 <template>
   <ContentDoc>
     <template #default="{ doc }">
-      <a-page-header :title="doc.title" class="container">
+      <Panel
+        :header="doc.title"
+        class="container"
+        pt:root:class="!border-0 !bg-transparent"
+        pt:header:class="flex items-center gap-4 font-medium text-3xl"
+      >
         <ContentRenderer :value="doc" />
-      </a-page-header>
+      </Panel>
     </template>
     <template #not-found>
-      <a-page-header class="container">
-        <a-result
-          status="404"
-          title="404"
-          sub-title="Sorry, the page you visited does not exist."
-        >
-          <template #extra>
-            <nuxt-link to="/">
-              <a-button type="primary"> Back Home </a-button>
-            </nuxt-link>
-          </template>
-        </a-result>
-      </a-page-header>
+      <Panel class="container" pt:root:class="!border-0 !bg-transparent">
+        <div class="flex flex-col items-center">
+          <div
+            class="text-3xl font-medium text-surface-900 dark:text-surface-0 mb-2"
+          >
+            404
+          </div>
+          <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">
+            Sorry, the page you visited does not exist.
+          </div>
+
+          <nuxt-link to="/">
+            <Button label="Back Home" icon="pi pi-home" />
+          </nuxt-link>
+        </div>
+      </Panel>
     </template>
   </ContentDoc>
 </template>

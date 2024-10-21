@@ -84,6 +84,8 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addCollection" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
@@ -99,6 +101,7 @@ const { metadata, uid, isEdit } = defineProps({
 })
 
 const userStore = useUserStore()
+const toast = useToast()
 
 const collection = ref({
   name: '',
@@ -140,13 +143,21 @@ const addCollection = async () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success(`Collection [${rest.name}] updated successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] updated successfully!`,
+          life: 3000,
+        })
       } else {
-        message.success(`Collection [${rest.name}] added successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] added successfully!`,
+          life: 3000,
+        })
       }
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 
   await userStore.getUserDocument(uid)

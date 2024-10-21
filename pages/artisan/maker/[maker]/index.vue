@@ -1,8 +1,5 @@
 <template>
-  <Panel
-    class="container artisan-container"
-    pt:root:class="!border-0 !bg-transparent"
-  >
+  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
     <template #header>
       <div class="flex items-center gap-4 font-medium text-3xl">
         <Avatar
@@ -151,19 +148,3 @@ const sculptLst = computed(() => {
 //     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)))
 // }
 </script>
-
-<style>
-.contributors span,
-.contributors .ant-avatar + .ant-avatar {
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  -webkit-margin-end: -8px;
-  margin-inline-end: -8px;
-}
-
-.contributors:hover span,
-.contributors:hover .ant-avatar {
-  -webkit-margin-end: 0;
-  margin-inline-end: 0;
-}
-</style>

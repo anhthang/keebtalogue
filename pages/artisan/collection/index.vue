@@ -1,14 +1,10 @@
 <template>
   <Panel
-    class="container artisan-container"
+    header="Manage Collections"
+    class="container"
     pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">
-        Manage Collections
-      </div>
-    </template>
-
     <template #icons>
       <div class="flex gap-2">
         <Button

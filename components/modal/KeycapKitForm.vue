@@ -34,10 +34,14 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addKit" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
 <script setup>
+const toast = useToast()
+
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,
@@ -96,14 +100,22 @@ const addKit = () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success(`[${kit.value.name}] kit updated successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${kit.value.name}] kit updated successfully!`,
+          life: 3000,
+        })
       } else {
-        message.success(`[${kit.value.name}] kit added successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${kit.value.name}] kit added successfully!`,
+          life: 3000,
+        })
       }
     })
     .catch((error) => {
       console.error(error)
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

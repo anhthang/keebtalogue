@@ -1,10 +1,80 @@
 <template>
-  <a-page-header :title="title" class="container keycap-container">
-    <template #extra>
-      <a-button v-if="isEditor" type="primary" @click="showAddKeycap">
-        <folder-add-outlined /> Add
-      </a-button>
+  <Panel
+    :header="title"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <template #icons>
+      <Button
+        v-if="isEditor"
+        label="Add"
+        icon="pi pi-file-plus"
+        @click="showAddKeycap"
+      />
     </template>
+
+    <div
+      v-if="data.profile && data.profile.description"
+      class="mb-4 leading-6 text-muted-color"
+    >
+      {{ data.profile.description }}
+    </div>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+    >
+      <nuxt-link
+        v-for="keycap in data.keycaps"
+        :key="keycap.id"
+        :to="`/keycap/${keycap.profile_keycap_id}`"
+      >
+        <Card
+          class="flex flex-1 overflow-hidden"
+          pt:header:class="h-[250px]"
+          pt:subtitle:class="flex justify-between"
+        >
+          <template #header>
+            <img
+              :alt="keycap.name"
+              :src="keycap.img || keycap.render_img"
+              class="h-full object-cover"
+            />
+          </template>
+          <template #title>{{ keycap.name }}</template>
+          <template #subtitle>
+            <span>
+              <i class="pi pi-palette" />
+              {{ keycap.designer }}
+            </span>
+            <span v-if="query.status === 'Interest Check'">
+              <i class="pi pi-clock" /> {{ formatDate(keycap.ic_date) }}
+            </span>
+            <span v-else-if="query.status === 'Live'">
+              <i class="pi pi-clock" />
+              {{ formatDateRange(keycap.start_date, keycap.end_date) }}
+            </span>
+            <span v-else>
+              <i class="pi pi-clock" />
+              {{ formatDateRange(keycap.start_date, keycap.end_date) }}
+            </span>
+          </template>
+        </Card>
+      </nuxt-link>
+    </div>
+
+    <Paginator
+      v-if="data.count >= size"
+      class="mt-4"
+      :rows="size"
+      :total-records="data.count"
+      pt:root:class="!bg-transparent"
+      @page="
+        (e) => {
+          page = e.page + 1
+        }
+      "
+    />
 
     <Dialog
       v-model:visible="visible"
@@ -15,82 +85,7 @@
     >
       <modal-keycap-form :metadata="query" />
     </Dialog>
-
-    <a-typography v-if="data.profile && data.profile.description">
-      <a-typography-paragraph
-        v-for="(line, idx) in data.profile.description.split('\n')"
-        :key="idx"
-      >
-        {{ line }}
-      </a-typography-paragraph>
-    </a-typography>
-
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-col
-        v-for="keycap in data.keycaps"
-        :key="keycap.id"
-        :xs="24"
-        :sm="24"
-        :md="12"
-        :lg="8"
-        :xl="6"
-      >
-        <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
-          <a-card hoverable>
-            <template #cover>
-              <img
-                loading="lazy"
-                :alt="keycap.name"
-                :src="keycap.img || keycap.render_img"
-              />
-            </template>
-            <a-card-meta
-              :title="
-                ['Interest Check', 'Live'].includes(query.status)
-                  ? `${manufacturers[keycap.profile_id]} ${keycap.name}`
-                  : keycap.name
-              "
-            >
-              <template #description>
-                <a-flex justify="space-between">
-                  <span><bg-colors-outlined /> {{ keycap.designer }}</span>
-                  <span v-if="query.status === 'Interest Check'">
-                    <calendar-outlined /> {{ formatDate(keycap.ic_date) }}
-                  </span>
-                  <span v-else-if="query.status === 'Live'">
-                    <calendar-outlined />
-                    {{ formatDateRange(keycap.start_date, keycap.end_date) }}
-                  </span>
-                  <span v-else>
-                    <clock-circle-outlined />
-                    {{ formatDateRange(keycap.start_date, keycap.end_date) }}
-                  </span>
-                </a-flex>
-              </template>
-            </a-card-meta>
-          </a-card>
-        </nuxt-link>
-      </a-col>
-    </a-row>
-
-    <a-flex justify="center" style="margin-top: 16px">
-      <a-pagination
-        v-model:current="page"
-        :total="data.count"
-        :page-size="size"
-        :show-size-changer="false"
-        :show-quick-jumper="data.count > size * 10"
-        hide-on-single-page
-      />
-    </a-flex>
-
-    <a-result
-      v-if="!data.keycaps.length"
-      status="404"
-      title="We're currently updating our catalog"
-      sub-title="There are no keycaps available right now. Check back soon for exciting new additions!"
-    />
-  </a-page-header>
+  </Panel>
 </template>
 
 <script setup>
@@ -144,23 +139,3 @@ const showAddKeycap = () => {
   visible.value = !visible.value
 }
 </script>
-
-<style>
-.keycap-container {
-  .ant-card-cover {
-    height: 250px;
-    overflow: hidden;
-
-    @media (max-width: 480px) {
-      height: 200px;
-    }
-  }
-
-  /* iPad */
-  .ant-card-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-</style>

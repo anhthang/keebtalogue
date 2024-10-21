@@ -1,53 +1,49 @@
 <template>
-  <a-page-header v-if="data" title="Manage Kits" class="container">
-    <template #breadcrumb>
-      <a-breadcrumb>
-        <a-breadcrumb-item> Keycap </a-breadcrumb-item>
-        <a-breadcrumb-item>
-          <nuxt-link :to="`/keycap/${data.profile_id}`">
-            {{ manufacturers[data.profile_id] }}
-          </nuxt-link>
-        </a-breadcrumb-item>
-        <a-breadcrumb-item>
-          <nuxt-link :to="`/keycap/${data.profile_keycap_id}`">
-            {{ data.name }}
-          </nuxt-link>
-        </a-breadcrumb-item>
-      </a-breadcrumb>
+  <Panel
+    header="Manage Kits"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <template #icons>
+      <Button label="Add" icon="pi pi-file-plus" @click="toggleShowEditKit" />
     </template>
 
-    <template #extra>
-      <a-button type="primary" @click="toggleShowEditKit()">
-        <appstore-add-outlined /> Add
-      </a-button>
-    </template>
-    <a-table :data-source="data.kits" :columns="columns">
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'img'">
-          <a :href="record.img" target="_blank">Link</a>
-        </template>
+    <DataTable
+      :value="data.kits"
+      striped-rows
+      :paginator="data.kits >= 10"
+      :rows="10"
+    >
+      <Column field="name" header="Name" />
+      <Column field="price" header="Price" />
+      <Column field="qty" header="Quantity" />
+      <Column field="img" header="Image" />
+      <!-- <Column field="cancelled" header="Status" /> -->
+      <Column class="!text-end" header="Actions">
+        <template #body="{ data: kit }">
+          <div class="flex gap-2">
+            <Button
+              label="Edit"
+              icon="pi pi-pen-to-square"
+              severity="secondary"
+              @click="toggleShowEditKit(kit)"
+            />
 
-        <template v-if="column.key === 'status' && !!record.cancelled">
-          <a-tag color="red">Cancelled</a-tag>
-        </template>
-
-        <template v-if="column.key === 'action'">
-          <a-flex gap="small">
-            <a-button @click="toggleShowEditKit(record)">
-              <edit-outlined /> Edit
-            </a-button>
-
-            <a-button
+            <Button
               v-if="data.status === 'Interest Check'"
-              danger
-              @click="showConfirmDelete(record)"
-            >
-              <delete-row-outlined /> Delete
-            </a-button>
-          </a-flex>
+              label="Delete"
+              icon="pi pi-trash"
+              severity="danger"
+              @click="showConfirmDelete(kit)"
+            />
+          </div>
         </template>
-      </template>
-    </a-table>
+      </Column>
+    </DataTable>
+
+    <ConfirmDialog />
+    <Toast />
     <Dialog
       v-model:visible="showEditKit"
       modal
@@ -60,7 +56,7 @@
         :metadata="selectedKit"
       />
     </Dialog>
-  </a-page-header>
+  </Panel>
 </template>
 
 <script setup>
@@ -68,37 +64,8 @@ definePageMeta({
   middleware: 'auth',
 })
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-  },
-  {
-    title: 'Quantity',
-    dataIndex: 'qty',
-    key: 'qty',
-  },
-  {
-    title: 'Image',
-    dataIndex: 'img',
-    key: 'img',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-  },
-]
+const confirm = useConfirm()
+const toast = useToast()
 
 const route = useRoute()
 const { profile, keycap } = route.params
@@ -123,22 +90,26 @@ const toggleShowEditKit = (kit) => {
 }
 
 const showConfirmDelete = (kit) => {
-  Modal.confirm({
-    title: `Confirm to delete ${kit.name} kit`,
-    content:
+  confirm.require({
+    header: `Confirm to delete ${kit.name} kit`,
+    message:
       'Are you sure you want to delete this kit? This action cannot be undone.',
-    okText: 'Delete',
-    okType: 'danger',
-    onOk() {
+    acceptLabel: 'Delete',
+    acceptProps: { severity: 'danger' },
+    accept: () => {
       $fetch(`/api/keycaps/${kit.profile_keycap_id}/kits/${kit.id}`, {
         method: 'delete',
       })
         .then(() => {
-          message.success(`Kit [${kit.name}] was deleted.`)
+          toast.add({
+            severity: 'success',
+            summary: `Kit [${kit.name}] was deleted.`,
+            life: 3000,
+          })
           refresh()
         })
         .catch((error) => {
-          message.error(error.message)
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
         })
     },
   })

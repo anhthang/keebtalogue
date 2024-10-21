@@ -1,11 +1,10 @@
 <template>
-  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">
-        Artisan Makers
-      </div>
-    </template>
-
+  <Panel
+    header="Artisan Makers"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
+  >
     <template v-if="isAdmin" #icons>
       <Button label="Add" icon="pi pi-user-plus" @click="showModal" />
     </template>

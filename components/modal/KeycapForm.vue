@@ -6,7 +6,7 @@
         <InputText id="keycap_name" v-model.trim="keycap.name" type="text" />
       </div>
       <div class="flex flex-col gap-2">
-        <label for="keycap_designer">designer</label>
+        <label for="keycap_designer">Designer</label>
         <InputText
           id="keycap_designer"
           v-model.trim="keycap.designer"
@@ -107,11 +107,15 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addKeycap" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
 <script setup>
 import slugify from 'slugify'
+
+const toast = useToast()
 
 const { metadata, isEdit } = defineProps({
   metadata: {
@@ -201,13 +205,21 @@ const addKeycap = async () => {
   })
     .then(() => {
       if (isEdit) {
-        message.success(`[${keycap.value.name}] updated successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${keycap.value.name}] updated successfully!`,
+          life: 3000,
+        })
       } else {
-        message.success(`[${keycap.value.name}] added successfully!`)
+        toast.add({
+          severity: 'success',
+          summary: `[${keycap.value.name}] added successfully!`,
+          life: 3000,
+        })
       }
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

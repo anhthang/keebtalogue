@@ -29,6 +29,8 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addSale" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
@@ -39,6 +41,8 @@ const { metadata } = defineProps({
     default: () => ({}),
   },
 })
+
+const toast = useToast()
 
 const route = useRoute()
 const sale = ref({
@@ -63,10 +67,14 @@ const addSale = () => {
     body,
   })
     .then(() => {
-      message.success('New sale added successfully!')
+      toast.add({
+        severity: 'success',
+        summary: 'New sale added successfully!',
+        life: 3000,
+      })
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

@@ -36,10 +36,14 @@
     <div class="flex flex-col gap-2">
       <Button label="Send Feedback" @click="addFeedback" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
 <script setup>
+const toast = useToast()
+
 const feedback = ref({
   name: '',
   message: '',
@@ -57,17 +61,16 @@ const addFeedback = async () => {
     body: feedback.value,
   })
     .then(() => {
-      // message.success(
-      //   'Your feedback is valuable to us. We appreciate you taking the time to share it!',
-      // )
-      notification.success({
-        message: 'Feedback submitted!',
-        description:
+      toast.add({
+        severity: 'success',
+        summary: 'Feedback submitted!',
+        detail:
           'Your feedback is valuable to us. We appreciate you taking the time to share it!',
+        life: 3000,
       })
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 </script>

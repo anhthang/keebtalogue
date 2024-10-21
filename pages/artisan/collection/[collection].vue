@@ -1,14 +1,10 @@
 <template>
   <Panel
-    class="container artisan-container"
+    :header="data.name || 'Collection'"
+    class="container"
     pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">
-        {{ data.name || 'Colllection' }}
-      </div>
-    </template>
-
     <template #icons>
       <div class="flex gap-2">
         <SplitButton
@@ -32,6 +28,8 @@
           @click="toggleShowEdit"
         />
 
+        <ConfirmDialog />
+        <Toast />
         <Button
           v-if="user.email_verified"
           severity="danger"
@@ -183,11 +181,12 @@ const removeCap = (clw) => {
             refresh()
             toast.add({
               severity: 'success',
-              detail: `${colorwayTitle(clw)} was removed.`,
+              summary: `${colorwayTitle(clw)} was removed.`,
+              life: 3000,
             })
           })
           .catch((error) => {
-            toast.add({ severity: 'error', detail: error.message })
+            toast.add({ severity: 'error', summary: error.message, life: 3000 })
           })
       } else {
         sortedCollections.value = sortedCollections.value.filter(
@@ -200,7 +199,8 @@ const removeCap = (clw) => {
 
         toast.add({
           severity: 'success',
-          detail: `${colorwayTitle(clw)} was removed.`,
+          summary: `${colorwayTitle(clw)} was removed.`,
+          life: 3000,
         })
       }
     },
@@ -229,12 +229,13 @@ const deleteCollection = (collection) => {
           toast.add({
             severity: 'success',
             detail: `Collection [${collection.name}] was deleted.`,
+            life: 3000,
           })
 
           router.go(-1)
         })
         .catch((error) => {
-          toast.add({ severity: 'error', detail: error.message })
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
         })
     },
   })
@@ -244,7 +245,8 @@ const copyShareUrl = () => {
   copy(config.public.baseUrl + route.fullPath)
   toast.add({
     severity: 'success',
-    detail: 'Copied to clipboard!',
+    summary: 'Copied to clipboard!',
+    life: 3000,
   })
 }
 
@@ -270,23 +272,3 @@ const editCollection = async () => {
     })
 }
 </script>
-
-<style>
-.artisan-container {
-  .ant-card-cover {
-    height: 250px;
-    overflow: hidden;
-
-    @media (max-width: 480px) {
-      height: 150px;
-    }
-  }
-
-  /* iPad */
-  .ant-card-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-</style>

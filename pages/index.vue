@@ -1,11 +1,10 @@
 <template>
   <Panel
-    class="container artisan-container"
+    header="Home"
+    class="container"
     pt:root:class="!border-0 !bg-transparent"
+    pt:header:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">Home</div>
-    </template>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <artisan-collector-guide class="col-span-4 md:col-span-3" />
       <recently-added class="col-span-4 md:col-span-1" :makers="data.makers" />
@@ -34,12 +33,5 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   display: flex;
   flex-direction: column;
   max-width: 1600px;
-}
-
-/* Global */
-.alert-banner {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
 }
 </style>

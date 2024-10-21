@@ -1,6 +1,11 @@
 <template>
-  <Panel header="Preview" pt:header:class="text-xl">
-    <template #icons>
+  <Panel
+    v-if="draggableWantList.length || draggableHaveList.length"
+    :header="copying ? 'Contact' : 'Preview'"
+    pt:root:class="trading-preview"
+    pt:header:class="text-xl"
+  >
+    <template v-if="!copying" #icons>
       <div class="flex gap-2">
         <Button
           size="small"
@@ -26,7 +31,7 @@
       </div>
     </template>
 
-    <div class="trading-image flex flex-col gap-6">
+    <div class="flex flex-col gap-6">
       <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
       >
@@ -47,10 +52,18 @@
         </strong>
       </span>
 
-      <!-- <span class="text-2xl font-bold">{{ tradingConfig.want.title }}</span> -->
-      <Divider align="center" class="text-3xl font-bold">
+      <Message v-if="errorText" class="w-fit mx-auto" severity="error">
+        {{ errorText }}
+      </Message>
+
+      <Divider
+        v-if="draggableWantList.length"
+        align="center"
+        class="text-3xl font-bold"
+      >
         {{ tradingConfig.want.title }}
       </Divider>
+
       <draggable
         :list="draggableWantList"
         item-key="id"
@@ -75,7 +88,7 @@
             <template #title>{{ element.name || '-' }}</template>
             <template #subtitle>{{ element.sculpt_name }}</template>
 
-            <template #footer>
+            <template v-if="!copying" #footer>
               <Button
                 text
                 size="small"
@@ -96,6 +109,7 @@
       >
         {{ tradingConfig.have.title }}
       </Divider>
+
       <draggable
         v-if="draggableHaveList.length && trading"
         :list="draggableHaveList"
@@ -135,6 +149,9 @@
         </template>
       </draggable>
     </div>
+
+    <ConfirmDialog />
+    <Toast />
   </Panel>
 </template>
 
@@ -142,6 +159,9 @@
 import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import groupBy from 'lodash.groupby'
 import draggable from 'vuedraggable'
+
+const confirm = useConfirm()
+const toast = useToast()
 
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
@@ -193,20 +213,12 @@ watch(
 watch(authenticated, () => refresh())
 
 const errorText = ref()
+const copying = ref(false)
 
 const screenshot = async (download = false) => {
+  copying.value = true
+
   const card = document.getElementsByClassName('trading-preview')[0]
-
-  // hide some items for rendering
-  const cardHead = card.getElementsByClassName('ant-card-head')[0]
-  const bodyActions = card
-    .getElementsByClassName('ant-card-body')[0]
-    .getElementsByClassName('ant-card-actions')
-
-  cardHead.classList.add('trading-card-hide')
-  bodyActions.forEach((ex) => {
-    ex.classList.add('trading-card-hide')
-  })
 
   try {
     if (download) {
@@ -218,11 +230,7 @@ const screenshot = async (download = false) => {
     errorText.value = error.message
   }
 
-  // revert
-  cardHead.classList.remove('trading-card-hide')
-  bodyActions.forEach((ex) => {
-    ex.classList.remove('trading-card-hide')
-  })
+  copying.value = false
 }
 
 const tradingText = computed(() => {
@@ -243,10 +251,14 @@ const tradingText = computed(() => {
 })
 
 const removeCap = (colorway, type) => {
-  Modal.confirm({
-    title: 'Remove Artisan',
-    content: 'Are you sure you want to continue?',
-    onOk() {
+  confirm.require({
+    header: 'Remove Artisan',
+    message: 'Are you sure you want to continue?',
+    acceptProps: {
+      label: 'Remove',
+      severity: 'danger',
+    },
+    accept: () => {
       if (type === 'want') {
         draggableWantList.value = draggableWantList.value.filter(
           (c) => c.id !== colorway.id,
@@ -262,28 +274,10 @@ const removeCap = (colorway, type) => {
 
 const copyToClipboard = () => {
   copy(tradingText.value)
-  message.success('Copied to clipboard!')
+  toast.add({
+    severity: 'success',
+    summary: 'Copied to clipboard!',
+    life: 3000,
+  })
 }
 </script>
-
-<style>
-.trading-preview {
-  height: 100%;
-
-  .ant-divider-inner-text {
-    font-size: 3rem;
-  }
-
-  .trading-card-hide {
-    display: none;
-  }
-}
-
-.draggable-row {
-  display: flex;
-  flex-flow: row wrap;
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-  row-gap: 0.5rem;
-}
-</style>

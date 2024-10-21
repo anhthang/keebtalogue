@@ -50,11 +50,14 @@
     >
       <div class="flex flex-col gap-2">
         <label for="colorway_price">Price</label>
-        <InputText
-          id="colorway_price"
-          v-model="colorway.price"
-          v-keyfilter.money
-        />
+        <InputGroup>
+          <Select v-model="colorway.currency" :options="currencies" />
+          <InputText
+            id="colorway_price"
+            v-model="colorway.price"
+            v-keyfilter.money
+          />
+        </InputGroup>
       </div>
       <div class="flex flex-col gap-2">
         <label for="colorway_sale_type">Sale Type</label>
@@ -85,6 +88,8 @@
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="addColorway" />
     </div>
+
+    <Toast />
   </div>
 </template>
 
@@ -96,7 +101,9 @@ const { metadata } = defineProps({
   },
 })
 
-// const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
+const toast = useToast()
+
+const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 
 const route = useRoute()
 const colorway = ref({
@@ -135,11 +142,14 @@ const addColorway = async () => {
     },
   )
     .then(() => {
-      message.success('Colorway updated successfully!')
+      toast.add({
+        severity: 'success',
+        summary: 'Colorway updated successfully!',
+        life: 3000,
+      })
     })
     .catch((error) => {
-      console.error(error)
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
 

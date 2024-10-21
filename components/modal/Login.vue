@@ -24,11 +24,14 @@
         and Terms of Service.
       </span>
     </div>
+
+    <Toast />
   </div>
 </template>
 
 <script setup>
 const client = useSupabaseClient()
+const toast = useToast()
 
 const login = async (provider) => {
   const { user, error } = await client.auth.signInWithOAuth({
@@ -39,11 +42,13 @@ const login = async (provider) => {
   })
 
   if (error) {
-    message.warning(err.message)
+    toast.add({ severity: 'error', summary: err.message, life: 3000 })
   } else if (user) {
-    message.success(
-      `Hello, ${user.name}. You successfully logged into this website.`,
-    )
+    toast.add({
+      severity: 'success',
+      summary: `Hello, ${user.name}. You successfully logged into this website.`,
+      life: 3000,
+    })
 
     router.back()
   }
