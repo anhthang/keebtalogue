@@ -12,7 +12,7 @@
     >
       <a-flex justify="space-between" align="center" style="width: 100%">
         <nuxt-link to="/">
-          <img src="/logo-filled.png" alt="logo" height="40px" />
+          <img src="/logo-filled.png" alt="logo" style="height: 40px" />
         </nuxt-link>
 
         <search-box style="width: 40%; max-width: 800px" />

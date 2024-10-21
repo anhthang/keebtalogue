@@ -1,215 +1,167 @@
 <template>
-  <a-spin :spinning="pending">
-    <a-page-header
-      v-if="sculpt"
-      :title="sculpt.name"
-      class="container artisan-container"
-    >
-      <template #breadcrumb>
-        <a-breadcrumb>
-          <a-breadcrumb-item> Artisan </a-breadcrumb-item>
-          <a-breadcrumb-item>
-            <nuxt-link to="/artisan/maker"> Makers </nuxt-link>
-          </a-breadcrumb-item>
-          <a-breadcrumb-item>
-            <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}`">
-              {{ sculpt.maker_name }}
-            </nuxt-link>
-          </a-breadcrumb-item>
-        </a-breadcrumb>
-      </template>
+  <Panel
+    :header="sculpt.name"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <div v-if="sculpt.story" class="mb-4 leading-6 text-muted-color">
+      {{ sculpt.story }}
+    </div>
 
-      <template v-if="sculpt.release" #subTitle>
-        {{ sculpt.release }}
-      </template>
-      <template #extra>
-        <!-- <a-button
+    <template #icons>
+      <div class="flex gap-2">
+        <Button
           v-if="isEditor"
-          key="submission"
-          type="primary"
-          @click="showAddColorwayModal"
-        >
-          <file-add-outlined /> Add
-        </a-button> -->
-
-        <a-button v-if="isEditor" @click="showEditSculptModal">
-          <edit-outlined /> Edit
-        </a-button>
-
-        <a-button v-if="sculpt.href" :href="sculpt.href" target="_blank">
-          <link-outlined /> Visit
-        </a-button>
-
-        <a-select v-model:value="sort">
-          <a-select-option value="name|asc">
-            <sort-ascending-outlined /> Name (A-Z)
-          </a-select-option>
-          <a-select-option value="name|desc">
-            <sort-descending-outlined /> Name (Z-A)
-          </a-select-option>
-          <a-select-option value="order|asc">
-            <ordered-list-outlined /> Oldest First
-          </a-select-option>
-          <a-select-option value="order|desc">
-            <ordered-list-outlined /> Newest First
-          </a-select-option>
-        </a-select>
-      </template>
-
-      <a-typography v-if="sculpt.story">
-        <a-typography-paragraph
-          v-for="(line, idx) in sculpt.story.split('\n')"
-          :key="idx"
-        >
-          {{ line }}
-        </a-typography-paragraph>
-      </a-typography>
-
-      <a-descriptions>
-        <a-descriptions-item v-if="sculpt.profile" label="Profile">
-          {{ sculpt.profile }}
-        </a-descriptions-item>
-        <a-descriptions-item v-if="sculpt.design" label="Design">
-          {{ sculpt.design }}
-        </a-descriptions-item>
-        <a-descriptions-item v-if="sculpt.cast" label="Cast">
-          {{ sculpt.cast }}
-        </a-descriptions-item>
-      </a-descriptions>
-
-      <a-row :gutter="[16, 16]" type="flex">
-        <a-col
-          v-for="(colorway, idx) in colorways"
-          :key="colorway.colorway_id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <a-card hoverable class="colorway-card">
-            <template #cover>
-              <img
-                loading="lazy"
-                :alt="colorway.name"
-                :src="colorway.img"
-                @click="showColorwayCardModal(colorway)"
-              />
-            </template>
-
-            <a-card-meta>
-              <template #title>
-                {{ colorway.name || '-' }}
-                <bg-colors-outlined
-                  v-if="colorway.commissioned"
-                  :style="{ color: 'palevioletred' }"
-                />
-                <gift-filled
-                  v-if="colorway.giveaway"
-                  :style="{ color: 'goldenrod' }"
-                />
-              </template>
-            </a-card-meta>
-
-            <template #actions>
-              <a-tooltip v-if="isEditor" title="Edit">
-                <div @click="toggleEditColorway(colorway)">
-                  <edit-outlined />
-                </div>
-              </a-tooltip>
-
-              <a-tooltip title="Copy Card">
-                <div @click="copyColorwayCard(idx)"><copy-outlined /></div>
-              </a-tooltip>
-
-              <a-dropdown
-                v-if="collections.length"
-                :trigger="['click']"
-                placement="top"
-              >
-                <a-tooltip title="Add to Collection">
-                  <div><folder-add-outlined /></div>
-                </a-tooltip>
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item
-                      v-for="collection in collections"
-                      :key="collection.id"
-                      :disabled="!collections.length"
-                      @click="addToCollection(collection, colorway)"
-                    >
-                      {{ collection.name }}
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-              </a-dropdown>
-            </template>
-          </a-card>
-        </a-col>
-      </a-row>
-
-      <a-modal
-        v-model:open="visible.edit"
-        title="Edit Sculpt"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        ok-text="Save"
-        @ok="updateSculptProfile"
-      >
-        <modal-sculpt-form
-          ref="sculptForm"
-          :is-edit="true"
-          :metadata="sculpt"
+          icon="pi pi-pen-to-square"
+          label="Edit"
+          @click="showEditSculptModal"
         />
-      </a-modal>
 
-      <a-modal
-        v-model:open="visible.add"
-        :title="
-          selectedColorway && selectedColorway.name
-            ? `Edit ${colorwayTitle}`
-            : 'Add Colorway'
-        "
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        @ok="newColorwaySubmission"
-      >
-        <modal-colorway-form ref="colorwayForm" :metadata="selectedColorway" />
-      </a-modal>
-
-      <a-modal
-        v-model:open="visible.card"
-        class="colorway-details-card"
-        :width="isShowAsMeta ? '512px' : '1024px'"
-        :closable="false"
-        destroy-on-close
-        :footer="null"
-        ok-text="Save"
-      >
-        <modal-colorway-card
-          :colorway="selectedColorway"
-          @edit-colorway="toggleEditColorway"
-          @add-to-collection="addToCollection"
-          @copy-colorway-card="copyColorwayCard"
+        <Button
+          v-if="sculpt.href"
+          as="a"
+          icon="pi pi-link"
+          label="Visit"
+          :href="sculpt.href"
+          target="_blank"
+          rel="noopener"
         />
-      </a-modal>
-    </a-page-header>
 
-    <back-to-artisan-makers v-else />
-  </a-spin>
+        <Select
+          v-model="sort"
+          :options="sortOptions"
+          option-label="label"
+          option-value="value"
+        />
+      </div>
+    </template>
+
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <Card
+        v-for="(colorway, idx) in colorways"
+        :key="colorway.colorway_id"
+        class="flex items-center flex-1 overflow-hidden"
+        pt:header:class="h-[250px]"
+        pt:body:class="items-center"
+      >
+        <template #header>
+          <img
+            :alt="colorway.name"
+            :src="colorway.img"
+            class="h-full object-cover"
+            @click="showColorwayCardModal(colorway)"
+          />
+        </template>
+        <template #title>{{ colorway.name || '-' }}</template>
+
+        <template #footer>
+          <div class="flex gap-4">
+            <Button
+              v-if="isEditor"
+              text
+              severity="secondary"
+              icon="pi pi-pen-to-square"
+              @click="toggleEditColorway(colorway)"
+            />
+
+            <Button
+              text
+              severity="secondary"
+              icon="pi pi-copy"
+              @click="copyColorwayCard(idx)"
+            />
+
+            <Button
+              text
+              severity="secondary"
+              icon="pi pi-folder-plus"
+              @click="(e) => toggle(e, idx)"
+            />
+
+            <Popover ref="op">
+              <ul class="list-none p-0 m-0 flex flex-col">
+                <li
+                  v-for="collection in collections"
+                  :key="collection.id"
+                  class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border"
+                  @click="addToCollection(collection, colorway)"
+                >
+                  {{ collection.name }}
+                </li>
+              </ul>
+            </Popover>
+          </div>
+        </template>
+      </Card>
+    </div>
+
+    <Dialog
+      v-model:visible="visible.edit"
+      modal
+      header="Edit Sculpt"
+      dismissable-mask
+      class="w-[35rem]"
+    >
+      <modal-sculpt-form :is-edit="true" :metadata="sculpt" />
+    </Dialog>
+
+    <Dialog
+      v-model:visible="visible.add"
+      modal
+      :header="
+        selectedColorway && selectedColorway.name
+          ? `Edit ${colorwayTitle}`
+          : 'Add Colorway'
+      "
+      class="w-[35rem]"
+      dismissable-mask
+    >
+      <modal-colorway-form :metadata="selectedColorway" />
+    </Dialog>
+
+    <Dialog
+      v-model:visible="visible.card"
+      modal
+      class="colorway-details-card w-[35rem]"
+      :closable="false"
+      dismissable-mask
+    >
+      <modal-colorway-card
+        :colorway="selectedColorway"
+        @edit-colorway="toggleEditColorway"
+        @add-to-collection="addToCollection"
+        @copy-colorway-card="copyColorwayCard"
+      />
+    </Dialog>
+
+    <Toast />
+  </Panel>
 </template>
 
 <script setup>
 import orderBy from 'lodash.orderby'
 
-const route = useRoute()
-const { isMobile } = useDevice()
+const toast = useToast()
 
-const {
-  data: sculpt,
-  pending,
-  refresh,
-} = await useAsyncData(
+const op = ref()
+const toggle = (event, idx) => {
+  op.value[idx].toggle(event)
+}
+
+const route = useRoute()
+
+const sort = ref('order|desc')
+const sortOptions = ref([
+  { label: 'Name (A-Z)', value: 'name|asc' },
+  { label: 'Name (Z-A)', value: 'name|desc' },
+  { label: 'Oldest First', value: 'order|asc' },
+  { label: 'Newest First', value: 'order|desc' },
+])
+
+const { data: sculpt } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,
   () =>
     $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
@@ -260,13 +212,9 @@ onMounted(() => {
 const userStore = useUserStore()
 const { authenticated, collections, isEditor, user } = storeToRefs(userStore)
 
-const sort = ref('order|desc')
-
 const colorways = computed(() => {
   return orderBy(sculpt.value.colorways, ...sort.value.split('|'))
 })
-
-const confirmLoading = ref(false)
 
 const visible = ref({
   edit: false,
@@ -279,39 +227,12 @@ const showEditSculptModal = () => {
   visible.value.edit = !visible.value.edit
 }
 
-const sculptForm = ref()
-const updateSculptProfile = async () => {
-  confirmLoading.value = true
-
-  await sculptForm.value.addSculptProfile()
-
-  showEditSculptModal()
-  confirmLoading.value = false
-  refresh()
-}
-
 /**
  * New colorway submission
  * Currently, just add/update colorway description
  */
 const showAddColorwayModal = () => {
   visible.value.add = !visible.value.add
-}
-
-const colorwayForm = ref()
-const newColorwaySubmission = async () => {
-  confirmLoading.value = true
-
-  await colorwayForm.value
-    .addColorway()
-    .then(() => {
-      confirmLoading.value = false
-      showAddColorwayModal()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
 }
 
 // show colorway card popup
@@ -329,10 +250,6 @@ const showColorwayCardModal = (clw) => {
 
 const colorwayTitle = computed(() => {
   return `${selectedColorway.value.name} ${sculpt.value.name}`
-})
-
-const isShowAsMeta = computed(() => {
-  return isMobile || !selectedColorway.value.description
 })
 
 // edit colorway
@@ -359,12 +276,14 @@ const addToCollection = (collection, colorway) => {
       body: clw,
     })
       .then(() => {
-        message.success(
-          `${clw.name} has been added to [${collection.name}] collection!`,
-        )
+        toast.add({
+          severity: 'success',
+          summary: `${clw.name} has been added to [${collection.name}] collection!`,
+          life: 3000,
+        })
       })
       .catch((error) => {
-        message.error(error.message)
+        toast.add({ severity: 'error', summary: error.message, life: 3000 })
       })
   } else {
     const collectionMap =
@@ -377,9 +296,11 @@ const addToCollection = (collection, colorway) => {
       JSON.stringify(collectionMap),
     )
 
-    message.success(
-      `${clw.name} has been added to [${collection.name}] collection!`,
-    )
+    toast.add({
+      severity: 'success',
+      summary: `${clw.name} has been added to [${collection.name}] collection!`,
+      life: 3000,
+    })
   }
 }
 
@@ -397,18 +318,9 @@ const copyColorwayCard = async (idx) => {
   try {
     await copyScreenshot(card)
   } catch (error) {
-    message.error(error.message)
+    toast.add({ severity: 'error', summary: error.message, life: 3000 })
   }
 
   cardActions.classList.remove('hide-actions')
 }
 </script>
-
-<style>
-.colorway-card,
-.colorway-details-card {
-  .hide-actions {
-    display: none;
-  }
-}
-</style>

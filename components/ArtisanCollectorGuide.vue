@@ -1,15 +1,24 @@
 <template>
-  <a-list item-layout="horizontal" :data-source="guides">
-    <template #renderItem="{ item }">
-      <a-list-item>
-        <a-list-item-meta :description="item.summary">
-          <template #title>
-            <a :href="item.url" target="_blank">{{ item.title }}</a>
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
+  <Fieldset legend="ArtisanCollector's Guides" pt:legend:class="w-auto">
+    <DataView :value="guides">
+      <template #list="slotProps">
+        <div
+          v-for="(guide, index) in slotProps.items"
+          :key="index"
+          :class="{
+            'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
+          }"
+        >
+          <nuxt-link :to="guide.url" target="_blank" external>
+            <Card class="!shadow-none">
+              <template #title>{{ guide.title }}</template>
+              <template #content>{{ guide.summary }}</template>
+            </Card>
+          </nuxt-link>
+        </div>
+      </template>
+    </DataView>
+  </Fieldset>
 </template>
 
 <script setup>

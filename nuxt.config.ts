@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import Aura from '@primevue/themes/aura'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -18,6 +19,8 @@ export default defineNuxtConfig({
     '@nuxtjs/device',
     '@nuxtjs/supabase',
     '@pinia/nuxt',
+    '@primevue/nuxt-module',
+    '@nuxtjs/tailwindcss',
   ],
 
   colorMode: {
@@ -25,11 +28,19 @@ export default defineNuxtConfig({
   },
 
   fonts: {
-    families: [{ name: 'Cabin', provider: 'google' }],
+    families: [{ name: 'Dosis', provider: 'google' }],
   },
 
   supabase: {
     redirect: false,
+  },
+
+  primevue: {
+    options: {
+      theme: {
+        preset: Aura,
+      },
+    },
   },
 
   runtimeConfig: {
