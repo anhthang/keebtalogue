@@ -156,7 +156,6 @@
 </template>
 
 <script setup>
-import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import groupBy from 'lodash.groupby'
 import draggable from 'vuedraggable'
 
@@ -273,7 +272,7 @@ const removeCap = (colorway, type) => {
 }
 
 const copyToClipboard = () => {
-  copy(tradingText.value)
+  navigator.clipboard.writeText(tradingText.value)
   toast.add({
     severity: 'success',
     summary: 'Copied to clipboard!',

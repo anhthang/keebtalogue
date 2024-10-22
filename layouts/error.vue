@@ -1,30 +1,29 @@
 <template>
-  <div class="container">
-    <a-result
-      v-if="error.statusCode === 404"
-      status="404"
-      title="404"
-      sub-title="Sorry, the page you visited does not exist."
-    >
-      <template #extra>
-        <nuxt-link to="/">
-          <a-button type="primary"> Back Home </a-button>
-        </nuxt-link>
-      </template>
-    </a-result>
-    <a-result
-      v-else
-      status="500"
-      title="500"
-      sub-title="Sorry, the server is wrong."
-    >
-      <template #extra>
-        <nuxt-link to="/">
-          <a-button type="primary"> Back Home </a-button>
-        </nuxt-link>
-      </template>
-    </a-result>
-  </div>
+  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
+    <div class="flex flex-col items-center">
+      <div
+        class="text-3xl font-medium text-surface-900 dark:text-surface-0 mb-2"
+      >
+        {{ error.statusCode }}
+      </div>
+      <div
+        v-if="error.statusCode === 404"
+        class="font-medium text-surface-500 dark:text-surface-300 mb-4"
+      >
+        Sorry, the page you visited does not exist.
+      </div>
+      <div
+        v-else
+        class="font-medium text-surface-500 dark:text-surface-300 mb-4"
+      >
+        Something went wrong.
+      </div>
+
+      <nuxt-link to="/">
+        <Button label="Back Home" icon="pi pi-home" />
+      </nuxt-link>
+    </div>
+  </Panel>
 </template>
 
 <script>

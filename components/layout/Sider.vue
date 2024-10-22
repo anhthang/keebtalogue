@@ -1,85 +1,181 @@
 <template>
-  <a-menu
-    :selected-keys="selectedKeys"
-    :style="{ height: '100%', background: token.colorBgLayout }"
-    @click="onChangeMenu"
+  <div
+    :class="slim ? 'w-auto' : 'w-72'"
+    class="rounded-2xl p-4 border h-full flex flex-col justify-between"
   >
-    <a-menu-item key="/"><home-outlined /> <span>Home</span></a-menu-item>
-    <a-menu-divider />
+    <MegaMenu
+      :model="megaMenu"
+      orientation="vertical"
+      pt:root:class="!border-0 !bg-transparent"
+    >
+      <template #start>
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 border border-primary rounded-xl flex items-center justify-center"
+          >
+            <img
+              :alt="$config.public.appName"
+              :src="`/logo-filled.png`"
+              width="32px"
+            />
+          </div>
+          <div
+            :class="slim ? 'hidden' : 'block'"
+            class="text-surface-950 dark:text-surface-0 font-medium text-3xl"
+          >
+            {{ $config.public.appName }}
+          </div>
+        </div>
+      </template>
+    </MegaMenu>
 
-    <a-menu-item key="/artisan/maker">
-      <team-outlined /> <span>Makers</span>
-    </a-menu-item>
-    <a-menu-item key="/artisan/collection">
-      <book-outlined /> <span>Collections</span>
-    </a-menu-item>
-    <a-sub-menu key="marketplace" title="Marketplace">
-      <template #icon><shopping-cart-outlined /></template>
+    <TieredMenu :model="advanceMenu" pt:root:class="!border-0 !bg-transparent">
+      <template #end>
+        <MenuSettings :slim="slim" />
+      </template>
+    </TieredMenu>
+  </div>
 
-      <a-menu-item key="/artisan/marketplace">
-        <shop-outlined /> <span>Trading Hub</span>
-      </a-menu-item>
-      <a-menu-item key="/artisan/wishlist">
-        <file-image-outlined /> <span>Wishlist Image</span>
-      </a-menu-item>
-    </a-sub-menu>
-    <a-menu-divider />
-
-    <a-menu-item key="/keycap/interest-check">
-      <schedule-outlined /> <span>Interest Check</span>
-    </a-menu-item>
-    <a-menu-item key="/keycap/live">
-      <stock-outlined /> <span>Live Group Buys</span>
-    </a-menu-item>
-    <a-sub-menu key="keycap" title="Keycap">
-      <template #icon><appstore-outlined /></template>
-      <a-sub-menu
-        v-for="[profile, manufacturers] of Object.entries(keycapProfiles)"
-        :key="profile"
-        :title="profile"
-      >
-        <a-menu-item
-          v-for="[key, value] of Object.entries(manufacturers)"
-          :key="`/keycap/${key}`"
-        >
-          {{ value }}
-        </a-menu-item>
-      </a-sub-menu>
-    </a-sub-menu>
-    <a-menu-divider />
-
-    <a-menu-item :key="$config.public.donate">
-      <coffee-outlined /> <span>Donate</span>
-    </a-menu-item>
-    <a-menu-item key="/about">
-      <info-circle-outlined /> <span>About</span>
-    </a-menu-item>
-  </a-menu>
+  <Dialog
+    v-model:visible="showFeedback"
+    modal
+    header="Share your thoughts!"
+    dismissable-mask
+    class="w-[35rem]"
+  >
+    <modal-feedback-form />
+  </Dialog>
 </template>
 
 <script setup>
-import { theme } from 'ant-design-vue'
-const { token } = theme.useToken()
+const slim = ref(false)
 
-const route = useRoute()
+// const route = useRoute()
 const router = useRouter()
 
-const selectedKeys = computed(() => {
-  const second = route.path.indexOf('/', 1)
-  if (second === -1) {
-    return [route.path]
-  }
-
-  const third = route.path.indexOf('/', second + 1)
-
-  return third === -1 ? [route.path] : [route.path.substring(0, third)]
-})
-
-const onChangeMenu = (e) => {
-  if (e.key.startsWith('/')) {
-    router.push(e.key)
-  } else if (e.key.startsWith('https://')) {
-    window.open(e.key)
+const onChangeMenu = ({ item }) => {
+  if (item?.route.startsWith('/')) {
+    router.push(item.route)
+  } else if (item?.route.startsWith('https://')) {
+    window.open(item.route)
   }
 }
+
+const showFeedback = ref(false)
+
+const megaMenu = ref([
+  {
+    separator: true,
+  },
+  {
+    label: 'Makers',
+    icon: 'pi pi-users',
+    route: '/artisan/maker',
+    command: onChangeMenu,
+  },
+  {
+    label: 'Collections',
+    icon: 'pi pi-book',
+    route: '/artisan/collection',
+    command: onChangeMenu,
+  },
+  {
+    label: 'Marketplace',
+    icon: 'pi pi-shop',
+    items: [
+      [
+        {
+          label: 'Marketplace',
+          items: [
+            {
+              label: 'Trading Hub',
+              icon: 'pi pi-shopping-bag',
+              route: '/artisan/marketplace',
+              command: onChangeMenu,
+            },
+            {
+              label: 'Wishlist Image',
+              icon: 'pi pi-image',
+              route: '/artisan/wishlist',
+              command: onChangeMenu,
+            },
+          ],
+        },
+      ],
+    ],
+  },
+  {
+    separator: true,
+  },
+  {
+    label: 'Interest Check',
+    icon: 'pi pi-id-card',
+    route: '/keycap/interest-check',
+    command: onChangeMenu,
+  },
+  {
+    label: 'Live Group Buys',
+    icon: 'pi pi-send',
+    route: '/keycap/live',
+    command: onChangeMenu,
+  },
+  {
+    label: 'Keycaps',
+    icon: 'pi pi-qrcode',
+    items: Object.entries(keycapProfiles).map(([profile, manufacturers]) => {
+      return [
+        {
+          label: profile,
+          items: Object.entries(manufacturers).map(([id, name]) => {
+            return {
+              label: name,
+              route: `/keycap/${id}`,
+              command: onChangeMenu,
+            }
+          }),
+        },
+      ]
+    }),
+  },
+  {
+    separator: true,
+  },
+  {
+    label: 'About',
+    icon: 'pi pi-info-circle',
+    route: '/about',
+    command: onChangeMenu,
+  },
+])
+
+const advanceMenu = [
+  {
+    icon: 'pi pi-comments',
+    label: 'Feedback',
+    command: () => {
+      showFeedback.value = true
+    },
+  },
+  { icon: 'pi pi-search', label: 'Search', shortcut: '⌘+K' },
+  // {
+  //   icon: 'pi pi-cog',
+  //   label: 'Settings',
+  //   route: '/account/settings',
+  //   command: onChangeMenu,
+  // },
+  {
+    separator: true,
+  },
+]
+
+// const selectedKeys = computed(() => {
+//   const second = route.path.indexOf('/', 1)
+//   if (second === -1) {
+//     return [route.path]
+//   }
+
+//   const third = route.path.indexOf('/', second + 1)
+
+//   return third === -1 ? [route.path] : [route.path.substring(0, third)]
+// })
 </script>

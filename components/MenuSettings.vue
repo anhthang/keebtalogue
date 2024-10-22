@@ -1,60 +1,67 @@
 <template>
-  <a-flex gap="small">
-    <a-button v-if="!$device.isMobile" type="text" @click="toggleShowFeedback">
-      <a-tooltip title="Feedback"><message-outlined /></a-tooltip>
-    </a-button>
+  <Button
+    text
+    severity="secondary"
+    :class="slim ? 'justify-center' : 'gap-3'"
+    class="flex items-center w-full"
+    aria-haspopup="true"
+    aria-controls="overlay_menu"
+    @click="toggleProfileSeetings"
+  >
+    <Avatar
+      :image="user.picture"
+      size="large"
+      shape="circle"
+      class="shrink-0"
+    />
+    <div>
+      <div
+        :class="slim ? 'hidden' : 'text-base font-medium text-color leading-5'"
+      >
+        {{ user.name }}
+      </div>
+      <div :class="slim ? 'hidden' : 'text-sm text-muted-color mt-1'">
+        {{ user.email }}
+      </div>
+    </div>
+  </Button>
+  <Menu
+    id="overlay_menu"
+    ref="profileSettings"
+    :model="settingsMenu"
+    :popup="true"
+  />
 
-    <a-dropdown>
-      <a-avatar :src="user.picture" style="cursor: pointer" />
-
-      <template #overlay>
-        <Menu :model="menu" pt:end:class="ml-4">
-          <template v-if="authenticated" #end>
-            <div class="flex items-center">
-              <Avatar :image="user.picture" shape="circle" size="large" />
-              <Card class="!shadow-none">
-                <template #title>{{ user.name }}</template>
-                <template #subtitle>{{ user.email }}</template>
-              </Card>
-            </div>
-          </template>
-        </Menu>
-      </template>
-    </a-dropdown>
-
-    <Dialog
-      v-model:visible="visible.login"
-      modal
-      class="w-[35rem]"
-      :closable="false"
-      dismissable-mask
-    >
-      <modal-login />
-    </Dialog>
-
-    <Dialog
-      v-model:visible="visible.feedback"
-      modal
-      header="Share your thoughts!"
-      dismissable-mask
-      class="w-[35rem]"
-    >
-      <modal-feedback-form />
-    </Dialog>
-
-    <Toast />
-  </a-flex>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    class="w-[35rem]"
+    :closable="false"
+    dismissable-mask
+  >
+    <modal-login />
+  </Dialog>
+  <Toast />
 </template>
 
 <script setup>
-const router = useRouter()
+const { slim } = defineProps({
+  slim: Boolean,
+})
+
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
+const router = useRouter()
 const client = useSupabaseClient()
 const toast = useToast()
 
-const menu = computed(() => {
+const profileSettings = ref()
+const toggleProfileSeetings = (event) => {
+  profileSettings.value.toggle(event)
+}
+
+const settingsMenu = computed(() => {
   const items = [
     {
       label: 'Appearance',
@@ -90,17 +97,17 @@ const menu = computed(() => {
               router.push('/account/settings')
             },
           },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => {
-              logout()
-            },
-          },
         ],
       },
       {
         separator: true,
+      },
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          logout()
+        },
       },
     )
   } else {
@@ -126,17 +133,9 @@ const menu = computed(() => {
   return items
 })
 
-const visible = ref({
-  feedback: false,
-  login: false,
-})
-
-const toggleShowFeedback = () => {
-  visible.value.feedback = !visible.value.feedback
-}
-
+const visible = ref(false)
 const toggleShowLogin = () => {
-  visible.value.login = !visible.value.login
+  visible.value = !visible.value
 }
 
 const logout = async () => {

@@ -86,7 +86,6 @@
 
 <script setup>
 import sortBy from 'lodash.sortby'
-import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 
@@ -237,7 +236,7 @@ const deleteCollection = (collection) => {
 }
 
 const copyShareUrl = () => {
-  copy(config.public.baseUrl + route.fullPath)
+  navigator.clipboard.writeText(config.public.baseUrl + route.fullPath)
   toast.add({
     severity: 'success',
     summary: 'Copied to clipboard!',

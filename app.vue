@@ -1,50 +1,12 @@
 <template>
-  <a-config-provider :theme="themeCfg">
-    <NuxtLayout :name="$device.isMobile ? 'mobile' : 'desktop'">
-      <NuxtPage />
-    </NuxtLayout>
-  </a-config-provider>
+  <NuxtLayout :name="$device.isMobile ? 'mobile' : 'desktop'">
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup>
-import { theme } from 'ant-design-vue'
 import { useUserStore } from './stores/user'
-import 'ant-design-vue/dist/reset.css'
 import 'primeicons/primeicons.css'
-
-const themeCfg = ref({
-  algorithm: theme.defaultAlgorithm,
-  token: {
-    fontFamily: 'Dosis, sans-serif;',
-  },
-})
-
-const colorMode = useColorMode()
-
-const getAlgorithm = (preference) => {
-  switch (preference) {
-    case 'dark':
-      return theme.darkAlgorithm
-    case 'light':
-      return theme.defaultAlgorithm
-    default:
-      return colorMode.value === 'dark'
-        ? theme.darkAlgorithm
-        : theme.defaultAlgorithm
-  }
-}
-
-watch(
-  () => colorMode.value,
-  () => {
-    themeCfg.value.algorithm = getAlgorithm(colorMode.preference)
-  },
-)
-
-onMounted(() => {
-  const preference = localStorage.getItem('nuxt-color-mode')
-  themeCfg.value.algorithm = getAlgorithm(preference)
-})
 
 const config = useRuntimeConfig()
 const userStore = useUserStore()
@@ -84,28 +46,3 @@ useSeoMeta({
   twitterImage: `${baseUrl}/website-card.png`,
 })
 </script>
-
-<style>
-/* .ant-spin-nested-loading {
-  min-height: 300px;
-} */
-
-.ant-layout-header {
-  display: flex;
-  align-items: center;
-  padding: 0 24px !important;
-}
-
-.ant-layout-header .ant-menu {
-  flex: 1;
-}
-
-.ant-typography {
-  text-align: justify;
-}
-
-.ant-input-number,
-.ant-input-number-affix-wrapper {
-  width: 100%;
-}
-</style>

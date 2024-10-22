@@ -19,7 +19,7 @@
       </span>
     </div>
 
-    <Divider align="center">
+    <Divider align="center" pt:content:class="text-xl">
       <b>Help us make {{ $config.public.appName }} amazing!</b>
     </Divider>
 
