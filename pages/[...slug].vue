@@ -13,11 +13,7 @@
     <template #not-found>
       <Panel class="container" pt:root:class="!border-0 !bg-transparent">
         <div class="flex flex-col items-center">
-          <div
-            class="text-3xl font-medium text-surface-900 dark:text-surface-0 mb-2"
-          >
-            404
-          </div>
+          <div class="text-3xl font-medium mb-2">404</div>
           <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">
             Sorry, the page you visited does not exist.
           </div>

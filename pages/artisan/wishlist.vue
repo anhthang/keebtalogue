@@ -19,9 +19,7 @@
   </Panel>
   <Panel v-else class="container" pt:root:class="!border-0 !bg-transparent">
     <div class="flex flex-col items-center">
-      <div
-        class="text-3xl font-medium text-surface-900 dark:text-surface-0 mb-2"
-      >
+      <div class="text-3xl font-medium mb-2">
         This feature is currently unavailable on mobile devices.
       </div>
       <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">

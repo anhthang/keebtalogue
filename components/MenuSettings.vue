@@ -1,10 +1,10 @@
 <template>
   <Button
-    text
     severity="secondary"
     aria-haspopup="true"
     aria-controls="overlay_menu"
     fluid
+    outlined
     @click="toggleProfileSeetings"
   >
     <Avatar :image="user.picture" size="large" shape="circle" />

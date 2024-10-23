@@ -2,7 +2,15 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="feedback_name">Name</label>
-      <InputText id="feedback_name" v-model.trim="feedback.name" type="text" />
+      <IconField>
+        <InputIcon class="pi pi-user" />
+        <InputText
+          id="feedback_name"
+          v-model.trim="feedback.name"
+          type="text"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="feedback_message">Message</label>
@@ -13,7 +21,7 @@
         :rows="5"
         auto-resize
       />
-      <span>
+      <span class="text-sm">
         Please don't include any sensitive information like passwords, or
         personal details.
       </span>
@@ -25,12 +33,16 @@
 
     <div class="flex flex-col gap-2">
       <label for="feedback_email">Email</label>
-      <InputText
-        id="feedback_email"
-        v-model.trim="feedback.email"
-        placeholder="Leave your contact info here to get started."
-        type="text"
-      />
+      <IconField>
+        <InputIcon class="pi pi-inbox" />
+        <InputText
+          id="feedback_email"
+          v-model.trim="feedback.email"
+          placeholder="Leave your contact info here to get started."
+          type="text"
+          fluid
+        />
+      </IconField>
     </div>
 
     <div class="flex flex-col gap-2">

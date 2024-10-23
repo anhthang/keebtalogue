@@ -29,8 +29,8 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   --color-text-gradient-stop-3: #d96570;
   --color-surface: #fff;
   font-family: Dosis, sans-serif;
-  --p-card-body-padding: 1rem;
-  --p-card-title-font-size: 1rem;
+  --p-card-body-padding: 1.125rem;
+  --p-card-title-font-size: 1.125rem;
 }
 
 .container {

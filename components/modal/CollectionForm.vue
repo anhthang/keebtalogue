@@ -19,11 +19,11 @@
           { label: 'Public', value: true },
         ]"
       />
-      <span v-if="collection.published" id="visibility-help">
+      <span v-if="collection.published" id="visibility-help" class="text-sm">
         Anyone can now discover the treasures you've assembled in this public
         collection.
       </span>
-      <span v-else id="visibility-help">
+      <span v-else id="visibility-help" class="text-sm">
         Choosing private keeps this collection under lock and key, hidden from
         prying eyes.
       </span>
@@ -39,14 +39,26 @@
           { label: 'Selling', value: 'sell' },
         ]"
       />
-      <span v-if="collection.type === 'share'" id="visibility-help">
+      <span
+        v-if="collection.type === 'share'"
+        id="visibility-help"
+        class="text-sm"
+      >
         Not listed in the marketplace, just for your eyes (and your friends')
         with link.
       </span>
-      <span v-if="collection.type === 'buy'" id="visibility-help">
+      <span
+        v-if="collection.type === 'buy'"
+        id="visibility-help"
+        class="text-sm"
+      >
         On the hunt! Any leads appreciated!
       </span>
-      <span v-if="collection.type === 'sell'" id="visibility-help">
+      <span
+        v-if="collection.type === 'sell'"
+        id="visibility-help"
+        class="text-sm"
+      >
         Up for grabs!
       </span>
     </div>
@@ -60,7 +72,7 @@
         v-model.trim="collection.message"
         type="text"
       />
-      <span id="message-help">
+      <span id="message-help" class="text-sm">
         Describe what you're offering and/or help others understand what types
         of offers you are looking for. Your message should be applicable to many
         people using the marketplace, not just a specific person.
@@ -76,7 +88,7 @@
         v-model.trim="collection.contact"
         type="text"
       />
-      <span id="contact-help" severity="warn">
+      <span id="contact-help" severity="warn" class="text-sm">
         Please enter your Discord username so that buyer/seller can reach you
         directly.
       </span>

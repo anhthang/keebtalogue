@@ -8,9 +8,8 @@
     <template #icons>
       <div class="flex gap-2">
         <SplitButton
-          v-model="sort"
-          label="Sort"
-          icon="pi pi-sort"
+          :label="sortItem.label"
+          :icon="sortItem.icon"
           :model="sortOptions"
         />
 
@@ -92,19 +91,23 @@ import { useToast } from 'primevue/usetoast'
 const confirm = useConfirm()
 const toast = useToast()
 
+const sort = ref('sculpt_name')
+const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort' })
 const sortOptions = [
   {
     label: 'Sort by Sculpt',
     icon: 'pi pi-sort',
-    command: () => {
+    command: ({ item }) => {
       sort.value = 'sculpt_name'
+      sortItem.value = item
     },
   },
   {
     label: 'Sort by Colorway',
     icon: 'pi pi-sort-alpha-down',
-    command: () => {
+    command: ({ item }) => {
       sort.value = 'name'
+      sortItem.value = item
     },
   },
 ]
@@ -118,8 +121,6 @@ const { authenticated, collections, user } = storeToRefs(userStore)
 
 const route = useRoute()
 const router = useRouter()
-
-const sort = ref('sculpt_name')
 
 const { data, refresh } = await useAsyncData(() => {
   if (authenticated.value) {

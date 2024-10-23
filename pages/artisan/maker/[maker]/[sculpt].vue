@@ -28,11 +28,10 @@
           rel="noopener"
         />
 
-        <Select
-          v-model="sort"
-          :options="sortOptions"
-          option-label="label"
-          option-value="value"
+        <SplitButton
+          :label="sortItem.label"
+          :icon="sortItem.icon"
+          :model="sortOptions"
         />
       </div>
     </template>
@@ -78,21 +77,24 @@
               text
               severity="secondary"
               icon="pi pi-folder-plus"
+              aria-haspopup="true"
+              aria-controls="overlay_menu"
               @click="(e) => toggle(e, idx)"
             />
-
-            <Popover ref="op">
-              <ul class="list-none p-0 m-0 flex flex-col">
-                <li
-                  v-for="collection in collections"
-                  :key="collection.id"
-                  class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border"
-                  @click="addToCollection(collection, colorway)"
-                >
-                  {{ collection.name }}
-                </li>
-              </ul>
-            </Popover>
+            <Menu
+              id="overlay_menu"
+              ref="add2collection"
+              :popup="true"
+              :model="[
+                {
+                  label: 'Select Collection',
+                  items: collections.map((c) => ({
+                    label: c.name,
+                    command: () => addToCollection(c, colorway),
+                  })),
+                },
+              ]"
+            />
           </div>
         </template>
       </Card>
@@ -146,20 +148,52 @@ import orderBy from 'lodash.orderby'
 
 const toast = useToast()
 
-const op = ref()
+const add2collection = ref()
 const toggle = (event, idx) => {
-  op.value[idx].toggle(event)
+  add2collection.value[idx].toggle(event)
 }
 
 const route = useRoute()
 
 const sort = ref('order|desc')
-const sortOptions = ref([
-  { label: 'Name (A-Z)', value: 'name|asc' },
-  { label: 'Name (Z-A)', value: 'name|desc' },
-  { label: 'Oldest First', value: 'order|asc' },
-  { label: 'Newest First', value: 'order|desc' },
-])
+const sortItem = ref({
+  label: 'Newest First',
+  icon: 'pi pi-sort-numeric-down-alt',
+})
+const sortOptions = [
+  {
+    label: 'Name (A-Z)',
+    icon: 'pi pi-sort-alpha-down',
+    command: ({ item }) => {
+      sort.value = 'name|asc'
+      sortItem.value = item
+    },
+  },
+  {
+    label: 'Name (Z-A)',
+    icon: 'pi pi-sort-alpha-down-alt',
+    command: ({ item }) => {
+      sort.value = 'name|desc'
+      sortItem.value = item
+    },
+  },
+  {
+    label: 'Oldest First',
+    icon: 'pi pi-sort-numeric-down',
+    command: ({ item }) => {
+      sort.value = 'order|asc'
+      sortItem.value = item
+    },
+  },
+  {
+    label: 'Newest First',
+    icon: 'pi pi-sort-numeric-down-alt',
+    command: ({ item }) => {
+      sort.value = 'order|desc'
+      sortItem.value = item
+    },
+  },
+]
 
 const { data: sculpt } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,

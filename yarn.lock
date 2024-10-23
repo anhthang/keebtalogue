@@ -1876,9 +1876,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/fonts@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "@nuxt/fonts@npm:0.10.1"
+"@nuxt/fonts@npm:^0.10.2":
+  version: 0.10.2
+  resolution: "@nuxt/fonts@npm:0.10.2"
   dependencies:
     "@nuxt/devtools-kit": "npm:^1.6.0"
     "@nuxt/kit": "npm:^3.13.2"
@@ -1897,10 +1897,10 @@ __metadata:
     sirv: "npm:^3.0.0"
     tinyglobby: "npm:^0.2.9"
     ufo: "npm:^1.5.4"
-    unifont: "npm:^0.1.4"
+    unifont: "npm:^0.1.5"
     unplugin: "npm:^1.14.1"
     unstorage: "npm:^1.12.0"
-  checksum: 10c0/33cc05b6d8c31e58191f99e76b45e9ba4bab95c837340510abc5933ffdf0db4e10da426b0ab91fedb67602582a59abbca0a7ce240aba2f0062b634a3a045603b
+  checksum: 10c0/7de43749dad814a7e4ae2de5951f8cdcd2870d5352ddb98a3d6d56de731ea715a4789c81b0df4df99340de9347965818e9e2823fbd6650855a5e389ce3e09bff
   languageName: node
   linkType: hard
 
@@ -2497,18 +2497,18 @@ __metadata:
   linkType: hard
 
 "@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.1.0, @rollup/pluginutils@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "@rollup/pluginutils@npm:5.1.2"
+  version: 5.1.3
+  resolution: "@rollup/pluginutils@npm:5.1.3"
   dependencies:
     "@types/estree": "npm:^1.0.0"
     estree-walker: "npm:^2.0.2"
-    picomatch: "npm:^2.3.1"
+    picomatch: "npm:^4.0.2"
   peerDependencies:
     rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 10c0/30f4a98e91a8699b6666b64ecdc665439bd53dddbe964bbeca56da81ff889cfde3a3e059144b80c5a2d9b48aa158df18a45e9a847a33b757d3e8336b278b8836
+  checksum: 10c0/ba46ad588733fb01d184ee3bc7a127d626158bc840b5874a94c129ff62689d12f16f537530709c54da6f3b71f67d705c4e09235b1dc9542e9d47ee8f2d0b8b9e
   languageName: node
   linkType: hard
 
@@ -5385,15 +5385,15 @@ __metadata:
   linkType: hard
 
 "engine.io-client@npm:~6.6.1":
-  version: 6.6.1
-  resolution: "engine.io-client@npm:6.6.1"
+  version: 6.6.2
+  resolution: "engine.io-client@npm:6.6.2"
   dependencies:
     "@socket.io/component-emitter": "npm:~3.1.0"
     debug: "npm:~4.3.1"
     engine.io-parser: "npm:~5.2.1"
     ws: "npm:~8.17.1"
     xmlhttprequest-ssl: "npm:~2.1.1"
-  checksum: 10c0/f0ba384a86c2965b8016907a970e2b71b792e951cb97013b237a6f13ecedc7444b0262c7886e62f6807ad761418f3e1ed2442179722e67e5f1d7f55ff6590514
+  checksum: 10c0/a1a0995df1ce2425b43c7dd396cf4ef12d3ca85973b63e1b7bd3933d0292459e922d6be25d14013c9608dc7159ae1e10cd7005754b02bc42d40450381f691859
   languageName: node
   linkType: hard
 
@@ -7786,7 +7786,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.5.0"
     "@nuxt/content": "npm:^2.13.4"
     "@nuxt/eslint": "npm:^0.6.0"
-    "@nuxt/fonts": "npm:^0.10.1"
+    "@nuxt/fonts": "npm:^0.10.2"
     "@nuxtjs/color-mode": "npm:^3.5.1"
     "@nuxtjs/device": "npm:^3.2.4"
     "@nuxtjs/supabase": "npm:1.4.1"
@@ -12421,13 +12421,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unifont@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "unifont@npm:0.1.4"
+"unifont@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "unifont@npm:0.1.5"
   dependencies:
     css-tree: "npm:^3.0.0"
     ohash: "npm:^1.1.4"
-  checksum: 10c0/f1806b19c3ec7cbadbd6a3814658dd8868e6c6ee76284cfe18c82cd9b3abc853466989509a1adf51adc2e1f37b1ce4c3279a89136cd5be49587c0259e66449e2
+  checksum: 10c0/afe8f6bea08d486c516650ec788d9d7258dc51f4c11af296a28c2aec82b7486aca1cb52a68fed338101b24b7e0a878d66bda89ca3214c86220048c66b2618e62
   languageName: node
   linkType: hard
 
