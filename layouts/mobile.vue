@@ -1,59 +1,32 @@
 <template>
-  <a-layout>
+  <div class="flex flex-col gap-4">
     <SpeedInsights />
+    <MegaMenu>
+      <template #start>
+        <nuxt-link to="/">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 border border-primary rounded-xl flex items-center justify-center"
+            >
+              <img
+                :alt="$config.public.appName"
+                :src="`/logo-filled.png`"
+                width="32px"
+              />
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
 
-    <a-layout-header
-      class="mobile"
-      :style="{ background: token.colorBgLayout }"
-    >
-      <a-button type="text" @click="sidebarToggle">
-        <template #icon>
-          <menu-unfold-outlined />
-        </template>
-      </a-button>
-      <a-drawer
-        v-model:open="visible"
-        placement="left"
-        :style="{ background: token.colorBgLayout }"
-      >
-        <layout-sider @click="sidebarToggle" />
-      </a-drawer>
+      <template #end>
+        <MenuSettings :slim="true" />
+      </template>
+    </MegaMenu>
 
-      <nuxt-link to="/">
-        <img src="/logo-filled.png" alt="logo" height="40px" />
-      </nuxt-link>
-
-      <layout-right-header />
-    </a-layout-header>
-
-    <a-layout>
-      <a-layout-content>
-        <NuxtPage />
-      </a-layout-content>
-    </a-layout>
-
-    <a-back-top />
-
-    <a-layout-footer>
-      <layout-footer />
-    </a-layout-footer>
-  </a-layout>
+    <NuxtPage />
+  </div>
 </template>
 
 <script setup>
-import { theme } from 'ant-design-vue'
-
 import { SpeedInsights } from '@vercel/speed-insights/nuxt'
-const { token } = theme.useToken()
-
-const visible = ref(false)
-const sidebarToggle = () => {
-  visible.value = !visible.value
-}
 </script>
-
-<style>
-.mobile {
-  justify-content: space-between;
-}
-</style>

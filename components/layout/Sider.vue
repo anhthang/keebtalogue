@@ -9,23 +9,25 @@
       pt:root:class="!border-0 !bg-transparent"
     >
       <template #start>
-        <div class="flex items-center gap-3">
-          <div
-            class="w-12 h-12 border border-primary rounded-xl flex items-center justify-center"
-          >
-            <img
-              :alt="$config.public.appName"
-              :src="`/logo-filled.png`"
-              width="32px"
-            />
+        <nuxt-link to="/">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 border border-primary rounded-xl flex items-center justify-center"
+            >
+              <img
+                :alt="$config.public.appName"
+                :src="`/logo-filled.png`"
+                width="32px"
+              />
+            </div>
+            <div
+              :class="slim ? 'hidden' : 'block'"
+              class="text-surface-950 dark:text-surface-0 font-medium text-3xl"
+            >
+              {{ $config.public.appName }}
+            </div>
           </div>
-          <div
-            :class="slim ? 'hidden' : 'block'"
-            class="text-surface-950 dark:text-surface-0 font-medium text-3xl"
-          >
-            {{ $config.public.appName }}
-          </div>
-        </div>
+        </nuxt-link>
       </template>
     </MegaMenu>
 
