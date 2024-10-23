@@ -22,10 +22,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
   ],
 
-  colorMode: {
-    preference: 'dark',
-  },
-
   fonts: {
     families: [{ name: 'Dosis', provider: 'google' }],
   },

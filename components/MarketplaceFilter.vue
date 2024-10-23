@@ -5,8 +5,13 @@
         v-model="searchText"
         :suggestions="dataSources"
         fluid
+        option-label="title"
+        option-group-label="title"
+        option-group-children="options"
+        @option-select="onSelect"
         @complete="handleSearch"
-      />
+      >
+      </AutoComplete>
 
       <div class="flex flex-col gap-2">
         <label>Type</label>
@@ -63,17 +68,17 @@ const handleSearch = async ({ query }) => {
   dataSources.value = data.value.data
 }
 
-// const onSelect = async (path, option) => {
-//   searchText.value = ''
-//   dataSources.value = []
+const onSelect = async (option) => {
+  searchText.value = ''
+  dataSources.value = []
 
-//   const { title, value, ...rest } = option
+  const { title, value, ...rest } = option.value
 
-//   marketplaceCfg.value = {
-//     type: marketplaceCfg.value.type,
-//     ...rest,
-//   }
-// }
+  marketplaceCfg.value = {
+    type: marketplaceCfg.value.type,
+    ...rest,
+  }
+}
 
 const onClearFilter = () => {
   marketplaceCfg.value = {

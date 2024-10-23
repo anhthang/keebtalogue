@@ -1,12 +1,12 @@
 <template>
   <div
     :class="slim ? 'w-auto' : 'w-72'"
-    class="rounded-2xl p-4 border h-full flex flex-col justify-between"
+    class="rounded-2xl p-4 bg-zinc-200 dark:bg-zinc-800 h-full flex flex-col justify-between"
   >
     <MegaMenu
       :model="megaMenu"
       orientation="vertical"
-      pt:root:class="!border-0 !bg-transparent"
+      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3"
     >
       <template #start>
         <nuxt-link to="/">
@@ -31,7 +31,10 @@
       </template>
     </MegaMenu>
 
-    <TieredMenu :model="advanceMenu" pt:root:class="!border-0 !bg-transparent">
+    <TieredMenu
+      :model="advanceMenu"
+      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3"
+    >
       <template #end>
         <MenuSettings :slim="slim" />
       </template>
@@ -50,10 +53,11 @@
 </template>
 
 <script setup>
-const slim = ref(false)
-
 // const route = useRoute()
 const router = useRouter()
+const config = useRuntimeConfig()
+
+const slim = ref(false)
 
 const onChangeMenu = ({ item }) => {
   if (item?.route.startsWith('/')) {
@@ -123,7 +127,7 @@ const megaMenu = ref([
   },
   {
     label: 'Keycaps',
-    icon: 'pi pi-qrcode',
+    icon: 'pi pi-objects-column',
     items: Object.entries(keycapProfiles).map(([profile, manufacturers]) => {
       return [
         {
@@ -150,7 +154,8 @@ const megaMenu = ref([
   },
 ])
 
-const advanceMenu = [
+const advanceMenu = computed(() => [
+  { icon: 'pi pi-search', label: 'Search', shortcut: '⌘+K' },
   {
     icon: 'pi pi-comments',
     label: 'Feedback',
@@ -158,7 +163,13 @@ const advanceMenu = [
       showFeedback.value = true
     },
   },
-  { icon: 'pi pi-search', label: 'Search', shortcut: '⌘+K' },
+  {
+    icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
+    label: slim.value ? 'Expand' : 'Collapse',
+    command: () => {
+      slim.value = !slim.value
+    },
+  },
   // {
   //   icon: 'pi pi-cog',
   //   label: 'Settings',
@@ -168,7 +179,16 @@ const advanceMenu = [
   {
     separator: true,
   },
-]
+  {
+    icon: 'pi pi-paypal',
+    label: 'Donate',
+    url: config.public.donate,
+    target: '_blank',
+  },
+  {
+    separator: true,
+  },
+])
 
 // const selectedKeys = computed(() => {
 //   const second = route.path.indexOf('/', 1)

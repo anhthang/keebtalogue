@@ -2,18 +2,12 @@
   <Button
     text
     severity="secondary"
-    :class="slim ? 'justify-center' : 'gap-3'"
-    class="flex items-center w-full"
     aria-haspopup="true"
     aria-controls="overlay_menu"
+    fluid
     @click="toggleProfileSeetings"
   >
-    <Avatar
-      :image="user.picture"
-      size="large"
-      shape="circle"
-      class="shrink-0"
-    />
+    <Avatar :image="user.picture" size="large" shape="circle" />
     <div>
       <div
         :class="slim ? 'hidden' : 'text-base font-medium text-color leading-5'"
@@ -61,6 +55,11 @@ const toggleProfileSeetings = (event) => {
   profileSettings.value.toggle(event)
 }
 
+const colorMode = useColorMode()
+const onChangeTheme = (mode) => {
+  colorMode.preference = mode
+}
+
 const settingsMenu = computed(() => {
   const items = [
     {
@@ -69,14 +68,17 @@ const settingsMenu = computed(() => {
         {
           label: 'System',
           icon: 'pi pi-desktop',
+          command: () => onChangeTheme('system'),
         },
         {
           label: 'Light',
           icon: 'pi pi-sun',
+          command: () => onChangeTheme('light'),
         },
         {
           label: 'Dark',
           icon: 'pi pi-moon',
+          command: () => onChangeTheme('dark'),
         },
       ],
     },

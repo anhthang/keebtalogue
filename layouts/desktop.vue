@@ -4,7 +4,7 @@
   >
     <SpeedInsights />
     <LayoutSider />
-    <div class="flex-1 h-full overflow-y-auto pb-0.5 border rounded-2xl">
+    <div class="flex-1 h-full overflow-y-auto pb-0.5">
       <NuxtPage />
     </div>
   </div>

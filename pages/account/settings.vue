@@ -1,11 +1,10 @@
 <template>
-  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
-    <template #header>
-      <div class="text-2xl leading-8 text-color font-bold">
-        Account Settings
-      </div>
-    </template>
-
+  <Panel
+    header="Account Settings"
+    class="container"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
     <Tabs value="profile">
       <TabList>
         <Tab value="profile" as="div" class="flex items-center gap-2">
