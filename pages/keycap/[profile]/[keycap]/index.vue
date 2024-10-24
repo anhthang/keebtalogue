@@ -1,7 +1,6 @@
 <template>
   <Panel
     :header="data.name"
-    class="container"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >

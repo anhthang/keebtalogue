@@ -1,7 +1,6 @@
 <template>
   <Panel
     header="Home"
-    class="container"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
@@ -29,13 +28,5 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   font-family: Dosis, sans-serif;
   --p-card-body-padding: 1.125rem;
   --p-card-title-font-size: 1.125rem;
-}
-
-.container {
-  margin: 0 auto;
-  min-height: calc(100vh - 128px); /** minus header & footer */
-  display: flex;
-  flex-direction: column;
-  max-width: 1600px;
 }
 </style>

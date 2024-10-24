@@ -1,9 +1,5 @@
 <template>
-  <Panel
-    v-if="maker"
-    class="container"
-    pt:root:class="!border-0 !bg-transparent"
-  >
+  <Panel v-if="maker" pt:root:class="!border-0 !bg-transparent">
     <template #header>
       <div class="flex items-center gap-4 font-medium text-3xl">
         <Avatar

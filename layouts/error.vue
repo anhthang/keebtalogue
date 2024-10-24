@@ -1,5 +1,5 @@
 <template>
-  <Panel class="container" pt:root:class="!border-0 !bg-transparent">
+  <Panel pt:root:class="!border-0 !bg-transparent">
     <div class="flex flex-col items-center">
       <div class="text-3xl font-medium mb-2">
         {{ error.statusCode }}

@@ -2,7 +2,6 @@
   <Panel
     v-if="$device.isDesktop"
     header="Wishlist"
-    class="container"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
@@ -17,7 +16,7 @@
       <wishlist-preview />
     </div>
   </Panel>
-  <Panel v-else class="container" pt:root:class="!border-0 !bg-transparent">
+  <Panel v-else pt:root:class="!border-0 !bg-transparent">
     <div class="flex flex-col items-center">
       <div class="text-3xl font-medium mb-2">
         This feature is currently unavailable on mobile devices.
