@@ -6,13 +6,11 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <artisan-collector-guide class="col-span-4 md:col-span-3" />
+      <ArtisanCollectorGuide class="col-span-4 md:col-span-3" />
+
       <div class="col-span-4 md:col-span-1 flex flex-col gap-4">
-        <recently-added v-if="data.makers.length" :makers="data.makers" />
-        <keycap-live-group-buys
-          v-if="data.keycaps.length"
-          :keycaps="data.keycaps"
-        />
+        <LatestArtisans v-if="data.makers.length" :makers="data.makers" />
+        <PreOrderKeycaps v-if="data.keycaps.length" :keycaps="data.keycaps" />
       </div>
     </div>
   </Panel>

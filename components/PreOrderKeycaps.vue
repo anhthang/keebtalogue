@@ -1,5 +1,5 @@
 <template>
-  <Fieldset legend="Live Group-Buys" pt:legend:class="w-auto">
+  <Fieldset legend="Pre-Order Keycaps" pt:legend:class="w-auto">
     <DataView :value="keycaps">
       <template #list="slotProps">
         <div

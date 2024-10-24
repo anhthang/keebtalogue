@@ -1,5 +1,5 @@
 <template>
-  <Fieldset legend="Recently Added Artisans" pt:legend:class="w-auto">
+  <Fieldset legend="Latest Artisans" pt:legend:class="w-auto">
     <DataView :value="makers">
       <template #list="slotProps">
         <div

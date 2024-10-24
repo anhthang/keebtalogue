@@ -21,8 +21,8 @@
         <Button
           v-if="sculpt.href"
           as="a"
-          icon="pi pi-link"
-          label="Visit"
+          icon="pi pi-external-link"
+          label="Website"
           :href="sculpt.href"
           target="_blank"
           rel="noopener"

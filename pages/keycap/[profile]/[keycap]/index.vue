@@ -20,17 +20,19 @@
           icon="pi pi-file-edit"
           @click="toggleShowEditKeycap"
         />
-        <Button
+
+        <SplitButton
           v-if="data.order_graph || data.order_history"
-          label="Sales Chart"
+          label="Charts"
           icon="pi pi-chart-bar"
-          @click="toggleShowChart"
+          :model="chartOptions"
         />
+
         <Button
           v-if="data.url"
           as="a"
           label="Link"
-          icon="pi pi-link"
+          icon="pi pi-external-link"
           :href="data.url"
           target="_blank"
           rel="noopener"
@@ -62,7 +64,10 @@
               <div class="mt-0 font-semibold text-xl">
                 {{ slotProps.data.name }}
               </div>
-              <div class="mt-0 font-semibold text-xl">
+              <div
+                v-if="slotProps.data.price"
+                class="mt-0 font-semibold text-xl"
+              >
                 ${{ slotProps.data.price }}
               </div>
             </div>
@@ -172,10 +177,22 @@ useSeoMeta({
   twitterImage: data.value && data.value.img,
 })
 
-const visible = ref(false)
-const toggleShowChart = () => {
-  visible.value = !visible.value
-}
+const chartOptions = [
+  {
+    label: 'Order Graph',
+    icon: 'pi pi-chart-bar',
+    command: () => {
+      window.open(data.value.order_graph, '_blank')
+    },
+  },
+  {
+    label: 'Order History',
+    icon: 'pi pi-chart-line',
+    command: () => {
+      window.open(data.value.order_history, '_blank')
+    },
+  },
+]
 
 const showEditKeycap = ref(false)
 const toggleShowEditKeycap = () => {

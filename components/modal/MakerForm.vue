@@ -2,20 +2,40 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="maker_name">Name</label>
-      <InputText id="maker_name" v-model.trim="maker.name" type="text" />
+      <IconField>
+        <InputIcon class="pi pi-pencil" />
+        <InputText
+          id="maker_name"
+          v-model.trim="maker.name"
+          type="text"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="maker_nationality">Nationality</label>
-        <InputText
-          id="maker_nationality"
-          v-model.trim="maker.nationality"
-          type="text"
-        />
+        <IconField>
+          <InputIcon class="pi pi-flag" />
+          <InputText
+            id="maker_nationality"
+            v-model.trim="maker.nationality"
+            type="text"
+            fluid
+          />
+        </IconField>
       </div>
       <div class="flex flex-col gap-2">
         <label for="maker_founded">Founded</label>
-        <InputText id="maker_founded" v-model="maker.founded" v-keyfilter.num />
+        <IconField>
+          <InputIcon class="pi pi-calendar" />
+          <InputText
+            id="maker_founded"
+            v-model="maker.founded"
+            v-keyfilter.num
+            fluid
+          />
+        </IconField>
       </div>
     </div>
 
@@ -26,6 +46,7 @@
         id="maker_doc_id"
         :key="docId"
       >
+        <InputIcon class="pi pi-file-word" />
         <InputText :key="idx" v-model.trim="maker.document_ids[idx]" fluid />
         <InputIcon class="pi pi-minus-circle" @click="removeDocId(docId)" />
       </IconField>
@@ -40,27 +61,51 @@
 
     <div class="flex flex-col gap-2">
       <label for="maker_website">Website</label>
-      <InputText id="maker_website" v-model.trim="maker.website" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-globe" />
+        <InputText
+          id="maker_website"
+          v-model.trim="maker.website"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="maker_instagram">Instagram</label>
-      <InputText
-        id="maker_instagram"
-        v-model.trim="maker.instagram"
-        type="url"
-      />
+      <IconField>
+        <InputIcon class="pi pi-instagram" />
+        <InputText
+          id="maker_instagram"
+          v-model.trim="maker.instagram"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="maker_discord">Discord</label>
-      <InputText id="maker_discord" v-model.trim="maker.discord" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-discord" />
+        <InputText
+          id="maker_discord"
+          v-model.trim="maker.discord"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="maker_artisancollector">ArtisanCollector</label>
-      <InputText
-        id="maker_artisancollector"
-        v-model.trim="maker.artisancollector"
-        type="url"
-      />
+      <IconField>
+        <InputIcon class="pi pi-external-link" />
+        <InputText
+          id="maker_artisancollector"
+          v-model.trim="maker.artisancollector"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="maker_intro">Intro</label>

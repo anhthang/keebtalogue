@@ -2,16 +2,28 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="sculpt_name">Name</label>
-      <InputText id="sculpt_name" v-model.trim="sculpt.name" type="text" />
+      <IconField>
+        <InputIcon class="pi pi-pencil" />
+        <InputText
+          id="sculpt_name"
+          v-model.trim="sculpt.name"
+          type="text"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="sculpt_release">Release</label>
-        <InputText
-          id="sculpt_release"
-          v-model.trim="sculpt.release"
-          type="text"
-        />
+        <IconField>
+          <InputIcon class="pi pi-calendar" />
+          <InputText
+            id="sculpt_release"
+            v-model.trim="sculpt.release"
+            type="text"
+            fluid
+          />
+        </IconField>
       </div>
       <div class="flex flex-col gap-2">
         <label for="sculpt_profile">Profile</label>
@@ -42,7 +54,15 @@
     </div>
     <div class="flex flex-col gap-2">
       <label for="sculpt_url">URL</label>
-      <InputText id="sculpt_url" v-model.trim="sculpt.href" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-globe" />
+        <InputText
+          id="sculpt_url"
+          v-model.trim="sculpt.href"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="sculpt_story">Storyline</label>

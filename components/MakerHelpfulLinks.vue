@@ -1,5 +1,5 @@
 <template>
-  <SplitButton label="Links" icon="pi pi-link" :model="links" />
+  <SplitButton label="Links" icon="pi pi-external-link" :model="links" />
 </template>
 
 <script setup>

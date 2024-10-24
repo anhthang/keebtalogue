@@ -3,15 +3,28 @@
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="keycap_name">Name</label>
-        <InputText id="keycap_name" v-model.trim="keycap.name" type="text" />
+        <IconField>
+          <InputIcon class="pi pi-pencil" />
+
+          <InputText
+            id="keycap_name"
+            v-model.trim="keycap.name"
+            type="text"
+            fluid
+          />
+        </IconField>
       </div>
       <div class="flex flex-col gap-2">
         <label for="keycap_designer">Designer</label>
-        <InputText
-          id="keycap_designer"
-          v-model.trim="keycap.designer"
-          type="text"
-        />
+        <IconField>
+          <InputIcon class="pi pi-user" />
+          <InputText
+            id="keycap_designer"
+            v-model.trim="keycap.designer"
+            type="text"
+            fluid
+          />
+        </IconField>
       </div>
     </div>
     <div class="grid grid-cols-2 gap-2">
@@ -32,28 +45,50 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="keycap_sculpt">Sculpt</label>
-        <InputText
-          id="keycap_sculpt"
-          v-model.trim="keycap.sculpt"
-          type="text"
-        />
+        <IconField>
+          <InputIcon class="pi pi-objects-column" />
+          <InputText
+            id="keycap_sculpt"
+            v-model.trim="keycap.sculpt"
+            type="text"
+            fluid
+          />
+        </IconField>
       </div>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_url">URL</label>
-      <InputText id="keycap_url" v-model.trim="keycap.url" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-image" />
+
+        <InputText id="keycap_url" v-model.trim="keycap.url" type="url" fluid />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_render">Render</label>
-      <InputText
-        id="keycap_render"
-        v-model.trim="keycap.render_img"
-        type="url"
-      />
+      <IconField>
+        <InputIcon class="pi pi-image" />
+
+        <InputText
+          id="keycap_render"
+          v-model.trim="keycap.render_img"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_cover">Cover</label>
-      <InputText id="keycap_cover" v-model.trim="keycap.cover_img" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-image" />
+
+        <InputText
+          id="keycap_cover"
+          v-model.trim="keycap.cover_img"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
@@ -81,19 +116,29 @@
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_graph">Order Graph</label>
-      <InputText
-        id="keycap_graph"
-        v-model.trim="keycap.order_graph"
-        type="url"
-      />
+      <IconField>
+        <InputIcon class="pi pi-chart-bar" />
+
+        <InputText
+          id="keycap_graph"
+          v-model.trim="keycap.order_graph"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_history">Order History</label>
-      <InputText
-        id="keycap_history"
-        v-model.trim="keycap.order_history"
-        type="url"
-      />
+      <IconField>
+        <InputIcon class="pi pi-chart-line" />
+
+        <InputText
+          id="keycap_history"
+          v-model.trim="keycap.order_history"
+          type="url"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_description">Description</label>

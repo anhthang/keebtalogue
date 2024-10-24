@@ -2,20 +2,37 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="kit_name">Name</label>
-      <InputText id="kit_name" v-model.trim="kit.name" type="text" />
+      <IconField>
+        <InputIcon class="pi pi-pencil" />
+        <InputText id="kit_name" v-model.trim="kit.name" type="text" fluid />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="kit_img">Image</label>
-      <InputText id="kit_img" v-model.trim="kit.img" type="url" />
+      <IconField>
+        <InputIcon class="pi pi-image" />
+        <InputText id="kit_img" v-model.trim="kit.img" type="url" fluid />
+      </IconField>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="kit_price">Price</label>
-        <InputText id="kit_price" v-model="kit.price" v-keyfilter.money />
+        <IconField>
+          <InputIcon class="pi pi-tag" />
+          <InputText
+            id="kit_price"
+            v-model="kit.price"
+            v-keyfilter.money
+            fluid
+          />
+        </IconField>
       </div>
       <div class="flex flex-col gap-2">
         <label for="kit_qty">Quantity</label>
-        <InputText id="kit_qty" v-model="kit.qty" v-keyfilter.num />
+        <IconField>
+          <InputIcon class="pi pi-hashtag" />
+          <InputText id="kit_qty" v-model="kit.qty" v-keyfilter.num fluid />
+        </IconField>
       </div>
     </div>
     <div class="flex flex-col gap-2">
