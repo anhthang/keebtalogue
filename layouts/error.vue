@@ -1,21 +1,23 @@
 <template>
   <Panel pt:root:class="!border-0 !bg-transparent">
-    <div class="flex flex-col items-center">
+    <div
+      v-if="error.statusCode === 404"
+      class="flex flex-col items-center gap-8"
+    >
+      <img class="w-2/4" :src="`/svg/404.svg`" alt="Not Found" />
+
       <div class="text-3xl font-medium mb-2">
-        {{ error.statusCode }}
-      </div>
-      <div
-        v-if="error.statusCode === 404"
-        class="font-medium text-surface-500 dark:text-surface-300 mb-4"
-      >
         Sorry, the page you visited does not exist.
       </div>
-      <div
-        v-else
-        class="font-medium text-surface-500 dark:text-surface-300 mb-4"
-      >
-        Something went wrong.
-      </div>
+
+      <nuxt-link to="/">
+        <Button label="Back Home" icon="pi pi-home" />
+      </nuxt-link>
+    </div>
+    <div class="flex flex-col items-center gap-8">
+      <img class="w-2/4" :src="`/svg/500.svg`" alt="Internal Server Error" />
+
+      <div class="text-3xl font-medium mb-2">Uh oh. Something went wrong.</div>
 
       <nuxt-link to="/">
         <Button label="Back Home" icon="pi pi-home" />

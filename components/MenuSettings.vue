@@ -7,7 +7,13 @@
     outlined
     @click="toggleProfileSeetings"
   >
-    <Avatar :image="user.picture" size="large" shape="circle" />
+    <Avatar
+      v-if="user.picture"
+      :image="user.picture"
+      size="large"
+      shape="circle"
+    />
+    <Avatar v-else icon="pi pi-user" size="large" shape="circle" />
     <div>
       <div
         :class="slim ? 'hidden' : 'text-base font-medium text-color leading-5'"

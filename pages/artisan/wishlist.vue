@@ -17,7 +17,7 @@
     </div>
   </Panel>
   <Panel v-else pt:root:class="!border-0 !bg-transparent">
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center gap-8">
       <div class="text-3xl font-medium mb-2">
         This feature is currently unavailable on mobile devices.
       </div>

@@ -349,7 +349,7 @@ const copyColorwayCard = async (idx) => {
   cardActions.classList.add('hide-actions')
 
   try {
-    await copyScreenshot(card)
+    await copyScreenshot(card, toast)
   } catch (error) {
     toast.add({ severity: 'error', summary: error.message, life: 3000 })
   }

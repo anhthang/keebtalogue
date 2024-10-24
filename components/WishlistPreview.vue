@@ -223,7 +223,7 @@ const screenshot = async (download = false) => {
     if (download) {
       await downloadScreenshot(card)
     } else {
-      await copyScreenshot(card, !isDesktop)
+      await copyScreenshot(card, toast, !isDesktop)
     }
   } catch (error) {
     errorText.value = error.message

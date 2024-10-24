@@ -115,14 +115,14 @@ const megaMenu = ref([
   },
   {
     label: 'Interest Check',
-    icon: 'pi pi-id-card',
+    icon: 'pi pi-list-check',
     route: '/keycap/interest-check',
     command: onChangeMenu,
   },
   {
-    label: 'Live Group Buys',
-    icon: 'pi pi-send',
-    route: '/keycap/live',
+    label: 'Pre-Order',
+    icon: 'pi pi-shopping-bag',
+    route: '/keycap/pre-order',
     command: onChangeMenu,
   },
   {
@@ -165,7 +165,7 @@ const advanceMenu = computed(() => [
   },
   {
     icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
-    label: slim.value ? 'Expand' : 'Collapse',
+    label: slim.value ? 'Expand Menu' : 'Collapse Menu',
     command: () => {
       slim.value = !slim.value
     },

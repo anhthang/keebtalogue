@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { domToPng, domToBlob } from 'modern-screenshot'
 import omit from 'lodash.omit'
+import type { ToastServiceMethods } from 'primevue/toastservice'
 
 export const omitSensitive = (obj: any) => omit(obj, ['fts'])
 
@@ -69,6 +70,7 @@ export const colorwayTitle = (colorway: any) =>
 
 export const copyScreenshot = async (
   element: HTMLElement,
+  toast: ToastServiceMethods,
   openInNewTab: boolean,
 ) => {
   const blob = await domToBlob(element)
@@ -86,30 +88,50 @@ export const copyScreenshot = async (
         )
         await navigator.clipboard.write([clipItem])
 
-        message.success('Image copied to clipboard!')
+        toast.add({
+          severity: 'success',
+          life: 3000,
+          summary: 'Image copied to clipboard!',
+        })
       }
     } else {
-      message.error('Could not create image, blob is null')
+      toast.add({
+        severity: 'error',
+        life: 3000,
+        summary: 'Image Save Failed',
+        detail: 'Could not create image, blob is null',
+      })
     }
   } catch (error) {
     console.error('Error while saving image to clipboard', error)
 
     if (blob) {
       if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        notification.open({
-          message: 'Firefox Configuration',
-          description:
+        toast.add({
+          severity: 'info',
+          life: 3000,
+          summary: 'Firefox Configuration',
+          detail:
             'On Firefox you can enable the asyncClipboard.clipboardItem permission in about:config to enable copying straight to the clipboard',
         })
       }
 
-      message.info(
-        'Could not save image to clipboard. Opening in new tab instead (make sure popups are allowed)',
-      )
+      toast.add({
+        severity: 'info',
+        summary: 'Clipboard Access Denied',
+        life: 3000,
+        detail:
+          'Could not save image to clipboard. Opening in new tab instead (make sure popups are allowed)',
+      })
 
       open(URL.createObjectURL(blob))
     } else {
-      message.error('Error while saving image to clipboard')
+      toast.add({
+        severity: 'error',
+        life: 3000,
+        summary: 'Image Save Failed',
+        detail: 'Error while saving image to clipboard',
+      })
     }
   }
 }

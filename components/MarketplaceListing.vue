@@ -5,6 +5,15 @@
     pt:header:class="text-xl"
   >
     <DataView :value="trades">
+      <template #empty>
+        <div class="flex flex-col items-center gap-8">
+          <img class="w-2/4" :src="`/svg/empty.svg`" alt="Empty" />
+
+          <div class="text-3xl font-medium mb-2">
+            We couldn't find any items that meet your search criteria.
+          </div>
+        </div>
+      </template>
       <template #list="slotProps">
         <div
           v-for="(item, index) in slotProps.items"

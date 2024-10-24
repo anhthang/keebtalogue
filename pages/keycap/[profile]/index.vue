@@ -99,7 +99,7 @@ const size = ref(16)
 
 const statusMap = {
   'interest-check': 'Interest Check',
-  live: 'Live',
+  'pre-order': 'Live',
 }
 
 const query = computed(() => {
