@@ -4,7 +4,11 @@
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <Message class="w-fit mx-auto mb-4" severity="info">
+    <Message
+      class="w-fit mx-auto mb-4"
+      severity="info"
+      icon="pi pi-info-circle"
+    >
       To make your collections available in the marketplace, please publish them
       by visiting
       <nuxt-link to="/artisan/collection">Collections</nuxt-link>. This will

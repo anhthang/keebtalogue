@@ -24,7 +24,10 @@
               disabled
               fluid
             />
-            <InputIcon v-if="user.email_verified" class="pi pi-verified" />
+            <InputIcon
+              v-if="user.email_verified"
+              class="pi pi-verified !text-[#22c55e] !dark:text-[#4ade80]"
+            />
           </IconField>
         </div>
         <div class="flex flex-col gap-2">
@@ -50,7 +53,10 @@
               :disabled="discordVerified"
               fluid
             />
-            <InputIcon v-if="discordVerified" class="pi pi-verified" />
+            <InputIcon
+              v-if="discordVerified"
+              class="pi pi-verified !text-[#22c55e] !dark:text-[#4ade80]"
+            />
           </IconField>
         </div>
         <div class="flex flex-col gap-2">

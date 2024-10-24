@@ -5,7 +5,11 @@
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <Message class="w-fit mx-auto mb-4" severity="warn">
+    <Message
+      class="w-fit mx-auto mb-4"
+      severity="warn"
+      icon="pi pi-exclamation-triangle"
+    >
       <strong>Attention:</strong> We're phasing out this feature. Check out the
       <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
       powerful alternatives!

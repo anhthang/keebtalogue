@@ -13,7 +13,7 @@
       </TabList>
       <TabPanels>
         <TabPanel value="profile">
-          <account-profile />
+          <AccountProfile />
         </TabPanel>
       </TabPanels>
     </Tabs>

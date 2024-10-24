@@ -5,6 +5,7 @@
     aria-controls="overlay_menu"
     fluid
     outlined
+    pt:root:class="!justify-start"
     @click="toggleProfileSeetings"
   >
     <Avatar
@@ -14,13 +15,11 @@
       shape="circle"
     />
     <Avatar v-else icon="pi pi-user" size="large" shape="circle" />
-    <div>
-      <div
-        :class="slim ? 'hidden' : 'text-base font-medium text-color leading-5'"
-      >
+    <div v-if="!slim">
+      <div class="text-base font-medium text-color leading-'">
         {{ user.name }}
       </div>
-      <div :class="slim ? 'hidden' : 'text-sm text-muted-color mt-1'">
+      <div class="text-sm text-muted-color mt-1">
         {{ user.email }}
       </div>
     </div>

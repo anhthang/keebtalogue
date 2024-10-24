@@ -50,7 +50,6 @@
             :alt="colorway.name"
             :src="colorway.img"
             class="h-full object-cover"
-            @click="showColorwayCardModal(colorway)"
           />
         </template>
         <template #title>{{ colorway.name || '-' }}</template>
@@ -68,8 +67,8 @@
             <Button
               text
               severity="secondary"
-              icon="pi pi-copy"
-              @click="copyColorwayCard(idx)"
+              icon="pi pi-expand"
+              @click="showColorwayCardModal(colorway)"
             />
 
             <Button
@@ -126,7 +125,7 @@
     <Dialog
       v-model:visible="visible.card"
       modal
-      class="colorway-details-card w-[35rem]"
+      class="colorway-details-card w-[30rem]"
       :closable="false"
       dismissable-mask
     >
@@ -335,25 +334,5 @@ const addToCollection = (collection, colorway) => {
       life: 3000,
     })
   }
-}
-
-// copy card
-const copyColorwayCard = async (idx) => {
-  const elements = idx
-    ? document.getElementsByClassName('ant-card-hoverable')
-    : document.getElementsByClassName('ant-modal-content')
-
-  const card = elements[idx || 0]
-
-  const cardActions = card.getElementsByClassName('ant-card-actions')[0]
-  cardActions.classList.add('hide-actions')
-
-  try {
-    await copyScreenshot(card, toast)
-  } catch (error) {
-    toast.add({ severity: 'error', summary: error.message, life: 3000 })
-  }
-
-  cardActions.classList.remove('hide-actions')
 }
 </script>

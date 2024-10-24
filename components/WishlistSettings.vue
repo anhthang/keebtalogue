@@ -17,11 +17,15 @@
           <label for="trading_title">
             {{ trading ? 'Want Title' : 'Title' }}
           </label>
-          <InputText
-            id="trading_title"
-            v-model.trim="tradingConfig.want.title"
-            type="text"
-          />
+          <IconField>
+            <InputIcon class="pi pi-pencil" />
+            <InputText
+              id="trading_title"
+              v-model.trim="tradingConfig.want.title"
+              type="text"
+              fluid
+            />
+          </IconField>
         </div>
         <div class="col-span-1 flex flex-col gap-2">
           <label for="trading_collection">
@@ -36,15 +40,19 @@
           />
         </div>
         <div v-if="trading" class="col-span-1 flex flex-col gap-2">
-          <label for="trading_have">Want Title</label>
-          <InputText
-            id="trading_have"
-            v-model.trim="tradingConfig.have.title"
-            type="text"
-          />
+          <label for="trading_have">Have Title</label>
+          <IconField>
+            <InputIcon class="pi pi-pencil" />
+            <InputText
+              id="trading_have"
+              v-model.trim="tradingConfig.have.title"
+              type="text"
+              fluid
+            />
+          </IconField>
         </div>
         <div v-if="trading" class="col-span-1 flex flex-col gap-2">
-          <label for="trading_have_collection">Want Collection</label>
+          <label for="trading_have_collection">Have Collection</label>
           <Select
             id="trading_have_collection"
             v-model="tradingConfig.have.collection"
@@ -57,31 +65,43 @@
       <div class="grid grid-cols-4 gap-2">
         <div class="col-span-1 flex flex-col gap-2">
           <label for="trading_reddit">Reddit</label>
-          <InputText
-            id="trading_reddit"
-            v-model.trim="tradingConfig.social.reddit"
-            type="text"
-            placeholder="u/username"
-          />
+          <IconField>
+            <InputIcon class="pi pi-reddit" />
+            <InputText
+              id="trading_reddit"
+              v-model.trim="tradingConfig.social.reddit"
+              type="text"
+              placeholder="u/username"
+              fluid
+            />
+          </IconField>
         </div>
         <div class="col-span-1 flex flex-col gap-2">
           <label for="trading_discord">Discord</label>
-          <InputText
-            id="trading_discord"
-            v-model.trim="tradingConfig.social.discord"
-            type="text"
-            placeholder="username#1234"
-          />
+          <IconField>
+            <InputIcon class="pi pi-discord" />
+            <InputText
+              id="trading_discord"
+              v-model.trim="tradingConfig.social.discord"
+              type="text"
+              placeholder="username#1234"
+              fluid
+            />
+          </IconField>
         </div>
         <div class="col-span-1 flex flex-col gap-2">
           <label for="trading_qq">QQ</label>
-          <InputText
-            id="trading_qq"
-            v-model.trim="tradingConfig.social.qq"
-            v-keyfilter.num
-            type="text"
-            placeholder="00000000"
-          />
+          <IconField>
+            <InputIcon class="pi pi-comment" />
+            <InputText
+              id="trading_qq"
+              v-model.trim="tradingConfig.social.qq"
+              v-keyfilter.num
+              type="text"
+              placeholder="00000000"
+              fluid
+            />
+          </IconField>
         </div>
       </div>
       <div class="flex items-center gap-2">

@@ -6,24 +6,22 @@
     <MegaMenu
       :model="megaMenu"
       orientation="vertical"
-      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3"
+      pt:root:class="!border-0 !bg-transparent !min-w-fit"
     >
       <template #start>
         <nuxt-link to="/">
           <div class="flex items-center gap-3">
-            <div
-              class="w-12 h-12 border border-primary rounded-xl flex items-center justify-center"
-            >
+            <div class="w-10 h-10 flex items-center justify-center">
               <img
                 :alt="$config.public.appName"
-                :src="`/logo-filled.png`"
-                width="32px"
+                :src="
+                  $colorMode.value === 'dark'
+                    ? `/logo-outlined.png`
+                    : `/logo-filled.png`
+                "
               />
             </div>
-            <div
-              :class="slim ? 'hidden' : 'block'"
-              class="text-surface-950 dark:text-surface-0 font-medium text-3xl"
-            >
+            <div v-if="!slim" class="text-3xl font-medium">
               {{ $config.public.appName }}
             </div>
           </div>
@@ -33,7 +31,7 @@
 
     <TieredMenu
       :model="advanceMenu"
-      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3"
+      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit"
     >
       <template #end>
         <MenuSettings :slim="slim" />
@@ -69,24 +67,24 @@ const onChangeMenu = ({ item }) => {
 
 const showFeedback = ref(false)
 
-const megaMenu = ref([
+const megaMenu = computed(() => [
   {
     separator: true,
   },
   {
-    label: 'Makers',
+    label: slim.value ? '' : 'Makers',
     icon: 'pi pi-users',
     route: '/artisan/maker',
     command: onChangeMenu,
   },
   {
-    label: 'Collections',
+    label: slim.value ? '' : 'Collections',
     icon: 'pi pi-book',
     route: '/artisan/collection',
     command: onChangeMenu,
   },
   {
-    label: 'Marketplace',
+    label: slim.value ? '' : 'Marketplace',
     icon: 'pi pi-shop',
     items: [
       [
@@ -114,19 +112,19 @@ const megaMenu = ref([
     separator: true,
   },
   {
-    label: 'Interest Check',
+    label: slim.value ? '' : 'Interest Check',
     icon: 'pi pi-list-check',
     route: '/keycap/interest-check',
     command: onChangeMenu,
   },
   {
-    label: 'Pre-Order',
+    label: slim.value ? '' : 'Pre-Order',
     icon: 'pi pi-shopping-bag',
     route: '/keycap/pre-order',
     command: onChangeMenu,
   },
   {
-    label: 'Keycaps',
+    label: slim.value ? '' : 'Keycaps',
     icon: 'pi pi-objects-column',
     items: Object.entries(keycapProfiles).map(([profile, manufacturers]) => {
       return [
@@ -147,7 +145,7 @@ const megaMenu = ref([
     separator: true,
   },
   {
-    label: 'About',
+    label: slim.value ? '' : 'About',
     icon: 'pi pi-info-circle',
     route: '/about',
     command: onChangeMenu,
@@ -155,33 +153,27 @@ const megaMenu = ref([
 ])
 
 const advanceMenu = computed(() => [
-  { icon: 'pi pi-search', label: 'Search', shortcut: '⌘+K' },
+  { icon: 'pi pi-search', label: slim.value ? '' : 'Search', shortcut: '⌘+K' },
   {
     icon: 'pi pi-comments',
-    label: 'Feedback',
+    label: slim.value ? '' : 'Feedback',
     command: () => {
       showFeedback.value = true
     },
   },
   {
     icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
-    label: slim.value ? 'Expand Menu' : 'Collapse Menu',
+    label: slim.value ? '' : slim.value ? 'Expand Menu' : 'Collapse Menu',
     command: () => {
       slim.value = !slim.value
     },
   },
-  // {
-  //   icon: 'pi pi-cog',
-  //   label: 'Settings',
-  //   route: '/account/settings',
-  //   command: onChangeMenu,
-  // },
   {
     separator: true,
   },
   {
     icon: 'pi pi-paypal',
-    label: 'Donate',
+    label: slim.value ? '' : 'Donate',
     url: config.public.donate,
     target: '_blank',
   },

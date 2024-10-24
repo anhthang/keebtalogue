@@ -29,6 +29,7 @@
       v-if="!user.email_verified"
       class="w-fit mx-auto mb-4"
       severity="info"
+      icon="pi pi-info-circle"
     >
       Level up your experience! Login and unlock exclusive features, unlimited
       collections, and enjoy seamless syncing across all your devices.
