@@ -1,27 +1,37 @@
 <template>
-  <a-form layout="vertical">
-    <a-form-item label="Sculpt">
-      <a-select
-        v-model:value="sale.sculpt_id"
-        show-search
-        @change="selectSculpt"
-      >
-        <a-select-option
-          v-for="(name, sculptId) in metadata"
-          :key="sculptId"
-          :value="sculptId"
-        >
-          {{ name }}
-        </a-select-option>
-      </a-select>
-    </a-form-item>
-    <a-form-item label="Title/Colorway">
-      <a-input v-model:value="sale.title" />
-    </a-form-item>
-    <a-form-item label="Sale Date">
-      <a-calendar v-model:value="sale.date" :fullscreen="false" />
-    </a-form-item>
-  </a-form>
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="sale_name">Sculpt</label>
+      <Select
+        id="sale_name"
+        v-model="sale.sculpt_id"
+        option-label="label"
+        option-value="value"
+        :options="
+          Object.entries(metadata).map(([value, label]) => ({ label, value }))
+        "
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="sale_title">Title</label>
+      <InputText id="sale_title" v-model.trim="sale.title" type="text" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="sale_title">Date</label>
+      <DatePicker
+        v-model="sale.date"
+        inline
+        show-button-bar
+        :min-date="new Date()"
+        class="w-full"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="addSale" />
+    </div>
+
+    <Toast />
+  </div>
 </template>
 
 <script setup>
@@ -32,19 +42,24 @@ const { metadata } = defineProps({
   },
 })
 
+const toast = useToast()
+
 const route = useRoute()
 const sale = ref({
   maker_id: route.params.maker,
 })
 
-const selectSculpt = (e) => {
-  sale.value.sculpt_name = metadata[e]
-}
+watch(
+  () => sale.value.sculpt_id,
+  () => {
+    sale.value.sculpt_name = metadata[sale.value.sculpt_id]
+  },
+)
 
 const addSale = () => {
   const body = {
     ...sale.value,
-    date: sale.value.date.format('YYYY-MM-DD'),
+    date: sale.value.date.toISOString().slice(0, 10),
   }
 
   $fetch('/api/sales', {
@@ -52,14 +67,14 @@ const addSale = () => {
     body,
   })
     .then(() => {
-      message.success('New sale added successfully!')
+      toast.add({
+        severity: 'success',
+        summary: 'New sale added successfully!',
+        life: 3000,
+      })
     })
     .catch((error) => {
-      message.error(error.message)
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
-
-defineExpose({
-  addSale,
-})
 </script>

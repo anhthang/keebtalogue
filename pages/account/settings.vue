@@ -1,17 +1,29 @@
 <template>
-  <a-page-header title="Settings" class="container">
-    <a-card>
-      <a-tabs v-model:active-key="activeKey" :tab-position="tabPosition">
-        <a-tab-pane key="profile">
-          <template #tab><user-outlined /> Public Profile </template>
-          <account-profile />
-        </a-tab-pane>
-      </a-tabs>
-    </a-card>
-  </a-page-header>
+  <Panel
+    header="Account Settings"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <Tabs value="profile">
+      <TabList>
+        <Tab value="profile" as="div" class="flex items-center gap-2">
+          <Avatar :image="user.picture" shape="circle" />
+          Profile
+        </Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel value="profile">
+          <AccountProfile />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  </Panel>
 </template>
 
 <script setup>
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
 useSeoMeta({
   title: 'Account Settings',
 })
@@ -19,9 +31,4 @@ useSeoMeta({
 definePageMeta({
   middleware: 'auth',
 })
-
-const { isMobile } = useDevice()
-
-const tabPosition = isMobile ? 'top' : 'left'
-const activeKey = ref('profile')
 </script>

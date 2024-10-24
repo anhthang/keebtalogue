@@ -1,56 +1,81 @@
 <template>
-  <a-card>
-    <template v-if="useCardMeta" #cover>
-      <img :alt="colorway.name" :src="colorway.img" />
+  <Card class="!shadow-none">
+    <template #header>
+      <img
+        :alt="colorway.name"
+        :src="colorway.img"
+        class="h-full object-cover"
+      />
     </template>
-
-    <a-card-meta v-if="useCardMeta">
-      <template #description>
-        <colorway-descriptions :colorway="colorway" />
-      </template>
-    </a-card-meta>
-
-    <a-row v-if="!useCardMeta" :gutter="[16, 16]">
-      <a-col :sm="12" :xs="24">
-        <a-image :preview="false" :alt="colorway.name" :src="colorway.img" />
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <colorway-descriptions :colorway="colorway" />
-      </a-col>
-    </a-row>
-
-    <template #actions>
-      <div v-if="isEditor" @click="$emit('editColorway', colorway)">
-        <edit-outlined /> Edit
+    <template #title>
+      <div class="flex justify-between items-center">
+        <div class="mt-0 font-semibold text-xl">
+          {{ colorway.name }}
+        </div>
+        <Tag
+          v-if="colorway.commissioned"
+          icon="pi pi-palette"
+          value="Commissioned"
+        />
+        <Tag v-if="colorway.giveaway" icon="pi pi-gift" value="Giveaway" />
       </div>
-
-      <div @click="$emit('copyColorwayCard')"><copy-outlined /> Copy</div>
-
-      <a-dropdown
-        v-if="collections.length"
-        :trigger="['click']"
-        placement="top"
-      >
-        <div><folder-add-outlined /> Add to Collection</div>
-        <template #overlay>
-          <a-menu>
-            <a-menu-item
-              v-for="collection in collections"
-              :key="collection.id"
-              :disabled="!collections.length"
-              @click="$emit('addToCollection', collection, colorway)"
-            >
-              {{ collection.name }}
-            </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
     </template>
-  </a-card>
+
+    <template #content>
+      {{ colorway.description }}
+    </template>
+
+    <template v-if="!copying" #footer>
+      <div class="flex gap-2">
+        <Button
+          v-if="isEditor"
+          size="small"
+          severity="secondary"
+          label="Edit"
+          icon="pi pi-pen-to-square"
+          @click="$emit('editColorway', colorway)"
+        />
+
+        <Button
+          size="small"
+          severity="secondary"
+          label="Copy Card"
+          icon="pi pi-copy"
+          @click="copyColorwayCard"
+        />
+
+        <Button
+          size="small"
+          severity="secondary"
+          label="Add to Collection"
+          icon="pi pi-folder-plus"
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+          @click="toggle"
+        />
+        <Menu
+          id="overlay_menu"
+          ref="add2collection"
+          :popup="true"
+          :model="[
+            {
+              label: 'Select Collection',
+              items: collections.map((collection) => ({
+                label: collection.name,
+                command: () => {
+                  $emit('addToCollection', collection, colorway)
+                },
+              })),
+            },
+          ]"
+        />
+      </div>
+    </template>
+  </Card>
 </template>
 
 <script setup>
-defineEmits(['editColorway', 'addToCollection', 'copyColorwayCard'])
+defineEmits(['editColorway', 'addToCollection'])
 
 const { colorway } = defineProps({
   colorway: {
@@ -62,9 +87,24 @@ const { colorway } = defineProps({
 const userStore = useUserStore()
 const { collections, isEditor } = storeToRefs(userStore)
 
-const { isMobile } = useDevice()
+const toast = useToast()
 
-const useCardMeta = computed(() => {
-  return isMobile || !colorway.description
-})
+const add2collection = ref()
+const toggle = (event) => {
+  add2collection.value.toggle(event)
+}
+
+const copying = ref(false)
+const copyColorwayCard = async () => {
+  copying.value = true
+  const card = document.getElementsByClassName('colorway-details-card')[0]
+
+  try {
+    await copyScreenshot(card, toast)
+  } catch (error) {
+    toast.add({ severity: 'error', summary: error.message, life: 3000 })
+  }
+
+  copying.value = false
+}
 </script>
