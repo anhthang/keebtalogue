@@ -77,7 +77,12 @@
       dismissable-mask
       class="w-[35rem]"
     >
-      <modal-collection-form :metadata="data" :uid="user.uid" :is-edit="true" />
+      <ModalCollectionForm
+        :metadata="data"
+        :uid="user.uid"
+        :is-edit="true"
+        @on-success="toggleShowEdit"
+      />
     </Dialog>
   </Panel>
 </template>

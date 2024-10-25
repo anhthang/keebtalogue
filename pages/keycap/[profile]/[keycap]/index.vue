@@ -136,7 +136,11 @@
       dismissable-mask
       class="w-[35rem]"
     >
-      <modal-keycap-form :is-edit="true" :metadata="data" />
+      <ModalKeycapForm
+        :is-edit="true"
+        :metadata="data"
+        @on-success="toggleShowEditKeycap"
+      />
     </Dialog>
   </Panel>
 </template>
@@ -153,7 +157,7 @@ const route = useRoute()
 
 const { profile, keycap } = route.params
 
-const { data } = await useAsyncData(
+const { data, refresh } = await useAsyncData(
   `keycap/${profile}/${keycap}`,
   () =>
     $fetch(`/api/keycaps/${profile}/${keycap}`).then((data) => {
@@ -194,7 +198,10 @@ const chartOptions = [
 ]
 
 const showEditKeycap = ref(false)
-const toggleShowEditKeycap = () => {
+const toggleShowEditKeycap = (shouldRefresh) => {
   showEditKeycap.value = !showEditKeycap.value
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 </script>

@@ -16,8 +16,8 @@
     </Message>
 
     <div class="flex flex-col gap-4">
-      <wishlist-settings />
-      <wishlist-preview />
+      <WishlistSettings />
+      <WishlistPreview />
     </div>
   </Panel>
   <Panel v-else pt:root:class="!border-0 !bg-transparent">

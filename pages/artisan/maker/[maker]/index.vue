@@ -24,14 +24,14 @@
           v-if="isEditor"
           icon="pi pi-pen-to-square"
           label="Edit"
-          @click="showEditMakerModal"
+          @click="toggleEditMaker"
         />
 
         <Button
           v-if="isEditor"
           icon="pi pi-calendar"
           label="Sales"
-          @click="showAddSaleModal"
+          @click="toggleAddSale"
         />
 
         <MakerHelpfulLinks :maker="maker" />
@@ -70,7 +70,11 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <modal-maker-form :is-edit="true" :metadata="maker" />
+      <ModalMakerForm
+        :is-edit="true"
+        :metadata="maker"
+        @on-success="toggleEditMaker"
+      />
     </Dialog>
 
     <Dialog
@@ -80,7 +84,11 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <modal-sale-form :is-edit="true" :metadata="sculptLst" />
+      <ModalSaleForm
+        :is-edit="true"
+        :metadata="sculptLst"
+        @on-success="toggleAddSale"
+      />
     </Dialog>
   </Panel>
   <BackToArtisanMakers v-else />
@@ -96,7 +104,7 @@ const visible = ref({
   add_sale: false,
 })
 
-const { data: maker } = await useAsyncData(
+const { data: maker, refresh } = await useAsyncData(
   `maker:${route.params.maker}`,
   () => $fetch(`/api/makers/${route.params.maker}`),
   {
@@ -113,11 +121,14 @@ useSeoMeta({
   twitterImage: `/logo/${route.params.maker}.png`,
 })
 
-const showEditMakerModal = () => {
+const toggleEditMaker = (shouldRefresh) => {
   visible.value.edit = !visible.value.edit
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
-const showAddSaleModal = () => {
+const toggleAddSale = () => {
   visible.value.add_sale = !visible.value.add_sale
 }
 

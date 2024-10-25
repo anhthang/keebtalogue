@@ -5,7 +5,7 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template v-if="isAdmin" #icons>
-      <Button label="Add" icon="pi pi-user-plus" @click="showModal" />
+      <Button label="Add" icon="pi pi-user-plus" @click="toggleAddMaker" />
     </template>
 
     <div
@@ -53,7 +53,7 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <modal-maker-form />
+      <ModalMakerForm @on-success="toggleAddMaker" />
     </Dialog>
   </Panel>
 </template>
@@ -66,7 +66,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data } = await useAsyncData('artisan-makers', () =>
+const { data, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 
@@ -74,8 +74,11 @@ const userStore = useUserStore()
 const { authenticated, isAdmin, favorites } = storeToRefs(userStore)
 
 const visible = ref(false)
-const showModal = () => {
+const toggleAddMaker = (shouldRefresh) => {
   visible.value = !visible.value
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
 const favoriteMakers = computed(() => {

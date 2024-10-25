@@ -46,7 +46,23 @@
     dismissable-mask
     class="w-[35rem]"
   >
-    <modal-feedback-form />
+    <ModalFeedbackForm
+      @on-success="
+        () => {
+          showFeedback = false
+        }
+      "
+    />
+  </Dialog>
+
+  <Dialog
+    v-model:visible="showCmd"
+    modal
+    dismissable-mask
+    :closable="false"
+    class="w-[35rem]"
+  >
+    <CommandPalette :visible="showCmd" />
   </Dialog>
 </template>
 
@@ -66,6 +82,7 @@ const onChangeMenu = ({ item }) => {
 }
 
 const showFeedback = ref(false)
+const showCmd = ref(false)
 
 const megaMenu = computed(() => [
   {
@@ -153,7 +170,14 @@ const megaMenu = computed(() => [
 ])
 
 const advanceMenu = computed(() => [
-  { icon: 'pi pi-search', label: slim.value ? '' : 'Search', shortcut: '⌘+K' },
+  {
+    icon: 'pi pi-search',
+    label: slim.value ? '' : 'Search',
+    shortcut: '⌘+K',
+    command: () => {
+      showCmd.value = true
+    },
+  },
   {
     icon: 'pi pi-comments',
     label: slim.value ? '' : 'Feedback',

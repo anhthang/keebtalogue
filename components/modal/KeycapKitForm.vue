@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-const toast = useToast()
+const emit = defineEmits(['onSuccess'])
 
 const { metadata, isEdit } = defineProps({
   metadata: {
@@ -92,6 +92,8 @@ const { metadata, isEdit } = defineProps({
 // ]
 
 const route = useRoute()
+const toast = useToast()
+
 const kit = ref({
   name: '',
   img: '',
@@ -122,12 +124,14 @@ const addKit = () => {
           summary: `[${kit.value.name}] kit updated successfully!`,
           life: 3000,
         })
+        emit('onSuccess', undefined, true)
       } else {
         toast.add({
           severity: 'success',
           summary: `[${kit.value.name}] kit added successfully!`,
           life: 3000,
         })
+        emit('onSuccess', undefined, true)
       }
     })
     .catch((error) => {

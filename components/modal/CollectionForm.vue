@@ -102,6 +102,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const { metadata, uid, isEdit } = defineProps({
   metadata: {
     type: Object,
@@ -160,12 +162,14 @@ const addCollection = async () => {
           summary: `Collection [${rest.name}] updated successfully!`,
           life: 3000,
         })
+        emit('onSuccess')
       } else {
         toast.add({
           severity: 'success',
           summary: `Collection [${rest.name}] added successfully!`,
           life: 3000,
         })
+        emit('onSuccess')
       }
     })
     .catch((error) => {

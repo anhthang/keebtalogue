@@ -94,6 +94,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const { metadata } = defineProps({
   metadata: {
     type: Object,
@@ -147,6 +149,7 @@ const addColorway = async () => {
         summary: 'Colorway updated successfully!',
         life: 3000,
       })
+      emit('onSuccess', undefined, true)
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: error.message, life: 3000 })

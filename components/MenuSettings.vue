@@ -38,7 +38,7 @@
     :closable="false"
     dismissable-mask
   >
-    <modal-login />
+    <ModalLogin />
   </Dialog>
   <Toast />
 </template>

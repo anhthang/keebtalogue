@@ -82,7 +82,7 @@
       dismissable-mask
       class="w-[35rem]"
     >
-      <modal-keycap-form :metadata="query" />
+      <ModalKeycapForm :metadata="query" @on-success="showAddKeycap" />
     </Dialog>
   </Panel>
 </template>
@@ -117,7 +117,7 @@ const title = manufacturers[profile]
     ? 'Live Group Buys'
     : statusMap[profile]
 
-const { data } = await useAsyncData(
+const { data, refresh } = await useAsyncData(
   () => $fetch('/api/keycaps', { query: query.value }),
   {
     watch: [page, size],
@@ -134,7 +134,10 @@ useSeoMeta({
 })
 
 const visible = ref(false)
-const showAddKeycap = () => {
+const showAddKeycap = (shouldRefresh) => {
   visible.value = !visible.value
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 </script>

@@ -22,7 +22,7 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <modal-collection-form :uid="user.uid" />
+      <ModalCollectionForm :uid="user.uid" @on-success="showModal" />
     </Dialog>
 
     <Message

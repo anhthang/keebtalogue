@@ -127,6 +127,8 @@
 <script setup>
 import slugify from 'slugify'
 
+const emit = defineEmits(['onSuccess'])
+
 const toast = useToast()
 
 const { metadata, isEdit } = defineProps({
@@ -199,12 +201,14 @@ const addMaker = async () => {
           summary: `[${rest.name}] updated successfully!`,
           life: 3000,
         })
+        emit('onSuccess', true)
       } else {
         toast.add({
           severity: 'success',
           summary: `[${rest.name}] added successfully!`,
           life: 3000,
         })
+        emit('onSuccess', true)
       }
     })
     .catch((error) => {

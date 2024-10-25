@@ -82,6 +82,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const { metadata, isEdit } = defineProps({
   metadata: {
     type: Object,
@@ -116,12 +118,14 @@ const addSculptProfile = () => {
           summary: 'Sculpt updated successfully!',
           life: 3000,
         })
+        emit('onSuccess')
       } else {
         toast.add({
           severity: 'success',
           summary: 'New sculpt added successfully!',
           life: 3000,
         })
+        emit('onSuccess')
       }
     })
     .catch((error) => {

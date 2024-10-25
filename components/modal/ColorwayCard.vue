@@ -33,7 +33,7 @@
           severity="secondary"
           label="Edit"
           icon="pi pi-pen-to-square"
-          @click="$emit('editColorway', colorway)"
+          @click="$emit('editColorway', colorway, true)"
         />
 
         <Button

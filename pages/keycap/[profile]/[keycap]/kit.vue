@@ -50,9 +50,10 @@
       dismissable-mask
       class="w-[35rem]"
     >
-      <modal-keycap-kit-form
+      <ModalKeycapKitForm
         :is-edit="!!selectedKit?.id"
         :metadata="selectedKit"
+        @on-success="toggleShowEditKit"
       />
     </Dialog>
   </Panel>
@@ -83,9 +84,13 @@ useSeoMeta({
 const showEditKit = ref(false)
 const selectedKit = ref({})
 
-const toggleShowEditKit = (kit) => {
+const toggleShowEditKit = (kit, shouldRefresh) => {
   showEditKit.value = !showEditKit.value
   selectedKit.value = kit
+
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
 const showConfirmDelete = (kit) => {

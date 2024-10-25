@@ -54,6 +54,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const toast = useToast()
 
 const feedback = ref({
@@ -80,6 +82,7 @@ const addFeedback = async () => {
           'Your feedback is valuable to us. We appreciate you taking the time to share it!',
         life: 3000,
       })
+      emit('onSuccess')
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: error.message, life: 3000 })

@@ -17,10 +17,10 @@
 
     <div class="grid grid-cols-4 gap-4">
       <div class="col-span-4 md:col-span-1 flex flex-col gap-2">
-        <marketplace-filter />
+        <MarketplaceFilter />
       </div>
       <div class="col-span-4 md:col-span-3 flex flex-col gap-2">
-        <marketplace-listing />
+        <MarketplaceListing />
       </div>
     </div>
   </Panel>

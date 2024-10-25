@@ -35,6 +35,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const { metadata } = defineProps({
   metadata: {
     type: Object,
@@ -42,9 +44,9 @@ const { metadata } = defineProps({
   },
 })
 
+const route = useRoute()
 const toast = useToast()
 
-const route = useRoute()
 const sale = ref({
   maker_id: route.params.maker,
 })
@@ -72,6 +74,7 @@ const addSale = () => {
         summary: 'New sale added successfully!',
         life: 3000,
       })
+      emit('onSuccess')
     })
     .catch((error) => {
       toast.add({ severity: 'error', summary: error.message, life: 3000 })

@@ -160,7 +160,7 @@
 <script setup>
 import slugify from 'slugify'
 
-const toast = useToast()
+const emit = defineEmits(['onSuccess'])
 
 const { metadata, isEdit } = defineProps({
   metadata: {
@@ -171,6 +171,7 @@ const { metadata, isEdit } = defineProps({
 })
 
 const route = useRoute()
+const toast = useToast()
 
 onBeforeMount(() => {
   const { page, size, ...rest } = metadata
@@ -254,12 +255,14 @@ const addKeycap = async () => {
           summary: `[${keycap.value.name}] updated successfully!`,
           life: 3000,
         })
+        emit('onSuccess', true)
       } else {
         toast.add({
           severity: 'success',
           summary: `[${keycap.value.name}] added successfully!`,
           life: 3000,
         })
+        emit('onSuccess', true)
       }
     })
     .catch((error) => {

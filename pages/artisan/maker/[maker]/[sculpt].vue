@@ -14,7 +14,7 @@
           v-if="isEditor"
           icon="pi pi-pen-to-square"
           label="Edit"
-          @click="showEditSculptModal"
+          @click="toggleEditSculpt"
         />
 
         <Button
@@ -68,7 +68,7 @@
               text
               severity="secondary"
               icon="pi pi-expand"
-              @click="showColorwayCardModal(colorway)"
+              @click="toggleColorwayCard(colorway)"
             />
 
             <Button
@@ -105,7 +105,11 @@
       dismissable-mask
       class="w-[35rem]"
     >
-      <modal-sculpt-form :is-edit="true" :metadata="sculpt" />
+      <ModalSculptForm
+        :is-edit="true"
+        :metadata="sculpt"
+        @on-success="toggleEditSculpt"
+      />
     </Dialog>
 
     <Dialog
@@ -119,7 +123,10 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <modal-colorway-form :metadata="selectedColorway" />
+      <ModalColorwayForm
+        :metadata="selectedColorway"
+        @on-success="toggleAddColorway"
+      />
     </Dialog>
 
     <Dialog
@@ -129,11 +136,10 @@
       :closable="false"
       dismissable-mask
     >
-      <modal-colorway-card
+      <ModalColorwayCard
         :colorway="selectedColorway"
         @edit-colorway="toggleEditColorway"
         @add-to-collection="addToCollection"
-        @copy-colorway-card="copyColorwayCard"
       />
     </Dialog>
 
@@ -193,7 +199,7 @@ const sortOptions = [
   },
 ]
 
-const { data: sculpt } = await useAsyncData(
+const { data: sculpt, refresh } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,
   () =>
     $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
@@ -227,7 +233,7 @@ watch(
       (c) => c.colorway_id === route.query.cid,
     )
     if (clw) {
-      showColorwayCardModal(clw)
+      toggleColorwayCard(clw)
     }
   },
 )
@@ -237,7 +243,7 @@ onMounted(() => {
     (c) => c.colorway_id === route.query.cid,
   )
   if (clw) {
-    showColorwayCardModal(clw)
+    toggleColorwayCard(clw)
   }
 })
 
@@ -255,27 +261,32 @@ const visible = ref({
 })
 
 // edit sculpt
-const showEditSculptModal = () => {
+const toggleEditSculpt = (shouldRefresh) => {
   visible.value.edit = !visible.value.edit
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
 /**
  * New colorway submission
  * Currently, just add/update colorway description
  */
-const showAddColorwayModal = () => {
+const toggleAddColorway = (clw, shouldRefresh) => {
   visible.value.add = !visible.value.add
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
 // show colorway card popup
 const selectedColorway = ref({})
-
 const setSelectedColorway = (clw) => {
   selectedColorway.value = clw
   selectedColorway.value.sculpt_name = sculpt.value.name
 }
 
-const showColorwayCardModal = (clw) => {
+const toggleColorwayCard = (clw) => {
   setSelectedColorway(clw)
   visible.value.card = !visible.value.card
 }
@@ -285,9 +296,9 @@ const colorwayTitle = computed(() => {
 })
 
 // edit colorway
-const toggleEditColorway = (clw) => {
+const toggleEditColorway = (clw, shouldRefresh) => {
   setSelectedColorway(clw)
-  showAddColorwayModal()
+  toggleAddColorway(shouldRefresh)
 }
 
 // add to collection
