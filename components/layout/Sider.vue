@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-// const route = useRoute()
+const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 
@@ -97,6 +97,9 @@ const visible = ref({
   command: false,
 })
 
+const activeClasses = '!bg-slate-100 dark:!bg-zinc-700 rounded'
+const subActiveClasses = '!bg-slate-100 dark:!bg-zinc-800 rounded'
+
 const megaMenu = computed(() => [
   {
     separator: true,
@@ -105,17 +108,23 @@ const megaMenu = computed(() => [
     label: slim.value ? '' : 'Makers',
     icon: 'pi pi-users',
     route: '/artisan/maker',
+    class: route.path.startsWith('/artisan/maker') && activeClasses,
     command: onChangeMenu,
   },
   {
     label: slim.value ? '' : 'Collections',
     icon: 'pi pi-book',
     route: '/artisan/collection',
+    class: route.path.startsWith('/artisan/collection') && activeClasses,
     command: onChangeMenu,
   },
   {
     label: slim.value ? '' : 'Marketplace',
     icon: 'pi pi-shop',
+    class:
+      (route.path === '/artisan/marketplace' ||
+        route.path === '/artisan/wishlist') &&
+      activeClasses,
     items: [
       [
         {
@@ -125,12 +134,14 @@ const megaMenu = computed(() => [
               label: 'Trading Hub',
               icon: 'pi pi-shopping-bag',
               route: '/artisan/marketplace',
+              class: route.path === '/artisan/marketplace' && subActiveClasses,
               command: onChangeMenu,
             },
             {
               label: 'Wishlist Image',
               icon: 'pi pi-image',
               route: '/artisan/wishlist',
+              class: route.path === '/artisan/wishlist' && subActiveClasses,
               command: onChangeMenu,
             },
           ],
@@ -145,17 +156,24 @@ const megaMenu = computed(() => [
     label: slim.value ? '' : 'Interest Check',
     icon: 'pi pi-list-check',
     route: '/keycap/interest-check',
+    class: route.path === '/keycap/interest-check' && activeClasses,
     command: onChangeMenu,
   },
   {
     label: slim.value ? '' : 'Pre-Order',
     icon: 'pi pi-shopping-bag',
     route: '/keycap/pre-order',
+    class: route.path === '/keycap/pre-order' && activeClasses,
     command: onChangeMenu,
   },
   {
     label: slim.value ? '' : 'Keycaps',
     icon: 'pi pi-objects-column',
+    class:
+      route.path.startsWith('/keycap') &&
+      !route.path.includes('interest-check') &&
+      !route.path.includes('pre-order') &&
+      activeClasses,
     items: Object.entries(keycapProfiles).map(([profile, manufacturers]) => {
       return [
         {
@@ -163,6 +181,7 @@ const megaMenu = computed(() => [
           items: Object.entries(manufacturers).map(([id, name]) => {
             return {
               label: name,
+              class: route.path.includes(`/keycap/${id}`) && subActiveClasses,
               route: `/keycap/${id}`,
               command: onChangeMenu,
             }
@@ -178,6 +197,7 @@ const megaMenu = computed(() => [
     label: slim.value ? '' : 'About',
     icon: 'pi pi-info-circle',
     route: '/about',
+    class: route.path.startsWith('/about') && activeClasses,
     command: onChangeMenu,
   },
 ])
@@ -219,15 +239,4 @@ const advanceMenu = computed(() => [
     separator: true,
   },
 ])
-
-// const selectedKeys = computed(() => {
-//   const second = route.path.indexOf('/', 1)
-//   if (second === -1) {
-//     return [route.path]
-//   }
-
-//   const third = route.path.indexOf('/', second + 1)
-
-//   return third === -1 ? [route.path] : [route.path.substring(0, third)]
-// })
 </script>

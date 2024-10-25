@@ -62,6 +62,7 @@ const onChangeTheme = (mode) => {
   colorMode.preference = mode
 }
 
+const activeClasses = '!bg-slate-100 dark:!bg-zinc-800 rounded'
 const settingsMenu = computed(() => {
   const items = [
     {
@@ -79,16 +80,19 @@ const settingsMenu = computed(() => {
           label: 'System',
           icon: 'pi pi-desktop',
           command: () => onChangeTheme('system'),
+          class: colorMode.preference === 'system' && activeClasses,
         },
         {
           label: 'Light',
           icon: 'pi pi-sun',
           command: () => onChangeTheme('light'),
+          class: colorMode.preference === 'light' && activeClasses,
         },
         {
           label: 'Dark',
           icon: 'pi pi-moon',
           command: () => onChangeTheme('dark'),
+          class: colorMode.preference === 'dark' && activeClasses,
         },
       ],
     },

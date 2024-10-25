@@ -12,7 +12,7 @@
       v-if="authenticated && favoriteMakers.length"
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
-      <maker-card
+      <MakerCard
         v-for="maker in favoriteMakers"
         :key="maker.id"
         :favorite="true"
@@ -27,7 +27,7 @@
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
-      <maker-card
+      <MakerCard
         v-for="maker in currentPageMakers"
         :key="maker.id"
         :maker="maker"
