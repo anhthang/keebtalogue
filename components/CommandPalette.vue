@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['onSuccess'])
+
 const searchText = ref('')
 const dataSources = ref([])
 
@@ -29,6 +31,8 @@ const router = useRouter()
 const onSelect = async (option) => {
   searchText.value = ''
   dataSources.value = []
+
+  emit('onSuccess', true)
 
   router.push(option.value.value)
 }

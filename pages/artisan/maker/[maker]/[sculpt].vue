@@ -42,14 +42,14 @@
         v-for="(colorway, idx) in colorways"
         :key="colorway.colorway_id"
         class="flex items-center flex-1 overflow-hidden"
-        pt:header:class="h-[250px]"
+        pt:header:class="w-full h-[250px]"
         pt:body:class="items-center"
       >
         <template #header>
           <img
             :alt="colorway.name"
             :src="colorway.img"
-            class="h-full object-cover"
+            class="w-full h-full object-cover"
           />
         </template>
         <template #title>{{ colorway.name || '-' }}</template>

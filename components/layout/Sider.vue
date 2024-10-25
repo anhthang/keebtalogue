@@ -62,7 +62,14 @@
     :closable="false"
     class="w-[35rem]"
   >
-    <CommandPalette :visible="showCmd" />
+    <CommandPalette
+      :visible="showCmd"
+      @on-success="
+        () => {
+          showCmd = false
+        }
+      "
+    />
   </Dialog>
 </template>
 
@@ -71,7 +78,12 @@
 const router = useRouter()
 const config = useRuntimeConfig()
 
-const slim = ref(false)
+const menuMode = ref('collapsed')
+const slim = computed(() => menuMode.value === 'collapsed')
+
+onMounted(() => {
+  menuMode.value = localStorage.getItem('menu-mode') || 'collapsed'
+})
 
 const onChangeMenu = ({ item }) => {
   if (item?.route.startsWith('/')) {
@@ -186,14 +198,15 @@ const advanceMenu = computed(() => [
     },
   },
   {
+    separator: true,
+  },
+  {
     icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
     label: slim.value ? '' : slim.value ? 'Expand Menu' : 'Collapse Menu',
     command: () => {
-      slim.value = !slim.value
+      menuMode.value = slim.value ? 'expanded' : 'collapsed'
+      localStorage.setItem('menu-mode', menuMode.value)
     },
-  },
-  {
-    separator: true,
   },
   {
     icon: 'pi pi-paypal',

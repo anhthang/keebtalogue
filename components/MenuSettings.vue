@@ -16,11 +16,8 @@
     />
     <Avatar v-else icon="pi pi-user" size="large" shape="circle" />
     <div v-if="!slim">
-      <div class="text-base font-medium text-color leading-'">
+      <div class="text-lg font-medium text-color leading-'">
         {{ user.name }}
-      </div>
-      <div class="text-sm text-muted-color mt-1">
-        {{ user.email }}
       </div>
     </div>
   </Button>
@@ -67,6 +64,14 @@ const onChangeTheme = (mode) => {
 
 const settingsMenu = computed(() => {
   const items = [
+    {
+      label: user.value.email,
+      icon: 'pi pi-inbox',
+      disabled: true,
+    },
+    {
+      separator: true,
+    },
     {
       label: 'Appearance',
       items: [

@@ -37,7 +37,7 @@
             <img
               :alt="keycap.name"
               :src="keycap.img || keycap.render_img"
-              class="h-full object-cover"
+              class="w-full h-full object-cover"
             />
           </template>
           <template #title>{{ keycap.name }}</template>

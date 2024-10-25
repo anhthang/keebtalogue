@@ -48,14 +48,14 @@
       >
         <Card
           class="flex items-center flex-1 overflow-hidden"
-          pt:header:class="h-[250px]"
+          pt:header:class="w-full h-[250px]"
           pt:root:class="h-full"
         >
           <template #header>
             <img
               :alt="sculpt.name"
               :src="sculpt.img"
-              class="h-full object-cover"
+              class="w-full h-full object-cover"
             />
           </template>
           <template #title>{{ sculpt.name }}</template>
