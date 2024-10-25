@@ -117,7 +117,7 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addMaker" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -182,7 +182,7 @@ const removeDocId = (docIdx) => {
   )
 }
 
-const addMaker = async () => {
+const onSubmit = async () => {
   const { sculpts, ...rest } = maker.value
 
   const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true })

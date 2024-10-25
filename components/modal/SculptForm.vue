@@ -74,7 +74,7 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addSculptProfile" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -106,7 +106,7 @@ onBeforeMount(() => {
   Object.assign(sculpt.value, rest)
 })
 
-const addSculptProfile = () => {
+const onSubmit = () => {
   $fetch(`/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}`, {
     method: 'post',
     body: sculpt.value,

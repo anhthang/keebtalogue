@@ -10,7 +10,7 @@
           v-if="user.email_verified"
           icon="pi pi-folder-plus"
           label="Add"
-          @click="showModal"
+          @click="toggleAddCollection"
         />
       </div>
     </template>
@@ -22,7 +22,7 @@
       class="w-[35rem]"
       dismissable-mask
     >
-      <ModalCollectionForm :uid="user.uid" @on-success="showModal" />
+      <ModalCollectionForm :uid="user.uid" @on-success="toggleAddCollection" />
     </Dialog>
 
     <Message
@@ -78,7 +78,7 @@ const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)
 
 const visible = ref(false)
-const showModal = () => {
+const toggleAddCollection = () => {
   visible.value = !visible.value
 }
 </script>

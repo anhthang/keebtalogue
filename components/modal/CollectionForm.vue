@@ -94,7 +94,7 @@
       </span>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addCollection" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -144,7 +144,7 @@ onBeforeMount(() => {
 //   contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
 // })
 
-const addCollection = async () => {
+const onSubmit = async () => {
   const { items, ...rest } = collection.value
 
   const url = isEdit

@@ -86,7 +86,7 @@
       </FileUpload>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addColorway" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -135,7 +135,7 @@ onBeforeMount(() => {
   Object.assign(colorway.value, metadata)
 })
 
-const addColorway = async () => {
+const onSubmit = async () => {
   $fetch(
     `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
     {

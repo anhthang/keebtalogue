@@ -17,7 +17,7 @@
           v-if="isEditor"
           label="Edit"
           icon="pi pi-file-edit"
-          @click="toggleShowEditKeycap"
+          @click="toggleEditKeycap"
         />
 
         <SplitButton
@@ -130,7 +130,7 @@
     </div>
 
     <Dialog
-      v-model:visible="showEditKeycap"
+      v-model:visible="visible"
       modal
       header="Edit Keycap"
       dismissable-mask
@@ -139,7 +139,7 @@
       <ModalKeycapForm
         :is-edit="true"
         :metadata="data"
-        @on-success="toggleShowEditKeycap"
+        @on-success="toggleEditKeycap"
       />
     </Dialog>
   </Panel>
@@ -197,9 +197,9 @@ const chartOptions = [
   },
 ]
 
-const showEditKeycap = ref(false)
-const toggleShowEditKeycap = (shouldRefresh) => {
-  showEditKeycap.value = !showEditKeycap.value
+const visible = ref(false)
+const toggleEditKeycap = (shouldRefresh) => {
+  visible.value = !visible.value
   if (shouldRefresh) {
     refresh()
   }

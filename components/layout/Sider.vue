@@ -40,7 +40,7 @@
   </div>
 
   <Dialog
-    v-model:visible="showFeedback"
+    v-model:visible="visible.feedback"
     modal
     header="Share your thoughts!"
     dismissable-mask
@@ -49,24 +49,23 @@
     <ModalFeedbackForm
       @on-success="
         () => {
-          showFeedback = false
+          visible.feedback = false
         }
       "
     />
   </Dialog>
 
   <Dialog
-    v-model:visible="showCmd"
+    v-model:visible="visible.command"
     modal
     dismissable-mask
     :closable="false"
     class="w-[35rem]"
   >
     <CommandPalette
-      :visible="showCmd"
       @on-success="
         () => {
-          showCmd = false
+          visible.command = false
         }
       "
     />
@@ -93,8 +92,10 @@ const onChangeMenu = ({ item }) => {
   }
 }
 
-const showFeedback = ref(false)
-const showCmd = ref(false)
+const visible = ref({
+  feedback: false,
+  command: false,
+})
 
 const megaMenu = computed(() => [
   {
@@ -187,14 +188,14 @@ const advanceMenu = computed(() => [
     label: slim.value ? '' : 'Search',
     shortcut: '⌘+K',
     command: () => {
-      showCmd.value = true
+      visible.value.command = true
     },
   },
   {
     icon: 'pi pi-comments',
     label: slim.value ? '' : 'Feedback',
     command: () => {
-      showFeedback.value = true
+      visible.value.feedback = true
     },
   },
   {

@@ -5,7 +5,7 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template #icons>
-      <Button label="Add" icon="pi pi-file-plus" @click="toggleShowEditKit()" />
+      <Button label="Add" icon="pi pi-file-plus" @click="toggleEditKit()" />
     </template>
 
     <DataTable
@@ -26,7 +26,7 @@
               label="Edit"
               icon="pi pi-pen-to-square"
               severity="secondary"
-              @click="toggleShowEditKit(kit)"
+              @click="toggleEditKit(kit)"
             />
 
             <Button
@@ -34,7 +34,7 @@
               label="Delete"
               icon="pi pi-trash"
               severity="danger"
-              @click="showConfirmDelete(kit)"
+              @click="confirmDelete(kit)"
             />
           </div>
         </template>
@@ -44,7 +44,7 @@
     <ConfirmDialog />
     <Toast />
     <Dialog
-      v-model:visible="showEditKit"
+      v-model:visible="visible"
       modal
       :header="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
       dismissable-mask
@@ -53,7 +53,7 @@
       <ModalKeycapKitForm
         :is-edit="!!selectedKit?.id"
         :metadata="selectedKit"
-        @on-success="toggleShowEditKit"
+        @on-success="toggleEditKit"
       />
     </Dialog>
   </Panel>
@@ -81,11 +81,11 @@ useSeoMeta({
     : manufacturers[profile],
 })
 
-const showEditKit = ref(false)
+const visible = ref(false)
 const selectedKit = ref({})
 
-const toggleShowEditKit = (kit, shouldRefresh) => {
-  showEditKit.value = !showEditKit.value
+const toggleEditKit = (kit, shouldRefresh) => {
+  visible.value = !visible.value
   selectedKit.value = kit
 
   if (shouldRefresh) {
@@ -93,7 +93,7 @@ const toggleShowEditKit = (kit, shouldRefresh) => {
   }
 }
 
-const showConfirmDelete = (kit) => {
+const confirmDelete = (kit) => {
   confirm.require({
     header: `Confirm to delete ${kit.name} kit`,
     message:

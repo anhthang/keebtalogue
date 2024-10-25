@@ -49,7 +49,7 @@
       <label for="kit_cancelled">Cancelled</label>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addKit" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -112,7 +112,7 @@ onBeforeMount(() => {
 //   description: [{ type: 'string', trigger: ['change', 'blur'] }],
 // })
 
-const addKit = () => {
+const onSubmit = () => {
   $fetch(`/api/keycaps/${kit.value.profile_keycap_id}/kits`, {
     method: 'post',
     body: kit.value,

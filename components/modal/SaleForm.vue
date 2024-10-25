@@ -27,7 +27,7 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addSale" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -58,7 +58,7 @@ watch(
   },
 )
 
-const addSale = () => {
+const onSubmit = () => {
   const body = {
     ...sale.value,
     date: sale.value.date.toISOString().slice(0, 10),

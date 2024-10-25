@@ -150,7 +150,7 @@
       />
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="addKeycap" />
+      <Button label="Save" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -220,7 +220,7 @@ const ic = computed(() => keycap.value.status === 'Interest Check')
 //   description: [{ type: 'string', trigger: ['change', 'blur'] }],
 // })
 
-const addKeycap = async () => {
+const onSubmit = async () => {
   const slug = isEdit
     ? keycap.value.id
     : slugify(keycap.value.name, { lower: true })

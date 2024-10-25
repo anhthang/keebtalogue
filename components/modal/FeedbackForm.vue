@@ -46,7 +46,7 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <Button label="Send Feedback" @click="addFeedback" />
+      <Button label="Send Feedback" @click="onSubmit" />
     </div>
 
     <Toast />
@@ -69,7 +69,7 @@ const feedback = ref({
 //   email: [{ type: 'string', trigger: ['change', 'blue'] }],
 // })
 
-const addFeedback = async () => {
+const onSubmit = async () => {
   await $fetch('/api/feedbacks', {
     method: 'post',
     body: feedback.value,
