@@ -14,7 +14,7 @@
         <div class="flex flex-col items-center gap-8">
           <img class="w-2/4" :src="`/svg/404.svg`" alt="Not Found" />
 
-          <div class="text-3xl font-medium mb-2">
+          <div class="text-2xl">
             Sorry, the page you visited does not exist.
           </div>
 

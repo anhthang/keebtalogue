@@ -20,7 +20,21 @@
         <Tag v-if="colorway.giveaway" icon="pi pi-gift" value="Giveaway" />
       </div>
     </template>
-
+    <template #subtitle>
+      <div class="flex items-center">
+        <span v-if="colorway.release">
+          <i class="pi pi-calendar" /> {{ colorway.release }}
+        </span>
+        <Divider v-if="colorway.release" layout="vertical" />
+        <span v-if="colorway.qty">
+          <i class="pi pi-hashtag" /> {{ colorway.qty }}
+        </span>
+        <Divider v-if="colorway.qty && colorway.price" layout="vertical" />
+        <span v-if="colorway.price">
+          <i class="pi pi-tag" /> {{ colorway.price }}
+        </span>
+      </div>
+    </template>
     <template #content>
       {{ colorway.description }}
     </template>

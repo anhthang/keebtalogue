@@ -50,7 +50,7 @@
       v-model:visible="visible"
       modal
       header="Add Maker"
-      class="w-[35rem]"
+      class="w-[36rem]"
       dismissable-mask
     >
       <ModalMakerForm @on-success="toggleAddMaker" />

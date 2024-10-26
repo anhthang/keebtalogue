@@ -19,7 +19,7 @@
       v-model:visible="visible"
       modal
       header="Add Collection"
-      class="w-[35rem]"
+      class="w-[36rem]"
       dismissable-mask
     >
       <ModalCollectionForm :uid="user.uid" @on-success="toggleAddCollection" />

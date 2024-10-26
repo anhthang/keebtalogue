@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-zinc-50 dark:bg-zinc-950 w-full h-screen p-6 hidden lg:flex items-start gap-6 overflow-hidden"
+    class="bg-zinc-50 dark:bg-zinc-950 w-full h-screen p-6 flex items-start gap-6 overflow-hidden"
   >
     <SpeedInsights />
     <LayoutSider />

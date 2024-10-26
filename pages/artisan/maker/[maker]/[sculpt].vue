@@ -50,6 +50,7 @@
             :alt="colorway.name"
             :src="colorway.img"
             class="w-full h-full object-cover"
+            @click="toggleColorwayCard(colorway)"
           />
         </template>
         <template #title>{{ colorway.name || '-' }}</template>
@@ -67,7 +68,7 @@
             <Button
               text
               severity="secondary"
-              icon="pi pi-expand"
+              icon="pi pi-window-maximize"
               @click="toggleColorwayCard(colorway)"
             />
 
@@ -103,7 +104,7 @@
       modal
       header="Edit Sculpt"
       dismissable-mask
-      class="w-[35rem]"
+      class="w-[36rem]"
     >
       <ModalSculptForm
         :is-edit="true"
@@ -120,7 +121,7 @@
           ? `Edit ${colorwayTitle}`
           : 'Add Colorway'
       "
-      class="w-[35rem]"
+      class="w-[36rem]"
       dismissable-mask
     >
       <ModalColorwayForm
@@ -132,7 +133,7 @@
     <Dialog
       v-model:visible="visible.card"
       modal
-      class="colorway-details-card w-[30rem]"
+      class="colorway-details-card max-w-xl"
       :closable="false"
       dismissable-mask
     >

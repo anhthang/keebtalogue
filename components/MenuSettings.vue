@@ -31,7 +31,7 @@
   <Dialog
     v-model:visible="visible"
     modal
-    class="w-[35rem]"
+    class="w-[36rem]"
     :closable="false"
     dismissable-mask
   >
@@ -66,9 +66,13 @@ const activeClasses = '!bg-slate-100 dark:!bg-zinc-800 rounded'
 const settingsMenu = computed(() => {
   const items = [
     {
-      label: user.value.email,
-      icon: 'pi pi-inbox',
-      disabled: true,
+      label: user.value.name,
+      items: [
+        {
+          label: user.value.email,
+          disabled: true,
+        },
+      ],
     },
     {
       separator: true,

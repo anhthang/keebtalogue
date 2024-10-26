@@ -80,7 +80,7 @@
       modal
       header="Add Keycap"
       dismissable-mask
-      class="w-[35rem]"
+      class="w-[36rem]"
     >
       <ModalKeycapForm :metadata="query" @on-success="showAddKeycap" />
     </Dialog>

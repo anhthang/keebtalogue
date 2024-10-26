@@ -67,7 +67,7 @@
       v-model:visible="visible.edit"
       modal
       header="Edit Maker"
-      class="w-[35rem]"
+      class="w-[36rem]"
       dismissable-mask
     >
       <ModalMakerForm
@@ -81,7 +81,7 @@
       v-model:visible="visible.add_sale"
       modal
       header="Add Upcoming Sale"
-      class="w-[35rem]"
+      class="w-[36rem]"
       dismissable-mask
     >
       <ModalSaleForm

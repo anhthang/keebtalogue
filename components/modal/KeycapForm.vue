@@ -232,8 +232,12 @@ const onSubmit = async () => {
   if (ic.value) {
     keycap.value.ic_date = keycap.value.ic_date.toISOString().slice(0, 10)
   } else {
-    keycap.value.start_date = keycap.value.dates[0].toISOString().slice(0, 10)
-    keycap.value.end_date = keycap.value.dates[1].toISOString().slice(0, 10)
+    if (keycap.value.dates[0]) {
+      keycap.value.start_date = keycap.value.dates[0].toISOString().slice(0, 10)
+    }
+    if (keycap.value.dates[1]) {
+      keycap.value.end_date = keycap.value.dates[1].toISOString().slice(0, 10)
+    }
   }
 
   /**

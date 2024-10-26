@@ -48,7 +48,7 @@
       modal
       :header="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
       dismissable-mask
-      class="w-[35rem]"
+      class="w-[36rem]"
     >
       <ModalKeycapKitForm
         :is-edit="!!selectedKit?.id"

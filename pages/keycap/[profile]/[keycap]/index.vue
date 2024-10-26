@@ -134,7 +134,7 @@
       modal
       header="Edit Keycap"
       dismissable-mask
-      class="w-[35rem]"
+      class="w-[36rem]"
     >
       <ModalKeycapForm
         :is-edit="true"

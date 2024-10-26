@@ -6,7 +6,10 @@
     <MegaMenu
       :model="megaMenu"
       orientation="vertical"
-      pt:root:class="!border-0 !bg-transparent !min-w-fit"
+      :pt="{
+        root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
+        itemContent: 'py-1',
+      }"
     >
       <template #start>
         <nuxt-link to="/">
@@ -31,7 +34,10 @@
 
     <TieredMenu
       :model="advanceMenu"
-      pt:root:class="!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit"
+      :pt="{
+        root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
+        itemContent: 'py-1',
+      }"
     >
       <template #end>
         <MenuSettings :slim="slim" />
@@ -44,7 +50,7 @@
     modal
     header="Share your thoughts!"
     dismissable-mask
-    class="w-[35rem]"
+    class="w-[36rem]"
   >
     <ModalFeedbackForm
       @on-success="
@@ -60,7 +66,7 @@
     modal
     dismissable-mask
     :closable="false"
-    class="w-[35rem]"
+    class="w-[36rem]"
   >
     <CommandPalette
       @on-success="

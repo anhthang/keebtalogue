@@ -75,7 +75,7 @@
       modal
       header="Edit Collection"
       dismissable-mask
-      class="w-[35rem]"
+      class="w-[36rem]"
     >
       <ModalCollectionForm
         :metadata="data"
