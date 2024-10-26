@@ -5,6 +5,10 @@ import type { ToastServiceMethods } from 'primevue/toastservice'
 
 export const omitSensitive = (obj: any) => omit(obj, ['fts'])
 
+export const toISODate = (date: Date) => {
+  return date ? dayjs(date).format('YYYY-MM-DD') : ''
+}
+
 export const formatDate = (date: Date) => {
   return date ? dayjs(date).format('DD MMM YYYY') : ''
 }
@@ -49,12 +53,12 @@ export const keycapProfiles = {
 }
 
 export const keycapStatuses = {
-  'Interest Check': 'gray',
-  Cancelled: 'red',
-  Live: 'yellow',
-  'In Production': 'blue',
-  Shipping: 'green',
-  Complete: 'purple',
+  'Interest Check': 'secondary',
+  Cancelled: 'danger',
+  Live: 'info',
+  'In Production': 'info',
+  Shipping: 'info',
+  Complete: 'success',
 }
 
 export const manufacturers = Object.values(keycapProfiles).reduce(

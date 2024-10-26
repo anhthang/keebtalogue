@@ -173,16 +173,26 @@ const { metadata, isEdit } = defineProps({
 const route = useRoute()
 const toast = useToast()
 
-onBeforeMount(() => {
-  const { page, size, ...rest } = metadata
-  Object.assign(keycap.value, rest)
-})
-
 const keycap = ref({
   name: '',
   url: '',
   render_img: '',
   dates: [],
+})
+
+onBeforeMount(() => {
+  const { page, size, ...rest } = metadata
+  Object.assign(keycap.value, rest)
+
+  if (rest.ic_date) {
+    keycap.value.ic_date = new Date(rest.ic_date)
+  }
+  if (rest.start_date) {
+    keycap.value.dates[0] = new Date(rest.start_date)
+  }
+  if (rest.end_date) {
+    keycap.value.dates[1] = new Date(rest.end_date)
+  }
 })
 
 const ic = computed(() => keycap.value.status === 'Interest Check')
@@ -229,15 +239,14 @@ const onSubmit = async () => {
     keycap.value.profile_keycap_id = `${keycap.value.profile_id}/${slug}`
   }
 
-  if (ic.value) {
-    keycap.value.ic_date = keycap.value.ic_date.toISOString().slice(0, 10)
-  } else {
-    if (keycap.value.dates[0]) {
-      keycap.value.start_date = keycap.value.dates[0].toISOString().slice(0, 10)
-    }
-    if (keycap.value.dates[1]) {
-      keycap.value.end_date = keycap.value.dates[1].toISOString().slice(0, 10)
-    }
+  if (keycap.value.ic_date) {
+    keycap.value.ic_date = toISODate(keycap.value.ic_date)
+  }
+  if (keycap.value.dates[0]) {
+    keycap.value.start_date = toISODate(keycap.value.dates[0])
+  }
+  if (keycap.value.dates[1]) {
+    keycap.value.end_date = toISODate(keycap.value.dates[1])
   }
 
   /**

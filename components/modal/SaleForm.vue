@@ -61,7 +61,7 @@ watch(
 const onSubmit = () => {
   const body = {
     ...sale.value,
-    date: sale.value.date.toISOString().slice(0, 10),
+    date: toISODate(sale.value.date),
   }
 
   $fetch('/api/sales', {

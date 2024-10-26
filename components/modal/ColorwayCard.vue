@@ -25,7 +25,10 @@
         <span v-if="colorway.release">
           <i class="pi pi-calendar" /> {{ colorway.release }}
         </span>
-        <Divider v-if="colorway.release" layout="vertical" />
+        <Divider
+          v-if="colorway.release && (colorway.qty || colorway.price)"
+          layout="vertical"
+        />
         <span v-if="colorway.qty">
           <i class="pi pi-hashtag" /> {{ colorway.qty }}
         </span>

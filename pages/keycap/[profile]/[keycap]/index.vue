@@ -100,7 +100,9 @@
                 </li>
                 <li v-if="data.status">
                   Status:
-                  <Tag>{{ data.status }}</Tag>
+                  <Tag :severity="keycapStatuses[data.status]">
+                    {{ data.status }}
+                  </Tag>
                 </li>
               </ul>
             </AccordionContent>

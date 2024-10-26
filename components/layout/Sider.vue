@@ -8,7 +8,7 @@
       orientation="vertical"
       :pt="{
         root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
-        itemContent: 'py-1',
+        itemContent: 'py-1 hover:dark:!bg-zinc-700 hover:rounded',
       }"
     >
       <template #start>
@@ -36,7 +36,7 @@
       :model="advanceMenu"
       :pt="{
         root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
-        itemContent: 'py-1',
+        itemContent: 'py-1 hover:dark:!bg-zinc-700 hover:rounded',
       }"
     >
       <template #end>
