@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   const { data: collections } = await client
-    .from('user_shared_collections')
+    .from('user_collections')
     .select()
     .eq('published', true)
     .in('type', ['buy', 'sell'])
