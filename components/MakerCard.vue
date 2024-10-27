@@ -19,6 +19,7 @@
       <template v-if="authenticated" #footer>
         <Button
           text
+          size="small"
           severity="secondary"
           :label="favorite ? 'Unpin' : 'Pin'"
           :icon="favorite ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"

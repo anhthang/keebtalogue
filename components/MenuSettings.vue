@@ -6,7 +6,7 @@
     fluid
     outlined
     pt:root:class="!justify-start"
-    @click="toggleProfileSeetings"
+    @click="toggleProfileSettings"
   >
     <Avatar
       v-if="user.picture"
@@ -53,7 +53,7 @@ const client = useSupabaseClient()
 const toast = useToast()
 
 const profileSettings = ref()
-const toggleProfileSeetings = (event) => {
+const toggleProfileSettings = (event) => {
   profileSettings.value.toggle(event)
 }
 

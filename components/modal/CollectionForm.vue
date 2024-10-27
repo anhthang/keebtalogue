@@ -2,11 +2,15 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-2">
       <label for="collection_name">Name</label>
-      <InputText
-        id="collection_name"
-        v-model.trim="collection.name"
-        type="text"
-      />
+      <IconField>
+        <InputIcon class="pi pi-pencil" />
+        <InputText
+          id="collection_name"
+          v-model.trim="collection.name"
+          type="text"
+          fluid
+        />
+      </IconField>
     </div>
     <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
@@ -19,7 +23,11 @@
           { label: 'Public', value: true },
         ]"
       />
-      <span v-if="collection.published" id="visibility-help" class="text-sm">
+      <span
+        v-if="collection.published"
+        id="visibility-help"
+        class="text-sm text-yellow-600 dark:text-yellow-500"
+      >
         Anyone can now discover the treasures you've assembled in this public
         collection.
       </span>
@@ -67,11 +75,15 @@
       class="flex flex-col gap-2"
     >
       <label for="collection_message">Message</label>
-      <InputText
-        id="collection_message"
-        v-model.trim="collection.message"
-        type="text"
-      />
+      <IconField>
+        <InputIcon class="pi pi-comments" />
+        <InputText
+          id="collection_message"
+          v-model.trim="collection.message"
+          type="text"
+          fluid
+        />
+      </IconField>
       <span id="message-help" class="text-sm">
         Describe what you're offering and/or help others understand what types
         of offers you are looking for. Your message should be applicable to many
@@ -83,11 +95,15 @@
       class="flex flex-col gap-2"
     >
       <label for="collection_contact">Contact</label>
-      <InputText
-        id="collection_contact"
-        v-model.trim="collection.contact"
-        type="text"
-      />
+      <IconField>
+        <InputIcon class="pi pi-discord" />
+        <InputText
+          id="collection_contact"
+          v-model.trim="collection.contact"
+          type="text"
+          fluid
+        />
+      </IconField>
       <span id="contact-help" severity="warn" class="text-sm">
         Please enter your Discord username so that buyer/seller can reach you
         directly.

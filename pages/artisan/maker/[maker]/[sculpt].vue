@@ -60,6 +60,7 @@
             <Button
               v-if="isEditor"
               text
+              size="small"
               severity="secondary"
               icon="pi pi-pen-to-square"
               @click="toggleEditColorway(colorway)"
@@ -67,6 +68,7 @@
 
             <Button
               text
+              size="small"
               severity="secondary"
               icon="pi pi-window-maximize"
               @click="toggleColorwayCard(colorway)"
@@ -74,6 +76,7 @@
 
             <Button
               text
+              size="small"
               severity="secondary"
               icon="pi pi-folder-plus"
               aria-haspopup="true"

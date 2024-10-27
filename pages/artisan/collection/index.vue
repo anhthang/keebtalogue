@@ -43,13 +43,14 @@
         :key="collection.id"
         :to="`/artisan/collection/${collection.id}`"
       >
-        <Card class="h-full" pt:body:class="flex items-center">
-          <template #title>{{ collection.name }}</template>
-          <template #footer>
+        <Card class="h-full" pt:title:class="flex items-center justify-between">
+          <template #title>
+            {{ collection.name }}
+
             <Button
               v-if="collection.published"
               text
-              label="Public"
+              size="small"
               disabled
               severity="warn"
               icon="pi pi-unlock"
@@ -57,7 +58,7 @@
             <Button
               v-else
               text
-              label="Private"
+              size="small"
               disabled
               severity="secondary"
               icon="pi pi-lock"

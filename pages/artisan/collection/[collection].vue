@@ -96,11 +96,11 @@ const confirm = useConfirm()
 const toast = useToast()
 
 const sort = ref('sculpt_name')
-const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort' })
+const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
 const sortOptions = [
   {
     label: 'Sort by Sculpt',
-    icon: 'pi pi-sort',
+    icon: 'pi pi-sort-alt',
     command: ({ item }) => {
       sort.value = 'sculpt_name'
       sortItem.value = item
