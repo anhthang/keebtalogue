@@ -1,55 +1,5 @@
 <template>
-  <a-dropdown>
-    <template #overlay>
-      <a-menu>
-        <a-menu-item v-if="maker.website" key="website">
-          <template #icon><global-outlined /></template>
-          <a :href="maker.website" target="_blank">Website</a>
-        </a-menu-item>
-        <a-menu-item v-if="maker.instagram" key="instagram">
-          <template #icon><instagram-outlined /></template>
-          <a :href="maker.instagram" target="_blank">Instagram</a>
-        </a-menu-item>
-        <a-menu-item v-if="maker.discord" key="discord">
-          <template #icon><discord-outlined /></template>
-          <a :href="maker.discord" target="_blank">Discord</a>
-        </a-menu-item>
-        <a-menu-item v-if="maker.artisancollector" key="artisancollector">
-          <template #icon><artisan-collector-outlined /></template>
-          <a :href="maker.artisancollector" target="_blank">
-            Artisan Collector
-          </a>
-        </a-menu-item>
-        <a-menu-divider />
-        <a-menu-item v-if="!isMultipleDocs">
-          <template #icon><file-word-outlined /></template>
-          <a
-            :href="`https://docs.google.com/document/d/${maker.document_ids[0]}`"
-            target="_blank"
-          >
-            Catalogue
-          </a>
-        </a-menu-item>
-        <a-menu-item
-          v-for="(docId, idx) in maker.document_ids"
-          v-else
-          :key="docId"
-        >
-          <template #icon><file-word-outlined /></template>
-          <a
-            :href="`https://docs.google.com/document/d/${docId}`"
-            target="_blank"
-          >
-            Catalogue Part {{ idx + 1 }}
-          </a>
-        </a-menu-item>
-      </a-menu>
-    </template>
-    <a-button>
-      <link-outlined />
-      Links
-    </a-button>
-  </a-dropdown>
+  <SplitButton label="Links" icon="pi pi-external-link" :model="links" />
 </template>
 
 <script setup>
@@ -60,5 +10,69 @@ const { maker } = defineProps({
   },
 })
 
-const isMultipleDocs = maker.document_ids.length > 1
+const links = []
+if (maker.website) {
+  links.push({
+    label: 'Website',
+    icon: 'pi pi-globe',
+    command: () => {
+      window.open(maker.website, '_blank')
+    },
+  })
+}
+if (maker.instagram) {
+  links.push({
+    label: 'Instagram',
+    icon: 'pi pi-instagram',
+    command: () => {
+      window.open(maker.instagram, '_blank')
+    },
+  })
+}
+if (maker.discord) {
+  links.push({
+    label: 'Discord',
+    icon: 'pi pi-discord',
+    command: () => {
+      window.open(maker.discord, '_blank')
+    },
+  })
+}
+if (maker.artisancollector) {
+  links.push({
+    label: 'ArtisanCollector',
+    icon: 'pi pi-globe',
+    command: () => {
+      window.open(maker.artisancollector, '_blank')
+    },
+  })
+}
+
+if (Array.isArray(maker.document_ids)) {
+  links.push({
+    separator: true,
+  })
+  if (maker.document_ids.length > 1) {
+    maker.document_ids.forEach((docId, idx) => {
+      links.push({
+        label: `Catalogue Part ${idx + 1}`,
+        icon: 'pi pi-file-word',
+        command: () => {
+          window.open(`https://docs.google.com/document/d/${docId}`, '_blank')
+        },
+      })
+    })
+  } else {
+    links.push({
+      label: 'Catalogue',
+      icon: 'pi pi-file-word',
+      command: () => {
+        window.open(
+          `https://docs.google.com/document/d/${maker.document_ids[0]}`,
+          '_blank',
+        )
+      },
+    })
+  }
+}
 </script>

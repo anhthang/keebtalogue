@@ -1,80 +1,61 @@
 <template>
-  <a-spin :spinning="pending">
-    <a-page-header title="Artisan Makers" class="container maker-container">
-      <template v-if="isAdmin" #extra>
-        <a-button type="primary" @click="showModal">
-          <user-add-outlined /> Add
-        </a-button>
-      </template>
-      <a-modal
-        v-model:open="visible"
-        title="Add Maker"
-        destroy-on-close
-        :confirm-loading="confirmLoading"
-        ok-text="Add"
-        @ok="addMaker"
-      >
-        <modal-maker-form ref="makerForm" />
-      </a-modal>
+  <Panel
+    header="Artisan Makers"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <template v-if="isAdmin" #icons>
+      <Button label="Add" icon="pi pi-user-plus" @click="toggleAddMaker" />
+    </template>
 
-      <a-divider
-        v-if="authenticated && favoriteMakers.length"
-        orientation="left"
-      >
-        Pinned
-      </a-divider>
+    <div
+      v-if="authenticated && favoriteMakers.length"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <MakerCard
+        v-for="maker in favoriteMakers"
+        :key="maker.id"
+        :favorite="true"
+        :maker="maker"
+      />
+    </div>
 
-      <a-row
-        v-if="authenticated && favoriteMakers.length"
-        :gutter="[16, 16]"
-        type="flex"
-      >
-        <a-col
-          v-for="maker in favoriteMakers"
-          :key="maker.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <maker-card :favorite="true" :maker="maker" />
-        </a-col>
-      </a-row>
+    <Divider v-if="authenticated && favoriteMakers.length" align="left">
+      Others
+    </Divider>
 
-      <a-divider
-        v-if="authenticated && favoriteMakers.length"
-        orientation="left"
-      >
-        Others
-      </a-divider>
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <MakerCard
+        v-for="maker in currentPageMakers"
+        :key="maker.id"
+        :maker="maker"
+      />
+    </div>
 
-      <a-row :gutter="[16, 16]" type="flex">
-        <a-col
-          v-for="maker in currentPageMakers"
-          :key="maker.id"
-          :xs="12"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          :xl="4"
-        >
-          <maker-card :maker="maker" />
-        </a-col>
-      </a-row>
+    <Paginator
+      class="mt-4"
+      :rows="size"
+      :total-records="otherMakers.length"
+      pt:root:class="!bg-transparent"
+      @page="
+        (e) => {
+          page = e.page + 1
+        }
+      "
+    />
 
-      <a-flex justify="center" style="margin-top: 16px">
-        <a-pagination
-          v-model:current="page"
-          :total="otherMakers.length"
-          :page-size="size"
-          :show-size-changer="false"
-          :show-quick-jumper="otherMakers.length > size * 10"
-          hide-on-single-page
-        />
-      </a-flex>
-    </a-page-header>
-  </a-spin>
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Add Maker"
+      class="w-[36rem]"
+      dismissable-mask
+    >
+      <ModalMakerForm @on-success="toggleAddMaker" />
+    </Dialog>
+  </Panel>
 </template>
 
 <script setup>
@@ -85,7 +66,7 @@ useSeoMeta({
 const page = ref(1)
 const size = ref(24)
 
-const { data, pending, refresh } = await useAsyncData('artisan-makers', () =>
+const { data, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )
 
@@ -93,8 +74,11 @@ const userStore = useUserStore()
 const { authenticated, isAdmin, favorites } = storeToRefs(userStore)
 
 const visible = ref(false)
-const showModal = () => {
+const toggleAddMaker = (shouldRefresh) => {
   visible.value = !visible.value
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 
 const favoriteMakers = computed(() => {
@@ -111,43 +95,4 @@ const currentPageMakers = computed(() => {
     page.value * size.value,
   )
 })
-
-const makerForm = ref()
-const confirmLoading = ref(false)
-const addMaker = async () => {
-  confirmLoading.value = true
-
-  await makerForm.value
-    .addMaker()
-    .then(() => {
-      confirmLoading.value = false
-      showModal()
-      refresh()
-    })
-    .catch(() => {
-      confirmLoading.value = false
-    })
-}
 </script>
-
-<style>
-.maker-container {
-  .ant-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ant-card-meta-title {
-    text-align: center;
-  }
-
-  .ant-card-cover {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    margin: 25px;
-    /* background: white; */
-  }
-}
-</style>

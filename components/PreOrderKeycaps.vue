@@ -1,0 +1,43 @@
+<template>
+  <Fieldset legend="Pre-Order Keycaps" pt:legend:class="w-auto">
+    <DataView :value="keycaps">
+      <template #list="slotProps">
+        <div
+          v-for="(keycap, index) in slotProps.items"
+          :key="index"
+          :class="{
+            'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
+          }"
+        >
+          <nuxt-link :to="`/keycap/${keycap.profile_keycap_id}`">
+            <div class="flex items-center">
+              <Avatar
+                :image="`/logo/${keycap.profile_id}.png`"
+                size="large"
+                :class="{ invert: $colorMode.value === 'dark' }"
+                pt:image:class="object-contain"
+              />
+              <Card class="!shadow-none">
+                <template #title>{{
+                  `${manufacturers[keycap.profile_id]} ${keycap.name}`
+                }}</template>
+                <template #content>
+                  {{ formatDateRange(keycap.start_date, keycap.end_date) }}
+                </template>
+              </Card>
+            </div>
+          </nuxt-link>
+        </div>
+      </template>
+    </DataView>
+  </Fieldset>
+</template>
+
+<script setup>
+const { keycaps } = defineProps({
+  keycaps: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+</script>

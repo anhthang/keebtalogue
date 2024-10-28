@@ -1,95 +1,91 @@
 <template>
-  <a-form :ref="formRef" :rules="formRules" :model="feedback" layout="vertical">
-    <a-form-item
-      ref="name"
-      name="name"
-      label="Name"
-      v-bind="validateInfos.name"
-    >
-      <a-input v-model:value="feedback.name">
-        <template #prefix><font-size-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-form-item
-      ref="message"
-      name="message"
-      label="Message"
-      v-bind="validateInfos.message"
-    >
-      <a-textarea
-        :v-model="feedback.message"
-        :auto-size="{ minRows: 5 }"
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="feedback_name">Name</label>
+      <IconField>
+        <InputIcon class="pi pi-user" />
+        <InputText
+          id="feedback_name"
+          v-model.trim="feedback.name"
+          type="text"
+          fluid
+        />
+      </IconField>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="feedback_message">Message</label>
+      <Textarea
+        id="feedback_message"
+        v-model.trim="feedback.message"
         placeholder="What can we do to make your experience even better?"
+        :rows="5"
+        auto-resize
       />
-      <template #extra>
+      <span class="text-sm">
         Please don't include any sensitive information like passwords, or
         personal details.
-      </template>
-    </a-form-item>
+      </span>
+    </div>
 
-    <a-form-item>
-      <a-typography-text strong>
-        Help us make {{ $config.public.appName }} amazing!
-      </a-typography-text>
-    </a-form-item>
+    <Divider align="center" pt:content:class="text-xl">
+      <b>Help us make {{ $config.public.appName }} amazing!</b>
+    </Divider>
 
-    <a-form-item ref="email" name="email" v-bind="validateInfos.email">
-      <a-input
-        v-model:value="feedback.email"
-        placeholder="Leave your contact info here to get started."
-      >
-        <template #prefix><font-size-outlined /></template>
-      </a-input>
-    </a-form-item>
-  </a-form>
+    <div class="flex flex-col gap-2">
+      <label for="feedback_email">Email</label>
+      <IconField>
+        <InputIcon class="pi pi-inbox" />
+        <InputText
+          id="feedback_email"
+          v-model.trim="feedback.email"
+          placeholder="Leave your contact info here to get started."
+          type="text"
+          fluid
+        />
+      </IconField>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <Button label="Send Feedback" @click="onSubmit" />
+    </div>
+
+    <Toast />
+  </div>
 </template>
 
 <script setup>
-import { Form } from 'ant-design-vue'
+const emit = defineEmits(['onSuccess'])
+
+const toast = useToast()
 
 const feedback = ref({
   name: '',
   message: '',
 })
 
-const formRef = ref()
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
-  message: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
-  email: [{ type: 'string', trigger: ['change', 'blue'] }],
-})
+// const formRules = ref({
+//   name: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
+//   message: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
+//   email: [{ type: 'string', trigger: ['change', 'blue'] }],
+// })
 
-const { useForm } = Form
-const { validate, validateInfos } = useForm(feedback, formRules)
-
-const addFeedback = async () => {
-  await validate()
-    .then(async () => {
-      await $fetch('/api/feedbacks', {
-        method: 'post',
-        body: feedback.value,
+const onSubmit = async () => {
+  await $fetch('/api/feedbacks', {
+    method: 'post',
+    body: feedback.value,
+  })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Feedback submitted!',
+        detail:
+          'Your feedback is valuable to us. We appreciate you taking the time to share it!',
+        life: 3000,
       })
-        .then(() => {
-          // message.success(
-          //   'Your feedback is valuable to us. We appreciate you taking the time to share it!',
-          // )
-          notification.success({
-            message: 'Feedback submitted!',
-            description:
-              'Your feedback is valuable to us. We appreciate you taking the time to share it!',
-          })
-        })
-        .catch((error) => {
-          message.error(error.message)
-        })
+      emit('onSuccess')
     })
-    .catch(() => {
-      // ignore
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 }
-
-defineExpose({
-  addFeedback,
-})
 </script>

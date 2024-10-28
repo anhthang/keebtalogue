@@ -1,175 +1,100 @@
 <template>
-  <a-form :ref="formRef" :rules="formRules" :model="colorway" layout="vertical">
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="24">
-        <a-form-item
-          ref="name"
-          name="name"
-          v-bind="validateInfos.name"
-          label="Name"
-        >
-          <a-input v-model:value="colorway.name">
-            <template #prefix><font-size-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item
-          ref="release"
-          name="release"
-          v-bind="validateInfos.release"
-          label="Release"
-        >
-          <a-input v-model:value="colorway.release">
-            <template #prefix><calendar-outlined /></template>
-          </a-input>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="6" :sm="6">
-        <a-form-item
-          ref="qty"
-          name="qty"
-          v-bind="validateInfos.qty"
-          label="Quantity"
-        >
-          <a-input-number v-model:value="colorway.qty">
-            <template #prefix><number-outlined /></template>
-          </a-input-number>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="6" :sm="6">
-        <a-form-item
-          ref="order"
-          name="order"
-          v-bind="validateInfos.order"
-          label="Order"
-        >
-          <a-input-number v-model:value="colorway.order">
-            <template #prefix><number-outlined /></template>
-          </a-input-number>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item>
-          <a-checkbox v-model:checked="colorway.giveaway">Giveaway</a-checkbox>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="12">
-        <a-form-item>
-          <a-checkbox
-            v-model:checked="colorway.commissioned"
-            :disabled="colorway.giveaway"
-          >
-            Commission
-          </a-checkbox>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row v-if="!colorway.giveaway && !colorway.commissioned" :gutter="[8, 8]">
-      <a-col :xs="12">
-        <a-form-item
-          ref="price"
-          name="price"
-          v-bind="validateInfos.price"
-          label="Price"
-        >
-          <a-input-group class="price-input-group" compact>
-            <a-select v-model:value="colorway.currency" style="width: 30%">
-              <a-select-option
-                v-for="currency in currencies"
-                :key="currency"
-                :value="currency"
-              >
-                {{ currency }}
-              </a-select-option>
-            </a-select>
-            <a-input-number
-              v-model:value="colorway.price"
-              :parser="(v) => v.replace(/\$\s?|(,*)/g, '')"
-              style="width: 70%"
-            />
-          </a-input-group>
-        </a-form-item>
-      </a-col>
-      <a-col :xs="12">
-        <a-form-item
-          ref="sale_type"
-          name="sale_type"
-          v-bind="validateInfos.class"
-          label="Sale Type"
-        >
-          <a-select v-model:value="colorway.sale_type">
-            <a-select-option key="Raffle" value="Raffle">
-              Raffle
-            </a-select-option>
-            <a-select-option key="FCFS" value="FCFS">FCFS</a-select-option>
-            <a-select-option key="Fulfillment" value="Fulfillment">
-              Fulfillment
-            </a-select-option>
-            <!-- <a-select-option key="groupbuy" value="groupbuy">Group Buy</a-select-option> -->
-          </a-select>
-        </a-form-item>
-      </a-col>
-    </a-row>
-
-    <a-form-item
-      ref="description"
-      name="description"
-      v-bind="validateInfos.description"
-      label="Description"
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="colorway_name">Name</label>
+      <InputText id="colorway_name" v-model.trim="colorway.name" type="text" />
+    </div>
+    <div class="grid grid-cols-4 gap-2">
+      <div class="col-span-2 flex flex-col gap-2">
+        <label for="colorway_release">Release</label>
+        <InputText
+          id="colorway_release"
+          v-model.trim="colorway.release"
+          type="text"
+        />
+      </div>
+      <div class="col-span-1 flex flex-col gap-2">
+        <label for="colorway_qty">Quantity</label>
+        <InputText id="colorway_qty" v-model="colorway.qty" v-keyfilter.num />
+      </div>
+      <div class="col-span-1 flex flex-col gap-2">
+        <label for="colorway_order">Order</label>
+        <InputText
+          id="colorway_order"
+          v-model="colorway.order"
+          v-keyfilter.num
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="flex items-center gap-2">
+        <Checkbox
+          v-model="colorway.giveaway"
+          input-id="colorway_giveaway"
+          binary
+        />
+        <label for="colorway_giveaway">Giveaway</label>
+      </div>
+      <div class="flex items-center gap-2">
+        <Checkbox
+          v-model="colorway.commissioned"
+          input-id="colorway_commission"
+          binary
+        />
+        <label for="colorway_commission">Commission</label>
+      </div>
+    </div>
+    <div
+      v-if="!colorway.giveaway && !colorway.commissioned"
+      class="grid grid-cols-2 gap-2"
     >
-      <a-textarea v-model:value="colorway.description" auto-size />
-    </a-form-item>
-
-    <a-form-item
-      ref="image"
-      name="image"
-      v-bind="validateInfos.image"
-      label="Image"
-    >
-      <a-upload-dragger
-        v-model:fileList="fileList"
-        list-type="picture"
-        :max-count="1"
-        name="colorway-image"
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        :before-upload="beforeUpload"
-        @change="onImageChange"
-      >
-        <p class="ant-upload-drag-icon">
-          <upload-outlined />
-        </p>
-        <p class="ant-upload-text">Click or drag file to this area to upload</p>
-      </a-upload-dragger>
-    </a-form-item>
-
-    <!-- <a-form-item label="Tags">
-      <a-select
-        v-model:value="colorway.keycap"
-        mode="multiple"
-        label-in-value
-        :filter-option="false"
-        :not-found-content="fetching ? undefined : null"
-        :options="keycaps"
-        @search="fetchkeycaps"
-      >
-        <template v-if="fetching" #notFoundContent>
-          <a-spin size="small" />
+      <div class="flex flex-col gap-2">
+        <label for="colorway_price">Price</label>
+        <InputGroup>
+          <Select v-model="colorway.currency" :options="currencies" />
+          <InputText
+            id="colorway_price"
+            v-model="colorway.price"
+            v-keyfilter.money
+          />
+        </InputGroup>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="colorway_sale_type">Sale Type</label>
+        <Select
+          id="colorway_sale_type"
+          v-model="colorway.sale_type"
+          :options="['Raffle', 'FCFS', 'Fulfillment']"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="colorway_desc">Description</label>
+      <Textarea
+        id="colorway_desc"
+        v-model.trim="colorway.description"
+        :rows="5"
+        auto-resize
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="colorway_story">Image</label>
+      <FileUpload name="demo[]" :multiple="false" accept="image/*" disabled>
+        <template #empty>
+          <span>Drop files here to upload or click to select.</span>
         </template>
-      </a-select>
-    </a-form-item> -->
-  </a-form>
+      </FileUpload>
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="onSubmit" />
+    </div>
+
+    <Toast />
+  </div>
 </template>
 
 <script setup>
-import { Form } from 'ant-design-vue'
+const emit = defineEmits(['onSuccess'])
 
 const { metadata } = defineProps({
   metadata: {
@@ -177,6 +102,8 @@ const { metadata } = defineProps({
     default: () => ({}),
   },
 })
+
+const toast = useToast()
 
 const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
 
@@ -186,52 +113,47 @@ const colorway = ref({
   img: '',
 })
 
-const formRef = ref()
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-  release: [{ type: 'string', trigger: ['change', 'blur'] }],
-  qty: [{ type: 'number', trigger: ['change', 'blur'] }],
-  order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
-  currency: [{ type: 'enum', enum: currencies, trigger: ['change', 'blur'] }],
-  price: [{ type: 'number', trigger: ['change', 'blur'] }],
-  sale_type: [
-    {
-      type: 'enum',
-      enum: ['Raffle', 'FCFS', 'Fulfillment'],
-      trigger: ['change', 'blur'],
-    },
-  ],
-  description: [{ type: 'string', trigger: ['change', 'blur'] }],
-  img: [{ required: true, type: 'url' }],
-})
+// const formRules = ref({
+//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+//   release: [{ type: 'string', trigger: ['change', 'blur'] }],
+//   qty: [{ type: 'number', trigger: ['change', 'blur'] }],
+//   order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
+//   currency: [{ type: 'enum', enum: currencies, trigger: ['change', 'blur'] }],
+//   price: [{ type: 'number', trigger: ['change', 'blur'] }],
+//   sale_type: [
+//     {
+//       type: 'enum',
+//       enum: ['Raffle', 'FCFS', 'Fulfillment'],
+//       trigger: ['change', 'blur'],
+//     },
+//   ],
+//   description: [{ type: 'string', trigger: ['change', 'blur'] }],
+//   img: [{ required: true, type: 'url' }],
+// })
 
 onBeforeMount(() => {
   Object.assign(colorway.value, metadata)
-  if (metadata.img) {
-    fileList.value = [{ url: metadata.img }]
-  }
 })
 
-const { useForm } = Form
-const { validate, validateInfos } = useForm(colorway, formRules)
-
-const addColorway = async () => {
-  await validate().then(() => {
-    $fetch(
-      `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
-      {
-        method: 'post',
-        body: colorway.value,
-      },
-    )
-      .then(() => {
-        message.success('Colorway updated successfully!')
+const onSubmit = async () => {
+  $fetch(
+    `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
+    {
+      method: 'post',
+      body: colorway.value,
+    },
+  )
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Colorway updated successfully!',
+        life: 3000,
       })
-      .catch((error) => {
-        console.error(error)
-        message.error(error.message)
-      })
-  })
+      emit('onSuccess', undefined, true)
+    })
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
+    })
 }
 
 // const fetching = ref(false)
@@ -247,31 +169,4 @@ const addColorway = async () => {
 //       fetching.value = false
 //     })
 // }
-
-/**
- * Upload image
- */
-const fileList = ref([])
-
-const beforeUpload = (file) => {
-  const isImg = file.type.startsWith('image')
-  if (!isImg) {
-    message.error(`${file.name} is not an image file`)
-  }
-
-  return isImg
-}
-
-const onImageChange = (info) => {
-  const status = info.file.status
-  if (status === 'done') {
-    message.success(`${info.file.name} uploaded successfully.`)
-  } else if (status === 'error') {
-    message.error(`${info.file.name} upload failed.`)
-  }
-}
-
-defineExpose({
-  addColorway,
-})
 </script>

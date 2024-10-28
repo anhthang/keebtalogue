@@ -1,20 +1,28 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
-    <a-badge>
-      <template v-if="authenticated" #count>
-        <pushpin-filled
-          v-if="favorite"
-          :style="{ color: 'deeppink', fontSize: '16px' }"
-          @click="
-            (e) => {
-              e.preventDefault()
-              addFavoriteMaker(maker.id)
-            }
-          "
+    <Card
+      class="flex items-center flex-1 h-full"
+      pt:header:class="flex items-center mx-5 h-[250px]"
+      pt:body:class="items-center"
+    >
+      <template #header>
+        <img
+          :class="{
+            invert: maker.invertible_logo && $colorMode.value === 'dark',
+          }"
+          :alt="maker.name"
+          :src="`/logo/${maker.id}.png`"
+          width="100%"
         />
-        <pushpin-outlined
-          v-else
-          :style="{ fontSize: '16px' }"
+      </template>
+      <template #title>{{ maker.name }}</template>
+      <template v-if="authenticated" #footer>
+        <Button
+          text
+          size="small"
+          severity="secondary"
+          :label="favorite ? 'Unpin' : 'Pin'"
+          :icon="favorite ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
           @click="
             (e) => {
               e.preventDefault()
@@ -23,25 +31,7 @@
           "
         />
       </template>
-
-      <a-card hoverable>
-        <template #cover>
-          <a-image
-            :class="
-              maker.invertible_logo && $colorMode.value === 'dark'
-                ? 'invertible-logo'
-                : ''
-            "
-            :preview="false"
-            :alt="maker.name"
-            :src="`/logo/${maker.id}.png`"
-            :fallback="`/logo/no_photo.png`"
-          />
-        </template>
-
-        <a-card-meta :title="maker.name" />
-      </a-card>
-    </a-badge>
+    </Card>
   </nuxt-link>
 </template>
 
@@ -72,10 +62,3 @@ const addFavoriteMaker = (name) => {
   })
 }
 </script>
-
-<style>
-.maker-container .ant-badge {
-  width: 100%;
-  height: 100%;
-}
-</style>

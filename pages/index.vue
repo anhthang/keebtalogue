@@ -1,34 +1,18 @@
 <template>
-  <a-page-header title="Home" class="container">
-    <a-flex :vertical="$device.isMobile" gap="middle">
-      <a-col :xs="24" :md="18">
-        <a-card style="height: 100%">
-          <a-typography-title :level="5">
-            <read-outlined /> ArtisanCollector's Guides
-          </a-typography-title>
-          <artisan-collector-guide />
-        </a-card>
-      </a-col>
+  <Panel
+    header="Home"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <ArtisanCollectorGuide class="col-span-4 md:col-span-3" />
 
-      <a-col :xs="24" :md="6">
-        <a-flex vertical gap="middle">
-          <a-card v-if="data.makers.length">
-            <a-typography-title :level="5">
-              <history-outlined /> Recently Added Artisans
-            </a-typography-title>
-            <recently-added :makers="data.makers" />
-          </a-card>
-
-          <a-card v-if="data.keycaps.length">
-            <a-typography-title :level="5">
-              <rise-outlined /> Live Group Buys Keycaps
-            </a-typography-title>
-            <keycap-live-group-buys :keycaps="data.keycaps" />
-          </a-card>
-        </a-flex>
-      </a-col>
-    </a-flex>
-  </a-page-header>
+      <div class="col-span-4 md:col-span-1 flex flex-col gap-4">
+        <LatestArtisans v-if="data.makers.length" :makers="data.makers" />
+        <PreOrderKeycaps v-if="data.keycaps.length" :keycaps="data.keycaps" />
+      </div>
+    </div>
+  </Panel>
 </template>
 
 <script setup>
@@ -41,21 +25,8 @@ const { data } = await useAsyncData(() => $fetch('/api/statistics'))
   --color-text-gradient-stop-2: #9b72cb;
   --color-text-gradient-stop-3: #d96570;
   --color-surface: #fff;
-  font-family: Cabin, sans-serif;
-}
-
-.container {
-  margin: 0 auto;
-  min-height: calc(100vh - 128px); /** minus header & footer */
-  display: flex;
-  flex-direction: column;
-  max-width: 1600px;
-}
-
-/* Global */
-.alert-banner {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
+  font-family: Dosis, sans-serif;
+  --p-card-body-padding: 1.125rem;
+  --p-card-title-font-size: 1.125rem;
 }
 </style>

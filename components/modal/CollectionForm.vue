@@ -1,99 +1,124 @@
 <template>
-  <a-form
-    :ref="formRef"
-    :rules="formRules"
-    :model="collection"
-    layout="vertical"
-  >
-    <a-form-item
-      ref="name"
-      name="name"
-      label="Name"
-      v-bind="validateInfos.name"
-    >
-      <a-input v-model:value="collection.name">
-        <template #prefix><font-size-outlined /></template>
-      </a-input>
-    </a-form-item>
-
-    <a-divider />
-
-    <a-form-item label="Visibility">
-      <template #extra>
-        <a-typography-text v-if="collection.published" type="danger">
-          Anyone can now discover the treasures you've assembled in this public
-          collection.
-        </a-typography-text>
-        <a-typography-text v-else type="secondary">
-          Choosing private keeps this collection under lock and key, hidden from
-          prying eyes.
-        </a-typography-text>
-      </template>
-      <a-radio-group v-model:value="collection.published">
-        <a-radio :value="false"><lock-outlined /> Private</a-radio>
-        <a-radio :value="true"><unlock-outlined /> Public</a-radio>
-      </a-radio-group>
-    </a-form-item>
-
-    <a-form-item v-if="collection.published">
-      <a-radio-group v-model:value="collection.type">
-        <a-radio value="share">Sharing Only</a-radio>
-        <a-radio value="buy">Buying</a-radio>
-        <a-radio value="sell">Selling</a-radio>
-      </a-radio-group>
-      <template #extra>
-        <a-typography-text v-if="collection.type === 'share'" type="secondary">
-          Not listed in the marketplace, just for your eyes (and your friends')
-          with link.
-        </a-typography-text>
-        <a-typography-text v-if="collection.type === 'buy'" type="secondary">
-          On the hunt! Any leads appreciated!
-        </a-typography-text>
-        <a-typography-text v-if="collection.type === 'sell'" type="secondary">
-          Up for grabs!
-        </a-typography-text>
-      </template>
-    </a-form-item>
-
-    <a-form-item
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-2">
+      <label for="collection_name">Name</label>
+      <IconField>
+        <InputIcon class="pi pi-pencil" />
+        <InputText
+          id="collection_name"
+          v-model.trim="collection.name"
+          type="text"
+          fluid
+        />
+      </IconField>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="collection_visibility">Visibility</label>
+      <SelectButton
+        v-model="collection.published"
+        option-label="label"
+        option-value="value"
+        :options="[
+          { label: 'Private', value: false },
+          { label: 'Public', value: true },
+        ]"
+      />
+      <span
+        v-if="collection.published"
+        id="visibility-help"
+        class="text-sm text-yellow-600 dark:text-yellow-500"
+      >
+        Anyone can now discover the treasures you've assembled in this public
+        collection.
+      </span>
+      <span v-else id="visibility-help" class="text-sm">
+        Choosing private keeps this collection under lock and key, hidden from
+        prying eyes.
+      </span>
+    </div>
+    <div v-if="collection.published" class="flex flex-col gap-2">
+      <SelectButton
+        v-model="collection.type"
+        option-label="label"
+        option-value="value"
+        :options="[
+          { label: 'Sharing Only', value: 'share' },
+          { label: 'Buying', value: 'buy' },
+          { label: 'Selling', value: 'sell' },
+        ]"
+      />
+      <span
+        v-if="collection.type === 'share'"
+        id="visibility-help"
+        class="text-sm"
+      >
+        Not listed in the marketplace, just for your eyes (and your friends')
+        with link.
+      </span>
+      <span
+        v-if="collection.type === 'buy'"
+        id="visibility-help"
+        class="text-sm"
+      >
+        On the hunt! Any leads appreciated!
+      </span>
+      <span
+        v-if="collection.type === 'sell'"
+        id="visibility-help"
+        class="text-sm"
+      >
+        Up for grabs!
+      </span>
+    </div>
+    <div
       v-if="collection.published && collection.type !== 'share'"
-      ref="message"
-      name="message"
-      label="Message"
-      v-bind="validateInfos.message"
+      class="flex flex-col gap-2"
     >
-      <a-input v-model:value="collection.message" :maxlength="100">
-        <template #prefix><message-outlined /></template>
-      </a-input>
-      <template #extra>
+      <label for="collection_message">Message</label>
+      <IconField>
+        <InputIcon class="pi pi-comments" />
+        <InputText
+          id="collection_message"
+          v-model.trim="collection.message"
+          type="text"
+          fluid
+        />
+      </IconField>
+      <span id="message-help" class="text-sm">
         Describe what you're offering and/or help others understand what types
         of offers you are looking for. Your message should be applicable to many
         people using the marketplace, not just a specific person.
-      </template>
-    </a-form-item>
-
-    <a-form-item
+      </span>
+    </div>
+    <div
       v-if="collection.published && collection.type !== 'share'"
-      ref="contact"
-      name="contact"
-      label="Contact"
-      v-bind="validateInfos.contact"
+      class="flex flex-col gap-2"
     >
-      <a-input v-model:value="collection.contact">
-        <template #prefix><discord-outlined /></template>
-      </a-input>
-      <template #extra>
-        <a-typography-text type="warning">
-          Please enter your Discord username so that buyer/seller can reach you
-          directly.
-        </a-typography-text>
-      </template>
-    </a-form-item>
-  </a-form>
+      <label for="collection_contact">Contact</label>
+      <IconField>
+        <InputIcon class="pi pi-discord" />
+        <InputText
+          id="collection_contact"
+          v-model.trim="collection.contact"
+          type="text"
+          fluid
+        />
+      </IconField>
+      <span id="contact-help" severity="warn" class="text-sm">
+        Please enter your Discord username so that buyer/seller can reach you
+        directly.
+      </span>
+    </div>
+    <div class="flex flex-col gap-2">
+      <Button label="Save" @click="onSubmit" />
+    </div>
+
+    <Toast />
+  </div>
 </template>
 
 <script setup>
-import { Form } from 'ant-design-vue'
+const emit = defineEmits(['onSuccess'])
 
 const { metadata, uid, isEdit } = defineProps({
   metadata: {
@@ -106,6 +131,7 @@ const { metadata, uid, isEdit } = defineProps({
 })
 
 const userStore = useUserStore()
+const toast = useToast()
 
 const collection = ref({
   name: '',
@@ -118,58 +144,54 @@ onBeforeMount(() => {
   Object.assign(collection.value, metadata)
 })
 
-const formRef = ref()
-const formRules = ref({
-  name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-  type: [
-    {
-      required: true,
-      type: 'enum',
-      enum: ['share', 'buy', 'sell'],
-      trigger: ['change', 'blur'],
-    },
-  ],
-  message: [
-    { required: false, type: 'string', max: 100, trigger: ['change', 'blur'] },
-  ],
-  contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
-})
+// const formRules = ref({
+//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
+//   type: [
+//     {
+//       required: true,
+//       type: 'enum',
+//       enum: ['share', 'buy', 'sell'],
+//       trigger: ['change', 'blur'],
+//     },
+//   ],
+//   message: [
+//     { required: false, type: 'string', max: 100, trigger: ['change', 'blur'] },
+//   ],
+//   contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
+// })
 
-const { useForm } = Form
-const { validate, validateInfos } = useForm(collection, formRules)
+const onSubmit = async () => {
+  const { items, ...rest } = collection.value
 
-const addCollection = async () => {
-  await validate()
-    .then(async () => {
-      const { items, ...rest } = collection.value
+  const url = isEdit
+    ? `/api/users/${uid}/collections/${rest.id}`
+    : `/api/users/${uid}/collections`
 
-      const url = isEdit
-        ? `/api/users/${uid}/collections/${rest.id}`
-        : `/api/users/${uid}/collections`
-
-      await $fetch(url, {
-        method: 'post',
-        body: rest,
-      })
-        .then(() => {
-          if (isEdit) {
-            message.success(`Collection [${rest.name}] updated successfully!`)
-          } else {
-            message.success(`Collection [${rest.name}] added successfully!`)
-          }
+  await $fetch(url, {
+    method: 'post',
+    body: rest,
+  })
+    .then(() => {
+      if (isEdit) {
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] updated successfully!`,
+          life: 3000,
         })
-        .catch((error) => {
-          message.error(error.message)
+        emit('onSuccess')
+      } else {
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] added successfully!`,
+          life: 3000,
         })
+        emit('onSuccess')
+      }
     })
-    .catch(() => {
-      // ignore
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 
   await userStore.getUserDocument(uid)
 }
-
-defineExpose({
-  addCollection,
-})
 </script>

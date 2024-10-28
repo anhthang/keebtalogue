@@ -1,58 +1,37 @@
 <template>
-  <a-flex vertical gap="large">
-    <a-typography-title
-      :level="2"
-      style="
-        background-image: linear-gradient(
-          74deg,
-          var(--color-text-gradient-stop-1) 0,
-          var(--color-text-gradient-stop-2) 9%,
-          var(--color-text-gradient-stop-3) 20%,
-          var(--color-text-gradient-stop-3) 24%,
-          var(--color-text-gradient-stop-2) 35%,
-          var(--color-text-gradient-stop-1) 44%,
-          var(--color-text-gradient-stop-2) 50%,
-          var(--color-text-gradient-stop-3) 56%,
-          var(--color-surface) 75%,
-          var(--color-surface) 100%
-        );
-        background-size: 100%;
-        color: transparent;
-        background-clip: text;
-      "
+  <div class="flex flex-col gap-12">
+    <span
+      class="text-4xl font-bold bg-gradient-to-r from-red-300 via-pink-400 to-violet-600 dark:from-amber-200 dark:to-rose-400 text-transparent bg-clip-text"
     >
       Welcome back
-    </a-typography-title>
-
-    <a-flex vertical gap="small">
-      <a-button size="large" block @click="login('google')">
-        <a-flex gap="small" justify="center" align="center">
-          <google-square-filled style="color: #ea4335; font-size: 20px" />
-          Continue with Google
-        </a-flex>
-      </a-button>
-      <a-button size="large" block @click="login('discord')">
-        <a-flex gap="small" justify="center" align="center">
-          <discord-filled style="color: #5865f2; font-size: 20px" />
-          Continue with Discord
-        </a-flex>
-      </a-button>
-    </a-flex>
-
-    <a-flex justify="center">
-      <a-typography-text>
+    </span>
+    <div class="flex flex-col gap-4">
+      <Button
+        label="Continue with Google"
+        icon="pi pi-google"
+        style="background-color: #ea4335; border: none"
+        @click="login('google')"
+      />
+      <Button
+        label="Continue with Discord"
+        icon="pi pi-discord"
+        style="background-color: #5865f2; border: none"
+        @click="login('discord')"
+      />
+      <span class="text-center">
         By clicking continue, you agree to our
-        <a-typography-link href="/policy" target="_blank">
-          Privacy Policy
-        </a-typography-link>
+        <nuxt-link href="/policy" target="_blank"> Privacy Policy </nuxt-link>
         and Terms of Service.
-      </a-typography-text>
-    </a-flex>
-  </a-flex>
+      </span>
+    </div>
+
+    <Toast />
+  </div>
 </template>
 
 <script setup>
 const client = useSupabaseClient()
+const toast = useToast()
 
 const login = async (provider) => {
   const { user, error } = await client.auth.signInWithOAuth({
@@ -63,11 +42,13 @@ const login = async (provider) => {
   })
 
   if (error) {
-    message.warning(err.message)
+    toast.add({ severity: 'error', summary: err.message, life: 3000 })
   } else if (user) {
-    message.success(
-      `Hello, ${user.name}. You successfully logged into this website.`,
-    )
+    toast.add({
+      severity: 'success',
+      summary: `Hello, ${user.name}. You successfully logged into this website.`,
+      life: 3000,
+    })
 
     router.back()
   }

@@ -1,38 +1,40 @@
 <template>
-  <a-page-header v-if="$device.isDesktop" title="Wishlist" class="container">
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-alert class="alert-banner" banner>
-        <template #message>
-          <a-typography-text strong> Attention: </a-typography-text>
-          We're phasing out this feature. Check out the
-          <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
-          powerful alternatives!
-        </template>
-      </a-alert>
-    </a-row>
-
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-col :xs="24">
-        <wishlist-settings />
-      </a-col>
-      <a-col :xs="24">
-        <wishlist-preview />
-      </a-col>
-    </a-row>
-  </a-page-header>
-  <a-page-header v-else class="container">
-    <a-result
-      status="404"
-      title="This feature is currently unavailable on mobile devices."
-      sub-title="Please use your desktop for full access. Or check out the Marketplace for powerful alternatives!"
+  <Panel
+    v-if="$device.isDesktop"
+    header="Wishlist"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <Message
+      class="w-fit mx-auto mb-4"
+      severity="warn"
+      icon="pi pi-exclamation-triangle"
     >
-      <template #extra>
-        <nuxt-link to="/artisan/marketplace">
-          <a-button type="primary"><shop-outlined /> Marketplace</a-button>
-        </nuxt-link>
-      </template>
-    </a-result>
-  </a-page-header>
+      <strong>Attention:</strong> We're phasing out this feature. Check out the
+      <nuxt-link to="/artisan/marketplace"> Marketplace </nuxt-link> for
+      powerful alternatives!
+    </Message>
+
+    <div class="flex flex-col gap-4">
+      <WishlistSettings />
+      <WishlistPreview />
+    </div>
+  </Panel>
+  <Panel v-else pt:root:class="!border-0 !bg-transparent">
+    <div class="flex flex-col items-center gap-8">
+      <div class="text-2xl">
+        This feature is currently unavailable on mobile devices.
+      </div>
+      <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">
+        Please use your desktop for full access. Or check out the Marketplace
+        for powerful alternatives!
+      </div>
+
+      <nuxt-link to="/artisan/marketplace">
+        <Button label="Marketplace" icon="pi pi-shop" />
+      </nuxt-link>
+    </div>
+  </Panel>
 </template>
 
 <script setup>

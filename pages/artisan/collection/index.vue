@@ -1,54 +1,73 @@
 <template>
-  <a-page-header title="Manage Collections" class="container artisan-container">
-    <template #extra>
-      <a-button v-if="user.email_verified" type="primary" @click="showModal">
-        <file-add-outlined /> Add
-      </a-button>
+  <Panel
+    header="Manage Collections"
+    pt:root:class="!border-0 !bg-transparent"
+    pt:title:class="flex items-center gap-4 font-medium text-3xl"
+  >
+    <template #icons>
+      <div class="flex gap-2">
+        <Button
+          v-if="user.email_verified"
+          icon="pi pi-folder-plus"
+          label="Add"
+          @click="toggleAddCollection"
+        />
+      </div>
     </template>
-    <a-modal
-      v-model:open="visible"
-      title="Add Collection"
-      :confirm-loading="loading"
-      @ok="addCollection"
+
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Add Collection"
+      class="w-[36rem]"
+      dismissable-mask
     >
-      <modal-collection-form ref="collectionForm" :uid="user.uid" />
-    </a-modal>
+      <ModalCollectionForm :uid="user.uid" @on-success="toggleAddCollection" />
+    </Dialog>
 
-    <a-row v-if="!user.email_verified" type="flex">
-      <a-alert
-        class="alert-banner"
-        type="info"
-        message="Level up your experience! Login and unlock exclusive features, unlimited collections, and enjoy seamless syncing across all your devices."
-        banner
-      />
-    </a-row>
+    <Message
+      v-if="!user.email_verified"
+      class="w-fit mx-auto mb-4"
+      severity="info"
+      icon="pi pi-info-circle"
+    >
+      Level up your experience! Login and unlock exclusive features, unlimited
+      collections, and enjoy seamless syncing across all your devices.
+    </Message>
 
-    <a-row :gutter="[16, 16]" type="flex">
-      <a-col
+    <div
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    >
+      <nuxt-link
         v-for="collection in collections"
         :key="collection.id"
-        :xs="12"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        :xl="4"
+        :to="`/artisan/collection/${collection.id}`"
       >
-        <nuxt-link :to="`/artisan/collection/${collection.id}`">
-          <a-card
-            hoverable
-            :title="collection.name"
-            :head-style="{ textAlign: 'center' }"
-          >
-            <template v-if="collection.published" #extra>
-              <a-button type="link" danger>
-                <unlock-outlined />
-              </a-button>
-            </template>
-          </a-card>
-        </nuxt-link>
-      </a-col>
-    </a-row>
-  </a-page-header>
+        <Card class="h-full" pt:title:class="flex items-center justify-between">
+          <template #title>
+            {{ collection.name }}
+
+            <Button
+              v-if="collection.published"
+              text
+              size="small"
+              disabled
+              severity="warn"
+              icon="pi pi-unlock"
+            />
+            <Button
+              v-else
+              text
+              size="small"
+              disabled
+              severity="secondary"
+              icon="pi pi-lock"
+            />
+          </template>
+        </Card>
+      </nuxt-link>
+    </div>
+  </Panel>
 </template>
 
 <script setup>
@@ -60,23 +79,7 @@ const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)
 
 const visible = ref(false)
-const showModal = () => {
+const toggleAddCollection = () => {
   visible.value = !visible.value
-}
-
-const loading = ref(false)
-const collectionForm = ref()
-const addCollection = async () => {
-  loading.value = true
-
-  await collectionForm.value
-    .addCollection()
-    .then(() => {
-      loading.value = false
-      showModal()
-    })
-    .catch(() => {
-      loading.value = false
-    })
 }
 </script>

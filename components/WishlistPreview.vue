@@ -1,141 +1,169 @@
 <template>
-  <a-card title="Preview" class="trading-preview">
-    <template #extra>
-      <a-flex gap="small">
-        <a-tooltip title="Copy text to clipboard">
-          <a-button @click="copyToClipboard"> <copy-outlined /> </a-button>
-        </a-tooltip>
-
-        <a-tooltip title="Copy screenshot to clipboard">
-          <a-button @click="screenshot(false)">
-            <picture-outlined />
-          </a-button>
-        </a-tooltip>
-
-        <a-tooltip title="Download screenshot">
-          <a-button v-if="isDesktop" @click="screenshot(true)">
-            <download-outlined />
-          </a-button>
-        </a-tooltip>
-      </a-flex>
+  <Panel
+    v-if="draggableWantList.length || draggableHaveList.length"
+    :header="copying ? 'Contact' : 'Preview'"
+    pt:root:class="trading-preview"
+    pt:header:class="text-xl"
+  >
+    <template v-if="!copying" #icons>
+      <div class="flex gap-2">
+        <Button
+          size="small"
+          severity="secondary"
+          label="Copy Text"
+          icon="pi pi-clipboard"
+          @click="copyToClipboard"
+        />
+        <Button
+          size="small"
+          severity="secondary"
+          label="Copy Image"
+          icon="pi pi-images"
+          @click="screenshot(false)"
+        />
+        <Button
+          size="small"
+          severity="secondary"
+          label="Download"
+          icon="pi pi-download"
+          @click="screenshot(true)"
+        />
+      </div>
     </template>
 
-    <a-result
-      v-if="!Object.keys(collections).length"
-      status="404"
-      title="¯\_(ツ)_/¯"
-      sub-title="You don’t have any collections yet. Create a collection to get started."
-    >
-      <template #extra>
-        <nuxt-link to="/artisan/collection">
-          <a-button type="primary"> Manage Collection </a-button>
-        </nuxt-link>
-      </template>
-    </a-result>
-    <a-watermark
-      v-else
-      :height="50"
-      :width="248"
-      :image="`/watermark-${$colorMode.value}.png`"
-    >
-      <a-descriptions title="Contact">
-        <a-descriptions-item label="Discord">
-          {{ tradingConfig.social.discord }}
-        </a-descriptions-item>
-        <a-descriptions-item label="Reddit">
-          {{ tradingConfig.social.reddit }}
-        </a-descriptions-item>
-        <a-descriptions-item label="QQ">
-          {{ tradingConfig.social.qq }}
-        </a-descriptions-item>
-      </a-descriptions>
+    <div class="flex flex-col gap-6">
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <span class="col-span-1">
+          Reddit: {{ tradingConfig.social.reddit }}
+        </span>
+        <span class="col-span-1">
+          Discord: {{ tradingConfig.social.discord }}
+        </span>
+        <span class="col-span-1">QQ: {{ tradingConfig.social.qq }}</span>
+      </div>
 
-      <a-typography-text v-if="tradingConfig.fnf_only" type="warning" strong>
-        Please note that the seller does not accept PayPal Goods & Services
-        (G&S). This means that if you choose to proceed with the transaction,
-        you will not have PayPal's buyer protection in place.
-      </a-typography-text>
+      <span
+        v-if="tradingConfig.fnf_only"
+        class="text-yellow-600 dark:text-yellow-500"
+      >
+        <strong>
+          Please note that the seller does not accept PayPal Goods & Services
+          (G&S). This means that if you choose to proceed with the transaction,
+          you will not have PayPal's buyer protection in place.
+        </strong>
+      </span>
 
-      <a-alert
-        v-if="errorText"
-        type="error"
-        message="Something went wrong"
-        :description="errorText"
-        show-icon
-        closable
-      />
+      <Message v-if="errorText" class="w-fit mx-auto" severity="error">
+        {{ errorText }}
+      </Message>
 
-      <a-divider v-if="draggableWantList.length">
+      <Divider
+        v-if="draggableWantList.length"
+        align="center"
+        class="text-3xl font-bold"
+      >
         {{ tradingConfig.want.title }}
-      </a-divider>
+      </Divider>
 
       <draggable
         :list="draggableWantList"
         item-key="id"
         group="group"
-        class="ant-row draggable-row"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
       >
         <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :lg="6" :xl="4">
-            <a-card>
-              <template #cover>
-                <img loading="lazy" :alt="element.name" :src="element.img" />
-              </template>
-              <template #actions>
-                <div @click="removeCap(element, 'want')">
-                  <delete-outlined /> Remove
-                </div>
-              </template>
-
-              <a-card-meta
-                :description="element.name"
-                :title="element.sculpt_name"
-                style="text-align: center"
+          <Card
+            :key="element.element_id"
+            class="flex items-center flex-1 overflow-hidden"
+            pt:header:class="h-[250px]"
+            pt:body:class="items-center"
+            pt:caption:class="items-center"
+          >
+            <template #header>
+              <img
+                :alt="element.name"
+                :src="element.img"
+                class="h-full object-cover"
               />
-            </a-card>
-          </a-col>
+            </template>
+            <template #title>{{ element.name || '-' }}</template>
+            <template #subtitle>{{ element.sculpt_name }}</template>
+
+            <template v-if="!copying" #footer>
+              <Button
+                text
+                size="small"
+                severity="danger"
+                label="Remove"
+                icon="pi pi-trash"
+                @click="removeCap(element, 'want')"
+              />
+            </template>
+          </Card>
         </template>
       </draggable>
 
-      <a-divider v-if="draggableHaveList.length && trading">
+      <Divider
+        v-if="draggableHaveList.length && trading"
+        align="center"
+        class="text-3xl font-bold"
+      >
         {{ tradingConfig.have.title }}
-      </a-divider>
+      </Divider>
 
       <draggable
+        v-if="draggableHaveList.length && trading"
         :list="draggableHaveList"
         item-key="id"
         group="group"
-        class="ant-row draggable-row"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
       >
         <template #item="{ element }">
-          <a-col :key="element.id" :xs="12" :md="8" :lg="6" :xl="4">
-            <a-card>
-              <template #cover>
-                <img loading="lazy" :alt="element.name" :src="element.img" />
-              </template>
-              <template #actions>
-                <div @click="removeCap(element, 'have')">
-                  <delete-outlined /> Remove
-                </div>
-              </template>
-
-              <a-card-meta
-                :description="element.name"
-                :title="element.sculpt_name"
-                style="text-align: center"
+          <Card
+            :key="element.element_id"
+            class="flex items-center flex-1 overflow-hidden"
+            pt:header:class="h-[250px]"
+            pt:body:class="items-center"
+            pt:caption:class="items-center"
+          >
+            <template #header>
+              <img
+                :alt="element.name"
+                :src="element.img"
+                class="h-full object-cover"
               />
-            </a-card>
-          </a-col>
+            </template>
+            <template #title>{{ element.name || '-' }}</template>
+            <template #subtitle>{{ element.sculpt_name }}</template>
+
+            <template #footer>
+              <Button
+                text
+                size="small"
+                severity="danger"
+                label="Remove"
+                icon="pi pi-trash"
+                @click="removeCap(element, 'have')"
+              />
+            </template>
+          </Card>
         </template>
       </draggable>
-    </a-watermark>
-  </a-card>
+    </div>
+
+    <ConfirmDialog />
+    <Toast />
+  </Panel>
 </template>
 
 <script setup>
-import copy from 'ant-design-vue/lib/_util/copy-to-clipboard'
 import groupBy from 'lodash.groupby'
 import draggable from 'vuedraggable'
+
+const confirm = useConfirm()
+const toast = useToast()
 
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
@@ -187,36 +215,24 @@ watch(
 watch(authenticated, () => refresh())
 
 const errorText = ref()
+const copying = ref(false)
 
 const screenshot = async (download = false) => {
+  copying.value = true
+
   const card = document.getElementsByClassName('trading-preview')[0]
-
-  // hide some items for rendering
-  const cardHead = card.getElementsByClassName('ant-card-head')[0]
-  const bodyActions = card
-    .getElementsByClassName('ant-card-body')[0]
-    .getElementsByClassName('ant-card-actions')
-
-  cardHead.classList.add('trading-card-hide')
-  bodyActions.forEach((ex) => {
-    ex.classList.add('trading-card-hide')
-  })
 
   try {
     if (download) {
       await downloadScreenshot(card)
     } else {
-      await copyScreenshot(card, !isDesktop)
+      await copyScreenshot(card, toast, !isDesktop)
     }
   } catch (error) {
     errorText.value = error.message
   }
 
-  // revert
-  cardHead.classList.remove('trading-card-hide')
-  bodyActions.forEach((ex) => {
-    ex.classList.remove('trading-card-hide')
-  })
+  copying.value = false
 }
 
 const tradingText = computed(() => {
@@ -237,10 +253,14 @@ const tradingText = computed(() => {
 })
 
 const removeCap = (colorway, type) => {
-  Modal.confirm({
-    title: 'Remove Artisan',
-    content: 'Are you sure you want to continue?',
-    onOk() {
+  confirm.require({
+    header: 'Remove Artisan',
+    message: 'Are you sure you want to continue?',
+    acceptProps: {
+      label: 'Remove',
+      severity: 'danger',
+    },
+    accept: () => {
       if (type === 'want') {
         draggableWantList.value = draggableWantList.value.filter(
           (c) => c.id !== colorway.id,
@@ -255,29 +275,11 @@ const removeCap = (colorway, type) => {
 }
 
 const copyToClipboard = () => {
-  copy(tradingText.value)
-  message.success('Copied to clipboard!')
+  navigator.clipboard.writeText(tradingText.value)
+  toast.add({
+    severity: 'success',
+    summary: 'Copied to clipboard!',
+    life: 3000,
+  })
 }
 </script>
-
-<style>
-.trading-preview {
-  height: 100%;
-
-  .ant-divider-inner-text {
-    font-size: 3rem;
-  }
-
-  .trading-card-hide {
-    display: none;
-  }
-}
-
-.draggable-row {
-  display: flex;
-  flex-flow: row wrap;
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-  row-gap: 0.5rem;
-}
-</style>
