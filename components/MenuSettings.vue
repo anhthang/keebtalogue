@@ -66,18 +66,6 @@ const activeClasses = '!bg-slate-100 dark:!bg-zinc-800 rounded'
 const settingsMenu = computed(() => {
   const items = [
     {
-      label: user.value.name,
-      items: [
-        {
-          label: user.value.email,
-          disabled: true,
-        },
-      ],
-    },
-    {
-      separator: true,
-    },
-    {
       label: 'Appearance',
       items: [
         {
@@ -103,6 +91,21 @@ const settingsMenu = computed(() => {
   ]
 
   if (authenticated.value) {
+    items.unshift(
+      {
+        label: user.value.name,
+        items: [
+          {
+            label: user.value.email,
+            disabled: true,
+          },
+        ],
+      },
+      {
+        separator: true,
+      },
+    )
+
     items.push(
       {
         separator: true,

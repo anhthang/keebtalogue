@@ -178,14 +178,14 @@ const onSubmit = async () => {
           summary: `Collection [${rest.name}] updated successfully!`,
           life: 3000,
         })
-        emit('onSuccess')
+        emit('onSuccess', true)
       } else {
         toast.add({
           severity: 'success',
           summary: `Collection [${rest.name}] added successfully!`,
           life: 3000,
         })
-        emit('onSuccess')
+        emit('onSuccess', true)
       }
     })
     .catch((error) => {

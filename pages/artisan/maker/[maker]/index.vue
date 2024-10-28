@@ -48,7 +48,7 @@
       >
         <Card
           class="flex items-center flex-1 overflow-hidden"
-          pt:header:class="w-full h-[250px]"
+          pt:header:class="w-full h-44 md:h-60"
           pt:root:class="h-full"
         >
           <template #header>

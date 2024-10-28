@@ -182,22 +182,29 @@ useSeoMeta({
   twitterImage: data.value && data.value.img,
 })
 
-const chartOptions = [
-  {
-    label: 'Order Graph',
-    icon: 'pi pi-chart-bar',
-    command: () => {
-      window.open(data.value.order_graph, '_blank')
-    },
-  },
-  {
-    label: 'Order History',
-    icon: 'pi pi-chart-line',
-    command: () => {
-      window.open(data.value.order_history, '_blank')
-    },
-  },
-]
+const chartOptions = computed(() => {
+  const options = []
+  if (data.value.order_graph) {
+    options.push({
+      label: 'Order Graph',
+      icon: 'pi pi-chart-bar',
+      command: () => {
+        window.open(data.value.order_graph, '_blank')
+      },
+    })
+  }
+  if (data.value.order_history) {
+    options.push({
+      label: 'Order History',
+      icon: 'pi pi-chart-line',
+      command: () => {
+        window.open(data.value.order_history, '_blank')
+      },
+    })
+  }
+
+  return options
+})
 
 const visible = ref(false)
 const toggleEditKeycap = (shouldRefresh) => {

@@ -42,7 +42,7 @@
         v-for="(colorway, idx) in colorways"
         :key="colorway.colorway_id"
         class="flex items-center flex-1 overflow-hidden"
-        pt:header:class="w-full h-[250px]"
+        pt:header:class="w-full h-44 md:h-60"
         pt:body:class="items-center"
       >
         <template #header>

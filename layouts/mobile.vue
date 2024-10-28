@@ -11,7 +11,7 @@
               <img
                 :alt="$config.public.appName"
                 :src="`/logo-filled.png`"
-                width="32px"
+                class="w-8"
               />
             </div>
           </div>

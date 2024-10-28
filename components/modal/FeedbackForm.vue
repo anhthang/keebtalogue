@@ -21,7 +21,7 @@
         :rows="5"
         auto-resize
       />
-      <span class="text-sm">
+      <span class="text-sm text-yellow-600 dark:text-yellow-500">
         Please don't include any sensitive information like passwords, or
         personal details.
       </span>

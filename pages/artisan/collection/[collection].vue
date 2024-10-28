@@ -1,6 +1,6 @@
 <template>
   <Panel
-    :header="data.name || 'Collection'"
+    :header="data?.name || 'Collection'"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
@@ -38,6 +38,26 @@
       </div>
     </template>
 
+    <Message
+      v-if="authenticated && data.published && data.type === 'share'"
+      class="w-fit mx-auto mb-4"
+      severity="warn"
+      icon="pi pi-exclamation-circle"
+    >
+      <strong> Public access granted. </strong>
+      Anyone with the link will be able to see it.
+    </Message>
+    <Message
+      v-if="authenticated && data.published && data.type !== 'share'"
+      class="w-fit mx-auto mb-4"
+      severity="warn"
+      icon="pi pi-exclamation-circle"
+    >
+      <strong> Heads up! </strong>
+      This collection is listed for buying and selling. It's visible to others
+      on our marketplace.
+    </Message>
+
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
@@ -45,7 +65,7 @@
         v-for="colorway in sortedCollections"
         :key="colorway.id"
         class="flex items-center flex-1 overflow-hidden"
-        pt:header:class="h-[250px]"
+        pt:header:class="h-44 md:h-60"
         pt:body:class="items-center"
       >
         <template #header>
@@ -159,7 +179,7 @@ onMounted(() => {
 watchEffect(() => route.params.collection, refresh())
 
 const sortedCollections = computed(() => {
-  return sortBy(data.value.items, ['maker_id', sort.value])
+  return sortBy(data.value?.items || [], ['maker_id', sort.value])
 })
 
 const removeCap = (clw) => {
@@ -250,7 +270,10 @@ const copyShareUrl = () => {
 }
 
 const visible = ref(false)
-const toggleShowEdit = () => {
+const toggleShowEdit = (shouldRefresh) => {
   visible.value = !visible.value
+  if (shouldRefresh) {
+    refresh()
+  }
 }
 </script>

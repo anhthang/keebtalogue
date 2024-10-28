@@ -9,13 +9,13 @@
       <Button
         label="Continue with Google"
         icon="pi pi-google"
-        style="background-color: #ea4335; border: none"
+        class="!bg-[#ea4335] !text-white !border-none"
         @click="login('google')"
       />
       <Button
         label="Continue with Discord"
         icon="pi pi-discord"
-        style="background-color: #5865f2; border: none"
+        class="!bg-[#5865f2] !text-white !border-none"
         @click="login('discord')"
       />
       <span class="text-center">
