@@ -31,22 +31,44 @@
       <b>Help us make {{ $config.public.appName }} amazing!</b>
     </Divider>
 
+    We welcome your contributions! If you encounter any issues or have
+    suggestions for improvement, please feel free to:
+
     <div class="flex flex-col gap-2">
-      <label for="feedback_email">Email</label>
+      <label for="feedback_github">Submit a GitHub Issue or Discussion</label>
+      <IconField>
+        <InputIcon class="pi pi-github" />
+        <InputText
+          id="feedback_github"
+          value="https://github.com/anhthang/keebtalogue"
+          type="text"
+          fluid
+          disabled
+        />
+      </IconField>
+      <span class="text-sm">
+        Report bugs, request features, or discuss ideas on our GitHub repository
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="feedback_email">Contact Us</label>
       <IconField>
         <InputIcon class="pi pi-inbox" />
         <InputText
           id="feedback_email"
           v-model.trim="feedback.email"
-          placeholder="Leave your contact info here to get started."
+          placeholder="If you prefer direct communication, leave your contact info here to get started."
           type="text"
           fluid
         />
       </IconField>
     </div>
 
+    Your feedback and support are invaluable to us. Thank you for your help!
+
     <div class="flex flex-col gap-2">
-      <Button label="Send Feedback" @click="onSubmit" />
+      <Button label="Send" @click="onSubmit" />
     </div>
 
     <Toast />

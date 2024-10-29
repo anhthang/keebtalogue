@@ -5,6 +5,7 @@
     aria-controls="overlay_menu"
     fluid
     outlined
+    class="!border-0"
     pt:root:class="!justify-start"
     @click="toggleProfileSettings"
   >
@@ -17,7 +18,7 @@
     <Avatar v-else icon="pi pi-user" size="large" shape="circle" />
     <div v-if="!slim">
       <div class="text-lg font-medium text-color leading-'">
-        {{ user.name }}
+        {{ user.name || 'Login' }}
       </div>
     </div>
   </Button>

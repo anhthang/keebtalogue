@@ -7,7 +7,7 @@
       :model="megaMenu"
       orientation="vertical"
       :pt="{
-        root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
+        root: '!border-0 !bg-transparent !min-w-fit',
         itemContent: 'py-1 hover:dark:!bg-zinc-700 hover:rounded',
       }"
     >
@@ -35,7 +35,7 @@
     <TieredMenu
       :model="advanceMenu"
       :pt="{
-        root: '!border-0 !bg-transparent flex flex-col gap-3 !min-w-fit',
+        root: '!border-0 !bg-transparent !min-w-fit',
         itemContent: 'py-1 hover:dark:!bg-zinc-700 hover:rounded',
       }"
     >
@@ -196,16 +196,6 @@ const megaMenu = computed(() => [
       ]
     }),
   },
-  {
-    separator: true,
-  },
-  {
-    label: slim.value ? '' : 'About',
-    icon: 'pi pi-info-circle',
-    route: '/about',
-    class: route.path.startsWith('/about') && activeClasses,
-    command: onChangeMenu,
-  },
 ])
 
 const advanceMenu = computed(() => [
@@ -218,6 +208,9 @@ const advanceMenu = computed(() => [
     },
   },
   {
+    separator: true,
+  },
+  {
     icon: 'pi pi-comments',
     label: slim.value ? '' : 'Feedback',
     command: () => {
@@ -225,21 +218,28 @@ const advanceMenu = computed(() => [
     },
   },
   {
-    separator: true,
-  },
-  {
-    icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
-    label: slim.value ? '' : slim.value ? 'Expand Menu' : 'Collapse Menu',
-    command: () => {
-      menuMode.value = slim.value ? 'expanded' : 'collapsed'
-      localStorage.setItem('menu-mode', menuMode.value)
-    },
+    label: slim.value ? '' : 'About',
+    icon: 'pi pi-info-circle',
+    route: '/about',
+    class: route.path.startsWith('/about') && activeClasses,
+    command: onChangeMenu,
   },
   {
     icon: 'pi pi-paypal',
     label: slim.value ? '' : 'Donate',
     url: config.public.donate,
     target: '_blank',
+  },
+  {
+    separator: true,
+  },
+  {
+    icon: slim.value ? 'pi pi-window-maximize' : 'pi pi-window-minimize',
+    label: slim.value ? '' : 'Collapse',
+    command: () => {
+      menuMode.value = slim.value ? 'expanded' : 'collapsed'
+      localStorage.setItem('menu-mode', menuMode.value)
+    },
   },
   {
     separator: true,
