@@ -82,7 +82,13 @@
           <AccordionPanel v-if="data.description" value="description">
             <AccordionHeader>Description</AccordionHeader>
             <AccordionContent>
-              {{ data.description }}
+              <p
+                v-for="(line, idx) in data.description.split('\n')"
+                :key="idx"
+                class="mb-2 text-justify"
+              >
+                {{ line }}
+              </p>
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="specifications">

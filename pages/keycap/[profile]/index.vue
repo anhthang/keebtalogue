@@ -17,7 +17,13 @@
       v-if="data.profile && data.profile.description"
       class="mb-4 leading-6 text-muted-color"
     >
-      {{ data.profile.description }}
+      <p
+        v-for="(line, idx) in data.profile.description.split('\n')"
+        :key="idx"
+        class="mb-2"
+      >
+        {{ line }}
+      </p>
     </div>
 
     <div

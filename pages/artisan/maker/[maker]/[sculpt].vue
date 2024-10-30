@@ -5,7 +5,13 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <div v-if="sculpt.story" class="mb-4 leading-6 text-muted-color">
-      {{ sculpt.story }}
+      <p
+        v-for="(line, idx) in sculpt.story.split('\n')"
+        :key="idx"
+        class="mb-2"
+      >
+        {{ line }}
+      </p>
     </div>
 
     <template #icons>
@@ -42,8 +48,11 @@
         v-for="(colorway, idx) in colorways"
         :key="colorway.colorway_id"
         class="flex items-center flex-1 overflow-hidden"
-        pt:header:class="w-full h-44 md:h-60"
-        pt:body:class="items-center"
+        :pt="{
+          header: 'w-full h-44 md:h-60',
+          caption: 'flex items-center',
+          title: 'w-40 text-center truncate',
+        }"
       >
         <template #header>
           <img

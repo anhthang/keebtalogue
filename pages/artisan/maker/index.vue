@@ -27,25 +27,8 @@
     <div
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
     >
-      <MakerCard
-        v-for="maker in currentPageMakers"
-        :key="maker.id"
-        :maker="maker"
-      />
+      <MakerCard v-for="maker in otherMakers" :key="maker.id" :maker="maker" />
     </div>
-
-    <Paginator
-      class="mt-4"
-      :rows="size"
-      :total-records="otherMakers.length"
-      :always-show="false"
-      pt:root:class="!bg-transparent"
-      @page="
-        (e) => {
-          page = e.page + 1
-        }
-      "
-    />
 
     <Dialog
       v-model:visible="visible"
@@ -63,9 +46,6 @@
 useSeoMeta({
   title: 'Artisan Makers',
 })
-
-const page = ref(1)
-const size = ref(24)
 
 const { data, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
@@ -88,12 +68,5 @@ const favoriteMakers = computed(() => {
 
 const otherMakers = computed(() => {
   return data.value.filter((m) => !favorites.value.includes(m.id))
-})
-
-const currentPageMakers = computed(() => {
-  return otherMakers.value.slice(
-    (page.value - 1) * size.value,
-    page.value * size.value,
-  )
 })
 </script>

@@ -15,7 +15,9 @@
     </template>
 
     <div v-if="maker.intro" class="mb-4 leading-6 text-muted-color">
-      {{ maker.intro }}
+      <p v-for="(line, idx) in maker.intro.split('\n')" :key="idx" class="mb-2">
+        {{ line }}
+      </p>
     </div>
 
     <template #icons>
@@ -48,8 +50,12 @@
       >
         <Card
           class="flex items-center flex-1 overflow-hidden"
-          pt:header:class="w-full h-44 md:h-60"
-          pt:root:class="h-full"
+          :pt="{
+            root: 'h-full',
+            header: 'w-full h-44 md:h-60',
+            caption: 'flex items-center',
+            title: 'w-40 text-center truncate',
+          }"
         >
           <template #header>
             <img
@@ -60,6 +66,7 @@
             />
           </template>
           <template #title>{{ sculpt.name }}</template>
+          <template #subtitle>{{ sculpt.total_colorways }} colorways</template>
         </Card>
       </nuxt-link>
     </div>

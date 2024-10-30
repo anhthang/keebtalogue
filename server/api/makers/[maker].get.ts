@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
   const { data: profile } = await client
     .from('makers')
-    .select('*, sculpts (*)')
+    .select('*, sculpts (*, total_colorways:colorways(count))')
     .eq('id', makerId)
     .single()
 
@@ -26,9 +26,10 @@ export default defineEventHandler(async (event) => {
 
   if (!profile) return
 
-  const sculpts = profile.sculpts.map((sculpt) => {
+  const sculpts = profile.sculpts.map((sculpt: any) => {
     const colorways = colorwayMap[sculpt.sculpt_id] || []
 
+    sculpt.total_colorways = sculpt.total_colorways[0]?.count
     sculpt.colorways = sortBy(colorways, 'order')
 
     return omitSensitive(sculpt)
