@@ -11,8 +11,9 @@
     <DataTable
       :value="data.kits"
       striped-rows
-      :paginator="data.kits >= 10"
+      paginator
       :rows="10"
+      :always-show-paginator="false"
     >
       <Column field="name" header="Name" />
       <Column field="price" header="Price" />

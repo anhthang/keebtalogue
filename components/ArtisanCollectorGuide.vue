@@ -1,6 +1,12 @@
 <template>
   <Fieldset legend="ArtisanCollector's Guides" pt:legend:class="w-auto">
-    <DataView :value="guides">
+    <DataView
+      :value="guides"
+      paginator
+      :rows="5"
+      :total-records="guides.length"
+      :always-show-paginator="false"
+    >
       <template #list="slotProps">
         <div
           v-for="(guide, index) in slotProps.items"

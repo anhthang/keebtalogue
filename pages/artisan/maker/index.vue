@@ -38,6 +38,7 @@
       class="mt-4"
       :rows="size"
       :total-records="otherMakers.length"
+      :always-show="false"
       pt:root:class="!bg-transparent"
       @page="
         (e) => {

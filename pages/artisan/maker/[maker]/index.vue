@@ -53,6 +53,7 @@
         >
           <template #header>
             <img
+              loading="lazy"
               :alt="sculpt.name"
               :src="sculpt.img"
               class="w-full h-full object-cover"

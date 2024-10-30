@@ -83,6 +83,7 @@
           >
             <template #header>
               <img
+                loading="lazy"
                 :alt="element.name"
                 :src="element.img"
                 class="h-full object-cover"
@@ -130,6 +131,7 @@
           >
             <template #header>
               <img
+                loading="lazy"
                 :alt="element.name"
                 :src="element.img"
                 class="h-full object-cover"

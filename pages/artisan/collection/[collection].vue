@@ -70,6 +70,7 @@
       >
         <template #header>
           <img
+            loading="lazy"
             :alt="colorway.name"
             :src="colorway.img"
             class="h-full object-cover"

@@ -47,6 +47,7 @@
       >
         <template #header>
           <img
+            loading="lazy"
             :alt="colorway.name"
             :src="colorway.img"
             class="w-full h-full object-cover"

@@ -4,7 +4,13 @@
     pt:root:class="h-full"
     pt:header:class="text-xl"
   >
-    <DataView :value="trades">
+    <DataView
+      :value="trades"
+      paginator
+      :rows="5"
+      :total-records="trades.length"
+      :always-show-paginator="false"
+    >
       <template #empty>
         <div class="flex flex-col items-center gap-8">
           <img class="w-2/4" :src="`/svg/empty.svg`" alt="Empty" />

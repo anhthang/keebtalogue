@@ -1,6 +1,12 @@
 <template>
   <Fieldset legend="Pre-Order Keycaps" pt:legend:class="w-auto">
-    <DataView :value="keycaps">
+    <DataView
+      :value="keycaps"
+      paginator
+      :rows="5"
+      :total-records="keycaps.length"
+      :always-show-paginator="false"
+    >
       <template #list="slotProps">
         <div
           v-for="(keycap, index) in slotProps.items"

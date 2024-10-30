@@ -10,6 +10,7 @@
           :class="{
             invert: maker.invertible_logo && $colorMode.value === 'dark',
           }"
+          loading="lazy"
           :alt="maker.name"
           :src="`/logo/${maker.id}.png`"
           width="100%"

@@ -4,7 +4,7 @@ title: About
 
 **Driven by a passion for artisan keycaps and keyboards, Keebtalogue is a project designed for enthusiasts like you.**
 
-Inspired by <img src="https://keycaplendar.firebaseapp.com/static/media/logo.74af9692.svg" style="height: 24px; display: inline" /> [KeycapLendar](https://keycaplendar.firebaseapp.com/){:target="\_blank"} and <img src="https://keycap-archivist.com/static/ka-logo-9ff13f494b24649d580620571cc9e040.svg" style="height: 24px; display: inline" /> [Keycap Archivist](https://keycap-archivist.com){:target="\_blank"},
+Inspired by <img class="inline h-6 m-1" src="https://keycaplendar.firebaseapp.com/static/media/logo.74af9692.svg" /> [KeycapLendar](https://keycaplendar.firebaseapp.com/){:target="\_blank"} and <img class="inline h-6 m-1" src="https://keycap-archivist.com/static/ka-logo-9ff13f494b24649d580620571cc9e040.svg" /> [Keycap Archivist](https://keycap-archivist.com){:target="\_blank"},
 it aims to go beyond Google Docs by offering a fully managed database specifically for the keyboard community. Here, you'll find a comprehensive catalogue of everything keyboard-related, including keyboards, keycap sets, and much-coveted artisan keycaps.
 
 Dive into the world of keyboard-related things with Keebtalogue, your one-stop platform for enthusiasts. Explore a treasure trove of features designed to fuel your passion:

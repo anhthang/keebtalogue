@@ -35,6 +35,7 @@
         >
           <template #header>
             <img
+              loading="lazy"
               :alt="keycap.name"
               :src="keycap.img || keycap.render_img"
               class="w-full h-full object-cover"
@@ -63,10 +64,10 @@
     </div>
 
     <Paginator
-      v-if="data.count >= size"
       class="mt-4"
       :rows="size"
       :total-records="data.count"
+      :always-show="false"
       pt:root:class="!bg-transparent"
       @page="
         (e) => {

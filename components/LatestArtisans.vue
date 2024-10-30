@@ -1,6 +1,12 @@
 <template>
   <Fieldset legend="Latest Artisans" pt:legend:class="w-auto">
-    <DataView :value="makers">
+    <DataView
+      :value="makers"
+      paginator
+      :rows="5"
+      :total-records="makers.length"
+      :always-show-paginator="false"
+    >
       <template #list="slotProps">
         <div
           v-for="(maker, index) in slotProps.items"
