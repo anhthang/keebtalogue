@@ -10,8 +10,19 @@
           type="text"
           fluid
         />
+        <InputIcon
+          v-if="maker.verified"
+          v-tooltip="'Verified'"
+          class="pi pi-verified text-[#22c55e] dark:text-[#4ade80]"
+        />
       </IconField>
     </div>
+
+    <div v-if="isAdmin" class="flex items-center gap-2">
+      <Checkbox v-model="maker.verified" input-id="maker_verified" binary />
+      <label for="maker_verified">Verified</label>
+    </div>
+
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="maker_nationality">Nationality</label>
@@ -48,7 +59,11 @@
       >
         <InputIcon class="pi pi-file-word" />
         <InputText :key="idx" v-model.trim="maker.document_ids[idx]" fluid />
-        <InputIcon class="pi pi-minus-circle" @click="removeDocId(docId)" />
+        <InputIcon
+          v-tooltip="'Remove'"
+          class="pi pi-minus-circle cursor-pointer"
+          @click="removeDocId(docId)"
+        />
       </IconField>
       <Button
         severity="secondary"
@@ -71,6 +86,7 @@
         />
       </IconField>
     </div>
+
     <div class="flex flex-col gap-2">
       <label for="maker_instagram">Instagram</label>
       <IconField>
@@ -83,6 +99,7 @@
         />
       </IconField>
     </div>
+
     <div class="flex flex-col gap-2">
       <label for="maker_discord">Discord</label>
       <IconField>
@@ -95,10 +112,11 @@
         />
       </IconField>
     </div>
+
     <div class="flex flex-col gap-2">
       <label for="maker_artisancollector">ArtisanCollector</label>
       <IconField>
-        <InputIcon class="pi pi-external-link" />
+        <InputIcon class="pi pi-globe" />
         <InputText
           id="maker_artisancollector"
           v-model.trim="maker.artisancollector"
@@ -107,6 +125,7 @@
         />
       </IconField>
     </div>
+
     <div class="flex flex-col gap-2">
       <label for="maker_intro">Intro</label>
       <Textarea
@@ -116,6 +135,7 @@
         auto-resize
       />
     </div>
+
     <div class="flex flex-col gap-2">
       <Button label="Save" @click="onSubmit" />
     </div>
@@ -128,6 +148,9 @@
 import slugify from 'slugify'
 
 const emit = defineEmits(['onSuccess'])
+
+const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore)
 
 const toast = useToast()
 

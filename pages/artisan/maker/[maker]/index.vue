@@ -11,6 +11,11 @@
           pt:image:class="object-contain"
         />
         {{ maker.name }}
+        <i
+          v-if="maker.verified"
+          v-tooltip="'Verified'"
+          class="pi pi-verified text-lg text-[#22c55e] dark:text-[#4ade80]"
+        />
       </div>
     </template>
 
