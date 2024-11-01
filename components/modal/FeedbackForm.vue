@@ -21,10 +21,10 @@
         :rows="5"
         auto-resize
       />
-      <span class="text-sm text-yellow-600 dark:text-yellow-500">
+      <Message severity="warn" size="small" variant="simple">
         Please don't include any sensitive information like passwords, or
         personal details.
-      </span>
+      </Message>
     </div>
 
     <Divider align="center" pt:content:class="text-xl">
@@ -46,9 +46,9 @@
           disabled
         />
       </IconField>
-      <span class="text-sm">
+      <Message severity="secondary" size="small" variant="simple">
         Report bugs, request features, or discuss ideas on our GitHub repository
-      </span>
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">

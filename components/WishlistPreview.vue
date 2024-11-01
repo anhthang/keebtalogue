@@ -44,16 +44,11 @@
         <span class="col-span-1">QQ: {{ tradingConfig.social.qq }}</span>
       </div>
 
-      <span
-        v-if="tradingConfig.fnf_only"
-        class="text-yellow-600 dark:text-yellow-500"
-      >
-        <strong>
-          Please note that the seller does not accept PayPal Goods & Services
-          (G&S). This means that if you choose to proceed with the transaction,
-          you will not have PayPal's buyer protection in place.
-        </strong>
-      </span>
+      <Message v-if="tradingConfig.fnf_only" severity="warn" variant="simple">
+        Please note that the seller does not accept PayPal Goods & Services
+        (G&S). This means that if you choose to proceed with the transaction,
+        you will not have PayPal's buyer protection in place.
+      </Message>
 
       <Message v-if="errorText" class="w-fit mx-auto" severity="error">
         {{ errorText }}
