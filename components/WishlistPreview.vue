@@ -125,9 +125,10 @@
           <Card
             :key="element.element_id"
             class="flex items-center flex-1 overflow-hidden"
-            pt:header:class="h-44 md:h-60"
-            pt:body:class="items-center"
-            pt:caption:class="items-center"
+            :pt="{
+              header: 'h-44 md:h-60',
+              caption: 'items-center',
+            }"
           >
             <template #header>
               <img

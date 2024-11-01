@@ -159,26 +159,18 @@ const megaMenu = computed(() => [
     separator: true,
   },
   {
-    label: slim.value ? '' : 'Interest Check',
-    icon: 'pi pi-list-check',
-    route: '/keycap/interest-check',
-    class: route.path === '/keycap/interest-check' && activeClasses,
+    label: slim.value ? '' : 'Keycap Tracker',
+    icon: 'pi pi-calendar-clock',
+    route: '/keycap/tracker',
+    class: route.path === '/keycap/tracker' && activeClasses,
     command: onChangeMenu,
   },
   {
-    label: slim.value ? '' : 'Pre-Order',
-    icon: 'pi pi-shopping-bag',
-    route: '/keycap/pre-order',
-    class: route.path === '/keycap/pre-order' && activeClasses,
-    command: onChangeMenu,
-  },
-  {
-    label: slim.value ? '' : 'Keycaps',
+    label: slim.value ? '' : 'Keycap Profiles',
     icon: 'pi pi-objects-column',
     class:
       route.path.startsWith('/keycap') &&
-      !route.path.includes('interest-check') &&
-      !route.path.includes('pre-order') &&
+      !route.path.includes('tracker') &&
       activeClasses,
     items: Object.entries(keycapProfiles).map(([profile, manufacturers]) => {
       return [

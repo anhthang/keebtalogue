@@ -2,18 +2,25 @@
 title: Privacy Policy
 ---
 
-## Introduction
+**Your Privacy Matters**
 
-**When you use our services, you’re trusting us with your information. We understand this is a big responsibility and work hard to protect your information and put you in control.**
+At Keebtalogue, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and disclose your personal information when you use our services.
 
-This Privacy Policy is meant to help you understand what information we collect, why we collect it, and how you can update, manage, export, and delete your information.
+**Information We Collect**
 
-## What we collects
+When you use Keebtalogue, we may collect the following information:
 
-By clicking **Continue with** social profile button, we will collect your below information to store in our database and display in the website
-- **Google**: Your name, email address, language preference, and profile picture.
-- **Discord**: Your username, email address, avatar and banner to store.
+- **Personal Information:** This includes information you provide directly, such as your name and email address when you log in with Google or Discord.
 
-## Changes to this policy
+**How We Use Your Information**
 
-We change this Privacy Policy from time to time. We always indicate the date the last changes were published and we offer access to archived versions via Github for your review. If changes are significant, we’ll provide a more prominent notice (including, for certain services, email notification of Privacy Policy changes).
+We use your personal information to:
+
+- Provide and improve our services.
+- Process your requests and inquiries.
+
+**Changes to This Privacy Policy**
+
+We may update this Privacy Policy from time to time. You can view the latest changes to our Privacy Policy on our [GitHub repository](https://github.com/anhthang/keebtalogue).
+
+**By using Keebtalogue, you consent to the collection and use of your information as described in this Privacy Policy.**

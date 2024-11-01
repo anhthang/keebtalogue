@@ -13,7 +13,7 @@
         <InputIcon
           v-if="maker.verified"
           v-tooltip="'Verified'"
-          class="pi pi-verified text-[#22c55e] dark:text-[#4ade80]"
+          class="pi pi-verified !text-[#22c55e] !dark:text-[#4ade80]"
         />
       </IconField>
     </div>

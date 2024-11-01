@@ -13,9 +13,16 @@
       />
     </template>
 
+    <SelectButton
+      v-if="!data.profile"
+      v-model="status"
+      :options="selectStatuses"
+      class="mb-6"
+    />
+
     <div
       v-if="data.profile && data.profile.description"
-      class="mb-4 leading-6 text-muted-color"
+      class="mb-6 leading-6 text-muted-color"
     >
       <p
         v-for="(line, idx) in data.profile.description.split('\n')"
@@ -27,6 +34,7 @@
     </div>
 
     <div
+      v-if="data.keycaps.length"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
     >
       <nuxt-link
@@ -68,6 +76,14 @@
         </Card>
       </nuxt-link>
     </div>
+    <div v-else class="flex flex-col h-full items-center gap-8">
+      <img class="w-1/3" :src="`/svg/search.svg`" alt="Empty" />
+
+      <div class="text-2xl">
+        Currently, there are no keycaps available. Check back soon for fresh
+        additions!
+      </div>
+    </div>
 
     <Paginator
       class="mt-4"
@@ -104,30 +120,24 @@ const { profile } = route.params
 const page = ref(1)
 const size = ref(16)
 
-const statusMap = {
-  'interest-check': 'Interest Check',
-  'pre-order': 'Live',
-}
+const selectStatuses = ['Interest Check', 'Live', 'In Production']
+const status = ref(selectStatuses[0])
 
 const query = computed(() => {
   return {
     page: page.value,
     size: size.value,
     profile_id: manufacturers[profile] && profile,
-    status: statusMap[profile],
+    status: status.value,
   }
 })
 
-const title = manufacturers[profile]
-  ? manufacturers[profile]
-  : profile === 'live'
-    ? 'Live Group Buys'
-    : statusMap[profile]
+const title = manufacturers[profile] ? manufacturers[profile] : 'Keycap Tracker'
 
 const { data, refresh } = await useAsyncData(
   () => $fetch('/api/keycaps', { query: query.value }),
   {
-    watch: [page, size],
+    watch: [page, size, status],
   },
 )
 

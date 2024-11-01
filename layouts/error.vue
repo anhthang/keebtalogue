@@ -4,7 +4,7 @@
       v-if="error.statusCode === 404"
       class="flex flex-col items-center gap-8"
     >
-      <img class="w-2/4" :src="`/svg/404.svg`" alt="Not Found" />
+      <img class="w-1/3" :src="`/svg/404.svg`" alt="Not Found" />
 
       <div class="text-2xl">Sorry, the page you visited does not exist.</div>
 
@@ -13,7 +13,7 @@
       </nuxt-link>
     </div>
     <div class="flex flex-col items-center gap-8">
-      <img class="w-2/4" :src="`/svg/500.svg`" alt="Internal Server Error" />
+      <img class="w-1/3" :src="`/svg/500.svg`" alt="Internal Server Error" />
 
       <div class="text-2xl">Uh oh. Something went wrong.</div>
 

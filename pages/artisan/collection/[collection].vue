@@ -65,8 +65,10 @@
         v-for="colorway in sortedCollections"
         :key="colorway.id"
         class="flex items-center flex-1 overflow-hidden"
-        pt:header:class="h-44 md:h-60"
-        pt:body:class="items-center"
+        :pt="{
+          header: 'h-44 md:h-60',
+          caption: 'items-center',
+        }"
       >
         <template #header>
           <img
@@ -77,6 +79,7 @@
           />
         </template>
         <template #title>{{ colorway.name }}</template>
+        <template #subtitle>{{ colorway.sculpt_name }}</template>
 
         <template v-if="authenticated" #footer>
           <Button

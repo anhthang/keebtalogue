@@ -13,7 +13,7 @@
     >
       <template #empty>
         <div class="flex flex-col items-center gap-8">
-          <img class="w-2/4" :src="`/svg/empty.svg`" alt="Empty" />
+          <img class="w-1/3" :src="`/svg/empty.svg`" alt="Empty" />
 
           <div class="text-2xl">
             We couldn't find any items that meet your search criteria.
