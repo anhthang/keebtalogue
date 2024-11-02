@@ -24,7 +24,6 @@
     <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
       <SelectButton
-        v-model="collection.published"
         name="published"
         option-label="label"
         option-value="value"
@@ -34,7 +33,7 @@
         ]"
       />
       <Message
-        v-if="collection.published"
+        v-if="$form.published?.value"
         severity="warn"
         size="small"
         variant="simple"
@@ -47,9 +46,8 @@
         prying eyes.
       </Message>
     </div>
-    <div v-if="collection.published" class="flex flex-col gap-2">
+    <div v-if="$form.published?.value" class="flex flex-col gap-2">
       <SelectButton
-        v-model="collection.type"
         name="type"
         option-label="label"
         option-value="value"
@@ -60,7 +58,7 @@
         ]"
       />
       <Message
-        v-if="collection.type === 'share'"
+        v-if="$form.type?.value === 'share'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -69,7 +67,7 @@
         with link.
       </Message>
       <Message
-        v-if="collection.type === 'buy'"
+        v-if="$form.type?.value === 'buy'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -77,7 +75,7 @@
         On the hunt! Any leads appreciated!
       </Message>
       <Message
-        v-if="collection.type === 'sell'"
+        v-if="$form.type?.value === 'sell'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -86,7 +84,7 @@
       </Message>
     </div>
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="$form.published?.value && $form.type?.value !== 'share'"
       class="flex flex-col gap-2"
     >
       <label for="collection_message">Message</label>
@@ -101,7 +99,7 @@
       </Message>
     </div>
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="$form.published?.value && $form.type?.value !== 'share'"
       class="flex flex-col gap-2"
     >
       <label for="collection_contact">Contact</label>
@@ -115,7 +113,7 @@
       </Message>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" type="submit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
@@ -157,7 +155,7 @@ const resolver = ref(
     z.object({
       name: z.string().min(1),
       published: z.boolean().default(false),
-      type: z.string(),
+      type: z.enum(['share', 'buy', 'sell']),
       message: z.string().optional(),
       contact: z.string().optional(),
     }),
@@ -165,38 +163,39 @@ const resolver = ref(
 )
 
 const onSubmit = async ({ valid }) => {
-  if (valid) {
-    const { items, ...rest } = collection.value
+  if (!valid) return
 
-    const url = isEdit
-      ? `/api/users/${uid}/collections/${rest.id}`
-      : `/api/users/${uid}/collections`
+  const { items, ...rest } = collection.value
 
-    await $fetch(url, {
-      method: 'post',
-      body: rest,
+  const url = isEdit
+    ? `/api/users/${uid}/collections/${rest.id}`
+    : `/api/users/${uid}/collections`
+
+  await $fetch(url, {
+    method: 'post',
+    body: rest,
+  })
+    .then(() => {
+      if (isEdit) {
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] updated successfully!`,
+          life: 3000,
+        })
+        emit('onSuccess', true)
+      } else {
+        toast.add({
+          severity: 'success',
+          summary: `Collection [${rest.name}] added successfully!`,
+          life: 3000,
+        })
+        emit('onSuccess', true)
+      }
     })
-      .then(() => {
-        if (isEdit) {
-          toast.add({
-            severity: 'success',
-            summary: `Collection [${rest.name}] updated successfully!`,
-            life: 3000,
-          })
-          emit('onSuccess', true)
-        } else {
-          toast.add({
-            severity: 'success',
-            summary: `Collection [${rest.name}] added successfully!`,
-            life: 3000,
-          })
-          emit('onSuccess', true)
-        }
-      })
-      .catch((error) => {
-        toast.add({ severity: 'error', summary: error.message, life: 3000 })
-      })
-    await userStore.getUserDocument(uid)
-  }
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
+    })
+
+  await userStore.getUserDocument(uid)
 }
 </script>

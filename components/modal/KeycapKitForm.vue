@@ -1,62 +1,99 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="kit"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="flex flex-col gap-2">
       <label for="kit_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-pencil" />
-        <InputText id="kit_name" v-model.trim="kit.name" type="text" fluid />
+        <InputText id="kit_name" name="name" type="text" fluid />
       </IconField>
+      <Message
+        v-if="$form.name?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.name.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="kit_img">Image</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-        <InputText id="kit_img" v-model.trim="kit.img" type="url" fluid />
+        <InputText id="kit_img" name="img" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.img?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.img.error.message }}
+      </Message>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="kit_price">Price</label>
         <IconField>
           <InputIcon class="pi pi-tag" />
-          <InputText
+          <InputNumber
             id="kit_price"
-            v-model="kit.price"
             v-keyfilter.money
+            name="price"
+            :use-grouping="false"
             fluid
           />
         </IconField>
+        <Message
+          v-if="$form.price?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.price.error.message }}
+        </Message>
       </div>
       <div class="flex flex-col gap-2">
         <label for="kit_qty">Quantity</label>
         <IconField>
           <InputIcon class="pi pi-hashtag" />
-          <InputText id="kit_qty" v-model="kit.qty" v-keyfilter.num fluid />
+          <InputNumber id="kit_qty" name="qty" :use-grouping="false" fluid />
         </IconField>
+        <Message
+          v-if="$form.qty?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.qty.error.message }}
+        </Message>
       </div>
     </div>
     <div class="flex flex-col gap-2">
       <label for="kit_description">Description</label>
-      <Textarea
-        id="kit_description"
-        v-model.trim="kit.description"
-        :rows="5"
-        auto-resize
-      />
+      <Textarea id="kit_description" name="description" :rows="5" auto-resize />
     </div>
     <div class="flex items-center gap-2">
-      <Checkbox v-model="kit.cancelled" input-id="kit_cancelled" binary />
+      <Checkbox name="cancelled" input-id="kit_cancelled" binary />
       <label for="kit_cancelled">Cancelled</label>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="onSubmit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers'
+import { z } from 'zod'
+
 const emit = defineEmits(['onSuccess'])
 
 const { metadata, isEdit } = defineProps({
@@ -98,21 +135,29 @@ const kit = ref({
   name: '',
   img: '',
   profile_keycap_id: `${route.params.profile}/${route.params.keycap}`,
+  cancelled: false,
 })
 
 onBeforeMount(() => {
   Object.assign(kit.value, metadata)
 })
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-//   qty: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
-//   price: [{ required: false, type: 'number', trigger: ['change', 'blur'] }],
-//   img: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-//   description: [{ type: 'string', trigger: ['change', 'blur'] }],
-// })
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().min(1),
+      qty: z.number().nullish(),
+      price: z.number().nullish(),
+      img: z.string().url().nullish().or(z.string().min(0).max(0)),
+      // description: z.string(),
+      cancelled: z.boolean().catch(false),
+    }),
+  ),
+)
 
-const onSubmit = () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   $fetch(`/api/keycaps/${kit.value.profile_keycap_id}/kits`, {
     method: 'post',
     body: kit.value,

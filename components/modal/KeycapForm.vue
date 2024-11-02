@@ -1,30 +1,42 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="keycap"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="keycap_name">Name</label>
         <IconField>
           <InputIcon class="pi pi-pencil" />
 
-          <InputText
-            id="keycap_name"
-            v-model.trim="keycap.name"
-            type="text"
-            fluid
-          />
+          <InputText id="keycap_name" name="name" type="text" fluid />
         </IconField>
+        <Message
+          v-if="$form.name?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.name.error.message }}
+        </Message>
       </div>
       <div class="flex flex-col gap-2">
         <label for="keycap_designer">Designer</label>
         <IconField>
           <InputIcon class="pi pi-user" />
-          <InputText
-            id="keycap_designer"
-            v-model.trim="keycap.designer"
-            type="text"
-            fluid
-          />
+          <InputText id="keycap_designer" name="designer" type="text" fluid />
         </IconField>
+        <Message
+          v-if="$form.designer?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.designer.error.message }}
+        </Message>
       </div>
     </div>
     <div class="grid grid-cols-2 gap-2">
@@ -32,7 +44,7 @@
         <label for="keycap_profile">Profile</label>
         <Select
           id="keycap_profile"
-          v-model="keycap.profile_id"
+          name="profile_id"
           option-label="label"
           option-value="value"
           :options="
@@ -47,55 +59,69 @@
         <label for="keycap_sculpt">Sculpt</label>
         <IconField>
           <InputIcon class="pi pi-objects-column" />
-          <InputText
-            id="keycap_sculpt"
-            v-model.trim="keycap.sculpt"
-            type="text"
-            fluid
-          />
+          <InputText id="keycap_sculpt" name="sculpt" type="text" fluid />
         </IconField>
+        <Message
+          v-if="$form.sculpt?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.sculpt.error.message }}
+        </Message>
       </div>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_url">URL</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-
-        <InputText id="keycap_url" v-model.trim="keycap.url" type="url" fluid />
+        <InputText id="keycap_url" name="url" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.url?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.url.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_render">Render</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-
-        <InputText
-          id="keycap_render"
-          v-model.trim="keycap.render_img"
-          type="url"
-          fluid
-        />
+        <InputText id="keycap_render" name="render_img" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.render_img?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.render_img.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_cover">Cover</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-
-        <InputText
-          id="keycap_cover"
-          v-model.trim="keycap.cover_img"
-          type="url"
-          fluid
-        />
+        <InputText id="keycap_cover" name="cover_img" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.cover_img?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.cover_img.error.message }}
+      </Message>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="keycap_status">Status</label>
         <Select
           id="keycap_status"
-          v-model="keycap.status"
+          name="status"
           :options="Object.keys(keycapStatuses)"
         />
       </div>
@@ -118,47 +144,53 @@
       <label for="keycap_graph">Order Graph</label>
       <IconField>
         <InputIcon class="pi pi-chart-bar" />
-
-        <InputText
-          id="keycap_graph"
-          v-model.trim="keycap.order_graph"
-          type="url"
-          fluid
-        />
+        <InputText id="keycap_graph" name="order_graph" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.order_graph?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.order_graph.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_history">Order History</label>
       <IconField>
         <InputIcon class="pi pi-chart-line" />
-
-        <InputText
-          id="keycap_history"
-          v-model.trim="keycap.order_history"
-          type="url"
-          fluid
-        />
+        <InputText id="keycap_history" name="order_history" type="url" fluid />
       </IconField>
+      <Message
+        v-if="$form.order_history?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.order_history.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="keycap_description">Description</label>
       <Textarea
         id="keycap_description"
-        v-model.trim="keycap.description"
+        name="description"
         :rows="5"
         auto-resize
       />
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="onSubmit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers'
 import slugify from 'slugify'
+import { z } from 'zod'
 
 const emit = defineEmits(['onSuccess'])
 
@@ -197,40 +229,30 @@ onBeforeMount(() => {
 
 const ic = computed(() => keycap.value.status === 'Interest Check')
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-//   designer: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
-//   sculpt: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
-//   profile_id: [
-//     {
-//       required: true,
-//       type: 'enum',
-//       enum: Object.keys(manufacturers),
-//       trigger: ['change', 'blur'],
-//     },
-//   ],
-//   url: [{ required: true, type: 'url', trigger: ['change', 'blur'] }],
-//   render_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
-//   cover_img: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
-//   ic_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
-//   start_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
-//   end_date: [{ required: false, type: 'date', trigger: ['change', 'blur'] }],
-//   status: [
-//     {
-//       required: false,
-//       type: 'enum',
-//       enum: Object.keys(keycapStatuses),
-//       trigger: ['change', 'blur'],
-//     },
-//   ],
-//   order_graph: [{ required: false, type: 'url', trigger: ['change', 'blur'] }],
-//   order_history: [
-//     { required: false, type: 'url', trigger: ['change', 'blur'] },
-//   ],
-//   description: [{ type: 'string', trigger: ['change', 'blur'] }],
-// })
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().min(1),
+      designer: z.string(),
+      sculpt: z.string(),
+      profile_id: z.enum(Object.keys(manufacturers)),
+      url: z.string().url().nullish().or(z.string().min(0).max(0)),
+      render_img: z.string().url().nullish().or(z.string().min(0).max(0)),
+      cover_img: z.string().url().nullish().or(z.string().min(0).max(0)),
+      ic_date: z.date(),
+      start_date: z.date(),
+      end_date: z.date(),
+      status: z.enum(Object.keys(keycapStatuses)).nullish(),
+      order_graph: z.string().url().nullish().or(z.string().min(0).max(0)),
+      order_history: z.string().url().nullish().or(z.string().min(0).max(0)),
+      description: z.string(),
+    }),
+  ),
+)
 
-const onSubmit = async () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   const slug = isEdit
     ? keycap.value.id
     : slugify(keycap.value.name, { lower: true })

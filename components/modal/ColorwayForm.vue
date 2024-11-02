@@ -1,46 +1,73 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="colorway"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="flex flex-col gap-2">
       <label for="colorway_name">Name</label>
-      <InputText id="colorway_name" v-model.trim="colorway.name" type="text" />
+      <InputText id="colorway_name" name="name" type="text" />
+      <Message
+        v-if="$form.name?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.name.error.message }}
+      </Message>
     </div>
     <div class="grid grid-cols-4 gap-2">
       <div class="col-span-2 flex flex-col gap-2">
         <label for="colorway_release">Release</label>
-        <InputText
-          id="colorway_release"
-          v-model.trim="colorway.release"
-          type="text"
-        />
+        <InputText id="colorway_release" name="release" type="text" />
+        <Message
+          v-if="$form.release?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.release.error.message }}
+        </Message>
       </div>
       <div class="col-span-1 flex flex-col gap-2">
         <label for="colorway_qty">Quantity</label>
-        <InputText id="colorway_qty" v-model="colorway.qty" v-keyfilter.num />
+        <InputNumber id="colorway_qty" name="qty" :use-grouping="false" fluid />
+        <Message
+          v-if="$form.qty?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.qty.error.message }}
+        </Message>
       </div>
       <div class="col-span-1 flex flex-col gap-2">
         <label for="colorway_order">Order</label>
-        <InputText
+        <InputNumber
           id="colorway_order"
-          v-model="colorway.order"
-          v-keyfilter.num
+          name="order"
+          :use-grouping="false"
+          fluid
         />
+        <Message
+          v-if="$form.order?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.order.error.message }}
+        </Message>
       </div>
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex items-center gap-2">
-        <Checkbox
-          v-model="colorway.giveaway"
-          input-id="colorway_giveaway"
-          binary
-        />
+        <Checkbox name="giveaway" input-id="colorway_giveaway" binary />
         <label for="colorway_giveaway">Giveaway</label>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox
-          v-model="colorway.commissioned"
-          input-id="colorway_commission"
-          binary
-        />
+        <Checkbox name="commissioned" input-id="colorway_commission" binary />
         <label for="colorway_commission">Commission</label>
       </div>
     </div>
@@ -51,31 +78,26 @@
       <div class="flex flex-col gap-2">
         <label for="colorway_price">Price</label>
         <InputGroup>
-          <Select v-model="colorway.currency" :options="currencies" />
-          <InputText
-            id="colorway_price"
-            v-model="colorway.price"
-            v-keyfilter.money
-          />
+          <Select name="currency" :options="currencies" />
+          <InputNumber id="colorway_price" name="price" :use-grouping="false" />
+          <Message
+            v-if="$form.price?.invalid"
+            severity="error"
+            size="small"
+            variant="simple"
+          >
+            {{ $form.price.error.message }}
+          </Message>
         </InputGroup>
       </div>
       <div class="flex flex-col gap-2">
         <label for="colorway_sale_type">Sale Type</label>
-        <Select
-          id="colorway_sale_type"
-          v-model="colorway.sale_type"
-          :options="['Raffle', 'FCFS', 'Fulfillment']"
-        />
+        <Select id="colorway_sale_type" name="sale_type" :options="formats" />
       </div>
     </div>
     <div class="flex flex-col gap-2">
       <label for="colorway_desc">Description</label>
-      <Textarea
-        id="colorway_desc"
-        v-model.trim="colorway.description"
-        :rows="5"
-        auto-resize
-      />
+      <Textarea id="colorway_desc" name="description" :rows="5" auto-resize />
     </div>
     <div class="flex flex-col gap-2">
       <label for="colorway_story">Image</label>
@@ -86,14 +108,17 @@
       </FileUpload>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="onSubmit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers'
+import { z } from 'zod'
+
 const emit = defineEmits(['onSuccess'])
 
 const { metadata } = defineProps({
@@ -106,6 +131,7 @@ const { metadata } = defineProps({
 const toast = useToast()
 
 const currencies = ['USD', 'EUR', 'CAD', 'SGD', 'MYR', 'CNY', 'VND']
+const formats = ['Raffle', 'FCFS', 'Fulfillment']
 
 const route = useRoute()
 const colorway = ref({
@@ -113,29 +139,29 @@ const colorway = ref({
   img: '',
 })
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-//   release: [{ type: 'string', trigger: ['change', 'blur'] }],
-//   qty: [{ type: 'number', trigger: ['change', 'blur'] }],
-//   order: [{ required: true, type: 'number', trigger: ['change', 'blur'] }],
-//   currency: [{ type: 'enum', enum: currencies, trigger: ['change', 'blur'] }],
-//   price: [{ type: 'number', trigger: ['change', 'blur'] }],
-//   sale_type: [
-//     {
-//       type: 'enum',
-//       enum: ['Raffle', 'FCFS', 'Fulfillment'],
-//       trigger: ['change', 'blur'],
-//     },
-//   ],
-//   description: [{ type: 'string', trigger: ['change', 'blur'] }],
-//   img: [{ required: true, type: 'url' }],
-// })
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().nullish(),
+      release: z.string().nullish(),
+      qty: z.number().nullish(),
+      order: z.number(),
+      currency: z.enum(currencies).nullish(),
+      price: z.number().nullish(),
+      sale_type: z.enum(formats).nullish(),
+      description: z.string(),
+      img: z.string().url(),
+    }),
+  ),
+)
 
 onBeforeMount(() => {
   Object.assign(colorway.value, metadata)
 })
 
-const onSubmit = async () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   $fetch(
     `/api/makers/${route.params.maker}/sculpts/${route.params.sculpt}/colorways`,
     {
