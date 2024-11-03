@@ -8,7 +8,12 @@
   >
     <div class="flex flex-col gap-2">
       <label for="colorway_name">Name</label>
-      <InputText id="colorway_name" name="name" type="text" />
+      <InputText
+        id="colorway_name"
+        v-model.trim="colorway.name"
+        name="name"
+        type="text"
+      />
       <Message
         v-if="$form.name?.invalid"
         severity="error"
@@ -21,7 +26,12 @@
     <div class="grid grid-cols-4 gap-2">
       <div class="col-span-2 flex flex-col gap-2">
         <label for="colorway_release">Release</label>
-        <InputText id="colorway_release" name="release" type="text" />
+        <InputText
+          id="colorway_release"
+          v-model.trim="colorway.release"
+          name="release"
+          type="text"
+        />
         <Message
           v-if="$form.release?.invalid"
           severity="error"
@@ -33,7 +43,13 @@
       </div>
       <div class="col-span-1 flex flex-col gap-2">
         <label for="colorway_qty">Quantity</label>
-        <InputNumber id="colorway_qty" name="qty" :use-grouping="false" fluid />
+        <InputNumber
+          id="colorway_qty"
+          v-model.number="colorway.qty"
+          name="qty"
+          :use-grouping="false"
+          fluid
+        />
         <Message
           v-if="$form.qty?.invalid"
           severity="error"
@@ -47,6 +63,7 @@
         <label for="colorway_order">Order</label>
         <InputNumber
           id="colorway_order"
+          v-model.number="colorway.order"
           name="order"
           :use-grouping="false"
           fluid
@@ -63,11 +80,21 @@
     </div>
     <div class="grid grid-cols-2 gap-2">
       <div class="flex items-center gap-2">
-        <Checkbox name="giveaway" input-id="colorway_giveaway" binary />
+        <Checkbox
+          v-model="colorway.giveaway"
+          name="giveaway"
+          input-id="colorway_giveaway"
+          binary
+        />
         <label for="colorway_giveaway">Giveaway</label>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox name="commissioned" input-id="colorway_commission" binary />
+        <Checkbox
+          v-model="colorway.commissioned"
+          name="commissioned"
+          input-id="colorway_commission"
+          binary
+        />
         <label for="colorway_commission">Commission</label>
       </div>
     </div>
@@ -78,8 +105,18 @@
       <div class="flex flex-col gap-2">
         <label for="colorway_price">Price</label>
         <InputGroup>
-          <Select name="currency" :options="currencies" />
-          <InputNumber id="colorway_price" name="price" :use-grouping="false" />
+          <Select
+            v-model="colorway.currency"
+            name="currency"
+            :options="currencies"
+          />
+          <InputNumber
+            id="colorway_price"
+            v-model="colorway.price"
+            v-keyfilter.money
+            name="price"
+            :use-grouping="false"
+          />
           <Message
             v-if="$form.price?.invalid"
             severity="error"
@@ -92,12 +129,23 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="colorway_sale_type">Sale Type</label>
-        <Select id="colorway_sale_type" name="sale_type" :options="formats" />
+        <Select
+          id="colorway_sale_type"
+          v-model="colorway.sale_type"
+          name="sale_type"
+          :options="formats"
+        />
       </div>
     </div>
     <div class="flex flex-col gap-2">
       <label for="colorway_desc">Description</label>
-      <Textarea id="colorway_desc" name="description" :rows="5" auto-resize />
+      <Textarea
+        id="colorway_desc"
+        v-model.trim="colorway.description"
+        name="description"
+        :rows="5"
+        auto-resize
+      />
     </div>
     <div class="flex flex-col gap-2">
       <label for="colorway_story">Image</label>
@@ -149,8 +197,8 @@ const resolver = ref(
       currency: z.enum(currencies).nullish(),
       price: z.number().nullish(),
       sale_type: z.enum(formats).nullish(),
-      description: z.string(),
-      img: z.string().url(),
+      // description: z.string().nullish(),
+      // img: z.string().url(),
     }),
   ),
 )

@@ -10,7 +10,13 @@
       <label for="maker_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-pencil" />
-        <InputText id="maker_name" name="name" type="text" fluid />
+        <InputText
+          id="maker_name"
+          v-model.trim="maker.name"
+          name="name"
+          type="text"
+          fluid
+        />
         <InputIcon
           v-if="maker.verified"
           v-tooltip="'Verified'"
@@ -28,7 +34,12 @@
     </div>
 
     <div v-if="isAdmin" class="flex items-center gap-2">
-      <Checkbox name="verified" input-id="maker_verified" binary />
+      <Checkbox
+        v-model="maker.verified"
+        name="verified"
+        input-id="maker_verified"
+        binary
+      />
       <label for="maker_verified">Verified</label>
     </div>
 
@@ -39,6 +50,7 @@
           <InputIcon class="pi pi-flag" />
           <InputText
             id="maker_nationality"
+            v-model.trim="maker.nationality"
             name="nationality"
             type="text"
             fluid
@@ -60,6 +72,7 @@
           <InputIcon class="pi pi-calendar" />
           <InputNumber
             id="maker_founded"
+            v-model.trim="maker.founded"
             name="founded"
             :use-grouping="false"
             fluid
@@ -112,7 +125,13 @@
       <label for="maker_website">Website</label>
       <IconField>
         <InputIcon class="pi pi-globe" />
-        <InputText id="maker_website" name="website" type="url" fluid />
+        <InputText
+          id="maker_website"
+          v-model.trim="maker.website"
+          name="website"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.website?.invalid"
@@ -128,7 +147,13 @@
       <label for="maker_instagram">Instagram</label>
       <IconField>
         <InputIcon class="pi pi-instagram" />
-        <InputText id="maker_instagram" name="instagram" type="url" fluid />
+        <InputText
+          id="maker_instagram"
+          v-model.trim="maker.instagram"
+          name="instagram"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.instagram?.invalid"
@@ -144,7 +169,13 @@
       <label for="maker_discord">Discord</label>
       <IconField>
         <InputIcon class="pi pi-discord" />
-        <InputText id="maker_discord" name="discord" type="url" fluid />
+        <InputText
+          id="maker_discord"
+          v-model.trim="maker.discord"
+          name="discord"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.discord?.invalid"
@@ -162,6 +193,7 @@
         <InputIcon class="pi pi-globe" />
         <InputText
           id="maker_artisancollector"
+          v-model.trim="maker.artisancollector"
           name="artisancollector"
           type="url"
           fluid
@@ -179,7 +211,13 @@
 
     <div class="flex flex-col gap-2">
       <label for="maker_intro">Intro</label>
-      <Textarea id="maker_intro" name="intro" :rows="5" auto-resize />
+      <Textarea
+        id="maker_intro"
+        v-model.trim="maker.intro"
+        name="intro"
+        :rows="5"
+        auto-resize
+      />
     </div>
 
     <div class="flex flex-col gap-2">

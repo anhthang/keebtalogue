@@ -12,7 +12,13 @@
         <IconField>
           <InputIcon class="pi pi-pencil" />
 
-          <InputText id="keycap_name" name="name" type="text" fluid />
+          <InputText
+            id="keycap_name"
+            v-model.trim="keycap.name"
+            name="name"
+            type="text"
+            fluid
+          />
         </IconField>
         <Message
           v-if="$form.name?.invalid"
@@ -27,7 +33,13 @@
         <label for="keycap_designer">Designer</label>
         <IconField>
           <InputIcon class="pi pi-user" />
-          <InputText id="keycap_designer" name="designer" type="text" fluid />
+          <InputText
+            id="keycap_designer"
+            v-model.trim="keycap.designer"
+            name="designer"
+            type="text"
+            fluid
+          />
         </IconField>
         <Message
           v-if="$form.designer?.invalid"
@@ -44,6 +56,7 @@
         <label for="keycap_profile">Profile</label>
         <Select
           id="keycap_profile"
+          v-model="keycap.profile_id"
           name="profile_id"
           option-label="label"
           option-value="value"
@@ -59,7 +72,13 @@
         <label for="keycap_sculpt">Sculpt</label>
         <IconField>
           <InputIcon class="pi pi-objects-column" />
-          <InputText id="keycap_sculpt" name="sculpt" type="text" fluid />
+          <InputText
+            id="keycap_sculpt"
+            v-model.trim="keycap.sculpt"
+            name="sculpt"
+            type="text"
+            fluid
+          />
         </IconField>
         <Message
           v-if="$form.sculpt?.invalid"
@@ -75,7 +94,13 @@
       <label for="keycap_url">URL</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-        <InputText id="keycap_url" name="url" type="url" fluid />
+        <InputText
+          id="keycap_url"
+          v-model.trim="keycap.url"
+          name="url"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.url?.invalid"
@@ -90,7 +115,13 @@
       <label for="keycap_render">Render</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-        <InputText id="keycap_render" name="render_img" type="url" fluid />
+        <InputText
+          id="keycap_render"
+          v-model.trim="keycap.render_img"
+          name="render_img"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.render_img?.invalid"
@@ -105,7 +136,13 @@
       <label for="keycap_cover">Cover</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-        <InputText id="keycap_cover" name="cover_img" type="url" fluid />
+        <InputText
+          id="keycap_cover"
+          v-model.trim="keycap.cover_img"
+          name="cover_img"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.cover_img?.invalid"
@@ -121,6 +158,7 @@
         <label for="keycap_status">Status</label>
         <Select
           id="keycap_status"
+          v-model="keycap.status"
           name="status"
           :options="Object.keys(keycapStatuses)"
         />
@@ -144,7 +182,13 @@
       <label for="keycap_graph">Order Graph</label>
       <IconField>
         <InputIcon class="pi pi-chart-bar" />
-        <InputText id="keycap_graph" name="order_graph" type="url" fluid />
+        <InputText
+          id="keycap_graph"
+          v-model.trim="keycap.order_graph"
+          name="order_graph"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.order_graph?.invalid"
@@ -159,7 +203,13 @@
       <label for="keycap_history">Order History</label>
       <IconField>
         <InputIcon class="pi pi-chart-line" />
-        <InputText id="keycap_history" name="order_history" type="url" fluid />
+        <InputText
+          id="keycap_history"
+          v-model.trim="keycap.order_history"
+          name="order_history"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.order_history?.invalid"
@@ -174,6 +224,7 @@
       <label for="keycap_description">Description</label>
       <Textarea
         id="keycap_description"
+        v-model.trim="keycap.description"
         name="description"
         :rows="5"
         auto-resize
@@ -233,8 +284,8 @@ const resolver = ref(
   zodResolver(
     z.object({
       name: z.string().min(1),
-      designer: z.string(),
-      sculpt: z.string(),
+      designer: z.string().nullish(),
+      sculpt: z.string().nullish(),
       profile_id: z.enum(Object.keys(manufacturers)),
       url: z.string().url().nullish().or(z.string().min(0).max(0)),
       render_img: z.string().url().nullish().or(z.string().min(0).max(0)),
@@ -245,7 +296,7 @@ const resolver = ref(
       status: z.enum(Object.keys(keycapStatuses)).nullish(),
       order_graph: z.string().url().nullish().or(z.string().min(0).max(0)),
       order_history: z.string().url().nullish().or(z.string().min(0).max(0)),
-      description: z.string(),
+      // description: z.string(),
     }),
   ),
 )

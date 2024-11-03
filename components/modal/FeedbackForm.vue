@@ -10,7 +10,13 @@
       <label for="feedback_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-user" />
-        <InputText id="feedback_name" name="name" type="text" fluid />
+        <InputText
+          id="feedback_name"
+          v-model.trim="feedback.name"
+          name="name"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.name?.invalid"
@@ -25,6 +31,7 @@
       <label for="feedback_message">Message</label>
       <Textarea
         id="feedback_message"
+        v-model.trim="feedback.message"
         name="message"
         placeholder="What can we do to make your experience even better?"
         :rows="5"
@@ -74,6 +81,7 @@
         <InputIcon class="pi pi-inbox" />
         <InputText
           id="feedback_email"
+          v-model.trim="feedback.email"
           name="email"
           placeholder="If you prefer direct communication, leave your contact info here to get started."
           type="text"

@@ -10,7 +10,13 @@
       <label for="sculpt_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-pencil" />
-        <InputText id="sculpt_name" name="name" type="text" fluid />
+        <InputText
+          id="sculpt_name"
+          v-model.trim="sculpt.name"
+          name="name"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.name?.invalid"
@@ -27,7 +33,13 @@
         <label for="sculpt_release">Release</label>
         <IconField>
           <InputIcon class="pi pi-calendar" />
-          <InputText id="sculpt_release" name="release" type="text" fluid />
+          <InputText
+            id="sculpt_release"
+            v-model.trim="sculpt.release"
+            name="release"
+            type="text"
+            fluid
+          />
         </IconField>
         <Message
           v-if="$form.release?.invalid"
@@ -40,18 +52,33 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="sculpt_profile">Profile</label>
-        <Select id="sculpt_profile" name="profile" :options="profiles" />
+        <Select
+          id="sculpt_profile"
+          v-model="sculpt.profile"
+          name="profile"
+          :options="profiles"
+        />
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="sculpt_cast">Cast</label>
-        <Select id="sculpt_cast" name="cast" :options="casts" />
+        <Select
+          id="sculpt_cast"
+          v-model="sculpt.cast"
+          name="cast"
+          :options="casts"
+        />
       </div>
       <div class="flex flex-col gap-2">
         <label for="sculpt_design">Design</label>
-        <Select id="sculpt_design" name="design" :options="designs" />
+        <Select
+          id="sculpt_design"
+          v-model="sculpt.design"
+          name="design"
+          :options="designs"
+        />
       </div>
     </div>
 
@@ -59,7 +86,13 @@
       <label for="sculpt_url">URL</label>
       <IconField>
         <InputIcon class="pi pi-globe" />
-        <InputText id="sculpt_url" name="href" type="url" fluid />
+        <InputText
+          id="sculpt_url"
+          v-model.trim="sculpt.href"
+          name="href"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.href?.invalid"
@@ -73,7 +106,13 @@
 
     <div class="flex flex-col gap-2">
       <label for="sculpt_story">Storyline</label>
-      <Textarea id="sculpt_story" name="story" :rows="5" auto-resize />
+      <Textarea
+        id="sculpt_story"
+        v-model="sculpt.story"
+        name="story"
+        :rows="5"
+        auto-resize
+      />
     </div>
 
     <div class="flex flex-col gap-2">
@@ -120,7 +159,7 @@ const resolver = ref(
   zodResolver(
     z.object({
       name: z.string().min(1),
-      release: z.string(),
+      release: z.string().nullish(),
       profile: z.enum(profiles).nullish(),
       cast: z.enum(casts).nullish(),
       design: z.enum(designs).nullish(),

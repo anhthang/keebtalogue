@@ -10,7 +10,13 @@
       <label for="collection_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-pencil" />
-        <InputText id="collection_name" name="name" type="text" fluid />
+        <InputText
+          id="collection_name"
+          v-model.trim="collection.name"
+          name="name"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.name?.invalid"
@@ -24,6 +30,7 @@
     <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
       <SelectButton
+        v-model="collection.published"
         name="published"
         option-label="label"
         option-value="value"
@@ -48,6 +55,7 @@
     </div>
     <div v-if="$form.published?.value" class="flex flex-col gap-2">
       <SelectButton
+        v-model="collection.type"
         name="type"
         option-label="label"
         option-value="value"
@@ -90,7 +98,13 @@
       <label for="collection_message">Message</label>
       <IconField>
         <InputIcon class="pi pi-comments" />
-        <InputText id="collection_message" name="message" type="text" fluid />
+        <InputText
+          id="collection_message"
+          v-model.trim="collection.message"
+          name="message"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message severity="secondary" size="small" variant="simple">
         Describe what you're offering and/or help others understand what types
@@ -105,7 +119,13 @@
       <label for="collection_contact">Contact</label>
       <IconField>
         <InputIcon class="pi pi-discord" />
-        <InputText id="collection_contact" name="contact" type="text" fluid />
+        <InputText
+          id="collection_contact"
+          v-model.trim="collection.contact"
+          name="contact"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message severity="secondary" size="small" variant="simple">
         Please enter your Discord username so that buyer/seller can reach you

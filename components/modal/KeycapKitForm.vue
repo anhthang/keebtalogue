@@ -10,7 +10,13 @@
       <label for="kit_name">Name</label>
       <IconField>
         <InputIcon class="pi pi-pencil" />
-        <InputText id="kit_name" name="name" type="text" fluid />
+        <InputText
+          id="kit_name"
+          v-model.trim="kit.name"
+          name="name"
+          type="text"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.name?.invalid"
@@ -25,7 +31,13 @@
       <label for="kit_img">Image</label>
       <IconField>
         <InputIcon class="pi pi-image" />
-        <InputText id="kit_img" name="img" type="url" fluid />
+        <InputText
+          id="kit_img"
+          v-model.trim="kit.img"
+          name="img"
+          type="url"
+          fluid
+        />
       </IconField>
       <Message
         v-if="$form.img?.invalid"
@@ -43,6 +55,7 @@
           <InputIcon class="pi pi-tag" />
           <InputNumber
             id="kit_price"
+            v-model="kit.price"
             v-keyfilter.money
             name="price"
             :use-grouping="false"
@@ -62,7 +75,13 @@
         <label for="kit_qty">Quantity</label>
         <IconField>
           <InputIcon class="pi pi-hashtag" />
-          <InputNumber id="kit_qty" name="qty" :use-grouping="false" fluid />
+          <InputNumber
+            id="kit_qty"
+            v-model.number="kit.qty"
+            name="qty"
+            :use-grouping="false"
+            fluid
+          />
         </IconField>
         <Message
           v-if="$form.qty?.invalid"
@@ -76,10 +95,21 @@
     </div>
     <div class="flex flex-col gap-2">
       <label for="kit_description">Description</label>
-      <Textarea id="kit_description" name="description" :rows="5" auto-resize />
+      <Textarea
+        id="kit_description"
+        v-model="kit.description"
+        name="description"
+        :rows="5"
+        auto-resize
+      />
     </div>
     <div class="flex items-center gap-2">
-      <Checkbox name="cancelled" input-id="kit_cancelled" binary />
+      <Checkbox
+        v-model="kit.cancelled"
+        name="cancelled"
+        input-id="kit_cancelled"
+        binary
+      />
       <label for="kit_cancelled">Cancelled</label>
     </div>
     <div class="flex flex-col gap-2">
