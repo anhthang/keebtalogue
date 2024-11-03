@@ -191,7 +191,7 @@
 </template>
 
 <script setup>
-import { zodResolver } from '@primevue/forms/resolvers'
+import { zodResolver } from '@primevue/forms/resolvers/zod'
 import slugify from 'slugify'
 import { z } from 'zod'
 

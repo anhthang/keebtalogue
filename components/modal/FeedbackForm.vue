@@ -101,7 +101,7 @@
 </template>
 
 <script setup>
-import { zodResolver } from '@primevue/forms/resolvers'
+import { zodResolver } from '@primevue/forms/resolvers/zod'
 import { z } from 'zod'
 
 const emit = defineEmits(['onSuccess'])
