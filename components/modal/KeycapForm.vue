@@ -165,7 +165,12 @@
       </div>
       <div class="flex flex-col gap-2">
         <label for="keycap_ic">IC Date</label>
-        <DatePicker v-model="keycap.ic_date" show-icon icon-display="input" />
+        <DatePicker
+          v-model="keycap.ic_date"
+          show-icon
+          icon-display="input"
+          date-format="dd M yy"
+        />
       </div>
     </div>
     <div v-if="!ic" class="flex flex-col gap-2">
@@ -176,6 +181,7 @@
         selection-mode="range"
         show-icon
         icon-display="input"
+        date-format="dd M yy"
       />
     </div>
     <div class="flex flex-col gap-2">

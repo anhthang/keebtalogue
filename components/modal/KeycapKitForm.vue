@@ -97,7 +97,7 @@
       <label for="kit_description">Description</label>
       <Textarea
         id="kit_description"
-        v-model="kit.description"
+        v-model.trim="kit.description"
         name="description"
         :rows="5"
         auto-resize

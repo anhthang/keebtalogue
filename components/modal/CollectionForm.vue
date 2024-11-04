@@ -40,7 +40,7 @@
         ]"
       />
       <Message
-        v-if="$form.published?.value"
+        v-if="collection.published"
         severity="warn"
         size="small"
         variant="simple"
@@ -53,7 +53,7 @@
         prying eyes.
       </Message>
     </div>
-    <div v-if="$form.published?.value" class="flex flex-col gap-2">
+    <div v-if="collection.published" class="flex flex-col gap-2">
       <SelectButton
         v-model="collection.type"
         name="type"
@@ -66,7 +66,7 @@
         ]"
       />
       <Message
-        v-if="$form.type?.value === 'share'"
+        v-if="collection.type === 'share'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -75,7 +75,7 @@
         with link.
       </Message>
       <Message
-        v-if="$form.type?.value === 'buy'"
+        v-if="collection.type === 'buy'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -83,7 +83,7 @@
         On the hunt! Any leads appreciated!
       </Message>
       <Message
-        v-if="$form.type?.value === 'sell'"
+        v-if="collection.type === 'sell'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -92,7 +92,7 @@
       </Message>
     </div>
     <div
-      v-if="$form.published?.value && $form.type?.value !== 'share'"
+      v-if="collection.published && collection.type !== 'share'"
       class="flex flex-col gap-2"
     >
       <label for="collection_message">Message</label>
@@ -113,7 +113,7 @@
       </Message>
     </div>
     <div
-      v-if="$form.published?.value && $form.type?.value !== 'share'"
+      v-if="collection.published && collection.type !== 'share'"
       class="flex flex-col gap-2"
     >
       <label for="collection_contact">Contact</label>

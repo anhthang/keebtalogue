@@ -108,7 +108,7 @@
       <label for="sculpt_story">Storyline</label>
       <Textarea
         id="sculpt_story"
-        v-model="sculpt.story"
+        v-model.trim="sculpt.story"
         name="story"
         :rows="5"
         auto-resize
