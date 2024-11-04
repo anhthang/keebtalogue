@@ -50,6 +50,7 @@
         class="flex items-center flex-1 overflow-hidden"
         :pt="{
           header: 'w-full h-44 md:h-60',
+          body: 'items-center',
           caption: 'flex items-center',
           title: 'w-40 text-center truncate',
         }"

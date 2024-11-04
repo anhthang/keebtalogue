@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="feedback"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="flex flex-col gap-2">
       <label for="feedback_name">Name</label>
       <IconField>
@@ -7,24 +13,42 @@
         <InputText
           id="feedback_name"
           v-model.trim="feedback.name"
+          name="name"
           type="text"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.name?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.name.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="feedback_message">Message</label>
       <Textarea
         id="feedback_message"
         v-model.trim="feedback.message"
+        name="message"
         placeholder="What can we do to make your experience even better?"
         :rows="5"
         auto-resize
       />
-      <span class="text-sm text-yellow-600 dark:text-yellow-500">
+      <Message
+        v-if="$form.message?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.message.error.message }}
+      </Message>
+      <Message severity="warn" size="small" variant="simple">
         Please don't include any sensitive information like passwords, or
         personal details.
-      </span>
+      </Message>
     </div>
 
     <Divider align="center" pt:content:class="text-xl">
@@ -46,9 +70,9 @@
           disabled
         />
       </IconField>
-      <span class="text-sm">
+      <Message severity="secondary" size="small" variant="simple">
         Report bugs, request features, or discuss ideas on our GitHub repository
-      </span>
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -58,24 +82,36 @@
         <InputText
           id="feedback_email"
           v-model.trim="feedback.email"
+          name="email"
           placeholder="If you prefer direct communication, leave your contact info here to get started."
           type="text"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.email?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.email.error.message }}
+      </Message>
     </div>
 
     Your feedback and support are invaluable to us. Thank you for your help!
 
     <div class="flex flex-col gap-2">
-      <Button label="Send" @click="onSubmit" />
+      <Button label="Send" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers/zod'
+import { z } from 'zod'
+
 const emit = defineEmits(['onSuccess'])
 
 const toast = useToast()
@@ -85,13 +121,19 @@ const feedback = ref({
   message: '',
 })
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
-//   message: [{ required: true, type: 'string', trigger: ['change', 'blue'] }],
-//   email: [{ type: 'string', trigger: ['change', 'blue'] }],
-// })
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().min(1),
+      message: z.string().min(1),
+      email: z.string().email().nullish().or(z.string().min(0).max(0)), // to allow empty string
+    }),
+  ),
+)
 
-const onSubmit = async () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   await $fetch('/api/feedbacks', {
     method: 'post',
     body: feedback.value,

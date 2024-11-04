@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="maker"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="flex flex-col gap-2">
       <label for="maker_name">Name</label>
       <IconField>
@@ -7,6 +13,7 @@
         <InputText
           id="maker_name"
           v-model.trim="maker.name"
+          name="name"
           type="text"
           fluid
         />
@@ -16,10 +23,23 @@
           class="pi pi-verified !text-[#22c55e] !dark:text-[#4ade80]"
         />
       </IconField>
+      <Message
+        v-if="$form.name?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.name.error.message }}
+      </Message>
     </div>
 
     <div v-if="isAdmin" class="flex items-center gap-2">
-      <Checkbox v-model="maker.verified" input-id="maker_verified" binary />
+      <Checkbox
+        v-model="maker.verified"
+        name="verified"
+        input-id="maker_verified"
+        binary
+      />
       <label for="maker_verified">Verified</label>
     </div>
 
@@ -31,22 +51,41 @@
           <InputText
             id="maker_nationality"
             v-model.trim="maker.nationality"
+            name="nationality"
             type="text"
             fluid
+            :maxlength="2"
           />
         </IconField>
+        <Message
+          v-if="$form.nationality?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.nationality.error.message }}
+        </Message>
       </div>
       <div class="flex flex-col gap-2">
         <label for="maker_founded">Founded</label>
         <IconField>
           <InputIcon class="pi pi-calendar" />
-          <InputText
+          <InputNumber
             id="maker_founded"
-            v-model="maker.founded"
-            v-keyfilter.num
+            v-model.trim="maker.founded"
+            name="founded"
+            :use-grouping="false"
             fluid
           />
         </IconField>
+        <Message
+          v-if="$form.founded?.invalid"
+          severity="error"
+          size="small"
+          variant="simple"
+        >
+          {{ $form.founded.error.message }}
+        </Message>
       </div>
     </div>
 
@@ -65,6 +104,14 @@
           @click="removeDocId(docId)"
         />
       </IconField>
+      <Message
+        v-if="$form.document_ids?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.document_ids.error.message }}
+      </Message>
       <Button
         severity="secondary"
         outlined
@@ -81,10 +128,19 @@
         <InputText
           id="maker_website"
           v-model.trim="maker.website"
+          name="website"
           type="url"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.website?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.website.error.message }}
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -94,10 +150,19 @@
         <InputText
           id="maker_instagram"
           v-model.trim="maker.instagram"
+          name="instagram"
           type="url"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.instagram?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.instagram.error.message }}
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -107,10 +172,19 @@
         <InputText
           id="maker_discord"
           v-model.trim="maker.discord"
+          name="discord"
           type="url"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.discord?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.discord.error.message }}
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -120,10 +194,19 @@
         <InputText
           id="maker_artisancollector"
           v-model.trim="maker.artisancollector"
+          name="artisancollector"
           type="url"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.artisancollector?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.artisancollector.error.message }}
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -131,21 +214,24 @@
       <Textarea
         id="maker_intro"
         v-model.trim="maker.intro"
+        name="intro"
         :rows="5"
         auto-resize
       />
     </div>
 
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="onSubmit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers/zod'
 import slugify from 'slugify'
+import { z } from 'zod'
 
 const emit = defineEmits(['onSuccess'])
 
@@ -173,23 +259,34 @@ onBeforeMount(() => {
   }
 })
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-//   nationality: [{ len: 2, trigger: ['change', 'blur'] }],
-//   founded: [{ required: false, trigger: ['change', 'blur'] }],
-//   // document_ids: [
-//   //   {
-//   //     required: true,
-//   //     type: 'array',
-//   //     defaultField: { type: 'string', required: true },
-//   //   },
-//   // ],
-//   website: [{ type: 'url', trigger: ['change', 'blur'] }],
-//   instagram: [{ type: 'url', trigger: ['change', 'blur'] }],
-//   discord: [{ type: 'url', trigger: ['change', 'blur'] }],
-//   artisancollector: [{ type: 'url', trigger: ['change', 'blur'] }],
-//   intro: [{ type: 'string', trigger: ['change', 'blur'] }],
-// })
+const discordInviteRegex = /discord\.gg\/[a-zA-Z0-9]+/
+const instagramRegex = /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9._-]+/
+
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().min(1),
+      nationality: z.string().toUpperCase().length(2).nullish(),
+      founded: z.number().nullish(),
+      document_ids: z.string().array(),
+      website: z.string().url().nullish().or(z.string().min(0).max(0)),
+      instagram: z
+        .string()
+        .url()
+        .regex(instagramRegex, 'Invalid Instagram profile URL')
+        .nullish()
+        .or(z.string().min(0).max(0)),
+      discord: z
+        .string()
+        .url()
+        .regex(discordInviteRegex, 'Invalid Discord invite link')
+        .nullish()
+        .or(z.string().min(0).max(0)),
+      artisancollector: z.string().url().nullish().or(z.string().min(0).max(0)),
+      // intro: z.string(),
+    }),
+  ),
+)
 
 const addDocId = () => {
   if (!Array.isArray(maker.value.document_ids)) {
@@ -205,7 +302,9 @@ const removeDocId = (docIdx) => {
   )
 }
 
-const onSubmit = async () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   const { sculpts, ...rest } = maker.value
 
   const makerId = isEdit ? rest.id : slugify(maker.value.name, { lower: true })

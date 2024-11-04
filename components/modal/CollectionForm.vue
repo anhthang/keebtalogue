@@ -1,5 +1,11 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <Form
+    v-slot="$form"
+    :initial-values="collection"
+    :resolver
+    class="flex flex-col gap-6"
+    @submit="onSubmit"
+  >
     <div class="flex flex-col gap-2">
       <label for="collection_name">Name</label>
       <IconField>
@@ -7,15 +13,25 @@
         <InputText
           id="collection_name"
           v-model.trim="collection.name"
+          name="name"
           type="text"
           fluid
         />
       </IconField>
+      <Message
+        v-if="$form.name?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.name.error.message }}
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
       <SelectButton
         v-model="collection.published"
+        name="published"
         option-label="label"
         option-value="value"
         :options="[
@@ -23,22 +39,24 @@
           { label: 'Public', value: true },
         ]"
       />
-      <span
+      <Message
         v-if="collection.published"
-        id="visibility-help"
-        class="text-sm text-yellow-600 dark:text-yellow-500"
+        severity="warn"
+        size="small"
+        variant="simple"
       >
         Anyone can now discover the treasures you've assembled in this public
         collection.
-      </span>
-      <span v-else id="visibility-help" class="text-sm">
+      </Message>
+      <Message v-else severity="secondary" size="small" variant="simple">
         Choosing private keeps this collection under lock and key, hidden from
         prying eyes.
-      </span>
+      </Message>
     </div>
     <div v-if="collection.published" class="flex flex-col gap-2">
       <SelectButton
         v-model="collection.type"
+        name="type"
         option-label="label"
         option-value="value"
         :options="[
@@ -47,28 +65,31 @@
           { label: 'Selling', value: 'sell' },
         ]"
       />
-      <span
+      <Message
         v-if="collection.type === 'share'"
-        id="visibility-help"
-        class="text-sm"
+        severity="secondary"
+        size="small"
+        variant="simple"
       >
         Not listed in the marketplace, just for your eyes (and your friends')
         with link.
-      </span>
-      <span
+      </Message>
+      <Message
         v-if="collection.type === 'buy'"
-        id="visibility-help"
-        class="text-sm"
+        severity="secondary"
+        size="small"
+        variant="simple"
       >
         On the hunt! Any leads appreciated!
-      </span>
-      <span
+      </Message>
+      <Message
         v-if="collection.type === 'sell'"
-        id="visibility-help"
-        class="text-sm"
+        severity="secondary"
+        size="small"
+        variant="simple"
       >
         Up for grabs!
-      </span>
+      </Message>
     </div>
     <div
       v-if="collection.published && collection.type !== 'share'"
@@ -80,15 +101,16 @@
         <InputText
           id="collection_message"
           v-model.trim="collection.message"
+          name="message"
           type="text"
           fluid
         />
       </IconField>
-      <span id="message-help" class="text-sm">
+      <Message severity="secondary" size="small" variant="simple">
         Describe what you're offering and/or help others understand what types
         of offers you are looking for. Your message should be applicable to many
         people using the marketplace, not just a specific person.
-      </span>
+      </Message>
     </div>
     <div
       v-if="collection.published && collection.type !== 'share'"
@@ -100,24 +122,28 @@
         <InputText
           id="collection_contact"
           v-model.trim="collection.contact"
+          name="contact"
           type="text"
           fluid
         />
       </IconField>
-      <span id="contact-help" severity="warn" class="text-sm">
+      <Message severity="secondary" size="small" variant="simple">
         Please enter your Discord username so that buyer/seller can reach you
         directly.
-      </span>
+      </Message>
     </div>
     <div class="flex flex-col gap-2">
-      <Button label="Save" @click="onSubmit" />
+      <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
 
     <Toast />
-  </div>
+  </Form>
 </template>
 
 <script setup>
+import { zodResolver } from '@primevue/forms/resolvers/zod'
+import { z } from 'zod'
+
 const emit = defineEmits(['onSuccess'])
 
 const { metadata, uid, isEdit } = defineProps({
@@ -144,23 +170,21 @@ onBeforeMount(() => {
   Object.assign(collection.value, metadata)
 })
 
-// const formRules = ref({
-//   name: [{ required: true, type: 'string', trigger: ['change', 'blur'] }],
-//   type: [
-//     {
-//       required: true,
-//       type: 'enum',
-//       enum: ['share', 'buy', 'sell'],
-//       trigger: ['change', 'blur'],
-//     },
-//   ],
-//   message: [
-//     { required: false, type: 'string', max: 100, trigger: ['change', 'blur'] },
-//   ],
-//   contact: [{ required: false, type: 'string', trigger: ['change', 'blur'] }],
-// })
+const resolver = ref(
+  zodResolver(
+    z.object({
+      name: z.string().min(1),
+      published: z.boolean().default(false),
+      type: z.enum(['share', 'buy', 'sell']),
+      message: z.string().optional(),
+      contact: z.string().optional(),
+    }),
+  ),
+)
 
-const onSubmit = async () => {
+const onSubmit = async ({ valid }) => {
+  if (!valid) return
+
   const { items, ...rest } = collection.value
 
   const url = isEdit
