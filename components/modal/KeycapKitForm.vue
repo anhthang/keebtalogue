@@ -54,9 +54,9 @@
         <IconField>
           <InputIcon class="pi pi-tag" />
           <InputNumber
-            id="kit_price"
             v-model="kit.price"
             v-keyfilter.money
+            input-id="kit_price"
             name="price"
             :use-grouping="false"
             fluid
@@ -76,8 +76,8 @@
         <IconField>
           <InputIcon class="pi pi-hashtag" />
           <InputNumber
-            id="kit_qty"
             v-model.number="kit.qty"
+            input-id="kit_qty"
             name="qty"
             :use-grouping="false"
             fluid

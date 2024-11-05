@@ -128,7 +128,7 @@ const query = computed(() => {
     page: page.value,
     size: size.value,
     profile_id: manufacturers[profile] && profile,
-    status: status.value,
+    status: manufacturers[profile] ? undefined : status.value,
   }
 })
 

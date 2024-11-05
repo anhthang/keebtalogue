@@ -1,12 +1,13 @@
 <template>
   <AutoComplete
     v-model="searchText"
+    v-focustrap
     :suggestions="dataSources"
     fluid
     option-label="title"
     option-group-label="title"
     option-group-children="options"
-    placeholder="Search for artisan keycaps, keycap sets and more..."
+    placeholder="What are you looking for today?"
     @option-select="onSelect"
     @complete="handleSearch"
   >

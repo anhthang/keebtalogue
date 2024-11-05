@@ -67,6 +67,7 @@
         class="flex items-center flex-1 overflow-hidden"
         :pt="{
           header: 'h-44 md:h-60',
+          body: 'items-center',
           caption: 'items-center',
         }"
       >

@@ -64,6 +64,7 @@
   <Dialog
     v-model:visible="visible.command"
     modal
+    header="Search for artisan keycaps, keycap sets, and more..."
     dismissable-mask
     :closable="false"
     class="w-[36rem]"

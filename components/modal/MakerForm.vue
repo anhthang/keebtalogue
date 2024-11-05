@@ -71,8 +71,8 @@
         <IconField>
           <InputIcon class="pi pi-calendar" />
           <InputNumber
-            id="maker_founded"
             v-model.trim="maker.founded"
+            input-id="maker_founded"
             name="founded"
             :use-grouping="false"
             fluid

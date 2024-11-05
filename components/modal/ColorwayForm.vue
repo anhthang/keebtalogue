@@ -44,8 +44,8 @@
       <div class="col-span-1 flex flex-col gap-2">
         <label for="colorway_qty">Quantity</label>
         <InputNumber
-          id="colorway_qty"
           v-model.number="colorway.qty"
+          input-id="colorway_qty"
           name="qty"
           :use-grouping="false"
           fluid
@@ -62,8 +62,8 @@
       <div class="col-span-1 flex flex-col gap-2">
         <label for="colorway_order">Order</label>
         <InputNumber
-          id="colorway_order"
           v-model.number="colorway.order"
+          input-id="colorway_order"
           name="order"
           :use-grouping="false"
           fluid
@@ -111,9 +111,9 @@
             :options="currencies"
           />
           <InputNumber
-            id="colorway_price"
             v-model="colorway.price"
             v-keyfilter.money
+            input-id="colorway_price"
             name="price"
             :use-grouping="false"
           />
