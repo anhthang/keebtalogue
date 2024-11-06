@@ -2653,15 +2653,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.sample@npm:^4.2.9":
-  version: 4.2.9
-  resolution: "@types/lodash.sample@npm:4.2.9"
-  dependencies:
-    "@types/lodash": "npm:*"
-  checksum: 10c0/02b0e8fc38844e710be2c0ea786e31ea8b4a04903114235636232280f4eb29219e2add3169a06290114a89761aa229bf3afa029feada5741ae55261450ef9333
-  languageName: node
-  linkType: hard
-
 "@types/lodash.sortby@npm:^4.7.9":
   version: 4.7.9
   resolution: "@types/lodash.sortby@npm:4.7.9"
@@ -7318,7 +7309,6 @@ __metadata:
     "@types/lodash.keyby": "npm:^4.6.9"
     "@types/lodash.omit": "npm:^4.5.9"
     "@types/lodash.orderby": "npm:^4.6.9"
-    "@types/lodash.sample": "npm:^4.2.9"
     "@types/lodash.sortby": "npm:^4.7.9"
     "@vercel/analytics": "npm:^1.3.2"
     "@vercel/speed-insights": "npm:^1.0.14"
@@ -7334,7 +7324,6 @@ __metadata:
     lodash.keyby: "npm:^4.6.0"
     lodash.omit: "npm:^4.5.0"
     lodash.orderby: "npm:^4.6.0"
-    lodash.sample: "npm:^4.2.1"
     lodash.sortby: "npm:^4.7.0"
     modern-screenshot: "npm:^4.4.39"
     nuxt: "npm:^3.14.0"
@@ -7716,13 +7705,6 @@ __metadata:
   version: 4.6.0
   resolution: "lodash.orderby@npm:4.6.0"
   checksum: 10c0/cb58111e49c33ad4e6ed4f52a55a8e40f7d090fc4dd604615be2acc59b3a090a77fd144b72315f4f2d0ecbdabc1f0e0923d19b9d56360ae59b79932a69d261ec
-  languageName: node
-  linkType: hard
-
-"lodash.sample@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "lodash.sample@npm:4.2.1"
-  checksum: 10c0/4c83190df382192660e23a002e6e4b9f8a26531cc84f025bb86869a25dcc916d9c73e08f93f2c8a0a16e7873ed6b82b7b5360d85243f523656218da555c67d46
   languageName: node
   linkType: hard
 

@@ -147,7 +147,7 @@
     <Dialog
       v-model:visible="visible.card"
       modal
-      class="colorway-details-card max-w-xl"
+      class="max-w-lg"
       :closable="false"
       dismissable-mask
     >

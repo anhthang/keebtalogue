@@ -1,5 +1,8 @@
 <template>
-  <Card class="!shadow-none">
+  <Card
+    class="!shadow-none colorway-details-card"
+    pt:content:class="text-justify"
+  >
     <template #header>
       <img
         :alt="colorway.name"
@@ -34,7 +37,8 @@
         </span>
         <Divider v-if="colorway.qty && colorway.price" layout="vertical" />
         <span v-if="colorway.price">
-          <i class="pi pi-tag" /> {{ colorway.price }}
+          <i class="pi pi-money-bill" />
+          {{ colorway.currency }} {{ colorway.price }}
         </span>
       </div>
     </template>
@@ -114,7 +118,9 @@ const toggle = (event) => {
 const copying = ref(false)
 const copyColorwayCard = async () => {
   copying.value = true
+
   const card = document.getElementsByClassName('colorway-details-card')[0]
+  card.classList.add('p-5')
 
   try {
     await copyScreenshot(card, toast)
@@ -122,6 +128,7 @@ const copyColorwayCard = async () => {
     toast.add({ severity: 'error', summary: error.message, life: 3000 })
   }
 
+  card.classList.remove('p-5')
   copying.value = false
 }
 </script>

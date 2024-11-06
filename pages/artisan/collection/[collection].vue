@@ -79,7 +79,7 @@
             class="h-full object-cover"
           />
         </template>
-        <template #title>{{ colorway.name }}</template>
+        <template #title>{{ colorway.name || '-' }}</template>
         <template #subtitle>{{ colorway.sculpt_name }}</template>
 
         <template v-if="authenticated" #footer>
