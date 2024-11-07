@@ -1,63 +1,67 @@
 <template>
-  <Panel
-    header="Manage Kits"
-    pt:root:class="!border-0 !bg-transparent"
-    pt:title:class="flex items-center gap-4 font-medium text-3xl"
-  >
-    <template #icons>
-      <Button label="Add" icon="pi pi-file-plus" @click="toggleEditKit()" />
-    </template>
+  <div>
+    <PanelBreadcrumb :breadcrumbs="breadcrumbs" />
 
-    <DataTable
-      :value="data.kits"
-      striped-rows
-      paginator
-      :rows="10"
-      :always-show-paginator="false"
+    <Panel
+      header="Manage Kits"
+      pt:root:class="!border-0 !bg-transparent"
+      pt:title:class="flex items-center gap-4 font-medium text-3xl"
     >
-      <Column field="name" header="Name" />
-      <Column field="price" header="Price" />
-      <Column field="qty" header="Quantity" />
-      <Column field="img" header="Image" />
-      <!-- <Column field="cancelled" header="Status" /> -->
-      <Column class="!text-end" header="Actions">
-        <template #body="{ data: kit }">
-          <div class="flex gap-2">
-            <Button
-              label="Edit"
-              icon="pi pi-pen-to-square"
-              severity="secondary"
-              @click="toggleEditKit(kit)"
-            />
+      <template #icons>
+        <Button label="Add" icon="pi pi-file-plus" @click="toggleEditKit()" />
+      </template>
 
-            <Button
-              v-if="data.status === 'Interest Check'"
-              label="Delete"
-              icon="pi pi-trash"
-              severity="danger"
-              @click="confirmDelete(kit)"
-            />
-          </div>
-        </template>
-      </Column>
-    </DataTable>
+      <DataTable
+        :value="data.kits"
+        striped-rows
+        paginator
+        :rows="10"
+        :always-show-paginator="false"
+      >
+        <Column field="name" header="Name" />
+        <Column field="price" header="Price" />
+        <Column field="qty" header="Quantity" />
+        <Column field="img" header="Image" />
+        <!-- <Column field="cancelled" header="Status" /> -->
+        <Column class="!text-end" header="Actions">
+          <template #body="{ data: kit }">
+            <div class="flex gap-2">
+              <Button
+                label="Edit"
+                icon="pi pi-pen-to-square"
+                severity="secondary"
+                @click="toggleEditKit(kit)"
+              />
 
-    <ConfirmDialog />
-    <Toast />
-    <Dialog
-      v-model:visible="visible"
-      modal
-      :header="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
-      dismissable-mask
-      class="w-[36rem]"
-    >
-      <ModalKeycapKitForm
-        :is-edit="!!selectedKit?.id"
-        :metadata="selectedKit"
-        @on-success="toggleEditKit"
-      />
-    </Dialog>
-  </Panel>
+              <Button
+                v-if="data.status === 'Interest Check'"
+                label="Delete"
+                icon="pi pi-trash"
+                severity="danger"
+                @click="confirmDelete(kit)"
+              />
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+
+      <ConfirmDialog />
+      <Toast />
+      <Dialog
+        v-model:visible="visible"
+        modal
+        :header="selectedKit?.id ? 'Edit Kit' : 'Add Kit'"
+        dismissable-mask
+        class="w-[36rem]"
+      >
+        <ModalKeycapKitForm
+          :is-edit="!!selectedKit?.id"
+          :metadata="selectedKit"
+          @on-success="toggleEditKit"
+        />
+      </Dialog>
+    </Panel>
+  </div>
 </template>
 
 <script setup>
@@ -75,6 +79,23 @@ const { data, refresh } = await useAsyncData(
   `keycap/${profile}/${keycap}`,
   () => $fetch(`/api/keycaps/${profile}/${keycap}`),
 )
+
+const breadcrumbs = computed(() => {
+  return [
+    {
+      icon: 'pi pi-home',
+      route: '/',
+    },
+    {
+      label: manufacturers[profile],
+      route: `/keycap/${profile}`,
+    },
+    {
+      label: data.value.name,
+      route: `/keycap/${profile}/${keycap}`,
+    },
+  ]
+})
 
 useSeoMeta({
   title: data.value

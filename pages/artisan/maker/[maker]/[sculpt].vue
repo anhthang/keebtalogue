@@ -1,165 +1,169 @@
 <template>
-  <Panel
-    :header="sculpt.name"
-    pt:root:class="!border-0 !bg-transparent"
-    pt:title:class="flex items-center gap-4 font-medium text-3xl"
-  >
-    <div v-if="sculpt.story" class="mb-4 leading-6 text-muted-color">
-      <p
-        v-for="(line, idx) in sculpt.story.split('\n')"
-        :key="idx"
-        class="mb-2"
-      >
-        {{ line }}
-      </p>
-    </div>
+  <div>
+    <PanelBreadcrumb :breadcrumbs="breadcrumbs" />
 
-    <template #icons>
-      <div class="flex gap-2">
-        <Button
-          v-if="isEditor"
-          icon="pi pi-pen-to-square"
-          label="Edit"
-          @click="toggleEditSculpt"
-        />
-
-        <Button
-          v-if="sculpt.href"
-          as="a"
-          icon="pi pi-external-link"
-          label="Website"
-          :href="sculpt.href"
-          target="_blank"
-          rel="noopener"
-        />
-
-        <SplitButton
-          :label="sortItem.label"
-          :icon="sortItem.icon"
-          :model="sortOptions"
-        />
-      </div>
-    </template>
-
-    <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+    <Panel
+      :header="sculpt.name"
+      pt:root:class="!border-0 !bg-transparent"
+      pt:title:class="flex items-center gap-4 font-medium text-3xl"
     >
-      <Card
-        v-for="(colorway, idx) in colorways"
-        :key="colorway.colorway_id"
-        class="flex items-center flex-1 overflow-hidden"
-        :pt="{
-          header: 'w-full h-44 md:h-60',
-          body: 'items-center',
-          caption: 'flex items-center',
-          title: 'w-40 text-center truncate',
-        }"
-      >
-        <template #header>
-          <img
-            loading="lazy"
-            :alt="colorway.name"
-            :src="colorway.img"
-            class="w-full h-full object-cover"
-            @click="toggleColorwayCard(colorway)"
+      <div v-if="sculpt.story" class="mb-4 leading-6 text-muted-color">
+        <p
+          v-for="(line, idx) in sculpt.story.split('\n')"
+          :key="idx"
+          class="mb-2"
+        >
+          {{ line }}
+        </p>
+      </div>
+
+      <template #icons>
+        <div class="flex gap-2">
+          <Button
+            v-if="isEditor"
+            icon="pi pi-pen-to-square"
+            label="Edit"
+            @click="toggleEditSculpt"
           />
-        </template>
-        <template #title>{{ colorway.name || '-' }}</template>
 
-        <template #footer>
-          <div class="flex gap-4">
-            <Button
-              v-if="isEditor"
-              text
-              size="small"
-              severity="secondary"
-              icon="pi pi-pen-to-square"
-              @click="toggleEditColorway(colorway)"
-            />
+          <Button
+            v-if="sculpt.href"
+            as="a"
+            icon="pi pi-external-link"
+            label="Website"
+            :href="sculpt.href"
+            target="_blank"
+            rel="noopener"
+          />
 
-            <Button
-              text
-              size="small"
-              severity="secondary"
-              icon="pi pi-window-maximize"
+          <SplitButton
+            :label="sortItem.label"
+            :icon="sortItem.icon"
+            :model="sortOptions"
+          />
+        </div>
+      </template>
+
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <Card
+          v-for="(colorway, idx) in colorways"
+          :key="colorway.colorway_id"
+          class="flex items-center flex-1 overflow-hidden"
+          :pt="{
+            header: 'w-full h-44 md:h-60',
+            body: 'items-center',
+            caption: 'flex items-center',
+            title: 'w-40 text-center truncate',
+          }"
+        >
+          <template #header>
+            <img
+              loading="lazy"
+              :alt="colorway.name"
+              :src="colorway.img"
+              class="w-full h-full object-cover"
               @click="toggleColorwayCard(colorway)"
             />
+          </template>
+          <template #title>{{ colorway.name || '-' }}</template>
 
-            <Button
-              text
-              size="small"
-              severity="secondary"
-              icon="pi pi-folder-plus"
-              aria-haspopup="true"
-              aria-controls="overlay_menu"
-              @click="(e) => toggle(e, idx)"
-            />
-            <Menu
-              id="overlay_menu"
-              ref="add2collection"
-              :popup="true"
-              :model="[
-                {
-                  label: 'Select Collection',
-                  items: collections.map((c) => ({
-                    label: c.name,
-                    command: () => addToCollection(c, colorway),
-                  })),
-                },
-              ]"
-            />
-          </div>
-        </template>
-      </Card>
-    </div>
+          <template #footer>
+            <div class="flex gap-4">
+              <Button
+                v-if="isEditor"
+                text
+                size="small"
+                severity="secondary"
+                icon="pi pi-pen-to-square"
+                @click="toggleEditColorway(colorway)"
+              />
 
-    <Dialog
-      v-model:visible="visible.edit"
-      modal
-      header="Edit Sculpt"
-      dismissable-mask
-      class="w-[36rem]"
-    >
-      <ModalSculptForm
-        :is-edit="true"
-        :metadata="sculpt"
-        @on-success="toggleEditSculpt"
-      />
-    </Dialog>
+              <Button
+                text
+                size="small"
+                severity="secondary"
+                icon="pi pi-window-maximize"
+                @click="toggleColorwayCard(colorway)"
+              />
 
-    <Dialog
-      v-model:visible="visible.add"
-      modal
-      :header="
-        selectedColorway && selectedColorway.name
-          ? `Edit ${colorwayTitle}`
-          : 'Add Colorway'
-      "
-      class="w-[36rem]"
-      dismissable-mask
-    >
-      <ModalColorwayForm
-        :metadata="selectedColorway"
-        @on-success="toggleAddColorway"
-      />
-    </Dialog>
+              <Button
+                text
+                size="small"
+                severity="secondary"
+                icon="pi pi-folder-plus"
+                aria-haspopup="true"
+                aria-controls="overlay_menu"
+                @click="(e) => toggle(e, idx)"
+              />
+              <Menu
+                id="overlay_menu"
+                ref="add2collection"
+                :popup="true"
+                :model="[
+                  {
+                    label: 'Select Collection',
+                    items: collections.map((c) => ({
+                      label: c.name,
+                      command: () => addToCollection(c, colorway),
+                    })),
+                  },
+                ]"
+              />
+            </div>
+          </template>
+        </Card>
+      </div>
 
-    <Dialog
-      v-model:visible="visible.card"
-      modal
-      class="max-w-lg"
-      :closable="false"
-      dismissable-mask
-    >
-      <ModalColorwayCard
-        :colorway="selectedColorway"
-        @edit-colorway="toggleEditColorway"
-        @add-to-collection="addToCollection"
-      />
-    </Dialog>
+      <Dialog
+        v-model:visible="visible.edit"
+        modal
+        header="Edit Sculpt"
+        dismissable-mask
+        class="w-[36rem]"
+      >
+        <ModalSculptForm
+          :is-edit="true"
+          :metadata="sculpt"
+          @on-success="toggleEditSculpt"
+        />
+      </Dialog>
 
-    <Toast />
-  </Panel>
+      <Dialog
+        v-model:visible="visible.add"
+        modal
+        :header="
+          selectedColorway && selectedColorway.name
+            ? `Edit ${colorwayTitle}`
+            : 'Add Colorway'
+        "
+        class="w-[36rem]"
+        dismissable-mask
+      >
+        <ModalColorwayForm
+          :metadata="selectedColorway"
+          @on-success="toggleAddColorway"
+        />
+      </Dialog>
+
+      <Dialog
+        v-model:visible="visible.card"
+        modal
+        class="max-w-lg"
+        :closable="false"
+        dismissable-mask
+      >
+        <ModalColorwayCard
+          :colorway="selectedColorway"
+          @edit-colorway="toggleEditColorway"
+          @add-to-collection="addToCollection"
+        />
+      </Dialog>
+
+      <Toast />
+    </Panel>
+  </div>
 </template>
 
 <script setup>
@@ -229,6 +233,23 @@ const { data: sculpt, refresh } = await useAsyncData(
     },
   },
 )
+
+const breadcrumbs = computed(() => {
+  return [
+    {
+      icon: 'pi pi-home',
+      route: '/',
+    },
+    {
+      label: 'Makers',
+      route: '/artisan/maker',
+    },
+    {
+      label: sculpt.value.maker_name,
+      route: `/artisan/maker/${sculpt.value.maker_id}`,
+    },
+  ]
+})
 
 useSeoMeta({
   title: sculpt.value

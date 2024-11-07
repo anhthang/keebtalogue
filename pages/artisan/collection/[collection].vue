@@ -1,121 +1,138 @@
 <template>
-  <Panel
-    :header="data?.name || 'Collection'"
-    pt:root:class="!border-0 !bg-transparent"
-    pt:title:class="flex items-center gap-4 font-medium text-3xl"
-  >
-    <template #icons>
-      <div class="flex gap-2">
-        <SplitButton
-          :label="sortItem.label"
-          :icon="sortItem.icon"
-          :model="sortOptions"
-        />
+  <div>
+    <PanelBreadcrumb :breadcrumbs="breadcrumbs" />
 
-        <Button
-          v-if="authenticated && data.published && data.type === 'share'"
-          icon="pi pi-copy"
-          label="Copy"
-          @click="copyShareUrl"
-        />
-
-        <Button
-          v-if="authenticated"
-          icon="pi pi-pen-to-square"
-          label="Edit"
-          @click="toggleShowEdit"
-        />
-
-        <ConfirmDialog />
-        <Toast />
-        <Button
-          v-if="user.email_verified"
-          severity="danger"
-          icon="pi pi-trash"
-          label="Delete"
-          @click="deleteCollection(data)"
-        />
-      </div>
-    </template>
-
-    <Message
-      v-if="authenticated && data.published && data.type === 'share'"
-      class="w-fit mx-auto mb-4"
-      severity="warn"
-      icon="pi pi-exclamation-circle"
+    <Panel
+      :header="data?.name || 'Collection'"
+      pt:root:class="!border-0 !bg-transparent"
+      pt:title:class="flex items-center gap-4 font-medium text-3xl"
     >
-      <strong> Public access granted. </strong>
-      Anyone with the link will be able to see it.
-    </Message>
-    <Message
-      v-if="authenticated && data.published && data.type !== 'share'"
-      class="w-fit mx-auto mb-4"
-      severity="warn"
-      icon="pi pi-exclamation-circle"
-    >
-      <strong> Heads up! </strong>
-      This collection is listed for buying and selling. It's visible to others
-      on our marketplace.
-    </Message>
-
-    <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-    >
-      <Card
-        v-for="colorway in sortedCollections"
-        :key="colorway.id"
-        class="flex items-center flex-1 overflow-hidden"
-        :pt="{
-          header: 'h-44 md:h-60',
-          body: 'items-center',
-          caption: 'items-center',
-        }"
-      >
-        <template #header>
-          <img
-            loading="lazy"
-            :alt="colorway.name"
-            :src="colorway.img"
-            class="h-full object-cover"
+      <template #icons>
+        <div class="flex gap-2">
+          <SplitButton
+            :label="sortItem.label"
+            :icon="sortItem.icon"
+            :model="sortOptions"
           />
-        </template>
-        <template #title>{{ colorway.name || '-' }}</template>
-        <template #subtitle>{{ colorway.sculpt_name }}</template>
 
-        <template v-if="authenticated" #footer>
           <Button
-            text
-            size="small"
-            severity="danger"
-            label="Remove"
-            icon="pi pi-trash"
-            @click="removeCap(colorway)"
+            v-if="authenticated && data.published && data.type === 'share'"
+            icon="pi pi-copy"
+            label="Copy"
+            @click="copyShareUrl"
           />
-        </template>
-      </Card>
-    </div>
 
-    <Dialog
-      v-model:visible="visible"
-      modal
-      header="Edit Collection"
-      dismissable-mask
-      class="w-[36rem]"
-    >
-      <ModalCollectionForm
-        :metadata="data"
-        :uid="user.uid"
-        :is-edit="true"
-        @on-success="toggleShowEdit"
-      />
-    </Dialog>
-  </Panel>
+          <Button
+            v-if="authenticated"
+            icon="pi pi-pen-to-square"
+            label="Edit"
+            @click="toggleShowEdit"
+          />
+
+          <ConfirmDialog />
+          <Toast />
+          <Button
+            v-if="user.email_verified"
+            severity="danger"
+            icon="pi pi-trash"
+            label="Delete"
+            @click="deleteCollection(data)"
+          />
+        </div>
+      </template>
+
+      <Message
+        v-if="authenticated && data.published && data.type === 'share'"
+        class="w-fit mx-auto mb-4"
+        severity="warn"
+        icon="pi pi-exclamation-circle"
+      >
+        <strong> Public access granted. </strong>
+        Anyone with the link will be able to see it.
+      </Message>
+      <Message
+        v-if="authenticated && data.published && data.type !== 'share'"
+        class="w-fit mx-auto mb-4"
+        severity="warn"
+        icon="pi pi-exclamation-circle"
+      >
+        <strong> Heads up! </strong>
+        This collection is listed for buying and selling. It's visible to others
+        on our marketplace.
+      </Message>
+
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <Card
+          v-for="colorway in sortedCollections"
+          :key="colorway.id"
+          class="flex items-center flex-1 overflow-hidden"
+          :pt="{
+            header: 'h-44 md:h-60',
+            body: 'items-center',
+            caption: 'items-center',
+          }"
+        >
+          <template #header>
+            <img
+              loading="lazy"
+              :alt="colorway.name"
+              :src="colorway.img"
+              class="h-full object-cover"
+            />
+          </template>
+          <template #title>{{ colorway.name || '-' }}</template>
+          <template #subtitle>{{ colorway.sculpt_name }}</template>
+
+          <template v-if="authenticated" #footer>
+            <Button
+              text
+              size="small"
+              severity="danger"
+              label="Remove"
+              icon="pi pi-trash"
+              @click="removeCap(colorway)"
+            />
+          </template>
+        </Card>
+      </div>
+
+      <Dialog
+        v-model:visible="visible"
+        modal
+        header="Edit Collection"
+        dismissable-mask
+        class="w-[36rem]"
+      >
+        <ModalCollectionForm
+          :metadata="data"
+          :uid="user.uid"
+          :is-edit="true"
+          @on-success="toggleShowEdit"
+        />
+      </Dialog>
+    </Panel>
+  </div>
 </template>
 
 <script setup>
 import sortBy from 'lodash.sortby'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
+
+const breadcrumbs = computed(() => {
+  return [
+    {
+      icon: 'pi pi-home',
+      route: '/',
+    },
+    {
+      label: 'Collections',
+      route: `/artisan/collection`,
+    },
+  ]
+})
 
 const confirm = useConfirm()
 const toast = useToast()

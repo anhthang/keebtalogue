@@ -1,110 +1,120 @@
 <template>
-  <Panel v-if="maker" pt:root:class="!border-0 !bg-transparent">
-    <template #header>
-      <div class="flex items-center gap-4 font-medium text-3xl">
-        <Avatar
-          :image="`/logo/${maker.id}.png`"
-          :class="{
-            invert: maker.invertible_logo && $colorMode.value === 'dark',
-          }"
-          size="large"
-          pt:image:class="object-contain"
-        />
-        {{ maker.name }}
-        <i
-          v-if="maker.verified"
-          v-tooltip="'Verified'"
-          class="pi pi-verified text-lg text-[#22c55e] dark:text-[#4ade80]"
-        />
-      </div>
-    </template>
+  <div>
+    <PanelBreadcrumb :breadcrumbs="breadcrumbs" />
 
-    <div v-if="maker.intro" class="mb-4 leading-6 text-muted-color">
-      <p v-for="(line, idx) in maker.intro.split('\n')" :key="idx" class="mb-2">
-        {{ line }}
-      </p>
-    </div>
+    <Panel v-if="maker" pt:root:class="!border-0 !bg-transparent">
+      <template #header>
+        <div class="flex items-center gap-4 font-medium text-3xl">
+          <Avatar
+            :image="`/logo/${maker.id}.png`"
+            :class="{
+              invert: maker.invertible_logo && $colorMode.value === 'dark',
+            }"
+            size="large"
+            pt:image:class="object-contain"
+          />
+          {{ maker.name }}
+          <i
+            v-if="maker.verified"
+            v-tooltip="'Verified'"
+            class="pi pi-verified text-lg text-[#22c55e] dark:text-[#4ade80]"
+          />
+        </div>
+      </template>
 
-    <template #icons>
-      <div class="flex gap-2">
-        <Button
-          v-if="isEditor"
-          icon="pi pi-pen-to-square"
-          label="Edit"
-          @click="toggleEditMaker"
-        />
-
-        <Button
-          v-if="isEditor"
-          icon="pi pi-calendar"
-          label="Sales"
-          @click="toggleAddSale"
-        />
-
-        <MakerHelpfulLinks :maker="maker" />
-      </div>
-    </template>
-
-    <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-    >
-      <nuxt-link
-        v-for="sculpt in maker.sculpts"
-        :key="sculpt.id"
-        :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
-      >
-        <Card
-          class="flex items-center flex-1 overflow-hidden"
-          :pt="{
-            root: 'h-full',
-            header: 'w-full h-44 md:h-60',
-            caption: 'flex items-center',
-            title: 'w-40 text-center truncate',
-          }"
+      <div v-if="maker.intro" class="mb-4 leading-6 text-muted-color">
+        <p
+          v-for="(line, idx) in maker.intro.split('\n')"
+          :key="idx"
+          class="mb-2"
         >
-          <template #header>
-            <img
-              loading="lazy"
-              :alt="sculpt.name"
-              :src="sculpt.img"
-              class="w-full h-full object-cover"
-            />
-          </template>
-          <template #title>{{ sculpt.name }}</template>
-          <template #subtitle>{{ sculpt.total_colorways }} colorways</template>
-        </Card>
-      </nuxt-link>
-    </div>
+          {{ line }}
+        </p>
+      </div>
 
-    <Dialog
-      v-model:visible="visible.edit"
-      modal
-      header="Edit Maker"
-      class="w-[36rem]"
-      dismissable-mask
-    >
-      <ModalMakerForm
-        :is-edit="true"
-        :metadata="maker"
-        @on-success="toggleEditMaker"
-      />
-    </Dialog>
+      <template #icons>
+        <div class="flex gap-2">
+          <Button
+            v-if="isEditor"
+            icon="pi pi-pen-to-square"
+            label="Edit"
+            @click="toggleEditMaker"
+          />
 
-    <Dialog
-      v-model:visible="visible.add_sale"
-      modal
-      header="Add Upcoming Sale"
-      class="w-[36rem]"
-      dismissable-mask
-    >
-      <ModalSaleForm
-        :is-edit="true"
-        :metadata="sculptLst"
-        @on-success="toggleAddSale"
-      />
-    </Dialog>
-  </Panel>
-  <BackToArtisanMakers v-else />
+          <Button
+            v-if="isEditor"
+            icon="pi pi-calendar"
+            label="Sales"
+            @click="toggleAddSale"
+          />
+
+          <MakerHelpfulLinks :maker="maker" />
+        </div>
+      </template>
+
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+      >
+        <nuxt-link
+          v-for="sculpt in maker.sculpts"
+          :key="sculpt.id"
+          :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
+        >
+          <Card
+            class="flex items-center flex-1 overflow-hidden"
+            :pt="{
+              root: 'h-full',
+              header: 'w-full h-44 md:h-60',
+              caption: 'flex items-center',
+              title: 'w-40 text-center truncate',
+            }"
+          >
+            <template #header>
+              <img
+                loading="lazy"
+                :alt="sculpt.name"
+                :src="sculpt.img"
+                class="w-full h-full object-cover"
+              />
+            </template>
+            <template #title>{{ sculpt.name }}</template>
+            <template #subtitle
+              >{{ sculpt.total_colorways }} colorways</template
+            >
+          </Card>
+        </nuxt-link>
+      </div>
+
+      <Dialog
+        v-model:visible="visible.edit"
+        modal
+        header="Edit Maker"
+        class="w-[36rem]"
+        dismissable-mask
+      >
+        <ModalMakerForm
+          :is-edit="true"
+          :metadata="maker"
+          @on-success="toggleEditMaker"
+        />
+      </Dialog>
+
+      <Dialog
+        v-model:visible="visible.add_sale"
+        modal
+        header="Add Upcoming Sale"
+        class="w-[36rem]"
+        dismissable-mask
+      >
+        <ModalSaleForm
+          :is-edit="true"
+          :metadata="sculptLst"
+          @on-success="toggleAddSale"
+        />
+      </Dialog>
+    </Panel>
+    <BackToArtisanMakers v-else />
+  </div>
 </template>
 
 <script setup>
@@ -124,6 +134,19 @@ const { data: maker, refresh } = await useAsyncData(
     watch: () => route.params.maker,
   },
 )
+
+const breadcrumbs = computed(() => {
+  return [
+    {
+      icon: 'pi pi-home',
+      route: '/',
+    },
+    {
+      label: 'Makers',
+      route: '/artisan/maker',
+    },
+  ]
+})
 
 useSeoMeta({
   title: maker.value && maker.value.name,
