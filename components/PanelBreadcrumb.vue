@@ -8,6 +8,8 @@
         <i v-if="item.icon" :class="item.icon" /> {{ item.label }}
       </nuxt-link>
     </template>
+
+    <template #separator>/</template>
   </Breadcrumb>
 </template>
 

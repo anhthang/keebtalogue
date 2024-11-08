@@ -123,6 +123,7 @@
                   <Button
                     v-for="kit in data.kits"
                     :key="kit.id"
+                    size="small"
                     severity="secondary"
                     :label="kit.name"
                   />

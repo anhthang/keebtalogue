@@ -22,11 +22,20 @@
         <Column field="price" header="Price" />
         <Column field="qty" header="Quantity" />
         <Column field="img" header="Image" />
-        <!-- <Column field="cancelled" header="Status" /> -->
+        <Column v-if="hasCancelled" field="cancelled" header="Status">
+          <template #body="slotProps">
+            <Tag
+              v-if="slotProps.data.cancelled"
+              severity="danger"
+              value="Cancelled"
+            />
+          </template>
+        </Column>
         <Column class="!text-end" header="Actions">
           <template #body="{ data: kit }">
             <div class="flex gap-2">
               <Button
+                size="small"
                 label="Edit"
                 icon="pi pi-pen-to-square"
                 severity="secondary"
@@ -34,7 +43,7 @@
               />
 
               <Button
-                v-if="data.status === 'Interest Check'"
+                size="small"
                 label="Delete"
                 icon="pi pi-trash"
                 severity="danger"
@@ -97,6 +106,8 @@ const breadcrumbs = computed(() => {
   ]
 })
 
+const hasCancelled = data.value.kits.some((k) => k.cancelled)
+
 useSeoMeta({
   title: data.value
     ? `${manufacturers[profile]} ${data.value.name} - Manage Kits`
@@ -120,8 +131,14 @@ const confirmDelete = (kit) => {
     header: `Confirm to delete ${kit.name} kit`,
     message:
       'Are you sure you want to delete this kit? This action cannot be undone.',
-    acceptLabel: 'Delete',
-    acceptProps: { severity: 'danger' },
+    rejectProps: {
+      size: 'small',
+    },
+    acceptProps: {
+      size: 'small',
+      label: 'Delete',
+      severity: 'danger',
+    },
     accept: () => {
       $fetch(`/api/keycaps/${kit.profile_keycap_id}/kits/${kit.id}`, {
         method: 'delete',

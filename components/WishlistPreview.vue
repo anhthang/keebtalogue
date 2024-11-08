@@ -254,7 +254,11 @@ const removeCap = (colorway, type) => {
   confirm.require({
     header: 'Remove Artisan',
     message: 'Are you sure you want to continue?',
+    rejectProps: {
+      size: 'small',
+    },
     acceptProps: {
+      size: 'small',
       label: 'Remove',
       severity: 'danger',
     },

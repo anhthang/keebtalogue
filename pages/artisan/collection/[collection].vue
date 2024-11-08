@@ -208,7 +208,11 @@ const removeCap = (clw) => {
   confirm.require({
     header: 'Remove Artisan',
     message: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
+    rejectProps: {
+      size: 'small',
+    },
     acceptProps: {
+      size: 'small',
       label: 'Remove',
       severity: 'danger',
     },
@@ -252,7 +256,11 @@ const deleteCollection = (collection) => {
   confirm.require({
     header: 'Delete Collection',
     message: 'Are you sure you want to continue?',
+    rejectProps: {
+      size: 'small',
+    },
     acceptProps: {
+      size: 'small',
       label: 'Remove',
       severity: 'danger',
     },
