@@ -44,7 +44,23 @@
         <span class="col-span-1">QQ: {{ tradingConfig.social.qq }}</span>
       </div>
 
-      <Message v-if="tradingConfig.fnf_only" severity="warn" variant="simple">
+      <Message
+        v-if="
+          draggableWantList.length + draggableHaveList.length >= 24 && !copying
+        "
+        variant="simple"
+        icon="pi pi-info-circle"
+      >
+        For optimal image display, it's <strong>recommended</strong> to keep
+        your wishlist between 16-24 items.
+      </Message>
+
+      <Message
+        v-if="tradingConfig.fnf_only"
+        severity="warn"
+        icon="pi pi-exclamation-triangle"
+        variant="simple"
+      >
         Please note that the seller does not accept PayPal Goods & Services
         (G&S). This means that if you choose to proceed with the transaction,
         you will not have PayPal's buyer protection in place.

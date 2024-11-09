@@ -11,13 +11,7 @@
         <Button label="Add" icon="pi pi-file-plus" @click="toggleEditKit()" />
       </template>
 
-      <DataTable
-        :value="data.kits"
-        striped-rows
-        paginator
-        :rows="10"
-        :always-show-paginator="false"
-      >
+      <DataTable :value="data.kits" striped-rows>
         <Column field="name" header="Name" />
         <Column field="price" header="Price" />
         <Column field="qty" header="Quantity" />
@@ -36,6 +30,7 @@
             <div class="flex gap-2">
               <Button
                 size="small"
+                text
                 label="Edit"
                 icon="pi pi-pen-to-square"
                 severity="secondary"
@@ -44,6 +39,7 @@
 
               <Button
                 size="small"
+                text
                 label="Delete"
                 icon="pi pi-trash"
                 severity="danger"
