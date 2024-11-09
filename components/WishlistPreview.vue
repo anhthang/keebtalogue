@@ -1,6 +1,6 @@
 <template>
   <Panel
-    v-if="draggableWantList.length || draggableHaveList.length"
+    v-if="wantItems.length || haveItems.length"
     :header="copying ? 'Contact' : 'Preview'"
     pt:root:class="trading-preview"
     pt:header:class="text-xl"
@@ -45,9 +45,7 @@
       </div>
 
       <Message
-        v-if="
-          draggableWantList.length + draggableHaveList.length >= 24 && !copying
-        "
+        v-if="wantItems.length + haveItems.length >= 24 && !copying"
         variant="simple"
         icon="pi pi-info-circle"
       >
@@ -71,123 +69,40 @@
       </Message>
 
       <Divider
-        v-if="draggableWantList.length"
+        v-if="wantItems.length"
         align="center"
-        class="text-3xl font-bold"
+        class="text-4xl font-bold"
       >
         {{ tradingConfig.want.title }}
       </Divider>
 
-      <draggable
-        :list="draggableWantList"
-        item-key="id"
-        group="group"
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-      >
-        <template #item="{ element }">
-          <Card
-            :key="element.element_id"
-            class="flex items-center flex-1 overflow-hidden"
-            pt:header:class="h-44 md:h-60"
-            pt:body:class="items-center"
-            pt:caption:class="items-center"
-          >
-            <template #header>
-              <img
-                loading="lazy"
-                :alt="element.name"
-                :src="element.img"
-                class="h-full object-cover"
-              />
-            </template>
-            <template #title>{{ element.name || '-' }}</template>
-            <template #subtitle>{{ element.sculpt_name }}</template>
-
-            <template v-if="!copying" #footer>
-              <Button
-                text
-                size="small"
-                severity="danger"
-                label="Remove"
-                icon="pi pi-trash"
-                @click="removeCap(element, 'want')"
-              />
-            </template>
-          </Card>
-        </template>
-      </draggable>
+      <DraggableCard :data="wantItems" :copying="copying" />
 
       <Divider
-        v-if="draggableHaveList.length && trading"
+        v-if="haveItems.length && trading"
         align="center"
-        class="text-3xl font-bold"
+        class="text-4xl font-bold"
       >
         {{ tradingConfig.have.title }}
       </Divider>
 
-      <draggable
-        v-if="draggableHaveList.length && trading"
-        :list="draggableHaveList"
-        item-key="id"
-        group="group"
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
-      >
-        <template #item="{ element }">
-          <Card
-            :key="element.element_id"
-            class="flex items-center flex-1 overflow-hidden"
-            :pt="{
-              header: 'h-44 md:h-60',
-              caption: 'items-center',
-            }"
-          >
-            <template #header>
-              <img
-                loading="lazy"
-                :alt="element.name"
-                :src="element.img"
-                class="h-full object-cover"
-              />
-            </template>
-            <template #title>{{ element.name || '-' }}</template>
-            <template #subtitle>{{ element.sculpt_name }}</template>
-
-            <template #footer>
-              <Button
-                text
-                size="small"
-                severity="danger"
-                label="Remove"
-                icon="pi pi-trash"
-                @click="removeCap(element, 'have')"
-              />
-            </template>
-          </Card>
-        </template>
-      </draggable>
+      <DraggableCard v-if="trading" :data="haveItems" :copying="copying" />
     </div>
 
-    <ConfirmDialog />
     <Toast />
   </Panel>
 </template>
 
 <script setup>
 import groupBy from 'lodash.groupby'
-import draggable from 'vuedraggable'
 
-const confirm = useConfirm()
 const toast = useToast()
 
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
 const tradingConfig = useState('trading-config')
-
 const trading = computed(() => tradingConfig.value.type === 'twoway')
-
-const draggableWantList = ref([])
-const draggableHaveList = ref([])
 
 const { isDesktop } = useDevice()
 
@@ -213,17 +128,11 @@ onMounted(() => {
   }
 })
 
-watch(
-  tradingConfig,
-  () => {
-    draggableWantList.value =
-      collections.value[tradingConfig.value.want.collection] || []
-    if (tradingConfig.value.have.collection) {
-      draggableHaveList.value =
-        collections.value[tradingConfig.value.have.collection] || []
-    }
-  },
-  { deep: true },
+const wantItems = computed(
+  () => collections.value[tradingConfig.value.want.collection] || [],
+)
+const haveItems = computed(
+  () => collections.value[tradingConfig.value.have.collection] || [],
 )
 
 watch(authenticated, () => refresh())
@@ -252,45 +161,17 @@ const screenshot = async (download = false) => {
 const tradingText = computed(() => {
   let text =
     `**${tradingConfig.value.want.title}**\n` +
-    `${draggableWantList.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
+    `${wantItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
 
   if (trading.value) {
     text +=
       `\n\n` +
       `**${tradingConfig.value.have.title}**\n` +
-      `${draggableHaveList.value
-        .map((c) => `- ${colorwayTitle(c)}`)
-        .join('\n')}`
+      `${haveItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
   }
 
   return text
 })
-
-const removeCap = (colorway, type) => {
-  confirm.require({
-    header: 'Remove Artisan',
-    message: 'Are you sure you want to continue?',
-    rejectProps: {
-      size: 'small',
-    },
-    acceptProps: {
-      size: 'small',
-      label: 'Remove',
-      severity: 'danger',
-    },
-    accept: () => {
-      if (type === 'want') {
-        draggableWantList.value = draggableWantList.value.filter(
-          (c) => c.id !== colorway.id,
-        )
-      } else {
-        draggableHaveList.value = draggableHaveList.value.filter(
-          (c) => c.id !== colorway.id,
-        )
-      }
-    },
-  })
-}
 
 const copyToClipboard = () => {
   navigator.clipboard.writeText(tradingText.value)
