@@ -16,7 +16,7 @@
           />
 
           <Button
-            v-if="authenticated && data.published && data.type === 'share'"
+            v-if="published && data?.type === 'share'"
             icon="pi pi-copy"
             label="Copy"
             @click="copyShareUrl"
@@ -42,7 +42,7 @@
       </template>
 
       <Message
-        v-if="authenticated && data.published && data.type === 'share'"
+        v-if="published && data?.type === 'share'"
         class="w-fit mx-auto mb-4"
         severity="warn"
         icon="pi pi-exclamation-circle"
@@ -51,7 +51,7 @@
         Anyone with the link will be able to see it.
       </Message>
       <Message
-        v-if="authenticated && data.published && data.type !== 'share'"
+        v-if="published && data?.type !== 'share'"
         class="w-fit mx-auto mb-4"
         severity="warn"
         icon="pi pi-exclamation-circle"
@@ -177,6 +177,8 @@ const { data, refresh } = await useAsyncData(() => {
     return $fetch(`/api/collections/${route.params.collection}`)
   }
 })
+
+const published = authenticated.value && data.value?.published
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
