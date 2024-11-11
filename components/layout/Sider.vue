@@ -81,15 +81,18 @@
 </template>
 
 <script setup>
+const device = useDevice()
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 
-const menuMode = ref('collapsed')
+const defaultMode = device.isMobileOrTablet ? 'collapsed' : 'expanded'
+
+const menuMode = ref(defaultMode)
 const slim = computed(() => menuMode.value === 'collapsed')
 
 onMounted(() => {
-  menuMode.value = localStorage.getItem('menu-mode') || 'collapsed'
+  menuMode.value = localStorage.getItem('menu-mode') || defaultMode
 })
 
 const onChangeMenu = ({ item }) => {
