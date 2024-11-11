@@ -53,6 +53,13 @@ const subActiveClasses = '!bg-slate-100 dark:!bg-zinc-800 rounded'
 
 const megaMenu = computed(() => [
   {
+    label: 'Home',
+    icon: 'pi pi-home',
+    route: '/',
+    class: route.path === '/' && activeClasses,
+    command: onChangeMenu,
+  },
+  {
     label: 'Makers',
     icon: 'pi pi-users',
     route: '/artisan/maker',

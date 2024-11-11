@@ -53,7 +53,7 @@
       </template>
 
       <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
       >
         <nuxt-link
           v-for="sculpt in maker.sculpts"
