@@ -6,6 +6,7 @@
     <MegaMenu
       :model="megaMenu"
       orientation="vertical"
+      breakpoint="480px"
       :pt="{
         root: '!border-0 !bg-transparent !min-w-fit',
         itemContent: 'py-1 hover:dark:!bg-zinc-700 hover:rounded',

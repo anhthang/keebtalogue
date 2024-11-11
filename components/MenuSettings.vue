@@ -7,6 +7,9 @@
     outlined
     class="!border-0"
     pt:root:class="!justify-start"
+    :class="{
+      'pr-0': $device.isMobile,
+    }"
     @click="toggleProfileSettings"
   >
     <Avatar

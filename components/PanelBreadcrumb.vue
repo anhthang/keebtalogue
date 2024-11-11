@@ -1,7 +1,11 @@
 <template>
   <Breadcrumb
     :model="breadcrumbs"
-    pt:root:class="!border-0 !bg-transparent !pb-0"
+    pt:root:class="!border-0 !bg-transparent"
+    :class="{
+      'py-0': $device.isMobile,
+      'pb-0': $device.isDesktopOrTablet,
+    }"
   >
     <template #item="{ item, props }">
       <nuxt-link :to="item.route" v-bind="props.action">
