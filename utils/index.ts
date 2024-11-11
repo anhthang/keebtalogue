@@ -21,13 +21,18 @@ export const formatDateRange = (fromDate: Date, toDate: Date) => {
   const from = dayjs(fromDate, 'YYYY-MM-DD')
   const to = dayjs(toDate, 'YYYY-MM-DD')
 
-  if (from.isValid() && to.isValid()) {
-    return from.get('year') === to.get('year')
-      ? `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
-      : `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
-  }
+  if (!from.isValid() || !to.isValid()) return ''
 
-  return ''
+  const isSameYear = from.isSame(to, 'year')
+  const isSameMonth = from.isSame(to, 'month')
+
+  if (isSameYear && isSameMonth) {
+    return `${from.format('DD')} - ${to.format('DD MMM YYYY')}`
+  } else if (isSameYear) {
+    return `${from.format('DD MMM')} - ${to.format('DD MMM YYYY')}`
+  } else {
+    return `${from.format('DD MMM YYYY')} - ${to.format('DD MMM YYYY')}`
+  }
 }
 
 export const keycapProfiles = {

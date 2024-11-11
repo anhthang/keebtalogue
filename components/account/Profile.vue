@@ -14,6 +14,7 @@
             />
           </IconField>
         </div>
+
         <div class="flex flex-col gap-2">
           <label for="profile_email">Email</label>
           <IconField>
@@ -30,18 +31,7 @@
             />
           </IconField>
         </div>
-        <div class="flex flex-col gap-2">
-          <label for="social_reddit">Reddit</label>
-          <IconField>
-            <InputIcon class="pi pi-reddit" />
-            <InputText
-              id="social_reddit"
-              v-model.trim="social.reddit"
-              placeholder="u/username"
-              fluid
-            />
-          </IconField>
-        </div>
+
         <div class="flex flex-col gap-2">
           <label for="social_discord">Discord</label>
           <IconField>
@@ -59,6 +49,20 @@
             />
           </IconField>
         </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="social_reddit">Reddit</label>
+          <IconField>
+            <InputIcon class="pi pi-reddit" />
+            <InputText
+              id="social_reddit"
+              v-model.trim="social.reddit"
+              placeholder="u/username"
+              fluid
+            />
+          </IconField>
+        </div>
+
         <div class="flex flex-col gap-2">
           <label for="social_qq">QQ</label>
           <IconField>
@@ -71,6 +75,7 @@
             />
           </IconField>
         </div>
+
         <div class="flex flex-col gap-2">
           <Button
             label="Save"

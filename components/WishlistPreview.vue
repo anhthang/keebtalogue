@@ -30,18 +30,47 @@
         />
       </div>
     </template>
+    <template v-else #icons>
+      <Button
+        size="large"
+        icon="pi pi-send"
+        severity="success"
+        text
+        :label="`From ${$config.public.appName} with love`"
+      />
+    </template>
 
     <div class="flex flex-col gap-6">
       <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4"
       >
-        <span class="col-span-1">
-          Reddit: {{ tradingConfig.social.reddit }}
-        </span>
-        <span class="col-span-1">
-          Discord: {{ tradingConfig.social.discord }}
-        </span>
-        <span class="col-span-1">QQ: {{ tradingConfig.social.qq }}</span>
+        <Message
+          v-if="tradingConfig.social.discord"
+          size="large"
+          icon="pi pi-discord"
+          severity="info"
+          variant="simple"
+        >
+          {{ tradingConfig.social.discord }}
+        </Message>
+        <Message
+          v-if="tradingConfig.social.reddit"
+          size="large"
+          icon="pi pi-reddit"
+          severity="error"
+          variant="simple"
+        >
+          {{ tradingConfig.social.reddit }}
+        </Message>
+        <Message
+          v-if="tradingConfig.social.qq"
+          size="large"
+          icon="pi pi-comment"
+          severity="warn"
+          variant="simple"
+        >
+          {{ tradingConfig.social.qq }}
+        </Message>
       </div>
 
       <Message

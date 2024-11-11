@@ -64,19 +64,6 @@
       </div>
       <div class="grid grid-cols-4 gap-2">
         <div class="col-span-1 flex flex-col gap-2">
-          <label for="trading_reddit">Reddit</label>
-          <IconField>
-            <InputIcon class="pi pi-reddit" />
-            <InputText
-              id="trading_reddit"
-              v-model.trim="tradingConfig.social.reddit"
-              type="text"
-              placeholder="u/username"
-              fluid
-            />
-          </IconField>
-        </div>
-        <div class="col-span-1 flex flex-col gap-2">
           <label for="trading_discord">Discord</label>
           <IconField>
             <InputIcon class="pi pi-discord" />
@@ -85,6 +72,19 @@
               v-model.trim="tradingConfig.social.discord"
               type="text"
               placeholder="username#1234"
+              fluid
+            />
+          </IconField>
+        </div>
+        <div class="col-span-1 flex flex-col gap-2">
+          <label for="trading_reddit">Reddit</label>
+          <IconField>
+            <InputIcon class="pi pi-reddit" />
+            <InputText
+              id="trading_reddit"
+              v-model.trim="tradingConfig.social.reddit"
+              type="text"
+              placeholder="u/username"
               fluid
             />
           </IconField>

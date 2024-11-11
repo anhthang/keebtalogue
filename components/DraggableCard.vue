@@ -10,8 +10,10 @@
         :key="element.element_id"
         class="flex items-center flex-1 overflow-hidden"
         :pt="{
-          header: 'h-44 md:h-60',
-          caption: 'items-center',
+          header: 'w-full h-44 md:h-60',
+          body: 'items-center',
+          caption: 'flex items-center',
+          title: 'w-40 text-center truncate',
         }"
       >
         <template #header>
