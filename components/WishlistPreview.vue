@@ -32,7 +32,6 @@
     </template>
     <template v-else #icons>
       <Button
-        size="large"
         icon="pi pi-send"
         severity="success"
         text

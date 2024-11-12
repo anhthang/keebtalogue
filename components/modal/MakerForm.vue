@@ -266,7 +266,12 @@ const resolver = ref(
   zodResolver(
     z.object({
       name: z.string().min(1),
-      nationality: z.string().toUpperCase().length(2).nullish(),
+      nationality: z
+        .string()
+        .toUpperCase()
+        .length(2)
+        .nullish()
+        .or(z.string().min(0).max(0)),
       founded: z.number().nullish(),
       document_ids: z.string().array(),
       website: z.string().url().nullish().or(z.string().min(0).max(0)),
