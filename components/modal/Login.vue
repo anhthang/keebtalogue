@@ -20,7 +20,9 @@
       />
       <span class="text-center">
         By clicking continue, you agree to our
-        <nuxt-link href="/policy" target="_blank"> Privacy Policy </nuxt-link>
+        <nuxt-link href="/policy" target="_blank" class="underline">
+          Privacy Policy
+        </nuxt-link>
         and Terms of Service.
       </span>
     </div>

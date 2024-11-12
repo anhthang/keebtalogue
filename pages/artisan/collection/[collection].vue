@@ -8,13 +8,7 @@
       pt:title:class="flex items-center gap-4 font-medium text-3xl"
     >
       <template #icons>
-        <div class="flex gap-2">
-          <SplitButton
-            :label="sortItem.label"
-            :icon="sortItem.icon"
-            :model="sortOptions"
-          />
-
+        <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <Button
             v-if="published && data?.type === 'share'"
             icon="pi pi-copy"
@@ -29,16 +23,29 @@
             @click="toggleShowEdit"
           />
 
-          <ConfirmDialog />
-          <Toast />
           <Button
             v-if="user.email_verified"
             severity="danger"
             icon="pi pi-trash"
             label="Delete"
-            @click="deleteCollection(data)"
+            @click="deleteCollection"
+          />
+
+          <SplitButton
+            :label="sortItem.label"
+            :icon="sortItem.icon"
+            :model="sortOptions"
           />
         </div>
+        <Button
+          v-else
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+          icon="pi pi-ellipsis-v"
+          @click="toggleActions"
+        >
+        </Button>
+        <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
 
       <Message
@@ -113,6 +120,9 @@
         />
       </Dialog>
     </Panel>
+
+    <ConfirmDialog />
+    <Toast />
   </div>
 </template>
 
@@ -139,10 +149,11 @@ const toast = useToast()
 
 const sort = ref('sculpt_name')
 const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
-const sortOptions = [
+const sortOptions = computed(() => [
   {
     label: 'Sort by Sculpt',
     icon: 'pi pi-sort-alt',
+    class: sort.value === 'sculpt_name' && activePopMenu,
     command: ({ item }) => {
       sort.value = 'sculpt_name'
       sortItem.value = item
@@ -151,12 +162,13 @@ const sortOptions = [
   {
     label: 'Sort by Colorway',
     icon: 'pi pi-sort-alpha-down',
+    class: sort.value === 'name' && activePopMenu,
     command: ({ item }) => {
       sort.value = 'name'
       sortItem.value = item
     },
   },
-]
+])
 
 const localIds = ['want', 'have']
 
@@ -204,6 +216,44 @@ watchEffect(() => route.params.collection, refresh())
 
 const sortedCollections = computed(() => {
   return sortBy(data.value?.items || [], ['maker_id', sort.value])
+})
+
+const menu = ref()
+const toggleActions = (event) => {
+  menu.value.toggle(event)
+}
+
+const mobile = computed(() => {
+  return [
+    {
+      label: 'Actions',
+      visible: authenticated,
+      items: [
+        {
+          label: 'Copy',
+          icon: 'pi pi-copy',
+          visible: published && data.value?.type === 'share',
+          command: copyShareUrl,
+        },
+        {
+          label: 'Edit',
+          icon: 'pi pi-pen-to-square',
+          visible: authenticated.value,
+          command: toggleShowEdit,
+        },
+        {
+          label: 'Delete',
+          icon: 'pi pi-trash',
+          visible: user.value.email_verified,
+          command: deleteCollection,
+        },
+      ],
+    },
+    {
+      label: 'Sorting',
+      items: sortOptions.value,
+    },
+  ]
 })
 
 const removeCap = (clw) => {
@@ -254,7 +304,7 @@ const removeCap = (clw) => {
   })
 }
 
-const deleteCollection = (collection) => {
+const deleteCollection = () => {
   confirm.require({
     header: 'Delete Collection',
     message: 'Are you sure you want to continue?',
@@ -267,19 +317,19 @@ const deleteCollection = (collection) => {
       severity: 'danger',
     },
     accept: () => {
-      $fetch(`/api/users/${collection.uid}/collections/${collection.id}`, {
+      $fetch(`/api/users/${data.value.uid}/collections/${data.value.id}`, {
         method: 'delete',
       })
         .then(() => {
           collections.value = collections.value.filter(
-            (c) => c.id !== collection.id,
+            (c) => c.id !== data.value.id,
           )
 
           userStore.$patch({ collections: collections.value })
 
           toast.add({
             severity: 'success',
-            detail: `Collection [${collection.name}] was deleted.`,
+            detail: `Collection [${data.value.name}] was deleted.`,
             life: 3000,
           })
 

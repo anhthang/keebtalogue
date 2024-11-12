@@ -3,8 +3,8 @@
     :model="breadcrumbs"
     pt:root:class="!border-0 !bg-transparent"
     :class="{
-      'py-0': $device.isMobile,
-      'pb-0': $device.isDesktopOrTablet,
+      '!py-0': $device.isMobile,
+      '!pb-0': $device.isDesktopOrTablet,
     }"
   >
     <template #item="{ item, props }">

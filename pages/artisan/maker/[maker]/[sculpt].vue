@@ -18,30 +18,11 @@
       </div>
 
       <template #icons>
-        <div class="flex gap-2">
-          <Button
-            v-if="isEditor"
-            icon="pi pi-pen-to-square"
-            label="Edit"
-            @click="toggleEditSculpt"
-          />
-
-          <Button
-            v-if="sculpt.href"
-            as="a"
-            icon="pi pi-external-link"
-            label="Website"
-            :href="sculpt.href"
-            target="_blank"
-            rel="noopener"
-          />
-
-          <SplitButton
-            :label="sortItem.label"
-            :icon="sortItem.icon"
-            :model="sortOptions"
-          />
-        </div>
+        <SculptProfileActions
+          :sculpt="sculpt"
+          @on-edit="toggleEditSculpt"
+          @on-sorting="onChangeSorting"
+        />
       </template>
 
       <div
@@ -179,44 +160,9 @@ const toggle = (event, idx) => {
 const route = useRoute()
 
 const sort = ref('order|desc')
-const sortItem = ref({
-  label: 'Newest First',
-  icon: 'pi pi-sort-numeric-down-alt',
-})
-const sortOptions = [
-  {
-    label: 'Name (A-Z)',
-    icon: 'pi pi-sort-alpha-down',
-    command: ({ item }) => {
-      sort.value = 'name|asc'
-      sortItem.value = item
-    },
-  },
-  {
-    label: 'Name (Z-A)',
-    icon: 'pi pi-sort-alpha-down-alt',
-    command: ({ item }) => {
-      sort.value = 'name|desc'
-      sortItem.value = item
-    },
-  },
-  {
-    label: 'Oldest First',
-    icon: 'pi pi-sort-numeric-down',
-    command: ({ item }) => {
-      sort.value = 'order|asc'
-      sortItem.value = item
-    },
-  },
-  {
-    label: 'Newest First',
-    icon: 'pi pi-sort-numeric-down-alt',
-    command: ({ item }) => {
-      sort.value = 'order|desc'
-      sortItem.value = item
-    },
-  },
-]
+const onChangeSorting = (value) => {
+  sort.value = value
+}
 
 const { data: sculpt, refresh } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,

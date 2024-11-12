@@ -8,7 +8,7 @@
       pt:title:class="flex items-center gap-4 font-medium text-3xl"
     >
       <template #icons>
-        <div class="flex gap-2">
+        <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <nuxt-link
             v-if="isEditor"
             :to="`/keycap/${data.profile_keycap_id}/kit`"
@@ -24,26 +24,24 @@
           />
 
           <SplitButton
-            v-if="data.order_graph || data.order_history"
-            label="Charts"
-            icon="pi pi-chart-bar"
-            :model="chartOptions"
-          />
-
-          <Button
-            v-if="data.url"
-            as="a"
-            label="Link"
+            label="Links"
             icon="pi pi-external-link"
-            :href="data.url"
-            target="_blank"
-            rel="noopener"
+            :model="mobile[2].items"
           />
         </div>
+        <Button
+          v-else
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+          icon="pi pi-ellipsis-v"
+          @click="toggleActions"
+        >
+        </Button>
+        <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
 
       <div v-if="data.kits.length" class="grid grid-cols-3 gap-4">
-        <div class="col-span-3 md:col-span-2">
+        <div class="col-span-3 lg:col-span-2">
           <Carousel
             :value="data.kits"
             :num-visible="1"
@@ -80,7 +78,7 @@
           </Carousel>
         </div>
 
-        <div class="col-span-3 md:col-span-1">
+        <div class="col-span-3 lg:col-span-1">
           <Accordion :value="activeKey" multiple>
             <AccordionPanel v-if="data.description" value="description">
               <AccordionHeader>Description</AccordionHeader>
@@ -207,28 +205,59 @@ useSeoMeta({
   twitterImage: data.value && data.value.img,
 })
 
-const chartOptions = computed(() => {
-  const options = []
-  if (data.value.order_graph) {
-    options.push({
-      label: 'Order Graph',
-      icon: 'pi pi-chart-bar',
-      command: () => {
-        window.open(data.value.order_graph, '_blank')
-      },
-    })
-  }
-  if (data.value.order_history) {
-    options.push({
-      label: 'Order History',
-      icon: 'pi pi-chart-line',
-      command: () => {
-        window.open(data.value.order_history, '_blank')
-      },
-    })
-  }
+const menu = ref()
+const toggleActions = (event) => {
+  menu.value.toggle(event)
+}
 
-  return options
+const mobile = computed(() => {
+  return [
+    {
+      label: 'Manage Keycap',
+      visible: isEditor.value,
+      items: [
+        {
+          label: 'Manage Kits',
+          icon: 'pi pi-folder-plus',
+        },
+        {
+          label: 'Edit',
+          icon: 'pi pi-file-edit',
+          command: toggleEditKeycap,
+        },
+      ],
+    },
+    {
+      separator: true,
+      visible: isEditor.value,
+    },
+    {
+      label: 'External Links',
+      items: [
+        {
+          label: 'IC/GB Thread',
+          icon: 'pi pi-external-link',
+          visible: data.value.url,
+          url: data.value.url,
+          target: '_blank',
+        },
+        {
+          label: 'Order Graph',
+          icon: 'pi pi-chart-bar',
+          visible: !!data.value.order_graph,
+          url: data.value.order_graph,
+          target: '_blank',
+        },
+        {
+          label: 'Order History',
+          icon: 'pi pi-chart-line',
+          visible: !!data.value.order_history,
+          url: data.value.order_history,
+          target: '_blank',
+        },
+      ],
+    },
+  ]
 })
 
 const visible = ref(false)

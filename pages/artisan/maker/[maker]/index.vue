@@ -33,23 +33,11 @@
       </div>
 
       <template #icons>
-        <div class="flex gap-2">
-          <Button
-            v-if="isEditor"
-            icon="pi pi-pen-to-square"
-            label="Edit"
-            @click="toggleEditMaker"
-          />
-
-          <Button
-            v-if="isEditor"
-            icon="pi pi-calendar"
-            label="Sales"
-            @click="toggleAddSale"
-          />
-
-          <MakerHelpfulLinks :maker="maker" />
-        </div>
+        <MakerProfileActions
+          :maker="maker"
+          @on-edit-maker="toggleEditMaker"
+          @on-add-sale="toggleAddSale"
+        />
       </template>
 
       <div
@@ -118,9 +106,6 @@
 </template>
 
 <script setup>
-const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
-
 const route = useRoute()
 const visible = ref({
   edit: false,
