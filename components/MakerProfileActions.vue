@@ -88,7 +88,7 @@ if (Array.isArray(maker.document_ids)) {
   if (maker.document_ids.length > 1) {
     maker.document_ids.forEach((docId, idx) => {
       catalogue.push({
-        label: `Part ${idx + 1}`,
+        label: `Catalogue Part ${idx + 1}`,
         icon: 'pi pi-file-word',
         url: `https://docs.google.com/document/d/${docId}`,
         target: '_blank',
@@ -109,7 +109,7 @@ const desktop = [...links, { separator: true }, ...catalogue]
 const mobile = computed(() => {
   return [
     {
-      label: 'Maker Profile',
+      label: 'Editing',
       visible: isEditor.value,
       items: [
         {
@@ -133,7 +133,7 @@ const mobile = computed(() => {
       separator: true,
     },
     {
-      label: 'Catalogue',
+      label: 'Documents',
       items: catalogue,
     },
   ]

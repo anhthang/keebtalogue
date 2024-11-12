@@ -213,7 +213,7 @@ const toggleActions = (event) => {
 const mobile = computed(() => {
   return [
     {
-      label: 'Manage Keycap',
+      label: 'Editing',
       visible: isEditor.value,
       items: [
         {

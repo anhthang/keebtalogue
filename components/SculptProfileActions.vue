@@ -104,7 +104,7 @@ const sortOptions = computed(() => [
 const mobile = computed(() => {
   return [
     {
-      label: 'Sculpt Profile',
+      label: 'Editing',
       visible: isEditor.value,
       items: [
         {

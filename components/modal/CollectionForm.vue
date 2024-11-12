@@ -27,6 +27,7 @@
         {{ $form.name.error.message }}
       </Message>
     </div>
+
     <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
       <SelectButton
@@ -53,6 +54,7 @@
         prying eyes.
       </Message>
     </div>
+
     <div v-if="collection.published" class="flex flex-col gap-2">
       <SelectButton
         v-model="collection.type"
@@ -91,6 +93,36 @@
         Up for grabs!
       </Message>
     </div>
+
+    <div
+      v-if="collection.published && collection.type !== 'share'"
+      class="flex flex-col gap-2"
+    >
+      <label for="collection_contact">Contact</label>
+      <IconField>
+        <InputIcon class="pi pi-discord" />
+        <InputText
+          id="collection_contact"
+          v-model.trim="collection.contact"
+          name="contact"
+          type="text"
+          fluid
+        />
+      </IconField>
+      <Message
+        v-if="$form.contact?.invalid"
+        severity="error"
+        size="small"
+        variant="simple"
+      >
+        {{ $form.contact.error.message }}
+      </Message>
+      <Message v-else severity="secondary" size="small" variant="simple">
+        Please enter your Discord username so that buyer/seller can reach you
+        directly.
+      </Message>
+    </div>
+
     <div
       v-if="collection.published && collection.type !== 'share'"
       class="flex flex-col gap-2"
@@ -112,26 +144,7 @@
         people using the marketplace, not just a specific person.
       </Message>
     </div>
-    <div
-      v-if="collection.published && collection.type !== 'share'"
-      class="flex flex-col gap-2"
-    >
-      <label for="collection_contact">Contact</label>
-      <IconField>
-        <InputIcon class="pi pi-discord" />
-        <InputText
-          id="collection_contact"
-          v-model.trim="collection.contact"
-          name="contact"
-          type="text"
-          fluid
-        />
-      </IconField>
-      <Message severity="secondary" size="small" variant="simple">
-        Please enter your Discord username so that buyer/seller can reach you
-        directly.
-      </Message>
-    </div>
+
     <div class="flex flex-col gap-2">
       <Button label="Save" type="submit" :disabled="!$form.valid" />
     </div>
@@ -172,13 +185,22 @@ onBeforeMount(() => {
 
 const resolver = ref(
   zodResolver(
-    z.object({
-      name: z.string().min(1),
-      published: z.boolean().default(false),
-      type: z.enum(['share', 'buy', 'sell']),
-      message: z.string().optional(),
-      contact: z.string().optional(),
-    }),
+    z.discriminatedUnion('type', [
+      z.object({
+        name: z.string().min(1),
+        published: z.boolean().default(false),
+        type: z.literal('share'),
+        contact: z.string().optional(),
+        message: z.string().optional(),
+      }),
+      z.object({
+        name: z.string().min(1),
+        published: z.boolean().default(false),
+        type: z.enum(['buy', 'sell']),
+        contact: z.string().min(1),
+        message: z.string().optional(),
+      }),
+    ]),
   ),
 )
 

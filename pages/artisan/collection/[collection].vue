@@ -226,7 +226,7 @@ const toggleActions = (event) => {
 const mobile = computed(() => {
   return [
     {
-      label: 'Actions',
+      label: 'Editing',
       visible: authenticated,
       items: [
         {
