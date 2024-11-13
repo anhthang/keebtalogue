@@ -1,8 +1,11 @@
 <template>
   <Panel
     header="Public Trades"
-    pt:root:class="h-full"
-    pt:header:class="text-xl"
+    :pt="{
+      root: 'h-full flex flex-col',
+      header: 'text-xl',
+      contentContainer: 'my-auto',
+    }"
   >
     <DataView
       :value="trades"
@@ -26,6 +29,7 @@
           :key="index"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
+            'py-4': !authenticated,
           }"
         >
           <div class="flex justify-between">

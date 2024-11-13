@@ -98,7 +98,6 @@
               size="small"
               severity="danger"
               label="Remove"
-              icon="pi pi-trash"
               @click="removeCap(colorway)"
             />
           </template>
@@ -258,10 +257,12 @@ const mobile = computed(() => {
 
 const removeCap = (clw) => {
   confirm.require({
-    header: 'Remove Artisan',
+    header: 'Confirm to remove artisan',
     message: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
     rejectProps: {
       size: 'small',
+      label: 'Cancel',
+      severity: 'secondary',
     },
     acceptProps: {
       size: 'small',
@@ -306,14 +307,16 @@ const removeCap = (clw) => {
 
 const deleteCollection = () => {
   confirm.require({
-    header: 'Delete Collection',
-    message: 'Are you sure you want to continue?',
+    header: 'Confirm to delete collection',
+    message: 'Are you sure you want to continue? This action cannot be undone.',
     rejectProps: {
       size: 'small',
+      label: 'Cancel',
+      severity: 'secondary',
     },
     acceptProps: {
       size: 'small',
-      label: 'Remove',
+      label: 'Delete',
       severity: 'danger',
     },
     accept: () => {

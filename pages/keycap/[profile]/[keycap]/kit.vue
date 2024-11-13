@@ -125,10 +125,11 @@ const toggleEditKit = (kit, shouldRefresh) => {
 const confirmDelete = (kit) => {
   confirm.require({
     header: `Confirm to delete ${kit.name} kit`,
-    message:
-      'Are you sure you want to delete this kit? This action cannot be undone.',
+    message: 'Are you sure you want to continue? This action cannot be undone.',
     rejectProps: {
       size: 'small',
+      label: 'Cancel',
+      severity: 'secondary',
     },
     acceptProps: {
       size: 'small',

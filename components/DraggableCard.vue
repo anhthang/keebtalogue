@@ -34,7 +34,6 @@
             size="small"
             severity="danger"
             label="Remove"
-            icon="pi pi-trash"
             @click="remove(element)"
           />
         </template>
@@ -73,10 +72,12 @@ const confirm = useConfirm()
 
 const remove = (item) => {
   confirm.require({
-    header: 'Remove Artisan',
+    header: 'Confirm to remove artisan',
     message: 'Are you sure you want to continue?',
     rejectProps: {
       size: 'small',
+      label: 'Cancel',
+      severity: 'secondary',
     },
     acceptProps: {
       size: 'small',
