@@ -30,14 +30,6 @@
         />
       </div>
     </template>
-    <template v-else #icons>
-      <Button
-        icon="pi pi-send"
-        severity="success"
-        text
-        :label="`From ${$config.public.appName} with love`"
-      />
-    </template>
 
     <div class="flex flex-col gap-6">
       <div
@@ -115,6 +107,21 @@
       </Divider>
 
       <DraggableCard v-if="trading" :data="haveItems" :copying="copying" />
+
+      <Message variant="simple" severity="success">
+        <template #icon>
+          <img
+            class="h-8"
+            :alt="$config.public.appName"
+            :src="
+              $colorMode.value === 'dark'
+                ? `/logo-outlined.png`
+                : `/logo-filled.png`
+            "
+          />
+        </template>
+        From {{ $config.public.appName }} with love
+      </Message>
     </div>
 
     <Toast />

@@ -5,7 +5,12 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <ArtisanCollectorGuide class="col-span-4 md:col-span-3" />
+      <ArtisanCollectorGuide
+        class="col-span-4 md:col-span-3"
+        :class="{
+          'md:col-span-4': !data.makers.length && !data.keycaps.length,
+        }"
+      />
 
       <div class="col-span-4 md:col-span-1 flex flex-col gap-4">
         <LatestArtisans v-if="data.makers.length" :makers="data.makers" />

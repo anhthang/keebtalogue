@@ -1,6 +1,5 @@
 <template>
   <Panel
-    v-if="$device.isDesktop"
     header="Wishlist"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
@@ -15,20 +14,20 @@
       powerful alternatives!
     </Message> -->
 
-    <div class="flex flex-col gap-4">
+    <div v-if="$device.isDesktop" class="flex flex-col gap-4">
       <WishlistSettings />
       <WishlistPreview />
     </div>
-  </Panel>
-  <Panel v-else pt:root:class="!border-0 !bg-transparent">
-    <div class="flex flex-col items-center gap-8">
-      <div class="text-2xl">
-        This feature is currently unavailable on mobile devices.
-      </div>
-      <div class="font-medium text-surface-500 dark:text-surface-300 mb-4">
-        Please use your desktop for full access. Or check out the Marketplace
-        for powerful alternatives!
-      </div>
+    <div v-else class="flex flex-col items-center text-center gap-8">
+      <img class="w-2/3" :src="`/svg/access_denied.svg`" alt="Access Denied" />
+
+      <Message variant="simple" size="large">
+        This feature isn't available on mobile.
+      </Message>
+      <Message variant="simple" severity="secondary">
+        Please use a tablet or desktop for full access, or explore our
+        Marketplace for powerful alternatives.
+      </Message>
 
       <nuxt-link to="/artisan/marketplace">
         <Button label="Marketplace" icon="pi pi-shop" />

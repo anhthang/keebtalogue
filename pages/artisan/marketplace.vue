@@ -16,10 +16,10 @@
     </Message>
 
     <div class="grid grid-cols-4 gap-4">
-      <div class="col-span-4 md:col-span-1 flex flex-col gap-2">
+      <div class="col-span-4 lg:col-span-1 flex flex-col gap-2">
         <MarketplaceFilter />
       </div>
-      <div class="col-span-4 md:col-span-3 flex flex-col gap-2">
+      <div class="col-span-4 lg:col-span-3 flex flex-col gap-2">
         <MarketplaceListing />
       </div>
     </div>

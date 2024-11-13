@@ -71,26 +71,9 @@ const megaMenu = computed(() => [
   {
     label: 'Marketplace',
     icon: 'pi pi-shop',
-    class:
-      (route.path === '/artisan/marketplace' ||
-        route.path === '/artisan/wishlist') &&
-      activeMenu,
-    items: [
-      {
-        label: 'Trading Hub',
-        icon: 'pi pi-shopping-bag',
-        route: '/artisan/marketplace',
-        class: route.path === '/artisan/marketplace' && activePopMenu,
-        command: onChangeMenu,
-      },
-      {
-        label: 'Wishlist Image',
-        icon: 'pi pi-image',
-        route: '/artisan/wishlist',
-        class: route.path === '/artisan/wishlist' && activePopMenu,
-        command: onChangeMenu,
-      },
-    ],
+    route: '/artisan/marketplace',
+    class: route.path === '/artisan/marketplace' && activeMenu,
+    command: onChangeMenu,
   },
   {
     label: 'Keycap Tracker',
