@@ -24,7 +24,6 @@
         <div
           v-for="(item, index) in slotProps.items"
           :key="index"
-          class="flex flex-col p-4"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,
           }"
@@ -72,7 +71,7 @@
 
             <AvatarGroup>
               <Avatar
-                v-for="cap in item.items.slice(0, size)"
+                v-for="cap in firstChunk(item.items)"
                 :key="cap.id"
                 v-tooltip.top="colorwayTitle(cap)"
                 :image="cap.img"
@@ -80,11 +79,35 @@
                 size="large"
               />
               <Avatar
-                v-if="item.items.length > size"
-                :label="`+${item.items.length - size}`"
+                v-if="item.items.length > chunkSize"
+                :label="`+${item.items.length - chunkSize + 1}`"
                 shape="circle"
                 size="large"
               />
+
+              <Button
+                text
+                severity="secondary"
+                icon="pi pi-ellipsis-v"
+                :disabled="item.items.length <= chunkSize"
+                @click="(ev) => toggle(index, ev)"
+              />
+              <Popover ref="op">
+                <span class="font-medium text-lg block mb-2">Remaining</span>
+                <AvatarGroup
+                  v-for="(pack, idx) in chunk(item.items.slice(chunkSize - 1))"
+                  :key="idx"
+                >
+                  <Avatar
+                    v-for="cap in pack"
+                    :key="cap.id"
+                    v-tooltip.top="colorwayTitle(cap)"
+                    :image="cap.img"
+                    shape="circle"
+                    size="large"
+                  />
+                </AvatarGroup>
+              </Popover>
             </AvatarGroup>
           </div>
         </div>
@@ -107,14 +130,17 @@
 const userStore = useUserStore()
 const { authenticated } = storeToRefs(userStore)
 
+const op = ref()
+const toggle = (index, event) => {
+  op.value[index].toggle(event)
+}
+
 const visible = ref(false)
 const toggleShowLogin = () => {
   visible.value = !visible.value
 }
 
 const marketplaceCfg = useState('marketplace-config')
-
-const size = 15
 
 const { data, refresh } = await useAsyncData(() =>
   $fetch('/api/marketplace', {
@@ -134,4 +160,21 @@ const trades = computed(() => {
   const { type } = marketplaceCfg.value
   return type === 'any' ? data.value : data.value.filter((i) => i.type === type)
 })
+
+const chunkSize = 12
+const firstChunk = (items) => {
+  return items.length > chunkSize ? items.slice(0, chunkSize - 1) : items
+}
+
+const chunk = (array) => {
+  const chunkedArray = []
+  let index = 0
+
+  while (index < array.length) {
+    chunkedArray.push(array.slice(index, index + chunkSize))
+    index += chunkSize
+  }
+
+  return chunkedArray
+}
 </script>
