@@ -22,6 +22,8 @@
 
 <script setup>
 const { data } = await useAsyncData(() => $fetch('/api/statistics'))
+
+defineOgImage()
 </script>
 
 <style>

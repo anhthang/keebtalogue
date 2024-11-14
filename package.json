@@ -65,6 +65,7 @@
     "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
     "nuxt": "^3.14.159",
+    "nuxt-og-image": "^3.0.8",
     "prettier": "^3.3.3",
     "typescript": "^5.6.3"
   },

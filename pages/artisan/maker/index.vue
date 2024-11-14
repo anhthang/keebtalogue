@@ -47,6 +47,8 @@ useSeoMeta({
   title: 'Artisan Makers',
 })
 
+defineOgImage()
+
 const { data, refresh } = await useAsyncData('artisan-makers', () =>
   $fetch('/api/makers'),
 )

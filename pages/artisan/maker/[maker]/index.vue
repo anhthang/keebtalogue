@@ -133,13 +133,16 @@ const breadcrumbs = computed(() => {
   ]
 })
 
+defineOgImageComponent('Artisan', {
+  makerId: maker.value.id,
+  invertible: maker.value?.invertible_logo,
+})
+
 useSeoMeta({
-  title: maker.value && maker.value.name,
-  description: maker.value && maker.value.intro,
-  ogDescription: maker.value && maker.value.intro,
-  ogImage: `/logo/${route.params.maker}.png`,
-  twitterDescription: maker.value && maker.value.intro,
-  twitterImage: `/logo/${route.params.maker}.png`,
+  title: maker.value?.name,
+  description: maker.value?.intro,
+  ogDescription: maker.value?.intro,
+  twitterDescription: maker.value?.intro,
 })
 
 const toggleEditMaker = (shouldRefresh) => {

@@ -31,4 +31,6 @@ useSeoMeta({
   title: 'Marketplace',
   description: 'Unlock potential buyers/sellers for your artisan keycaps!',
 })
+
+defineOgImage()
 </script>

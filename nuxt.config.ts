@@ -20,10 +20,18 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
+    'nuxt-og-image',
   ],
 
   fonts: {
     families: [{ name: 'Dosis', provider: 'google' }],
+  },
+
+  ogImage: {
+    defaults: {
+      component: 'Website',
+    },
+    fonts: ['Dosis'],
   },
 
   supabase: {
