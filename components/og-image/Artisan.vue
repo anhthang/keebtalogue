@@ -42,16 +42,9 @@
       </defs>
     </svg>
 
-    <div class="w-[600px] pl-[100px]">
+    <div class="w-[720px] pl-[120px]">
       <div class="flex items-center gap-4">
-        <img
-          :src="
-            $colorMode.value === 'dark'
-              ? `/logo-outlined.png`
-              : `/logo-filled.png`
-          "
-          height="50"
-        />
+        <img :src="`/logo-filled.png`" height="50" />
         <h1 class="text-[36px] text-[#FEC476] font-semibold text-left">
           {{ $config.public.appName }}
         </h1>
@@ -62,16 +55,16 @@
         <span>{{ title }}</span>
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
-        {{ description.split('.')[0] }}
+        {{ description.slice(0, 400) || $config.public.appDesc }}
       </p>
     </div>
 
     <img
-      class="absolute my-auto right-[150px]"
+      class="absolute my-auto right-[120px]"
       loading="lazy"
       :alt="title"
       :src="`/logo/${makerId}.png`"
-      width="250"
+      width="240"
       :style="{ filter: invertible && 'invert()' }"
     />
   </div>

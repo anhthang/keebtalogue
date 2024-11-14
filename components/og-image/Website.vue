@@ -42,7 +42,7 @@
       </defs>
     </svg>
 
-    <div class="w-[600px] pl-[100px]">
+    <div class="w-[720px] pl-[120px]">
       <h1
         v-if="title"
         class="text-[36px] text-[#FEC476] font-semibold text-left"
@@ -61,13 +61,11 @@
     </div>
 
     <img
-      class="absolute my-auto right-[150px]"
+      class="absolute my-auto right-[120px]"
       loading="lazy"
       :alt="$config.public.appName"
-      :src="
-        $colorMode.value === 'dark' ? `/logo-outlined.png` : `/logo-filled.png`
-      "
-      width="200"
+      :src="`/logo-filled.png`"
+      width="240"
     />
   </div>
 </template>
