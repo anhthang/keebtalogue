@@ -132,8 +132,6 @@ const query = computed(() => {
   }
 })
 
-const title = manufacturers[profile] ? manufacturers[profile] : 'Keycap Tracker'
-
 const { data, refresh } = await useAsyncData(
   () => $fetch('/api/keycaps', { query: query.value }),
   {
@@ -141,14 +139,29 @@ const { data, refresh } = await useAsyncData(
   },
 )
 
+const title = manufacturers[profile] ? manufacturers[profile] : 'Keycap Tracker'
+const description = computed(() => {
+  if (route.path === '/keycap/tracker') {
+    return 'Discover new keycap sets in various stages: Interest Check, Live, and In Production.'
+  }
+
+  return data.value?.profile.description
+})
+
 useSeoMeta({
   title,
-  description: data.value.profile && data.value.profile.description,
-  ogDescription: data.value.profile && data.value.profile.description,
-  // ogImage: data.value.profile && data.value.profile.img,
-  twitterDescription: data.value.profile && data.value.profile.description,
-  // twitterImage: data.value.profile && data.value.profile.img,
+  description,
+  ogDescription: description,
+  twitterDescription: description,
 })
+
+defineOgImage({
+  component: profile === 'tracker' ? 'Website' : 'Keycap',
+  props: {
+    manufacturerId: profile,
+  },
+})
+// defineOgImageComponent('Keycap', { manufacturerId: profile })
 
 const visible = ref(false)
 const showAddKeycap = (shouldRefresh) => {

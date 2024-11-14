@@ -62,7 +62,7 @@
         <span>{{ title }}</span>
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
-        {{ description.split('.')[0] }}
+        {{ description }}
       </p>
     </div>
 
@@ -70,9 +70,9 @@
       class="absolute my-auto right-[150px]"
       loading="lazy"
       :alt="title"
-      :src="`/logo/${makerId}.png`"
+      :src="`/logo/${manufacturerId}.png`"
       width="250"
-      :style="{ filter: invertible && 'invert()' }"
+      style="filter: invert()"
     />
   </div>
 </template>
@@ -87,14 +87,13 @@ defineProps({
     type: String,
     default: '',
   },
-  makerId: {
+  manufacturerId: {
     type: String,
     default: '',
   },
-  makerName: {
+  manufacturerName: {
     type: String,
     default: '',
   },
-  invertible: Boolean,
 })
 </script>

@@ -75,8 +75,6 @@ useSeoMeta({
   title: 'Manage Collections',
 })
 
-defineOgImage()
-
 const userStore = useUserStore()
 const { user, collections } = storeToRefs(userStore)
 

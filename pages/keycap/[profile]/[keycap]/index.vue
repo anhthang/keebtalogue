@@ -198,11 +198,13 @@ useSeoMeta({
   title: data.value
     ? `${manufacturers[profile]} ${data.value.name}`
     : manufacturers[profile],
-  description: data.value && data.value.description,
-  ogDescription: data.value && data.value.description,
-  ogImage: data.value && data.value.img,
-  twitterDescription: data.value && data.value.description,
-  twitterImage: data.value && data.value.img,
+  description: data.value?.description,
+  ogDescription: data.value?.description,
+  twitterDescription: data.value?.description,
+})
+
+defineOgImageComponent('Keycap', {
+  manufacturerId: profile,
 })
 
 const menu = ref()

@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     defaults: {
       component: 'Website',
     },
-    fonts: ['Dosis'],
+    fonts: ['Dosis:500', 'Dosis:600'],
   },
 
   supabase: {

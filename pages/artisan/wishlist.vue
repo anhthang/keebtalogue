@@ -41,6 +41,4 @@ useSeoMeta({
   title: 'Wishlist',
   description: 'Create eye-catching wishlist images for seamless trading!',
 })
-
-defineOgImage()
 </script>

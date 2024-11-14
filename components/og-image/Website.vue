@@ -43,16 +43,19 @@
     </svg>
 
     <div class="w-[600px] pl-[100px]">
-      <h1 v-if="title" class="text-[36px] text-[#FEC476] font-bold text-left">
+      <h1
+        v-if="title"
+        class="text-[36px] text-[#FEC476] font-semibold text-left"
+      >
         {{ $config.public.appName }}
       </h1>
 
       <h1
-        class="w-[600px] m-0 text-[72px] font-semibold mb-4 text-white flex items-center"
+        class="w-[600px] m-0 text-[72px] font-semibold mb-2 text-white flex items-center"
       >
         <span>{{ title || $config.public.appName }}</span>
       </h1>
-      <p class="text-[24px] text-[#E4E4E7] leading-tight">
+      <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
         {{ description }}
       </p>
     </div>

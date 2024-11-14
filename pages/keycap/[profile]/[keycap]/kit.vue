@@ -110,6 +110,12 @@ useSeoMeta({
     : manufacturers[profile],
 })
 
+defineOgImageComponent('Keycap', {
+  title: `${manufacturers[profile]} ${data.value.name}`,
+  description: 'Manage and update keycap kit details.',
+  manufacturerId: profile,
+})
+
 const visible = ref(false)
 const selectedKit = ref({})
 
