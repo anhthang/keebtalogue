@@ -4,6 +4,7 @@
       v-if="isEditor"
       icon="pi pi-pen-to-square"
       label="Edit"
+      severity="secondary"
       @click="emit('onEdit')"
     />
 
@@ -12,14 +13,16 @@
       as="a"
       icon="pi pi-external-link"
       label="Website"
+      severity="secondary"
       :href="sculpt.href"
       target="_blank"
       rel="noopener"
     />
 
     <SplitButton
-      :label="sortItem.label"
       :icon="sortItem.icon"
+      :label="sortItem.label"
+      severity="secondary"
       :model="sortOptions"
     />
   </div>
@@ -28,6 +31,7 @@
     aria-haspopup="true"
     aria-controls="overlay_menu"
     icon="pi pi-ellipsis-v"
+    severity="secondary"
     @click="toggleActions"
   >
   </Button>

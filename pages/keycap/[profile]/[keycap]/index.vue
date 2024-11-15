@@ -13,19 +13,25 @@
             v-if="isEditor"
             :to="`/keycap/${data.profile_keycap_id}/kit`"
           >
-            <Button label="Manage Kits" icon="pi pi-folder-plus" />
+            <Button
+              icon="pi pi-folder-plus"
+              label="Manage Kits"
+              severity="secondary"
+            />
           </nuxt-link>
 
           <Button
             v-if="isEditor"
-            label="Edit"
             icon="pi pi-file-edit"
+            label="Edit"
+            severity="secondary"
             @click="toggleEditKeycap"
           />
 
           <SplitButton
-            label="Links"
             icon="pi pi-external-link"
+            label="Links"
+            severity="secondary"
             :model="mobile[2].items"
           />
         </div>
@@ -34,6 +40,7 @@
           aria-haspopup="true"
           aria-controls="overlay_menu"
           icon="pi pi-ellipsis-v"
+          severity="secondary"
           @click="toggleActions"
         >
         </Button>
@@ -131,9 +138,11 @@
             <AccordionPanel value="disclaimers">
               <AccordionHeader>Disclaimers</AccordionHeader>
               <AccordionContent>
-                Kindly note that the images are of 3D renders and are for
-                illustration purposes only. The final colors may differ
-                slightly.
+                <Message variant="simple" severity="warn">
+                  Kindly note that the images are of 3D renders and are for
+                  illustration purposes only. The final colors may differ
+                  slightly.
+                </Message>
               </AccordionContent>
             </AccordionPanel>
           </Accordion>

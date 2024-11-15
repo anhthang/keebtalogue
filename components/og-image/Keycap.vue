@@ -46,13 +46,11 @@
       <div class="flex items-center gap-4">
         <img :src="`/logo-filled.png`" height="50" />
         <h1 class="text-[36px] text-[#FEC476] font-semibold text-left">
-          {{ $config.public.appName }}
+          {{ headline }}
         </h1>
       </div>
-      <h1
-        class="w-[600px] m-0 text-[72px] font-semibold mb-2 text-white flex items-center"
-      >
-        <span>{{ title }}</span>
+      <h1 class="w-[600px] m-0 text-[72px] font-semibold text-white">
+        {{ title }}
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
         {{ description }}
@@ -71,7 +69,7 @@
 </template>
 
 <script setup>
-defineProps({
+const { title, manufacturerName } = defineProps({
   title: {
     type: String,
     default: '',
@@ -89,4 +87,9 @@ defineProps({
     default: '',
   },
 })
+
+const config = useRuntimeConfig()
+const { appName } = config.public
+
+const headline = manufacturerName ? `${appName} | ${manufacturerName}` : appName
 </script>

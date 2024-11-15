@@ -50,10 +50,8 @@
         {{ $config.public.appName }}
       </h1>
 
-      <h1
-        class="w-[600px] m-0 text-[72px] font-semibold mb-2 text-white flex items-center"
-      >
-        <span>{{ title || $config.public.appName }}</span>
+      <h1 class="w-[600px] m-0 text-[72px] font-semibold text-white">
+        {{ title || $config.public.appName }}
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
         {{ description }}

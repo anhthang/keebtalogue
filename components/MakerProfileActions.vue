@@ -4,6 +4,7 @@
       v-if="isEditor"
       icon="pi pi-pen-to-square"
       label="Edit"
+      severity="secondary"
       @click="emit('onEditMaker')"
     />
 
@@ -11,16 +12,23 @@
       v-if="isEditor"
       icon="pi pi-calendar"
       label="Sales"
+      severity="secondary"
       @click="emit('onAddSale')"
     />
 
-    <SplitButton label="Links" icon="pi pi-external-link" :model="desktop" />
+    <SplitButton
+      icon="pi pi-external-link"
+      label="Links"
+      severity="secondary"
+      :model="desktop"
+    />
   </div>
   <Button
     v-else
     aria-haspopup="true"
     aria-controls="overlay_menu"
     icon="pi pi-ellipsis-v"
+    severity="secondary"
     @click="toggleActions"
   >
   </Button>

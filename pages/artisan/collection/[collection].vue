@@ -13,28 +13,31 @@
             v-if="published && data?.type === 'share'"
             icon="pi pi-copy"
             label="Copy"
+            severity="secondary"
             @click="copyShareUrl"
+          />
+
+          <SplitButton
+            :icon="sortItem.icon"
+            :label="sortItem.label"
+            severity="secondary"
+            :model="sortOptions"
           />
 
           <Button
             v-if="authenticated"
             icon="pi pi-pen-to-square"
             label="Edit"
+            severity="secondary"
             @click="toggleShowEdit"
           />
 
           <Button
             v-if="user.email_verified"
-            severity="danger"
             icon="pi pi-trash"
             label="Delete"
+            severity="danger"
             @click="deleteCollection"
-          />
-
-          <SplitButton
-            :label="sortItem.label"
-            :icon="sortItem.icon"
-            :model="sortOptions"
           />
         </div>
         <Button
@@ -42,6 +45,7 @@
           aria-haspopup="true"
           aria-controls="overlay_menu"
           icon="pi pi-ellipsis-v"
+          severity="secondary"
           @click="toggleActions"
         >
         </Button>
