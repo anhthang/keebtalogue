@@ -110,13 +110,13 @@
 
       <Message variant="simple" severity="success">
         <template #icon>
-          <img
+          <NuxtImg
             class="h-8"
             :alt="$config.public.appName"
             :src="
               $colorMode.value === 'dark'
-                ? `/logo-outlined.png`
-                : `/logo-filled.png`
+                ? '/logo-outlined.png'
+                : '/logo-filled.png'
             "
           />
         </template>

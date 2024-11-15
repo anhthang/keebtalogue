@@ -14,16 +14,25 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/fonts',
+    '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxtjs/device',
     '@nuxtjs/supabase',
+    '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     '@primevue/nuxt-module',
-    '@nuxtjs/tailwindcss',
+    'nuxt-og-image',
   ],
 
   fonts: {
     families: [{ name: 'Dosis', provider: 'google' }],
+  },
+
+  ogImage: {
+    defaults: {
+      component: 'Website',
+    },
+    fonts: ['Dosis:500', 'Dosis:600'],
   },
 
   supabase: {

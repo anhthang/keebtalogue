@@ -174,6 +174,7 @@ const { data: sculpt, refresh } = await useAsyncData(
       const sculpt = data.sculpts[route.params.sculpt]
 
       sculpt.maker_name = data.name
+      sculpt.invertible_logo = data.invertible_logo
 
       return sculpt
     },
@@ -201,11 +202,16 @@ useSeoMeta({
   title: sculpt.value
     ? `${sculpt.value.name} • ${sculpt.value.maker_name}`
     : '',
-  description: sculpt.value && sculpt.value.story,
-  ogDescription: sculpt.value && sculpt.value.story,
-  ogImage: sculpt.value && sculpt.value.img,
-  twitterDescription: sculpt.value && sculpt.value.story,
-  twitterImage: sculpt.value && sculpt.value.img,
+  description: sculpt.value?.story,
+  ogDescription: sculpt.value?.story,
+  twitterDescription: sculpt.value?.story,
+})
+
+defineOgImageComponent('Artisan', {
+  title: sculpt.value?.name,
+  makerId: sculpt.value?.maker_id,
+  makerName: sculpt.value?.maker_name,
+  invertible: sculpt.value?.invertible_logo,
 })
 
 watch(

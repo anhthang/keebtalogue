@@ -30,6 +30,8 @@ useHead({
   link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
 })
 
+defineOgImage()
+
 useSeoMeta({
   titleTemplate: (chunk) => {
     return chunk ? `${chunk} - ${appName}` : appName
@@ -39,10 +41,8 @@ useSeoMeta({
   ogUrl: baseUrl,
   ogTitle: appName,
   ogDescription: appDesc,
-  ogImage: `${baseUrl}/website-card.png`,
   twitterCard: 'summary_large_image',
   twitterTitle: appName,
   twitterDescription: appDesc,
-  twitterImage: `${baseUrl}/website-card.png`,
 })
 </script>

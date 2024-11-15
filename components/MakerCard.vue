@@ -6,7 +6,7 @@
       pt:body:class="items-center"
     >
       <template #header>
-        <img
+        <NuxtImg
           :class="{
             invert: maker.invertible_logo && $colorMode.value === 'dark',
           }"

@@ -218,6 +218,9 @@
         :rows="5"
         auto-resize
       />
+      <Message severity="secondary" size="small" variant="simple">
+        Keep it concise and under 400 characters for optimal display.
+      </Message>
     </div>
 
     <div class="flex flex-col gap-2">
