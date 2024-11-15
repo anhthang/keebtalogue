@@ -7,12 +7,12 @@
           class="w-12 h-12 flex items-center justify-center"
           @click="toggleDrawer"
         >
-          <img
+          <NuxtImg
             :alt="$config.public.appName"
             :src="
               $colorMode.value === 'dark'
-                ? `/logo-outlined.png`
-                : `/logo-filled.png`
+                ? '/logo-outlined.png'
+                : '/logo-filled.png'
             "
           />
         </div>
@@ -21,12 +21,12 @@
           <template #header>
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 flex items-center justify-center">
-                <img
+                <NuxtImg
                   :alt="$config.public.appName"
                   :src="
                     $colorMode.value === 'dark'
-                      ? `/logo-outlined.png`
-                      : `/logo-filled.png`
+                      ? '/logo-outlined.png'
+                      : '/logo-filled.png'
                   "
                 />
               </div>

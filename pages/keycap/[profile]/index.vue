@@ -77,7 +77,7 @@
       </nuxt-link>
     </div>
     <div v-else class="flex flex-col h-full items-center gap-8">
-      <img class="w-1/3" :src="`/svg/search.svg`" alt="Empty" />
+      <NuxtImg class="w-1/3" src="/svg/search.svg" alt="Empty" />
 
       <div class="text-2xl">
         Currently, there are no keycaps available. Check back soon for fresh

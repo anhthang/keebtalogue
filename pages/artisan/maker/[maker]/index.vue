@@ -141,7 +141,7 @@ useSeoMeta({
 })
 
 defineOgImageComponent('Artisan', {
-  makerId: maker.value.id,
+  makerId: maker.value?.id,
   invertible: maker.value?.invertible_logo,
 })
 

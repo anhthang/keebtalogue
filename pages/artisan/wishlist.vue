@@ -19,7 +19,7 @@
       <WishlistPreview />
     </div>
     <div v-else class="flex flex-col items-center text-center gap-8">
-      <img class="w-2/3" :src="`/svg/access_denied.svg`" alt="Access Denied" />
+      <NuxtImg class="w-2/3" src="/svg/access_denied.svg" alt="Access Denied" />
 
       <Message variant="simple" size="large">
         This feature isn't available on mobile.
