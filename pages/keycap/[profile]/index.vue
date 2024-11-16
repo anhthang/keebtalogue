@@ -161,7 +161,6 @@ defineOgImage({
     manufacturerId: profile,
   },
 })
-// defineOgImageComponent('Keycap', { manufacturerId: profile })
 
 const visible = ref(false)
 const showAddKeycap = (shouldRefresh) => {

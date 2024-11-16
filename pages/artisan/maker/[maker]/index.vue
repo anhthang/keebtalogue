@@ -22,12 +22,8 @@
         </div>
       </template>
 
-      <div v-if="maker.intro" class="mb-4 leading-6 text-muted-color">
-        <p
-          v-for="(line, idx) in maker.intro.split('\n')"
-          :key="idx"
-          class="mb-2"
-        >
+      <div v-if="maker.bio" class="mb-4 leading-6 text-muted-color">
+        <p v-for="(line, idx) in maker.bio.split('\n')" :key="idx" class="mb-2">
           {{ line }}
         </p>
       </div>
@@ -135,9 +131,9 @@ const breadcrumbs = computed(() => {
 
 useSeoMeta({
   title: maker.value?.name,
-  description: maker.value?.intro,
-  ogDescription: maker.value?.intro,
-  twitterDescription: maker.value?.intro,
+  description: maker.value?.bio,
+  ogDescription: maker.value?.bio,
+  twitterDescription: maker.value?.bio,
 })
 
 defineOgImageComponent('Artisan', {

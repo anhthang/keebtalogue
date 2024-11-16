@@ -11,8 +11,8 @@
         <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <Button
             v-if="published && data?.type === 'share'"
-            icon="pi pi-copy"
-            label="Copy"
+            icon="pi pi-link"
+            label="Copy URL"
             severity="secondary"
             @click="copyShareUrl"
           />
@@ -233,8 +233,8 @@ const mobile = computed(() => {
       visible: authenticated,
       items: [
         {
-          label: 'Copy',
-          icon: 'pi pi-copy',
+          label: 'Copy URL',
+          icon: 'pi pi-link',
           visible: published && data.value?.type === 'share',
           command: copyShareUrl,
         },

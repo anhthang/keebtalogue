@@ -70,11 +70,11 @@
         <label for="maker_founded">Founded</label>
         <IconField>
           <InputIcon class="pi pi-calendar" />
-          <InputNumber
+          <InputText
+            id="maker_founded"
             v-model.trim="maker.founded"
-            input-id="maker_founded"
             name="founded"
-            :use-grouping="false"
+            type="text"
             fluid
           />
         </IconField>
@@ -210,11 +210,11 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <label for="maker_intro">Intro</label>
+      <label for="maker_bio">Bio</label>
       <Textarea
-        id="maker_intro"
-        v-model.trim="maker.intro"
-        name="intro"
+        id="maker_bio"
+        v-model.trim="maker.bio"
+        name="bio"
         :rows="5"
         auto-resize
       />
@@ -275,7 +275,7 @@ const resolver = ref(
         .length(2)
         .nullish()
         .or(z.string().min(0).max(0)),
-      founded: z.number().nullish(),
+      founded: z.string().nullish().or(z.string().min(0).max(0)),
       document_ids: z.string().array(),
       website: z.string().url().nullish().or(z.string().min(0).max(0)),
       instagram: z
@@ -291,7 +291,6 @@ const resolver = ref(
         .nullish()
         .or(z.string().min(0).max(0)),
       artisancollector: z.string().url().nullish().or(z.string().min(0).max(0)),
-      // intro: z.string(),
     }),
   ),
 )

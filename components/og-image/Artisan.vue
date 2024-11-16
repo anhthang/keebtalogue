@@ -53,7 +53,7 @@
         {{ title }}
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
-        {{ description.slice(0, 400) || $config.public.appDesc }}
+        {{ description || $config.public.appDesc }}
       </p>
     </div>
 
