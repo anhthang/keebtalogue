@@ -7,6 +7,7 @@
 <script setup>
 import { useUserStore } from './stores/user'
 import 'primeicons/primeicons.css'
+import 'flag-icons/css/flag-icons.min.css'
 
 const config = useRuntimeConfig()
 const userStore = useUserStore()

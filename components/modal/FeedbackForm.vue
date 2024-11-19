@@ -69,6 +69,17 @@
           fluid
           disabled
         />
+        <InputIcon>
+          <template #default>
+            <NuxtLink
+              to="https://github.com/anhthang/keebtalogue"
+              target="_blank"
+              external
+            >
+              <i class="pi pi-external-link" />
+            </NuxtLink>
+          </template>
+        </InputIcon>
       </IconField>
       <Message severity="secondary" size="small" variant="simple">
         Report bugs, request features, or discuss ideas on our GitHub repository

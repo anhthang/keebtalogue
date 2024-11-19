@@ -46,17 +46,16 @@
     <div class="grid grid-cols-2 gap-2">
       <div class="flex flex-col gap-2">
         <label for="maker_nationality">Nationality</label>
-        <IconField>
-          <InputIcon class="pi pi-flag" />
-          <InputText
-            id="maker_nationality"
-            v-model.trim="maker.nationality"
-            name="nationality"
-            type="text"
-            fluid
-            :maxlength="2"
-          />
-        </IconField>
+        <Select
+          v-model="maker.nationality"
+          name="nationality"
+          :options="continents"
+          option-group-label="continent"
+          option-group-children="countries"
+          option-label="name"
+          option-value="code"
+        >
+        </Select>
         <Message
           v-if="$form.nationality?.invalid"
           severity="error"
@@ -76,6 +75,7 @@
             name="founded"
             type="text"
             fluid
+            placeholder="e.g., 2024, Feb 2024"
           />
         </IconField>
         <Message
@@ -233,8 +233,10 @@
 
 <script setup>
 import { zodResolver } from '@primevue/forms/resolvers/zod'
-import slugify from 'slugify'
 import { z } from 'zod'
+import country from 'flag-icons/country.json'
+import groupBy from 'lodash.groupby'
+import slugify from 'slugify'
 
 const emit = defineEmits(['onSuccess'])
 
@@ -262,6 +264,16 @@ onBeforeMount(() => {
   }
 })
 
+const continents = Object.entries(
+  groupBy(
+    country.filter((c) => c.continent),
+    'continent',
+  ),
+).map(([continent, countries]) => ({
+  continent,
+  countries,
+}))
+
 const discordInviteRegex = /discord\.gg\/[a-zA-Z0-9]+/
 const instagramRegex = /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9._-]+/
 
@@ -269,12 +281,7 @@ const resolver = ref(
   zodResolver(
     z.object({
       name: z.string().min(1),
-      nationality: z
-        .string()
-        .toUpperCase()
-        .length(2)
-        .nullish()
-        .or(z.string().min(0).max(0)),
+      nationality: z.string().nullish().or(z.string().min(0).max(0)),
       founded: z.string().nullish().or(z.string().min(0).max(0)),
       document_ids: z.string().array(),
       website: z.string().url().nullish().or(z.string().min(0).max(0)),
