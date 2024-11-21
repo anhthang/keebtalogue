@@ -31,7 +31,7 @@
         <Card
           v-for="(colorway, idx) in colorways"
           :key="colorway.colorway_id"
-          class="flex items-center flex-1 overflow-hidden"
+          class="flex items-center flex-1 overflow-hidden colorway-card"
           :pt="{
             header: 'w-full h-44 md:h-60',
             body: 'items-center',
@@ -50,10 +50,11 @@
           </template>
           <template #title>{{ colorway.name || '-' }}</template>
 
-          <template #footer>
-            <div class="flex gap-4">
+          <template v-if="!copying" #footer>
+            <div class="flex gap-2">
               <Button
                 v-if="isEditor"
+                v-tooltip.top="'Edit'"
                 text
                 size="small"
                 severity="secondary"
@@ -62,6 +63,16 @@
               />
 
               <Button
+                v-tooltip.top="'Copy Card'"
+                text
+                size="small"
+                severity="secondary"
+                icon="pi pi-copy"
+                @click="copyColorwayCard(idx)"
+              />
+
+              <Button
+                v-tooltip.top="'Expand'"
                 text
                 size="small"
                 severity="secondary"
@@ -70,6 +81,7 @@
               />
 
               <Button
+                v-tooltip.top="'Add to Collection'"
                 text
                 size="small"
                 severity="secondary"
@@ -333,5 +345,22 @@ const addToCollection = (collection, colorway) => {
       life: 3000,
     })
   }
+}
+
+const copying = ref(false)
+const copyColorwayCard = async (idx) => {
+  copying.value = true
+
+  const card = document.getElementsByClassName('colorway-card')[idx]
+  card.classList.add('p-2')
+
+  try {
+    await copyScreenshot(card, toast)
+  } catch (error) {
+    toast.add({ severity: 'error', summary: error.message, life: 3000 })
+  }
+
+  card.classList.remove('p-2')
+  copying.value = false
 }
 </script>
