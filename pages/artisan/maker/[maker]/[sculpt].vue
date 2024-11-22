@@ -29,7 +29,7 @@
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
       >
         <Card
-          v-for="(colorway, idx) in colorways"
+          v-for="(colorway, idx) in sculpt.colorways"
           :key="colorway.colorway_id"
           class="flex items-center flex-1 overflow-hidden colorway-card"
           :pt="{
@@ -109,6 +109,15 @@
         </Card>
       </div>
 
+      <Paginator
+        class="mt-4"
+        :rows="size"
+        :total-records="sculpt.total_colorways"
+        :always-show="false"
+        pt:root:class="!bg-transparent"
+        @page="(e) => (page = e.page + 1)"
+      />
+
       <Dialog
         v-model:visible="visible.edit"
         modal
@@ -160,8 +169,6 @@
 </template>
 
 <script setup>
-import orderBy from 'lodash.orderby'
-
 const toast = useToast()
 
 const add2collection = ref()
@@ -171,17 +178,31 @@ const toggle = (event, idx) => {
 
 const route = useRoute()
 
-const sort = ref('order|desc')
+const size = 60
+const page = ref(1)
+
+const sortField = ref('order')
+const sortOrder = ref('desc')
 const onChangeSorting = (value) => {
-  sort.value = value
+  const [field, order] = value.split('|')
+  sortField.value = field
+  sortOrder.value = order
 }
 
 const { data: sculpt, refresh } = await useAsyncData(
   `maker:${route.params.maker}:${route.params.sculpt}`,
   () =>
-    $fetch(`/api/makers/${route.params.maker}?sculpt=${route.params.sculpt}`),
+    $fetch(`/api/makers/${route.params.maker}`, {
+      query: {
+        sculpt: route.params.sculpt,
+        order_by: sortField.value,
+        sort: sortOrder.value,
+        from: (page.value - 1) * size,
+        to: page.value * size - 1,
+      },
+    }),
   {
-    watch: () => route.params.sculpt,
+    watch: [page, sortField, sortOrder],
     transform: (data) => {
       const sculpt = data.sculpts[route.params.sculpt]
 
@@ -249,10 +270,6 @@ onMounted(() => {
 
 const userStore = useUserStore()
 const { authenticated, collections, isEditor, user } = storeToRefs(userStore)
-
-const colorways = computed(() => {
-  return orderBy(sculpt.value.colorways, ...sort.value.split('|'))
-})
 
 const visible = ref({
   edit: false,

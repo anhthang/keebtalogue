@@ -91,11 +91,7 @@
       :total-records="data.count"
       :always-show="false"
       pt:root:class="!bg-transparent"
-      @page="
-        (e) => {
-          page = e.page + 1
-        }
-      "
+      @page="(e) => (page = e.page + 1)"
     />
 
     <Dialog

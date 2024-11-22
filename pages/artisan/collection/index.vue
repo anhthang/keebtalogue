@@ -47,19 +47,17 @@
           <template #title>
             {{ collection.name }}
 
-            <Button
+            <Message
               v-if="collection.published"
-              text
               size="small"
-              disabled
+              variant="simple"
               severity="warn"
               icon="pi pi-unlock"
             />
-            <Button
+            <Message
               v-else
-              text
               size="small"
-              disabled
+              variant="simple"
               severity="secondary"
               icon="pi pi-lock"
             />

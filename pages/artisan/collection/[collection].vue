@@ -72,41 +72,59 @@
         on our marketplace.
       </Message>
 
-      <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+      <DataView
+        :value="sortedCollections"
+        layout="grid"
+        paginator
+        :rows="60"
+        :total-records="sortedCollections.length"
+        :always-show-paginator="false"
+        :pt="{
+          content: '!bg-transparent',
+          pcPaginator: {
+            paginatorContainer: '!border-0 pt-4',
+            root: '!bg-transparent',
+          },
+        }"
       >
-        <Card
-          v-for="colorway in sortedCollections"
-          :key="colorway.id"
-          class="flex items-center flex-1 overflow-hidden"
-          :pt="{
-            header: 'h-44 md:h-60',
-            body: 'items-center',
-            caption: 'items-center',
-          }"
-        >
-          <template #header>
-            <img
-              loading="lazy"
-              :alt="colorway.name"
-              :src="colorway.img"
-              class="h-full object-cover"
-            />
-          </template>
-          <template #title>{{ colorway.name || '-' }}</template>
-          <template #subtitle>{{ colorway.sculpt_name }}</template>
+        <template #grid="slotProps">
+          <div
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+          >
+            <Card
+              v-for="colorway in slotProps.items"
+              :key="colorway.id"
+              class="flex items-center flex-1 overflow-hidden"
+              :pt="{
+                header: 'h-44 md:h-60',
+                body: 'items-center',
+                caption: 'items-center',
+              }"
+            >
+              <template #header>
+                <img
+                  loading="lazy"
+                  :alt="colorway.name"
+                  :src="colorway.img"
+                  class="h-full object-cover"
+                />
+              </template>
+              <template #title>{{ colorway.name || '-' }}</template>
+              <template #subtitle>{{ colorway.sculpt_name }}</template>
 
-          <template v-if="authenticated" #footer>
-            <Button
-              text
-              size="small"
-              severity="danger"
-              label="Remove"
-              @click="removeCap(colorway)"
-            />
-          </template>
-        </Card>
-      </div>
+              <template v-if="authenticated" #footer>
+                <Button
+                  text
+                  size="small"
+                  severity="danger"
+                  label="Remove"
+                  @click="removeCap(colorway)"
+                />
+              </template>
+            </Card>
+          </div>
+        </template>
+      </DataView>
 
       <Dialog
         v-model:visible="visible"
