@@ -5,6 +5,6 @@ export default defineEventHandler(async (event) => {
   return await client
     .from('users')
     .select('*, collections:user_collections(*)')
-    .eq('id', event.context.params.id)
+    .eq('id', event.context.params?.id)
     .single()
 })

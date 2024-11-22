@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('users')
     .update(maker)
-    .eq('id', event.context.params.id)
+    .eq('id', event.context.params?.id)
 
   return data
 })

@@ -4,7 +4,8 @@ import { omitSensitive } from '~/utils'
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
-  const { profile_id, page, size, status } = getQuery(event)
+  const { profile_id, page, size, status }: Record<string, any> =
+    getQuery(event)
 
   const from = (page - 1) * size
   const to = page * size - 1

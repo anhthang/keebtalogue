@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('user_collection_items')
     .select()
-    .eq('uid', event.context.params.id)
+    .eq('uid', event.context.params?.id)
 
   return data
 })

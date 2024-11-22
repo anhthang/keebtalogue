@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('user_collections')
     .update(body)
-    .eq('id', event.context.params.collection)
-    .eq('uid', event.context.params.id)
+    .eq('id', event.context.params?.collection)
+    .eq('uid', event.context.params?.id)
 
   return data
 })

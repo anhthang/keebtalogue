@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const { data } = await client
     .from('user_collections')
     .select()
-    .eq('uid', event.context.params.id)
+    .eq('uid', event.context.params?.id)
 
   return sortBy(data, 'name')
 })

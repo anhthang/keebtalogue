@@ -4,13 +4,13 @@ import { omitSensitive } from '~/utils'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const { profile, keycap } = event.context.params
+  const { params } = event.context
 
   const { data } = await client
     .from('keycaps')
     .select('*, kits:keycap_kits(*)')
     // .select('*, artisans:colorways(*), kits:keycap_kits(*)')
-    .eq('profile_keycap_id', `${profile}/${keycap}`)
+    .eq('profile_keycap_id', `${params?.profile}/${params?.keycap}`)
     .single()
 
   if (data && Array.isArray(data.kits)) {
