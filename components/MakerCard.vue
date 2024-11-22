@@ -19,6 +19,11 @@
       <template #title>{{ maker.name }}</template>
       <template v-if="authenticated" #footer>
         <Button
+          v-if="favorite || favorites.length < 6"
+          v-tooltip.bottom="{
+            value: 'You can pin up to 6 makers.',
+            disabled: favorite || favorites.length === 6,
+          }"
           text
           size="small"
           severity="secondary"

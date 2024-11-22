@@ -9,6 +9,7 @@
         class="col-span-4 md:col-span-3"
         :class="{
           'md:col-span-4': !data.makers.length && !data.keycaps.length,
+          'order-last': $device.isMobile,
         }"
       />
 
