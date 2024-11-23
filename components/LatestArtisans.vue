@@ -7,9 +7,9 @@
       :total-records="makers.length"
       :always-show-paginator="false"
     >
-      <template #list="slotProps">
+      <template #list="{ items }">
         <div
-          v-for="(maker, index) in slotProps.items"
+          v-for="(maker, index) in items"
           :key="index"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,

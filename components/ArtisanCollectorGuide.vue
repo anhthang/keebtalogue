@@ -7,9 +7,9 @@
       :total-records="guides.length"
       :always-show-paginator="false"
     >
-      <template #list="slotProps">
+      <template #list="{ items }">
         <div
-          v-for="(guide, index) in slotProps.items"
+          v-for="(guide, index) in items"
           :key="index"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,

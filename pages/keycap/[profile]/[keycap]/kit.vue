@@ -17,12 +17,8 @@
         <Column field="qty" header="Quantity" />
         <Column field="img" header="Image" />
         <Column v-if="hasCancelled" field="cancelled" header="Status">
-          <template #body="slotProps">
-            <Tag
-              v-if="slotProps.data.cancelled"
-              severity="danger"
-              value="Cancelled"
-            />
+          <template #body="{ data: kit }">
+            <Tag v-if="kit.cancelled" severity="danger" value="Cancelled" />
           </template>
         </Column>
         <Column class="!text-end" header="Actions">

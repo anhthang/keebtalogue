@@ -7,9 +7,9 @@
       :total-records="keycaps.length"
       :always-show-paginator="false"
     >
-      <template #list="slotProps">
+      <template #list="{ items }">
         <div
-          v-for="(keycap, index) in slotProps.items"
+          v-for="(keycap, index) in items"
           :key="index"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,

@@ -56,30 +56,23 @@
             circular
             :autoplay-interval="3000"
           >
-            <template #item="slotProps">
+            <template #item="{ data: kit }">
               <div class="mb-4">
                 <div class="relative mx-auto">
-                  <img
-                    :src="slotProps.data.img"
-                    :alt="slotProps.data.name"
-                    class="w-full rounded"
-                  />
+                  <img :src="kit.img" :alt="kit.name" class="w-full rounded" />
                 </div>
               </div>
 
               <div class="flex justify-between items-center">
                 <div class="mt-0 font-semibold text-xl">
-                  {{ slotProps.data.name }}
+                  {{ kit.name }}
                 </div>
-                <div
-                  v-if="slotProps.data.price"
-                  class="mt-0 font-semibold text-xl"
-                >
-                  ${{ slotProps.data.price }}
+                <div v-if="kit.price" class="mt-0 font-semibold text-xl">
+                  ${{ kit.price }}
                 </div>
               </div>
               <div class="mt-4">
-                {{ slotProps.data.description }}
+                {{ kit.description }}
               </div>
             </template>
           </Carousel>

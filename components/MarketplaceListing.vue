@@ -23,9 +23,9 @@
           </div>
         </div>
       </template>
-      <template #list="slotProps">
+      <template #list="{ items }">
         <div
-          v-for="(item, index) in slotProps.items"
+          v-for="(item, index) in items"
           :key="index"
           :class="{
             'border-t border-zinc-100 dark:border-zinc-700': index !== 0,

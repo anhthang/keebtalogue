@@ -24,11 +24,29 @@
       Others
     </Divider>
 
-    <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+    <DataView
+      :value="otherMakers"
+      layout="grid"
+      paginator
+      :rows="authenticated && favorites.length ? 54 : 60"
+      :total-records="otherMakers.length"
+      :always-show-paginator="false"
+      :pt="{
+        content: '!bg-transparent',
+        pcPaginator: {
+          paginatorContainer: '!border-0 pt-4',
+          root: '!bg-transparent',
+        },
+      }"
     >
-      <MakerCard v-for="maker in otherMakers" :key="maker.id" :maker="maker" />
-    </div>
+      <template #grid="{ items }">
+        <div
+          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+        >
+          <MakerCard v-for="maker in items" :key="maker.id" :maker="maker" />
+        </div>
+      </template>
+    </DataView>
 
     <Dialog
       v-model:visible="visible"

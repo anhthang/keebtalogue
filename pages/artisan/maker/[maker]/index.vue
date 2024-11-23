@@ -36,38 +36,56 @@
         />
       </template>
 
-      <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+      <DataView
+        :value="sculpts"
+        layout="grid"
+        paginator
+        :rows="60"
+        :total-records="sculpts.length"
+        :always-show-paginator="false"
+        :pt="{
+          content: '!bg-transparent',
+          pcPaginator: {
+            paginatorContainer: '!border-0 pt-4',
+            root: '!bg-transparent',
+          },
+        }"
       >
-        <nuxt-link
-          v-for="sculpt in maker.sculpts"
-          :key="sculpt.id"
-          :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
-        >
-          <Card
-            class="flex items-center flex-1 overflow-hidden"
-            :pt="{
-              root: 'h-full',
-              header: 'w-full h-44 md:h-60',
-              caption: 'flex items-center',
-              title: 'w-40 text-center truncate',
-            }"
+        <template #grid="{ items }">
+          <div
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
           >
-            <template #header>
-              <img
-                loading="lazy"
-                :alt="sculpt.name"
-                :src="sculpt.img"
-                class="w-full h-full object-cover"
-              />
-            </template>
-            <template #title>{{ sculpt.name }}</template>
-            <template #subtitle
-              >{{ sculpt.total_colorways }} colorways</template
+            <nuxt-link
+              v-for="sculpt in items"
+              :key="sculpt.id"
+              :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
             >
-          </Card>
-        </nuxt-link>
-      </div>
+              <Card
+                class="flex items-center flex-1 overflow-hidden"
+                :pt="{
+                  root: 'h-full',
+                  header: 'w-full h-44 md:h-60',
+                  caption: 'flex items-center',
+                  title: 'w-40 text-center truncate',
+                }"
+              >
+                <template #header>
+                  <img
+                    loading="lazy"
+                    :alt="sculpt.name"
+                    :src="sculpt.img"
+                    class="w-full h-full object-cover"
+                  />
+                </template>
+                <template #title>{{ sculpt.name }}</template>
+                <template #subtitle
+                  >{{ sculpt.total_colorways }} colorways</template
+                >
+              </Card>
+            </nuxt-link>
+          </div>
+        </template>
+      </DataView>
 
       <Dialog
         v-model:visible="visible.edit"
@@ -116,6 +134,8 @@ const { data: maker, refresh } = await useAsyncData(
   },
 )
 
+const sculpts = Object.values(maker.value.sculpts)
+
 const breadcrumbs = computed(() => {
   return [
     {
@@ -160,24 +180,4 @@ const sculptLst = computed(() => {
       }, {})
     : {}
 })
-
-// const getFlagEmoji = (isoCode) => {
-//   if (isoCode === 'GB-ENG') {
-//     return '🏴󠁧󠁢󠁥󠁮󠁧󠁿'
-//   }
-//   if (isoCode === 'GB-WLS') {
-//     return '🏴󠁧󠁢󠁷󠁬󠁳󠁿'
-//   }
-//   if (isoCode === 'GB-SCT') {
-//     return '🏴󠁧󠁢󠁳󠁣󠁴󠁿'
-//   }
-//   if (isoCode === 'GB-NIR') {
-//     // The only official flag in Northern Ireland is the Union Flag of the United Kingdom.
-//     return '🇬🇧'
-//   }
-
-//   return isoCode
-//     .toUpperCase()
-//     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)))
-// }
 </script>
