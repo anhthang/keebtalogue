@@ -20,10 +20,6 @@
       />
     </div>
 
-    <Divider v-if="authenticated && favoriteMakers.length" align="left">
-      Others
-    </Divider>
-
     <DataView
       :value="otherMakers"
       layout="grid"
@@ -32,6 +28,7 @@
       :total-records="otherMakers.length"
       :always-show-paginator="false"
       :pt="{
+        header: '!bg-transparent !border-0 text-lg font-medium',
         content: '!bg-transparent',
         pcPaginator: {
           paginatorContainer: '!border-0 pt-4',
@@ -39,6 +36,7 @@
         },
       }"
     >
+      <template v-if="favorites.length" #header> Other Makers </template>
       <template #grid="{ items }">
         <div
           class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"

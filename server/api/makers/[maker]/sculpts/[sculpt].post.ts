@@ -1,15 +1,22 @@
 import { serverSupabaseClient } from '#supabase/server'
+import omit from 'lodash.omit'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const { created_at, maker_name, total_colorways, ...rest } =
-    await readBody(event)
+
+  let body = await readBody(event)
+  body = omit(body, [
+    'created_at',
+    'maker_name',
+    'invertible_logo',
+    'total_colorways',
+  ])
 
   const { data, error } = await client
     .from('sculpts')
-    .upsert(rest)
-    .eq('maker_id', rest.maker_id)
-    .eq('sculpt_id', rest.sculpt_id)
+    .upsert(body)
+    .eq('maker_id', body.maker_id)
+    .eq('sculpt_id', body.sculpt_id)
 
   if (error) {
     return error
