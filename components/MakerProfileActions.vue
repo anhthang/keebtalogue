@@ -91,11 +91,11 @@ if (maker.artisancollector) {
   })
 }
 
-const catalogue = []
-if (Array.isArray(maker.document_ids)) {
+const documents = []
+if (Array.isArray(maker.document_ids) && maker.document_ids.length) {
   if (maker.document_ids.length > 1) {
     maker.document_ids.forEach((docId, idx) => {
-      catalogue.push({
+      documents.push({
         label: `Catalogue Part ${idx + 1}`,
         icon: 'pi pi-file-word',
         url: `https://docs.google.com/document/d/${docId}`,
@@ -103,7 +103,7 @@ if (Array.isArray(maker.document_ids)) {
       })
     })
   } else {
-    catalogue.push({
+    documents.push({
       label: 'Catalogue',
       icon: 'pi pi-file-word',
       url: `https://docs.google.com/document/d/${maker.document_ids[0]}`,
@@ -112,7 +112,14 @@ if (Array.isArray(maker.document_ids)) {
   }
 }
 
-const desktop = [...links, { separator: true }, ...catalogue]
+const desktop = [
+  ...links,
+  {
+    separator: true,
+    visible: !!documents.length,
+  },
+  ...documents,
+]
 
 const mobile = computed(() => {
   return [
@@ -139,10 +146,12 @@ const mobile = computed(() => {
     },
     {
       separator: true,
+      visible: !!documents.length,
     },
     {
       label: 'Documents',
-      items: catalogue,
+      visible: !!documents.length,
+      items: documents,
     },
   ]
 })
