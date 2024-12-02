@@ -37,14 +37,26 @@
         />
       </template>
 
+      <div
+        v-if="authenticated && favoriteSculpts.length"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+      >
+        <SculptCard
+          v-for="sculpt in favoriteSculpts"
+          :key="sculpt.id"
+          :sculpt="sculpt"
+        />
+      </div>
+
       <DataView
-        :value="sculpts"
+        :value="otherSculpts"
         layout="grid"
         paginator
-        :rows="60"
-        :total-records="sculpts.length"
+        :rows="authenticated && Object.keys(favSculpts).length ? 54 : 60"
+        :total-records="otherSculpts.length"
         :always-show-paginator="false"
         :pt="{
+          header: '!bg-transparent !border-0 text-lg font-medium',
           content: '!bg-transparent',
           pcPaginator: {
             paginatorContainer: '!border-0 pt-4',
@@ -52,38 +64,16 @@
           },
         }"
       >
+        <template v-if="favSculpts.length" #header> Other Sculpts </template>
         <template #grid="{ items }">
           <div
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
           >
-            <nuxt-link
+            <SculptCard
               v-for="sculpt in items"
               :key="sculpt.id"
-              :to="`/artisan/maker/${maker.id}/${sculpt.sculpt_id}`"
-            >
-              <Card
-                class="flex items-center flex-1 overflow-hidden"
-                :pt="{
-                  root: 'h-full',
-                  header: 'w-full h-44 md:h-60',
-                  caption: 'flex items-center',
-                  title: 'w-40 text-center truncate',
-                }"
-              >
-                <template #header>
-                  <img
-                    loading="lazy"
-                    :alt="sculpt.name"
-                    :src="sculpt.img"
-                    class="w-full h-full object-cover"
-                  />
-                </template>
-                <template #title>{{ sculpt.name }}</template>
-                <template #subtitle
-                  >{{ sculpt.total_colorways }} colorways</template
-                >
-              </Card>
-            </nuxt-link>
+              :sculpt="sculpt"
+            />
           </div>
         </template>
       </DataView>
@@ -133,7 +123,7 @@
 <script setup>
 const route = useRoute()
 const userStore = useUserStore()
-const { favorites } = storeToRefs(userStore)
+const { authenticated, favorites } = storeToRefs(userStore)
 
 const visible = ref({
   edit: false,
@@ -149,17 +139,13 @@ const { data: maker, refresh } = await useAsyncData(
   },
 )
 
-const sculpts = computed(() => {
-  const alphabet = Object.values(maker.value.sculpts)
-  const favSculpts = favorites.value[route.params.maker]
-  if (Array.isArray(favSculpts) && favSculpts.length) {
-    const pinned = alphabet.filter((s) => favSculpts.includes(s.sculpt_id))
-    const others = alphabet.filter((s) => !favSculpts.includes(s.sculpt_id))
-
-    return pinned.concat(others)
-  }
-
-  return alphabet
+const sculpts = Object.values(maker.value.sculpts)
+const favSculpts = computed(() => favorites.value[route.params.maker] || [])
+const favoriteSculpts = computed(() => {
+  return sculpts.filter((s) => favSculpts.value.includes(s.sculpt_id))
+})
+const otherSculpts = computed(() => {
+  return sculpts.filter((s) => !favSculpts.value.includes(s.sculpt_id))
 })
 
 const breadcrumbs = computed(() => {
