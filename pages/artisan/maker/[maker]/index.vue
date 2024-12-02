@@ -113,7 +113,10 @@
         class="w-[36rem]"
         dismissable-mask
       >
-        <ModalPinSculpt :sculpts="sculpts" @on-success="toggleCustomizePins" />
+        <ModalPinSculpt
+          :sculpts="favoriteSculpts.concat(otherSculpts)"
+          @on-success="toggleCustomizePins"
+        />
       </Dialog>
     </Panel>
     <BackToArtisanMakers v-else />

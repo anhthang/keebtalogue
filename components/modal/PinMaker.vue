@@ -7,27 +7,27 @@
     @submit="onSubmit"
   >
     <Message variant="simple" severity="secondary">
-      Pin up to 6 sculpts to the top for easy access.
+      Pin up to 6 makers to the top for easy access.
     </Message>
     <div class="flex flex-col gap-2">
       <MultiSelect
-        v-model="initial.sculpts"
-        name="sculpts"
-        :options="sculpts"
+        v-model="initial.makers"
+        name="makers"
+        :options="makers"
         option-label="name"
-        option-value="sculpt_id"
+        option-value="id"
         display="chip"
         filter
         class="w-full"
         pt:label:class="flex flex-wrap"
       />
       <Message
-        v-if="$form.sculpts?.invalid"
+        v-if="$form.makers?.invalid"
         severity="error"
         size="small"
         variant="simple"
       >
-        {{ $form.sculpts.error.message }}
+        {{ $form.makers.error.message }}
       </Message>
     </div>
 
@@ -44,25 +44,24 @@ import { z } from 'zod'
 const emit = defineEmits(['onSuccess'])
 
 defineProps({
-  sculpts: {
+  makers: {
     type: Array,
     default: () => [],
   },
 })
 
-const route = useRoute()
 const toast = useToast()
 const userStore = useUserStore()
 const { favorites, user } = storeToRefs(userStore)
 
 const initial = ref({
-  sculpts: favorites.value[route.params.maker] || [],
+  makers: Object.keys(favorites.value) || [],
 })
 
 const resolver = ref(
   zodResolver(
     z.object({
-      sculpts: z.string().array().max(6),
+      makers: z.string().array().max(6),
     }),
   ),
 )
@@ -70,12 +69,16 @@ const resolver = ref(
 const onSubmit = ({ valid }) => {
   if (!valid) return
 
-  favorites.value[route.params.maker] = initial.value.sculpts
+  const data = initial.value.makers.reduce((out, id) => {
+    out[id] = favorites.value[id] || []
+
+    return out
+  }, {})
 
   $fetch(`/api/users/${user.value.uid}`, {
     method: 'post',
     body: {
-      favorite_makers: favorites.value,
+      favorite_makers: data,
     },
   }).then(() => {
     toast.add({
@@ -83,6 +86,8 @@ const onSubmit = ({ valid }) => {
       summary: 'Your pins have been updated.',
       life: 3000,
     })
+
+    userStore.$patch({ favorites: data })
     emit('onSuccess', true)
   })
 }

@@ -5,7 +5,17 @@
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
     <template v-if="isAdmin" #icons>
-      <Button label="Add" icon="pi pi-user-plus" @click="toggleAddMaker" />
+      <div class="flex gap-2">
+        <Button label="Add" icon="pi pi-user-plus" @click="toggleAddMaker" />
+
+        <Button
+          v-if="authenticated"
+          icon="pi pi-sliders-v"
+          label="Customize Pins"
+          severity="secondary"
+          @click="toggleCustomizePins"
+        />
+      </div>
     </template>
 
     <div
@@ -15,7 +25,6 @@
       <MakerCard
         v-for="maker in favoriteMakers"
         :key="maker.id"
-        :favorite="true"
         :maker="maker"
       />
     </div>
@@ -57,6 +66,19 @@
     >
       <ModalMakerForm @on-success="toggleAddMaker" />
     </Dialog>
+
+    <Dialog
+      v-model:visible="customize"
+      modal
+      header="Customize Pins"
+      class="w-[36rem]"
+      dismissable-mask
+    >
+      <ModalPinMaker
+        :makers="favoriteMakers.concat(otherMakers)"
+        @on-success="toggleCustomizePins"
+      />
+    </Dialog>
   </Panel>
 </template>
 
@@ -78,6 +100,11 @@ const toggleAddMaker = (shouldRefresh) => {
   if (shouldRefresh) {
     refresh()
   }
+}
+
+const customize = ref(false)
+const toggleCustomizePins = () => {
+  customize.value = !customize.value
 }
 
 const favoriteMakers = computed(() => {
