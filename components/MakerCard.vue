@@ -19,10 +19,10 @@
       <template #title>{{ maker.name }}</template>
       <template v-if="authenticated" #footer>
         <Button
-          v-if="favorite || favorites.length < 6"
+          v-if="favorite || Object.keys(favorites).length < 6"
           v-tooltip.bottom="{
             value: 'You can pin up to 6 makers.',
-            disabled: favorite || favorites.length === 6,
+            disabled: favorite || Object.keys(favorites).length === 6,
           }"
           text
           size="small"
@@ -54,10 +54,11 @@ const userStore = useUserStore()
 const { authenticated, favorites, user } = storeToRefs(userStore)
 
 const addFavoriteMaker = (name) => {
-  if (favorites.value.includes(name)) {
-    favorites.value = favorites.value.filter((m) => m !== name)
+  if (Object.hasOwn(favorites.value, name)) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete favorites.value[name]
   } else {
-    favorites.value.push(name)
+    favorites.value[name] = []
   }
 
   $fetch(`/api/users/${user.value.uid}`, {

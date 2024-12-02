@@ -45,7 +45,7 @@ export const useUserStore = defineStore('user', {
       const { data } = await $fetch(`/api/users/${uid}`)
 
       if (data) {
-        this.favorites = data.favorite_makers || []
+        this.favorites = data.favorite_makers || {}
         this.collections = sortBy(data.collections, 'name')
         this.social = {
           discord: data.discord,

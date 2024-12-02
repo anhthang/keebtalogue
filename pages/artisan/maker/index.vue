@@ -24,7 +24,7 @@
       :value="otherMakers"
       layout="grid"
       paginator
-      :rows="authenticated && favorites.length ? 54 : 60"
+      :rows="authenticated && Object.keys(favorites).length ? 54 : 60"
       :total-records="otherMakers.length"
       :always-show-paginator="false"
       :pt="{
@@ -36,7 +36,9 @@
         },
       }"
     >
-      <template v-if="favorites.length" #header> Other Makers </template>
+      <template v-if="Object.keys(favorites).length" #header>
+        Other Makers
+      </template>
       <template #grid="{ items }">
         <div
           class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
@@ -79,10 +81,10 @@ const toggleAddMaker = (shouldRefresh) => {
 }
 
 const favoriteMakers = computed(() => {
-  return data.value.filter((m) => favorites.value.includes(m.id))
+  return data.value.filter((m) => Object.keys(favorites.value).includes(m.id))
 })
 
 const otherMakers = computed(() => {
-  return data.value.filter((m) => !favorites.value.includes(m.id))
+  return data.value.filter((m) => !Object.keys(favorites.value).includes(m.id))
 })
 </script>

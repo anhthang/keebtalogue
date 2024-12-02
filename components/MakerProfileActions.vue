@@ -16,6 +16,14 @@
       @click="emit('onAddSale')"
     />
 
+    <Button
+      v-if="Object.hasOwn(favorites, maker.id)"
+      icon="pi pi-sliders-v"
+      label="Customize Pins"
+      severity="secondary"
+      @click="emit('onCustomizePins')"
+    />
+
     <SplitButton
       icon="pi pi-external-link"
       label="Links"
@@ -36,7 +44,7 @@
 </template>
 
 <script setup>
-const emit = defineEmits(['onEditMaker', 'onAddSale'])
+const emit = defineEmits(['onEditMaker', 'onAddSale', 'onCustomizePins'])
 
 const { maker } = defineProps({
   maker: {
@@ -46,7 +54,7 @@ const { maker } = defineProps({
 })
 
 const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
+const { favorites, isEditor } = storeToRefs(userStore)
 
 const menu = ref()
 const toggleActions = (event) => {
@@ -132,6 +140,14 @@ const mobile = computed(() => {
           icon: 'pi pi-pen-to-square',
           command: () => {
             emit('onEditMaker')
+          },
+        },
+        {
+          label: 'Customize Pins',
+          icon: 'pi pi-sliders-v',
+          visible: Object.hasOwn(favorites.value, maker.id),
+          command: () => {
+            emit('onCustomizePins')
           },
         },
       ],

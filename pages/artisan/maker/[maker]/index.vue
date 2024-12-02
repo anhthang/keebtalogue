@@ -33,6 +33,7 @@
           :maker="maker"
           @on-edit-maker="toggleEditMaker"
           @on-add-sale="toggleAddSale"
+          @on-customize-pins="toggleCustomizePins"
         />
       </template>
 
@@ -114,6 +115,16 @@
           @on-success="toggleAddSale"
         />
       </Dialog>
+
+      <Dialog
+        v-model:visible="visible.customize_pins"
+        modal
+        header="Customize Pins"
+        class="w-[36rem]"
+        dismissable-mask
+      >
+        <ModalPinSculpt :sculpts="sculpts" @on-success="toggleCustomizePins" />
+      </Dialog>
     </Panel>
     <BackToArtisanMakers v-else />
   </div>
@@ -121,9 +132,13 @@
 
 <script setup>
 const route = useRoute()
+const userStore = useUserStore()
+const { favorites } = storeToRefs(userStore)
+
 const visible = ref({
   edit: false,
   add_sale: false,
+  customize_pins: false,
 })
 
 const { data: maker, refresh } = await useAsyncData(
@@ -134,7 +149,18 @@ const { data: maker, refresh } = await useAsyncData(
   },
 )
 
-const sculpts = Object.values(maker.value.sculpts)
+const sculpts = computed(() => {
+  const alphabet = Object.values(maker.value.sculpts)
+  const favSculpts = favorites.value[route.params.maker]
+  if (Array.isArray(favSculpts) && favSculpts.length) {
+    const pinned = alphabet.filter((s) => favSculpts.includes(s.sculpt_id))
+    const others = alphabet.filter((s) => !favSculpts.includes(s.sculpt_id))
+
+    return pinned.concat(others)
+  }
+
+  return alphabet
+})
 
 const breadcrumbs = computed(() => {
   return [
@@ -170,6 +196,10 @@ const toggleEditMaker = (shouldRefresh) => {
 
 const toggleAddSale = () => {
   visible.value.add_sale = !visible.value.add_sale
+}
+
+const toggleCustomizePins = () => {
+  visible.value.customize_pins = !visible.value.customize_pins
 }
 
 const sculptLst = computed(() => {
