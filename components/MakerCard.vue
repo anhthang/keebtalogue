@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-const { maker } = defineProps({
+defineProps({
   maker: {
     type: Object,
     default: () => ({}),

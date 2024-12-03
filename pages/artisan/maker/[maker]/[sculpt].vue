@@ -80,29 +80,10 @@
                 @click="toggleColorwayCard(colorway)"
               />
 
-              <Button
-                v-tooltip.top="'Add to Collection'"
-                text
-                size="small"
-                severity="secondary"
-                icon="pi pi-folder-plus"
-                aria-haspopup="true"
-                aria-controls="overlay_menu"
-                @click="(e) => toggle(e, idx)"
-              />
-              <Menu
-                id="overlay_menu"
-                ref="add2collection"
-                :popup="true"
-                :model="[
-                  {
-                    label: 'Select Collection',
-                    items: collections.map((c) => ({
-                      label: c.name,
-                      command: () => addToCollection(c, colorway),
-                    })),
-                  },
-                ]"
+              <AddToCollectionPopup
+                :colorway="colorway"
+                :text="true"
+                @on-select="addToCollection"
               />
             </div>
           </template>
@@ -169,14 +150,8 @@
 </template>
 
 <script setup>
-const toast = useToast()
-
-const add2collection = ref()
-const toggle = (event, idx) => {
-  add2collection.value[idx].toggle(event)
-}
-
 const route = useRoute()
+const toast = useToast()
 
 const size = 60
 const page = ref(1)
@@ -269,7 +244,7 @@ onMounted(() => {
 })
 
 const userStore = useUserStore()
-const { authenticated, collections, isEditor, user } = storeToRefs(userStore)
+const { authenticated, isEditor, user } = storeToRefs(userStore)
 
 const visible = ref({
   edit: false,
@@ -338,7 +313,7 @@ const addToCollection = (collection, colorway) => {
       .then(() => {
         toast.add({
           severity: 'success',
-          summary: `${clw.name} has been added to [${collection.name}] collection!`,
+          summary: `${clw.name} has been added to [${collection.name}].`,
           life: 3000,
         })
       })
@@ -358,7 +333,7 @@ const addToCollection = (collection, colorway) => {
 
     toast.add({
       severity: 'success',
-      summary: `${clw.name} has been added to [${collection.name}] collection!`,
+      summary: `${clw.name} has been added to [${collection.name}].`,
       life: 3000,
     })
   }

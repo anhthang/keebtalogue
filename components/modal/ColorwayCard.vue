@@ -65,30 +65,10 @@
           @click="copyColorwayCard"
         />
 
-        <Button
-          size="small"
-          severity="secondary"
+        <AddToCollectionPopup
+          :colorway="colorway"
           label="Add to Collection"
-          icon="pi pi-folder-plus"
-          aria-haspopup="true"
-          aria-controls="overlay_menu"
-          @click="toggle"
-        />
-        <Menu
-          id="overlay_menu"
-          ref="add2collection"
-          :popup="true"
-          :model="[
-            {
-              label: 'Select Collection',
-              items: collections.map((collection) => ({
-                label: collection.name,
-                command: () => {
-                  $emit('addToCollection', collection, colorway)
-                },
-              })),
-            },
-          ]"
+          @on-select="add2Collection"
         />
       </div>
     </template>
@@ -96,7 +76,7 @@
 </template>
 
 <script setup>
-defineEmits(['editColorway', 'addToCollection'])
+const emit = defineEmits(['editColorway', 'addToCollection'])
 
 const { colorway } = defineProps({
   colorway: {
@@ -105,15 +85,9 @@ const { colorway } = defineProps({
   },
 })
 
-const userStore = useUserStore()
-const { collections, isEditor } = storeToRefs(userStore)
-
 const toast = useToast()
-
-const add2collection = ref()
-const toggle = (event) => {
-  add2collection.value.toggle(event)
-}
+const userStore = useUserStore()
+const { isEditor } = storeToRefs(userStore)
 
 const copying = ref(false)
 const copyColorwayCard = async () => {
@@ -130,5 +104,9 @@ const copyColorwayCard = async () => {
 
   card.classList.remove('p-5')
   copying.value = false
+}
+
+const add2Collection = (collection, colorway) => {
+  emit('addToCollection', collection, colorway)
 }
 </script>
