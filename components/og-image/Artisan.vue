@@ -92,5 +92,5 @@ const { title, makerName } = defineProps({
 const config = useRuntimeConfig()
 const { appName } = config.public
 
-const headline = makerName ? `${appName} | ${makerName}` : appName
+const headline = makerName ? `/ ${makerName}` : appName
 </script>
