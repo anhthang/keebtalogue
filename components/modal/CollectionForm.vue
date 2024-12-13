@@ -55,20 +55,28 @@
       </Message>
     </div>
 
-    <div v-if="collection.published" class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
       <SelectButton
         v-model="collection.type"
         name="type"
         option-label="label"
         option-value="value"
-        :options="[
-          { label: 'Sharing Only', value: 'share' },
-          { label: 'Buying', value: 'buy' },
-          { label: 'Selling', value: 'sell' },
-        ]"
+        :options="
+          collection.published
+            ? [
+                { label: 'Shareable', value: 'share' },
+                { label: 'For Buy', value: 'buy' },
+                { label: 'For Sale', value: 'sell' },
+              ]
+            : [
+                { label: 'Personal Use', value: 'share' },
+                { label: 'Future Buy', value: 'buy' },
+                { label: 'Future Sale', value: 'sell' },
+              ]
+        "
       />
       <Message
-        v-if="collection.type === 'share'"
+        v-if="collection.published && collection.type === 'share'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -77,7 +85,7 @@
         with link.
       </Message>
       <Message
-        v-if="collection.type === 'buy'"
+        v-if="collection.published && collection.type === 'buy'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -85,7 +93,7 @@
         On the hunt! Any leads appreciated!
       </Message>
       <Message
-        v-if="collection.type === 'sell'"
+        v-if="collection.published && collection.type === 'sell'"
         severity="secondary"
         size="small"
         variant="simple"

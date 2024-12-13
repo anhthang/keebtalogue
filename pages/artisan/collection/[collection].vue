@@ -113,13 +113,27 @@
               <template #subtitle>{{ colorway.sculpt_name }}</template>
 
               <template v-if="authenticated" #footer>
-                <Button
-                  text
-                  size="small"
-                  severity="danger"
-                  label="Remove"
-                  @click="removeCap(colorway)"
-                />
+                <div class="flex gap-2">
+                  <Button
+                    v-if="data.type !== 'share'"
+                    v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
+                    size="small"
+                    text
+                    :severity="colorway.exchange ? 'secondary' : 'success'"
+                    :icon="
+                      colorway.exchange ? 'pi pi-circle' : 'pi pi-check-circle'
+                    "
+                    @click="changeExchangeStatus(colorway)"
+                  />
+                  <Button
+                    v-tooltip.top="'Remove'"
+                    size="small"
+                    text
+                    severity="danger"
+                    icon="pi pi-trash"
+                    @click="removeCap(colorway)"
+                  />
+                </div>
               </template>
             </Card>
           </div>
@@ -276,6 +290,48 @@ const mobile = computed(() => {
     },
   ]
 })
+
+const changeTo = (exchange) => {
+  if (data.value.type === 'buy') {
+    return exchange ? 'found' : 'wanted'
+  }
+
+  return exchange ? 'sold' : 'available'
+}
+
+const changeExchangeStatus = (clw) => {
+  const title = colorwayTitle(clw)
+  const status = changeTo(clw.exchange)
+
+  confirm.require({
+    header: `Mark ${title} as...`,
+    message: `Are you sure you want to mark this item as ${status}?`,
+    rejectProps: {
+      size: 'small',
+      severity: 'secondary',
+    },
+    acceptProps: {
+      size: 'small',
+    },
+    accept: () => {
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
+        { method: 'post', body: { exchange: !clw.exchange } },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${title} has been successfully marked as ${status}.`,
+            life: 3000,
+          })
+        })
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
+    },
+  })
+}
 
 const removeCap = (clw) => {
   confirm.require({

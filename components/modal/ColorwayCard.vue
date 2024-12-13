@@ -61,7 +61,7 @@
           size="small"
           severity="secondary"
           label="Copy Card"
-          icon="pi pi-copy"
+          icon="pi pi-images"
           @click="copyColorwayCard"
         />
 

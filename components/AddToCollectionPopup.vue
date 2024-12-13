@@ -5,7 +5,7 @@
     size="small"
     :label="label"
     severity="secondary"
-    icon="pi pi-folder-plus"
+    icon="pi pi-bookmark"
     aria-haspopup="true"
     aria-controls="overlay_menu"
     @click="toggle"
