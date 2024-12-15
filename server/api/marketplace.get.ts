@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
         'collection_id',
         collections.map((c: any) => c.id),
       )
+      .eq('exchange', true)
       .match(query)
 
     const group = groupBy(items, 'collection_id')

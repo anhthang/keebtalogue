@@ -4,8 +4,9 @@
       <SelectButton
         v-model="tradingConfig.type"
         :options="[
-          { label: 'Buy or Sell', value: 'oneway' },
-          { label: 'Trading', value: 'twoway' },
+          { label: 'Buying', value: 'buy' },
+          { label: 'Selling', value: 'sell' },
+          { label: 'Trading', value: 'trade' },
         ]"
         option-label="label"
         option-value="value"
@@ -34,7 +35,11 @@
           <Select
             id="trading_collection"
             v-model="tradingConfig.want.collection"
-            :options="collections"
+            :options="
+              collections.filter((c) =>
+                typeMap[tradingConfig.type].includes(c.type),
+              )
+            "
             option-label="name"
             option-value="id"
           />
@@ -56,7 +61,7 @@
           <Select
             id="trading_have_collection"
             v-model="tradingConfig.have.collection"
-            :options="collections"
+            :options="collections.filter((c) => c.type !== 'buy')"
             option-label="name"
             option-value="id"
           />
@@ -116,6 +121,12 @@
 const userStore = useUserStore()
 const { collections, social } = storeToRefs(userStore)
 
+const typeMap = {
+  buy: ['buy', 'share'],
+  sell: ['sell', 'share'],
+  trade: ['buy', 'share'],
+}
+
 const tradingConfig = useState('trading-config', () => {
   return {
     have: {
@@ -127,12 +138,12 @@ const tradingConfig = useState('trading-config', () => {
       title: 'WTB',
     },
     social,
-    type: 'oneway',
+    type: 'buy',
     fnf_only: false,
   }
 })
 
 tradingConfig.value.social = social.value
 
-const trading = computed(() => tradingConfig.value.type === 'twoway')
+const trading = computed(() => tradingConfig.value.type === 'trade')
 </script>

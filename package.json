@@ -54,7 +54,7 @@
     "@types/lodash.omit": "^4.5.9",
     "@types/lodash.sortby": "^4.7.9",
     "dayjs": "^1.11.13",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.32.0",
