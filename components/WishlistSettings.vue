@@ -61,7 +61,7 @@
           <Select
             id="trading_have_collection"
             v-model="tradingConfig.have.collection"
-            :options="collections.filter((c) => c.type !== 'buy')"
+            :options="collections.filter((c) => typeMap.sell.includes(c.type))"
             option-label="name"
             option-value="id"
           />
@@ -122,9 +122,9 @@ const userStore = useUserStore()
 const { collections, social } = storeToRefs(userStore)
 
 const typeMap = {
-  buy: ['buy', 'share'],
-  sell: ['sell', 'share'],
-  trade: ['buy', 'share'],
+  buy: ['personal', 'personal_buy', 'shareable', 'buy'],
+  sell: ['personal', 'personal_sell', 'shareable', 'sell'],
+  trade: ['personal', 'personal_buy', 'shareable', 'buy'],
 }
 
 const tradingConfig = useState('trading-config', () => {
@@ -138,7 +138,7 @@ const tradingConfig = useState('trading-config', () => {
       title: 'WTB',
     },
     social,
-    type: 'buy',
+    type: 'personal',
     fnf_only: false,
   }
 })

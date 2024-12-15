@@ -11,7 +11,7 @@
         <Button
           v-if="authenticated"
           icon="pi pi-sliders-v"
-          label="Customize Pins"
+          label="Pins"
           severity="secondary"
           @click="toggleCustomizePins"
         />
@@ -70,7 +70,7 @@
     <Dialog
       v-model:visible="customize"
       modal
-      header="Customize Pins"
+      header="Pins"
       class="w-[36rem]"
       dismissable-mask
     >

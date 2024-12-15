@@ -64,19 +64,19 @@
         :options="
           collection.published
             ? [
-                { label: 'Shareable', value: 'share' },
+                { label: 'Shareable', value: 'shareable' },
                 { label: 'For Buy', value: 'buy' },
                 { label: 'For Sale', value: 'sell' },
               ]
             : [
-                { label: 'Personal Use', value: 'share' },
-                { label: 'Future Buy', value: 'buy' },
-                { label: 'Future Sale', value: 'sell' },
+                { label: 'Personal Use', value: 'personal' },
+                { label: 'Future Buy', value: 'personal_buy' },
+                { label: 'Future Sale', value: 'personal_sell' },
               ]
         "
       />
       <Message
-        v-if="collection.published && collection.type === 'share'"
+        v-if="collection.published && collection.type === 'shareable'"
         severity="secondary"
         size="small"
         variant="simple"
@@ -103,7 +103,7 @@
     </div>
 
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="collection.published && collection.type !== 'shareable'"
       class="flex flex-col gap-2"
     >
       <label for="collection_contact">Contact</label>
@@ -132,7 +132,7 @@
     </div>
 
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="collection.published && collection.type !== 'shareable'"
       class="flex flex-col gap-2"
     >
       <label for="collection_message">Message</label>
@@ -183,7 +183,7 @@ const toast = useToast()
 const collection = ref({
   name: '',
   published: false,
-  type: 'share',
+  type: 'personal',
   uid,
 })
 
@@ -191,25 +191,24 @@ onBeforeMount(() => {
   Object.assign(collection.value, metadata)
 })
 
+const personalOrSharable = z.object({
+  name: z.string().min(1),
+  published: z.boolean(),
+  type: z.enum(['shareable', 'personal', 'personal_buy', 'personal_sell']),
+  contact: z.string().optional(),
+  message: z.string().optional(),
+})
+
+const trading = z.object({
+  name: z.string().min(1),
+  published: z.boolean(),
+  type: z.enum(['buy', 'sell']),
+  contact: z.string().min(1),
+  message: z.string().optional(),
+})
+
 const resolver = ref(
-  zodResolver(
-    z.discriminatedUnion('type', [
-      z.object({
-        name: z.string().min(1),
-        published: z.boolean().default(false),
-        type: z.literal('share'),
-        contact: z.string().optional(),
-        message: z.string().optional(),
-      }),
-      z.object({
-        name: z.string().min(1),
-        published: z.boolean().default(false),
-        type: z.enum(['buy', 'sell']),
-        contact: z.string().min(1),
-        message: z.string().optional(),
-      }),
-    ]),
-  ),
+  zodResolver(z.discriminatedUnion('type', [personalOrSharable, trading])),
 )
 
 const onSubmit = async ({ valid }) => {

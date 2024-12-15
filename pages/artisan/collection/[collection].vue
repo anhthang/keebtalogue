@@ -293,7 +293,7 @@ const mobile = computed(() => {
 })
 
 const changeTo = (exchange) => {
-  if (data.value.type === 'buy') {
+  if (data.value.type.includes('buy')) {
     return exchange ? 'found' : 'wanted'
   }
 

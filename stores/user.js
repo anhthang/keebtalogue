@@ -7,8 +7,8 @@ export const useUserStore = defineStore('user', {
     isAdmin: false,
     isEditor: false,
     collections: [
-      { name: 'Have', id: 'have' },
-      { name: 'Want', id: 'want' },
+      { name: 'Have', id: 'have', type: 'sell' },
+      { name: 'Want', id: 'want', type: 'buy' },
     ],
     favorites: [],
     social: {},
