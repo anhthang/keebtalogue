@@ -4,9 +4,14 @@
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
-    <template v-if="isAdmin" #icons>
+    <template #icons>
       <div class="flex gap-2">
-        <Button label="Add" icon="pi pi-user-plus" @click="toggleAddMaker" />
+        <Button
+          v-if="isAdmin"
+          label="Add"
+          icon="pi pi-user-plus"
+          @click="toggleAddMaker"
+        />
 
         <Button
           v-if="authenticated"
