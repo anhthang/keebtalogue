@@ -10,7 +10,7 @@
         :key="element.element_id"
         class="flex items-center flex-1 overflow-hidden"
         :pt="{
-          header: 'w-full h-44 md:h-60',
+          header: 'relative w-full h-44 md:h-60',
           body: 'items-center',
           caption: 'flex items-center',
           title: 'w-40 text-center truncate',
@@ -21,7 +21,18 @@
             loading="lazy"
             :alt="element.name"
             :src="element.img"
-            class="h-full object-cover"
+            class="h-full absolute inset-0 object-cover"
+            :class="{
+              grayscale: !element.exchange,
+            }"
+          />
+          <span
+            v-if="!element.exchange"
+            class="absolute inset-0 !flex items-center justify-center text-[120px]"
+            :class="{
+              'pi pi-check-circle text-green-400': buying,
+              'pi pi-eye-slash text-red-600': selling,
+            }"
           />
         </template>
         <template #title>{{ element.name || '-' }}</template>
@@ -55,6 +66,8 @@ const { data } = defineProps({
     default: () => [],
   },
   copying: Boolean,
+  buying: Boolean,
+  selling: Boolean,
 })
 
 onBeforeMount(() => {

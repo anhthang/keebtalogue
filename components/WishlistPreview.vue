@@ -96,7 +96,7 @@
         {{ tradingConfig.want.title }}
       </Divider>
 
-      <DraggableCard :data="wantItems" :copying="copying" />
+      <DraggableCard :data="wantItems" :copying="copying" :buying="true" />
 
       <Divider
         v-if="haveItems.length && trading"
@@ -106,7 +106,12 @@
         {{ tradingConfig.have.title }}
       </Divider>
 
-      <DraggableCard v-if="trading" :data="haveItems" :copying="copying" />
+      <DraggableCard
+        v-if="trading"
+        :data="haveItems"
+        :copying="copying"
+        :selling="true"
+      />
 
       <Message variant="simple" severity="success">
         <template #icon>
