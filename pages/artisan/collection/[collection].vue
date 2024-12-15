@@ -113,10 +113,10 @@
               <template #title>{{ colorway.name || '-' }}</template>
               <template #subtitle>{{ colorway.sculpt_name }}</template>
 
-              <template v-if="authenticated" #footer>
+              <template #footer>
                 <div class="flex gap-2">
                   <Button
-                    v-if="data.type !== 'share'"
+                    v-if="authenticated && data.type !== 'share'"
                     v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
                     size="small"
                     text
@@ -366,12 +366,13 @@ const removeCap = (clw) => {
             toast.add({ severity: 'error', summary: error.message, life: 3000 })
           })
       } else {
-        sortedCollections.value = sortedCollections.value.filter(
+        data.value.items = data.value.items.filter(
           (c) => c.colorway_id !== clw.colorway_id,
         )
+
         localStorage.setItem(
           `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(sortedCollections.value),
+          JSON.stringify(data.value),
         )
 
         toast.add({
