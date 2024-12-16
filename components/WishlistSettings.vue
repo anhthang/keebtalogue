@@ -22,8 +22,13 @@
             <InputIcon class="pi pi-pencil" />
             <InputText
               id="trading_title"
-              v-model.trim="tradingConfig.want.title"
+              v-model.trim="tradingConfig.buying.title"
               type="text"
+              :placeholder="
+                tradingConfig.type === 'sell'
+                  ? tradingConfig.selling.placeholder
+                  : tradingConfig.buying.placeholder
+              "
               fluid
             />
           </IconField>
@@ -34,7 +39,7 @@
           </label>
           <Select
             id="trading_collection"
-            v-model="tradingConfig.want.collection"
+            v-model="tradingConfig.buying.collection"
             :options="
               collections.filter((c) =>
                 typeMap[tradingConfig.type].includes(c.type),
@@ -50,8 +55,9 @@
             <InputIcon class="pi pi-pencil" />
             <InputText
               id="trading_have"
-              v-model.trim="tradingConfig.have.title"
+              v-model.trim="tradingConfig.selling.title"
               type="text"
+              :placeholder="tradingConfig.selling.placeholder"
               fluid
             />
           </IconField>
@@ -60,7 +66,7 @@
           <label for="trading_have_collection">Have Collection</label>
           <Select
             id="trading_have_collection"
-            v-model="tradingConfig.have.collection"
+            v-model="tradingConfig.selling.collection"
             :options="collections.filter((c) => typeMap.sell.includes(c.type))"
             option-label="name"
             option-value="id"
@@ -129,16 +135,18 @@ const typeMap = {
 
 const tradingConfig = useState('trading-config', () => {
   return {
-    have: {
+    selling: {
       collection: '',
-      title: 'WTT',
+      title: '',
+      placeholder: 'For sale',
     },
-    want: {
+    buying: {
       collection: '',
-      title: 'WTB',
+      title: '',
+      placeholder: 'Looking for',
     },
     social,
-    type: 'personal',
+    type: 'buy',
     fnf_only: false,
   }
 })

@@ -10,7 +10,7 @@
       <template #icons>
         <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <Button
-            v-if="published && data?.type === 'share'"
+            v-if="shareable"
             icon="pi pi-link"
             label="Copy URL"
             severity="secondary"
@@ -51,26 +51,6 @@
         </Button>
         <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
-
-      <Message
-        v-if="published && data?.type === 'share'"
-        class="w-fit mx-auto mb-4"
-        severity="warn"
-        icon="pi pi-exclamation-circle"
-      >
-        <strong> Public access granted. </strong>
-        Anyone with the link will be able to see it.
-      </Message>
-      <Message
-        v-if="published && data?.type !== 'share'"
-        class="w-fit mx-auto mb-4"
-        severity="warn"
-        icon="pi pi-exclamation-circle"
-      >
-        <strong> Heads up! </strong>
-        This collection is listed for buying and selling. It's visible to others
-        on our marketplace.
-      </Message>
 
       <DataView
         :value="sortedCollections"
@@ -116,7 +96,10 @@
               <template #footer>
                 <div class="flex gap-2">
                   <Button
-                    v-if="authenticated && data.type !== 'share'"
+                    v-if="
+                      authenticated &&
+                      (data.type.includes('buy') || data.type.includes('sell'))
+                    "
                     v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
                     size="small"
                     text
@@ -206,7 +189,7 @@ const sortOptions = computed(() => [
   },
 ])
 
-const localIds = ['want', 'have']
+const localIds = ['buying', 'selling']
 
 const config = useRuntimeConfig()
 
@@ -226,7 +209,7 @@ const { data, refresh } = await useAsyncData(() => {
   }
 })
 
-const published = authenticated.value && data.value?.published
+const shareable = data.value?.published && data.value?.type === 'shareable'
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
@@ -268,7 +251,7 @@ const mobile = computed(() => {
         {
           label: 'Copy URL',
           icon: 'pi pi-link',
-          visible: published && data.value?.type === 'share',
+          visible: shareable,
           command: copyShareUrl,
         },
         {
@@ -372,7 +355,7 @@ const removeCap = (clw) => {
 
         localStorage.setItem(
           `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(data.value),
+          JSON.stringify(data.value.items),
         )
 
         toast.add({
