@@ -35,36 +35,57 @@
       collections, and enjoy seamless syncing across all your devices.
     </Message>
 
-    <div
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+    <DataView
+      :value="collections"
+      layout="grid"
+      paginator
+      :rows="60"
+      :total-records="collections.length"
+      :always-show-paginator="false"
+      :pt="{
+        content: '!bg-transparent',
+        pcPaginator: {
+          paginatorContainer: '!border-0 pt-4',
+          root: '!bg-transparent',
+        },
+      }"
     >
-      <nuxt-link
-        v-for="collection in collections"
-        :key="collection.id"
-        :to="`/artisan/collection/${collection.id}`"
-      >
-        <Card class="h-full" pt:title:class="flex items-center justify-between">
-          <template #title>
-            {{ collection.name }}
+      <template #grid="{ items }">
+        <div
+          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+        >
+          <nuxt-link
+            v-for="collection in items"
+            :key="collection.id"
+            :to="`/artisan/collection/${collection.id}`"
+          >
+            <Card
+              class="h-full"
+              pt:title:class="flex items-center justify-between"
+            >
+              <template #title>
+                {{ collection.name }}
 
-            <Message
-              v-if="collection.published"
-              size="small"
-              variant="simple"
-              severity="warn"
-              icon="pi pi-unlock"
-            />
-            <Message
-              v-else
-              size="small"
-              variant="simple"
-              severity="secondary"
-              icon="pi pi-lock"
-            />
-          </template>
-        </Card>
-      </nuxt-link>
-    </div>
+                <Message
+                  v-if="collection.published"
+                  size="small"
+                  variant="simple"
+                  severity="warn"
+                  icon="pi pi-unlock"
+                />
+                <Message
+                  v-else
+                  size="small"
+                  variant="simple"
+                  severity="secondary"
+                  icon="pi pi-lock"
+                />
+              </template>
+            </Card>
+          </nuxt-link>
+        </div>
+      </template>
+    </DataView>
   </Panel>
 </template>
 

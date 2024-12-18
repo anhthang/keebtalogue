@@ -4,8 +4,8 @@
       <SelectButton
         v-model="tradingConfig.type"
         :options="[
-          { label: 'Buying', value: 'buy' },
-          { label: 'Selling', value: 'sell' },
+          { label: 'Buying', value: 'to_buy' },
+          { label: 'Selling', value: 'for_sale' },
           { label: 'Trading', value: 'trade' },
         ]"
         option-label="label"
@@ -25,7 +25,7 @@
               v-model.trim="tradingConfig.buying.title"
               type="text"
               :placeholder="
-                tradingConfig.type === 'sell'
+                tradingConfig.type === 'for_sale'
                   ? tradingConfig.selling.placeholder
                   : tradingConfig.buying.placeholder
               "
@@ -128,9 +128,9 @@ const userStore = useUserStore()
 const { collections, social } = storeToRefs(userStore)
 
 const typeMap = {
-  buy: ['personal', 'personal_buy', 'shareable', 'buy'],
-  sell: ['personal', 'personal_sell', 'shareable', 'sell'],
-  trade: ['personal', 'personal_buy', 'shareable', 'buy'],
+  buy: ['personal', 'personal_buy', 'shareable', 'to_buy'],
+  sell: ['personal', 'personal_sell', 'shareable', 'for_sale'],
+  trade: ['personal', 'personal_buy', 'shareable', 'to_buy'],
 }
 
 const tradingConfig = useState('trading-config', () => {
@@ -146,7 +146,7 @@ const tradingConfig = useState('trading-config', () => {
       placeholder: 'Looking for',
     },
     social,
-    type: 'buy',
+    type: 'to_buy',
     fnf_only: false,
   }
 })

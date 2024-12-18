@@ -96,10 +96,7 @@
               <template #footer>
                 <div class="flex gap-2">
                   <Button
-                    v-if="
-                      authenticated &&
-                      (data.type.includes('buy') || data.type.includes('sell'))
-                    "
+                    v-if="authenticated && trading"
                     v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
                     size="small"
                     text
@@ -210,6 +207,12 @@ const { data, refresh } = await useAsyncData(() => {
 })
 
 const shareable = data.value?.published && data.value?.type === 'shareable'
+const trading = [
+  'to_buy',
+  'for_sale',
+  'personal_buy',
+  'personal_sell',
+].includes(data.value?.type)
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
@@ -276,7 +279,7 @@ const mobile = computed(() => {
 })
 
 const changeTo = (exchange) => {
-  if (data.value.type.includes('buy')) {
+  if (data.value.type === 'to_buy' || data.value.type === 'personal_buy') {
     return exchange ? 'found' : 'wanted'
   }
 

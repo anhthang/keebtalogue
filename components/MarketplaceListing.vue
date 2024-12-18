@@ -41,7 +41,7 @@
               <template #subtitle>
                 <div class="flex items-center gap-2">
                   <Tag
-                    v-if="item.type === 'buy'"
+                    v-if="item.type === 'to_buy'"
                     severity="info"
                     icon="pi pi-tags"
                     value="Buying"

@@ -56,6 +56,7 @@
     </div>
 
     <div class="flex flex-col gap-2">
+      <label for="collection_type">Type</label>
       <SelectButton
         v-model="collection.type"
         name="type"
@@ -65,8 +66,8 @@
           collection.published
             ? [
                 { label: 'Shareable', value: 'shareable' },
-                { label: 'For Buy', value: 'buy' },
-                { label: 'For Sale', value: 'sell' },
+                { label: 'To Buy', value: 'to_buy' },
+                { label: 'For Sale', value: 'for_sale' },
               ]
             : [
                 { label: 'Personal Use', value: 'personal' },
@@ -76,29 +77,12 @@
         "
       />
       <Message
-        v-if="collection.published && collection.type === 'shareable'"
+        v-if="collection.published"
         severity="secondary"
         size="small"
         variant="simple"
       >
-        Not listed in the marketplace, just for your eyes (and your friends')
-        with link.
-      </Message>
-      <Message
-        v-if="collection.published && collection.type === 'buy'"
-        severity="secondary"
-        size="small"
-        variant="simple"
-      >
-        On the hunt! Any leads appreciated!
-      </Message>
-      <Message
-        v-if="collection.published && collection.type === 'sell'"
-        severity="secondary"
-        size="small"
-        variant="simple"
-      >
-        Up for grabs!
+        {{ typeExtras[collection.type] }}
       </Message>
     </div>
 
@@ -180,6 +164,13 @@ const { metadata, uid, isEdit } = defineProps({
 const userStore = useUserStore()
 const toast = useToast()
 
+const typeExtras = {
+  shareable:
+    "Not listed in the marketplace, just for your eyes (and your friends') with link.",
+  buy: 'On the hunt! Any leads appreciated!',
+  sell: 'Up for grabs!',
+}
+
 const collection = ref({
   name: '',
   published: false,
@@ -202,7 +193,7 @@ const personalOrSharable = z.object({
 const trading = z.object({
   name: z.string().min(1),
   published: z.boolean(),
-  type: z.enum(['buy', 'sell']),
+  type: z.enum(['to_buy', 'for_sale']),
   contact: z.string().min(1),
   message: z.string().optional(),
 })
