@@ -28,7 +28,7 @@
           />
           <span
             v-if="!element.exchange"
-            class="absolute inset-0 !flex items-center justify-center text-[120px]"
+            class="absolute inset-0 !flex items-center justify-center !text-[120px]"
             :class="{
               'pi pi-check-circle text-green-400': buying,
               'pi pi-eye-slash text-red-600': selling,
