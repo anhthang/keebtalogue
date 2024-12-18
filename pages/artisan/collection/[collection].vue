@@ -10,7 +10,7 @@
       <template #icons>
         <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <Button
-            v-if="published && data?.type === 'share'"
+            v-if="shareable"
             icon="pi pi-link"
             label="Copy URL"
             severity="secondary"
@@ -52,26 +52,6 @@
         <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
 
-      <Message
-        v-if="published && data?.type === 'share'"
-        class="w-fit mx-auto mb-4"
-        severity="warn"
-        icon="pi pi-exclamation-circle"
-      >
-        <strong> Public access granted. </strong>
-        Anyone with the link will be able to see it.
-      </Message>
-      <Message
-        v-if="published && data?.type !== 'share'"
-        class="w-fit mx-auto mb-4"
-        severity="warn"
-        icon="pi pi-exclamation-circle"
-      >
-        <strong> Heads up! </strong>
-        This collection is listed for buying and selling. It's visible to others
-        on our marketplace.
-      </Message>
-
       <DataView
         :value="sortedCollections"
         layout="grid"
@@ -98,7 +78,8 @@
               :pt="{
                 header: 'h-44 md:h-60',
                 body: 'items-center',
-                caption: 'items-center',
+                caption: 'flex items-center',
+                title: 'w-40 text-center truncate',
               }"
             >
               <template #header>
@@ -112,14 +93,28 @@
               <template #title>{{ colorway.name || '-' }}</template>
               <template #subtitle>{{ colorway.sculpt_name }}</template>
 
-              <template v-if="authenticated" #footer>
-                <Button
-                  text
-                  size="small"
-                  severity="danger"
-                  label="Remove"
-                  @click="removeCap(colorway)"
-                />
+              <template #footer>
+                <div class="flex gap-2">
+                  <Button
+                    v-if="authenticated && trading"
+                    v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
+                    size="small"
+                    text
+                    :severity="colorway.exchange ? 'secondary' : 'success'"
+                    :icon="
+                      colorway.exchange ? 'pi pi-circle' : 'pi pi-check-circle'
+                    "
+                    @click="changeExchangeStatus(colorway)"
+                  />
+                  <Button
+                    v-tooltip.top="'Remove'"
+                    size="small"
+                    text
+                    severity="danger"
+                    icon="pi pi-trash"
+                    @click="removeCap(colorway)"
+                  />
+                </div>
               </template>
             </Card>
           </div>
@@ -191,7 +186,7 @@ const sortOptions = computed(() => [
   },
 ])
 
-const localIds = ['want', 'have']
+const localIds = ['buying', 'selling']
 
 const config = useRuntimeConfig()
 
@@ -211,7 +206,13 @@ const { data, refresh } = await useAsyncData(() => {
   }
 })
 
-const published = authenticated.value && data.value?.published
+const shareable = data.value?.published && data.value?.type === 'shareable'
+const trading = [
+  'to_buy',
+  'for_sale',
+  'personal_buy',
+  'personal_sell',
+].includes(data.value?.type)
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
@@ -253,7 +254,7 @@ const mobile = computed(() => {
         {
           label: 'Copy URL',
           icon: 'pi pi-link',
-          visible: published && data.value?.type === 'share',
+          visible: shareable,
           command: copyShareUrl,
         },
         {
@@ -276,6 +277,48 @@ const mobile = computed(() => {
     },
   ]
 })
+
+const changeTo = (exchange) => {
+  if (data.value.type === 'to_buy' || data.value.type === 'personal_buy') {
+    return exchange ? 'found' : 'wanted'
+  }
+
+  return exchange ? 'sold' : 'available'
+}
+
+const changeExchangeStatus = (clw) => {
+  const title = colorwayTitle(clw)
+  const status = changeTo(clw.exchange)
+
+  confirm.require({
+    header: `Mark ${title} as...`,
+    message: `Are you sure you want to mark this item as ${status}?`,
+    rejectProps: {
+      size: 'small',
+      severity: 'secondary',
+    },
+    acceptProps: {
+      size: 'small',
+    },
+    accept: () => {
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
+        { method: 'post', body: { exchange: !clw.exchange } },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${title} has been successfully marked as ${status}.`,
+            life: 3000,
+          })
+        })
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
+    },
+  })
+}
 
 const removeCap = (clw) => {
   confirm.require({
@@ -309,12 +352,13 @@ const removeCap = (clw) => {
             toast.add({ severity: 'error', summary: error.message, life: 3000 })
           })
       } else {
-        sortedCollections.value = sortedCollections.value.filter(
+        data.value.items = data.value.items.filter(
           (c) => c.colorway_id !== clw.colorway_id,
         )
+
         localStorage.setItem(
           `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(sortedCollections.value),
+          JSON.stringify(data.value.items),
         )
 
         toast.add({

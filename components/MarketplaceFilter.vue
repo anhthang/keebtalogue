@@ -53,8 +53,8 @@ const marketplaceCfg = useState('marketplace-config', () => ({
 
 const tradeTypeOptions = [
   { label: 'Any', value: 'any' },
-  { label: 'Buying', value: 'buy' },
-  { label: 'Selling', value: 'sell' },
+  { label: 'Buying', value: 'to_buy' },
+  { label: 'Selling', value: 'for_sale' },
 ]
 
 const searchText = ref('')

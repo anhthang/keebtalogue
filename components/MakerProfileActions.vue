@@ -19,7 +19,7 @@
     <Button
       v-if="Object.hasOwn(favorites, maker.id)"
       icon="pi pi-sliders-v"
-      label="Customize Pins"
+      label="Pins"
       severity="secondary"
       @click="emit('onCustomizePins')"
     />
@@ -143,7 +143,7 @@ const mobile = computed(() => {
           },
         },
         {
-          label: 'Customize Pins',
+          label: 'Pins',
           icon: 'pi pi-sliders-v',
           visible: Object.hasOwn(favorites.value, maker.id),
           command: () => {

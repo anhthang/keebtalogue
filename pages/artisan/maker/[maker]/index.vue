@@ -109,7 +109,7 @@
       <Dialog
         v-model:visible="visible.customize_pins"
         modal
-        header="Customize Pins"
+        header="Customize Your Pins"
         class="w-[36rem]"
         dismissable-mask
       >

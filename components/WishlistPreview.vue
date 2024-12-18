@@ -1,6 +1,6 @@
 <template>
   <Panel
-    v-if="wantItems.length || haveItems.length"
+    v-if="buyingItems.length || sellingItems.length"
     :header="copying ? 'Contact' : 'Preview'"
     pt:root:class="trading-preview"
     pt:header:class="text-xl"
@@ -65,7 +65,7 @@
       </div>
 
       <Message
-        v-if="wantItems.length + haveItems.length >= 24 && !copying"
+        v-if="buyingItems.length + sellingItems.length >= 24 && !copying"
         variant="simple"
         icon="pi pi-info-circle"
       >
@@ -89,24 +89,29 @@
       </Message>
 
       <Divider
-        v-if="wantItems.length"
+        v-if="buyingItems.length"
         align="center"
         class="text-4xl font-bold"
       >
-        {{ tradingConfig.want.title }}
+        {{ tradingConfig.buying.title }}
       </Divider>
 
-      <DraggableCard :data="wantItems" :copying="copying" />
+      <DraggableCard :data="buyingItems" :copying="copying" :buying="true" />
 
       <Divider
-        v-if="haveItems.length && trading"
+        v-if="sellingItems.length && trading"
         align="center"
         class="text-4xl font-bold"
       >
-        {{ tradingConfig.have.title }}
+        {{ tradingConfig.selling.title }}
       </Divider>
 
-      <DraggableCard v-if="trading" :data="haveItems" :copying="copying" />
+      <DraggableCard
+        v-if="trading"
+        :data="sellingItems"
+        :copying="copying"
+        :selling="true"
+      />
 
       <Message variant="simple" severity="success">
         <template #icon>
@@ -137,7 +142,7 @@ const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
 const tradingConfig = useState('trading-config')
-const trading = computed(() => tradingConfig.value.type === 'twoway')
+const trading = computed(() => tradingConfig.value.type === 'trade')
 
 const { isDesktop } = useDevice()
 
@@ -153,21 +158,25 @@ const { data: collections, refresh } = await useAsyncData(() => {
 
 onMounted(() => {
   if (!authenticated.value) {
-    const want = JSON.parse(localStorage.getItem('Keebtalogue_want') || '[]')
-    const have = JSON.parse(localStorage.getItem('Keebtalogue_have') || '[]')
+    const buying = JSON.parse(
+      localStorage.getItem('Keebtalogue_Buying') || '[]',
+    )
+    const selling = JSON.parse(
+      localStorage.getItem('Keebtalogue_Selling') || '[]',
+    )
 
     collections.value = {
-      want: Object.values(want),
-      have: Object.values(have),
+      buying: Object.values(buying),
+      selling: Object.values(selling),
     }
   }
 })
 
-const wantItems = computed(
-  () => collections.value[tradingConfig.value.want.collection] || [],
+const buyingItems = computed(
+  () => collections.value[tradingConfig.value.buying.collection] || [],
 )
-const haveItems = computed(
-  () => collections.value[tradingConfig.value.have.collection] || [],
+const sellingItems = computed(
+  () => collections.value[tradingConfig.value.selling.collection] || [],
 )
 
 watch(authenticated, () => refresh())
@@ -195,14 +204,14 @@ const screenshot = async (download = false) => {
 
 const tradingText = computed(() => {
   let text =
-    `**${tradingConfig.value.want.title}**\n` +
-    `${wantItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
+    `**${tradingConfig.value.buying.title}**\n` +
+    `${buyingItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
 
   if (trading.value) {
     text +=
       `\n\n` +
-      `**${tradingConfig.value.have.title}**\n` +
-      `${haveItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
+      `**${tradingConfig.value.selling.title}**\n` +
+      `${sellingItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
   }
 
   return text

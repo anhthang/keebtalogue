@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     .from('user_collections')
     .select()
     .eq('published', true)
-    .in('type', ['buy', 'sell'])
+    .in('type', ['to_buy', 'for_sale'])
     .order('created_at', { ascending: false })
 
   if (collections?.length) {
@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
         'collection_id',
         collections.map((c: any) => c.id),
       )
+      .eq('exchange', true)
       .match(query)
 
     const group = groupBy(items, 'collection_id')

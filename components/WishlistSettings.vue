@@ -4,8 +4,9 @@
       <SelectButton
         v-model="tradingConfig.type"
         :options="[
-          { label: 'Buy or Sell', value: 'oneway' },
-          { label: 'Trading', value: 'twoway' },
+          { label: 'Buying', value: 'to_buy' },
+          { label: 'Selling', value: 'for_sale' },
+          { label: 'Trading', value: 'trade' },
         ]"
         option-label="label"
         option-value="value"
@@ -21,8 +22,13 @@
             <InputIcon class="pi pi-pencil" />
             <InputText
               id="trading_title"
-              v-model.trim="tradingConfig.want.title"
+              v-model.trim="tradingConfig.buying.title"
               type="text"
+              :placeholder="
+                tradingConfig.type === 'for_sale'
+                  ? tradingConfig.selling.placeholder
+                  : tradingConfig.buying.placeholder
+              "
               fluid
             />
           </IconField>
@@ -33,8 +39,12 @@
           </label>
           <Select
             id="trading_collection"
-            v-model="tradingConfig.want.collection"
-            :options="collections"
+            v-model="tradingConfig.buying.collection"
+            :options="
+              collections.filter((c) =>
+                typeMap[tradingConfig.type].includes(c.type),
+              )
+            "
             option-label="name"
             option-value="id"
           />
@@ -45,8 +55,9 @@
             <InputIcon class="pi pi-pencil" />
             <InputText
               id="trading_have"
-              v-model.trim="tradingConfig.have.title"
+              v-model.trim="tradingConfig.selling.title"
               type="text"
+              :placeholder="tradingConfig.selling.placeholder"
               fluid
             />
           </IconField>
@@ -55,8 +66,8 @@
           <label for="trading_have_collection">Have Collection</label>
           <Select
             id="trading_have_collection"
-            v-model="tradingConfig.have.collection"
-            :options="collections"
+            v-model="tradingConfig.selling.collection"
+            :options="collections.filter((c) => typeMap.sell.includes(c.type))"
             option-label="name"
             option-value="id"
           />
@@ -116,23 +127,31 @@
 const userStore = useUserStore()
 const { collections, social } = storeToRefs(userStore)
 
+const typeMap = {
+  buy: ['personal', 'personal_buy', 'shareable', 'to_buy'],
+  sell: ['personal', 'personal_sell', 'shareable', 'for_sale'],
+  trade: ['personal', 'personal_buy', 'shareable', 'to_buy'],
+}
+
 const tradingConfig = useState('trading-config', () => {
   return {
-    have: {
+    selling: {
       collection: '',
-      title: 'WTT',
+      title: '',
+      placeholder: 'For sale',
     },
-    want: {
+    buying: {
       collection: '',
-      title: 'WTB',
+      title: '',
+      placeholder: 'Looking for',
     },
     social,
-    type: 'oneway',
+    type: 'to_buy',
     fnf_only: false,
   }
 })
 
 tradingConfig.value.social = social.value
 
-const trading = computed(() => tradingConfig.value.type === 'twoway')
+const trading = computed(() => tradingConfig.value.type === 'trade')
 </script>

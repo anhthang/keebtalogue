@@ -67,7 +67,7 @@
                 text
                 size="small"
                 severity="secondary"
-                icon="pi pi-copy"
+                icon="pi pi-images"
                 @click="copyColorwayCard(idx)"
               />
 
@@ -76,7 +76,7 @@
                 text
                 size="small"
                 severity="secondary"
-                icon="pi pi-window-maximize"
+                icon="pi pi-expand"
                 @click="toggleColorwayCard(colorway)"
               />
 

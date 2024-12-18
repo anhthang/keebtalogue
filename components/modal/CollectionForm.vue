@@ -55,47 +55,39 @@
       </Message>
     </div>
 
-    <div v-if="collection.published" class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
+      <label for="collection_type">Type</label>
       <SelectButton
         v-model="collection.type"
         name="type"
         option-label="label"
         option-value="value"
-        :options="[
-          { label: 'Sharing Only', value: 'share' },
-          { label: 'Buying', value: 'buy' },
-          { label: 'Selling', value: 'sell' },
-        ]"
+        :options="
+          collection.published
+            ? [
+                { label: 'Shareable', value: 'shareable' },
+                { label: 'To Buy', value: 'to_buy' },
+                { label: 'For Sale', value: 'for_sale' },
+              ]
+            : [
+                { label: 'Personal Use', value: 'personal' },
+                { label: 'Future Buy', value: 'personal_buy' },
+                { label: 'Future Sale', value: 'personal_sell' },
+              ]
+        "
       />
       <Message
-        v-if="collection.type === 'share'"
+        v-if="collection.published"
         severity="secondary"
         size="small"
         variant="simple"
       >
-        Not listed in the marketplace, just for your eyes (and your friends')
-        with link.
-      </Message>
-      <Message
-        v-if="collection.type === 'buy'"
-        severity="secondary"
-        size="small"
-        variant="simple"
-      >
-        On the hunt! Any leads appreciated!
-      </Message>
-      <Message
-        v-if="collection.type === 'sell'"
-        severity="secondary"
-        size="small"
-        variant="simple"
-      >
-        Up for grabs!
+        {{ typeExtras[collection.type] }}
       </Message>
     </div>
 
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="collection.published && collection.type !== 'shareable'"
       class="flex flex-col gap-2"
     >
       <label for="collection_contact">Contact</label>
@@ -124,7 +116,7 @@
     </div>
 
     <div
-      v-if="collection.published && collection.type !== 'share'"
+      v-if="collection.published && collection.type !== 'shareable'"
       class="flex flex-col gap-2"
     >
       <label for="collection_message">Message</label>
@@ -172,10 +164,17 @@ const { metadata, uid, isEdit } = defineProps({
 const userStore = useUserStore()
 const toast = useToast()
 
+const typeExtras = {
+  shareable:
+    "Not listed in the marketplace, just for your eyes (and your friends') with link.",
+  buy: 'On the hunt! Any leads appreciated!',
+  sell: 'Up for grabs!',
+}
+
 const collection = ref({
   name: '',
   published: false,
-  type: 'share',
+  type: 'personal',
   uid,
 })
 
@@ -183,25 +182,24 @@ onBeforeMount(() => {
   Object.assign(collection.value, metadata)
 })
 
+const personalOrSharable = z.object({
+  name: z.string().min(1),
+  published: z.boolean(),
+  type: z.enum(['shareable', 'personal', 'personal_buy', 'personal_sell']),
+  contact: z.string().optional(),
+  message: z.string().optional(),
+})
+
+const trading = z.object({
+  name: z.string().min(1),
+  published: z.boolean(),
+  type: z.enum(['to_buy', 'for_sale']),
+  contact: z.string().min(1),
+  message: z.string().optional(),
+})
+
 const resolver = ref(
-  zodResolver(
-    z.discriminatedUnion('type', [
-      z.object({
-        name: z.string().min(1),
-        published: z.boolean().default(false),
-        type: z.literal('share'),
-        contact: z.string().optional(),
-        message: z.string().optional(),
-      }),
-      z.object({
-        name: z.string().min(1),
-        published: z.boolean().default(false),
-        type: z.enum(['buy', 'sell']),
-        contact: z.string().min(1),
-        message: z.string().optional(),
-      }),
-    ]),
-  ),
+  zodResolver(z.discriminatedUnion('type', [personalOrSharable, trading])),
 )
 
 const onSubmit = async ({ valid }) => {
