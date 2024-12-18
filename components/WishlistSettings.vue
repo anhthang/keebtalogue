@@ -4,9 +4,9 @@
       <SelectButton
         v-model="tradingConfig.type"
         :options="[
-          { label: 'Buying', value: 'to_buy' },
-          { label: 'Selling', value: 'for_sale' },
-          { label: 'Trading', value: 'trade' },
+          { label: 'Buying', value: 'buying' },
+          { label: 'Selling', value: 'selling' },
+          { label: 'Trading', value: 'trading' },
         ]"
         option-label="label"
         option-value="value"
@@ -25,7 +25,7 @@
               v-model.trim="tradingConfig.buying.title"
               type="text"
               :placeholder="
-                tradingConfig.type === 'for_sale'
+                tradingConfig.type === 'selling'
                   ? tradingConfig.selling.placeholder
                   : tradingConfig.buying.placeholder
               "
@@ -67,7 +67,9 @@
           <Select
             id="trading_have_collection"
             v-model="tradingConfig.selling.collection"
-            :options="collections.filter((c) => typeMap.sell.includes(c.type))"
+            :options="
+              collections.filter((c) => typeMap.selling.includes(c.type))
+            "
             option-label="name"
             option-value="id"
           />
@@ -128,9 +130,9 @@ const userStore = useUserStore()
 const { collections, social } = storeToRefs(userStore)
 
 const typeMap = {
-  buy: ['personal', 'personal_buy', 'shareable', 'to_buy'],
-  sell: ['personal', 'personal_sell', 'shareable', 'for_sale'],
-  trade: ['personal', 'personal_buy', 'shareable', 'to_buy'],
+  buying: ['personal', 'personal_buy', 'shareable', 'to_buy'],
+  selling: ['personal', 'personal_sell', 'shareable', 'for_sale'],
+  trading: ['personal', 'personal_buy', 'shareable', 'to_buy'],
 }
 
 const tradingConfig = useState('trading-config', () => {
@@ -146,12 +148,12 @@ const tradingConfig = useState('trading-config', () => {
       placeholder: 'Looking for',
     },
     social,
-    type: 'to_buy',
+    type: 'buying',
     fnf_only: false,
   }
 })
 
 tradingConfig.value.social = social.value
 
-const trading = computed(() => tradingConfig.value.type === 'trade')
+const trading = computed(() => tradingConfig.value.type === 'trading')
 </script>

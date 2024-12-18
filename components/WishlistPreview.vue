@@ -142,7 +142,7 @@ const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
 const tradingConfig = useState('trading-config')
-const trading = computed(() => tradingConfig.value.type === 'trade')
+const trading = computed(() => tradingConfig.value.type === 'trading')
 
 const { isDesktop } = useDevice()
 
