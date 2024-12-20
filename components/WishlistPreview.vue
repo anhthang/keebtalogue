@@ -36,31 +36,31 @@
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
       >
         <Message
-          v-if="tradingConfig.social.discord"
+          v-if="tradingCfg.social.discord"
           size="large"
           icon="pi pi-discord"
           severity="info"
           variant="simple"
         >
-          {{ tradingConfig.social.discord }}
+          {{ tradingCfg.social.discord }}
         </Message>
         <Message
-          v-if="tradingConfig.social.reddit"
+          v-if="tradingCfg.social.reddit"
           size="large"
           icon="pi pi-reddit"
           severity="error"
           variant="simple"
         >
-          {{ tradingConfig.social.reddit }}
+          {{ tradingCfg.social.reddit }}
         </Message>
         <Message
-          v-if="tradingConfig.social.qq"
+          v-if="tradingCfg.social.qq"
           size="large"
           icon="pi pi-comment"
           severity="warn"
           variant="simple"
         >
-          {{ tradingConfig.social.qq }}
+          {{ tradingCfg.social.qq }}
         </Message>
       </div>
 
@@ -74,7 +74,7 @@
       </Message>
 
       <Message
-        v-if="tradingConfig.fnf_only"
+        v-if="tradingCfg.fnf_only"
         severity="warn"
         icon="pi pi-exclamation-triangle"
         variant="simple"
@@ -93,7 +93,7 @@
         align="center"
         class="text-4xl font-bold"
       >
-        {{ tradingConfig.buying.title }}
+        {{ tradingCfg.buying.title }}
       </Divider>
 
       <DraggableCard :data="buyingItems" :copying="copying" :buying="true" />
@@ -103,7 +103,7 @@
         align="center"
         class="text-4xl font-bold"
       >
-        {{ tradingConfig.selling.title }}
+        {{ tradingCfg.selling.title }}
       </Divider>
 
       <DraggableCard
@@ -141,8 +141,8 @@ const toast = useToast()
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
-const tradingConfig = useState('trading-config')
-const trading = computed(() => tradingConfig.value.type === 'trading')
+const tradingCfg = useState('trading-config')
+const trading = computed(() => tradingCfg.value.type === 'trading')
 
 const { isDesktop } = useDevice()
 
@@ -173,10 +173,10 @@ onMounted(() => {
 })
 
 const buyingItems = computed(
-  () => collections.value[tradingConfig.value.buying.collection] || [],
+  () => collections.value[tradingCfg.value.buying.collection] || [],
 )
 const sellingItems = computed(
-  () => collections.value[tradingConfig.value.selling.collection] || [],
+  () => collections.value[tradingCfg.value.selling.collection] || [],
 )
 
 watch(authenticated, () => refresh())
@@ -202,16 +202,20 @@ const screenshot = async (download = false) => {
   copying.value = false
 }
 
+const tradingItemText = (c) => {
+  return c.exchange ? `- ${colorwayTitle(c)}` : `- ~~${colorwayTitle(c)}~~`
+}
+
 const tradingText = computed(() => {
   let text =
-    `**${tradingConfig.value.buying.title}**\n` +
-    `${buyingItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
+    `**${tradingCfg.value.buying.title || tradingCfg.value.buying.placeholder}**\n` +
+    `${buyingItems.value.map(tradingItemText).join('\n')}`
 
   if (trading.value) {
     text +=
       `\n\n` +
-      `**${tradingConfig.value.selling.title}**\n` +
-      `${sellingItems.value.map((c) => `- ${colorwayTitle(c)}`).join('\n')}`
+      `**${tradingCfg.value.selling.title || tradingCfg.value.selling.placeholder}**\n` +
+      `${sellingItems.value.map(tradingItemText).join('\n')}`
   }
 
   return text

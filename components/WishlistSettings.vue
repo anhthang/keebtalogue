@@ -156,4 +156,9 @@ const tradingConfig = useState('trading-config', () => {
 tradingConfig.value.social = social.value
 
 const trading = computed(() => tradingConfig.value.type === 'trading')
+watch(trading, () => {
+  if (trading.value) {
+    tradingConfig.value.selling.placeholder = 'For sale or trade'
+  }
+})
 </script>
