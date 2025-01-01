@@ -81,6 +81,7 @@
                   icon="pi pi-lock"
                 />
               </template>
+              <template #subtitle>{{ collection.total_items }} items</template>
             </Card>
           </nuxt-link>
         </div>
