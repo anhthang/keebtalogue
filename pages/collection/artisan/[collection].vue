@@ -154,7 +154,7 @@ const breadcrumbs = computed(() => {
       route: '/',
     },
     {
-      label: 'Collections',
+      label: 'My Collections',
       route: `/collection`,
     },
   ]

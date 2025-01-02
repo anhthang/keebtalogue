@@ -1,6 +1,6 @@
 <template>
   <Panel
-    header="Manage Collections"
+    header="My Collections"
     pt:root:class="!border-0 !bg-transparent"
     pt:title:class="flex items-center gap-4 font-medium text-3xl"
   >
@@ -57,7 +57,7 @@
           <nuxt-link
             v-for="collection in items"
             :key="collection.id"
-            :to="`/collection/${collection.id}`"
+            :to="`/collection/${collection.category}/${collection.id}`"
           >
             <Card
               class="h-full"
@@ -94,7 +94,7 @@
 
 <script setup>
 useSeoMeta({
-  title: 'Manage Collections',
+  title: 'My Collections',
 })
 
 const userStore = useUserStore()
