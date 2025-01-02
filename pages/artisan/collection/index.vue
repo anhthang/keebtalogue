@@ -81,7 +81,9 @@
                   icon="pi pi-lock"
                 />
               </template>
-              <template #subtitle>{{ collection.total_items }} items</template>
+              <template v-if="authenticated" #subtitle>
+                {{ collection.total_items }} items
+              </template>
             </Card>
           </nuxt-link>
         </div>
@@ -96,7 +98,7 @@ useSeoMeta({
 })
 
 const userStore = useUserStore()
-const { user, collections } = storeToRefs(userStore)
+const { authenticated, user, collections } = storeToRefs(userStore)
 
 const visible = ref(false)
 const toggleAddCollection = () => {
