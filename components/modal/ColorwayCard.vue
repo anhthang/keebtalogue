@@ -66,6 +66,7 @@
         />
 
         <AddToCollectionPopup
+          v-if="authenticated"
           :colorway="colorway"
           label="Add to Collection"
           @on-select="add2Collection"
@@ -87,7 +88,7 @@ const { colorway } = defineProps({
 
 const toast = useToast()
 const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
+const { authenticated, isEditor } = storeToRefs(userStore)
 
 const copying = ref(false)
 const copyColorwayCard = async () => {

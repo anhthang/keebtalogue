@@ -118,13 +118,6 @@ const megaMenu = computed(() => [
     command: onChangeMenu,
   },
   {
-    label: slim.value ? '' : 'Collections',
-    icon: 'pi pi-book',
-    route: '/artisan/collection',
-    class: route.path.startsWith('/artisan/collection') && activeMenu,
-    command: onChangeMenu,
-  },
-  {
     label: slim.value ? '' : 'Marketplace',
     icon: 'pi pi-shop',
     class:
@@ -187,6 +180,16 @@ const megaMenu = computed(() => [
         },
       ]
     }),
+  },
+  {
+    separator: true,
+  },
+  {
+    label: slim.value ? '' : 'My Collections',
+    icon: 'pi pi-book',
+    route: '/collection',
+    class: route.path.startsWith('/collection') && activeMenu,
+    command: onChangeMenu,
   },
 ])
 

@@ -11,8 +11,8 @@
     >
       To make your collections available in the marketplace, please publish them
       by visiting
-      <nuxt-link to="/artisan/collection">Collections</nuxt-link>. This will
-      make them visible to potential buyers/sellers.
+      <nuxt-link to="/collection">Collections</nuxt-link>. This will make them
+      visible to potential buyers/sellers.
     </Message>
 
     <div class="grid grid-cols-4 gap-4">

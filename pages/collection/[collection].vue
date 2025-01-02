@@ -155,7 +155,7 @@ const breadcrumbs = computed(() => {
     },
     {
       label: 'Collections',
-      route: `/artisan/collection`,
+      route: `/collection`,
     },
   ]
 })
@@ -186,8 +186,6 @@ const sortOptions = computed(() => [
   },
 ])
 
-const localIds = ['buying', 'selling']
-
 const config = useRuntimeConfig()
 
 const userStore = useUserStore()
@@ -201,7 +199,7 @@ const { data, refresh } = await useAsyncData(() => {
     return $fetch(
       `/api/users/${user.value.uid}/collections/${route.params.collection}`,
     )
-  } else if (!localIds.includes(route.params.collection)) {
+  } else {
     return $fetch(`/api/collections/${route.params.collection}`)
   }
 })
@@ -216,22 +214,6 @@ const trading = [
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
-})
-
-onMounted(() => {
-  if (localIds.includes(route.params.collection)) {
-    const collection = collections.value.find(
-      (c) => c.id === route.params.collection,
-    )
-    const items = JSON.parse(
-      localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
-    )
-
-    data.value = {
-      ...collection,
-      items,
-    }
-  }
 })
 
 watchEffect(() => route.params.collection, refresh())
@@ -335,38 +317,21 @@ const removeCap = (clw) => {
       severity: 'danger',
     },
     accept: () => {
-      if (authenticated.value) {
-        $fetch(
-          `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-          { method: 'delete' },
-        )
-          .then(() => {
-            refresh()
-            toast.add({
-              severity: 'success',
-              summary: `${colorwayTitle(clw)} was removed.`,
-              life: 3000,
-            })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
+        { method: 'delete' },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${colorwayTitle(clw)} was removed.`,
+            life: 3000,
           })
-          .catch((error) => {
-            toast.add({ severity: 'error', summary: error.message, life: 3000 })
-          })
-      } else {
-        data.value.items = data.value.items.filter(
-          (c) => c.colorway_id !== clw.colorway_id,
-        )
-
-        localStorage.setItem(
-          `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(data.value.items),
-        )
-
-        toast.add({
-          severity: 'success',
-          summary: `${colorwayTitle(clw)} was removed.`,
-          life: 3000,
         })
-      }
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
     },
   })
 }

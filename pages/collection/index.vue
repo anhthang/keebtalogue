@@ -57,7 +57,7 @@
           <nuxt-link
             v-for="collection in items"
             :key="collection.id"
-            :to="`/artisan/collection/${collection.id}`"
+            :to="`/collection/${collection.id}`"
           >
             <Card
               class="h-full"

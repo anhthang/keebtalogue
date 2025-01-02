@@ -81,6 +81,7 @@
               />
 
               <AddToCollectionPopup
+                v-if="authenticated"
                 :colorway="colorway"
                 :text="true"
                 @on-select="addToCollection"
@@ -305,38 +306,20 @@ const addToCollection = (collection, colorway) => {
     collection_id: collection.id,
   }
 
-  if (authenticated.value) {
-    $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
-      method: 'post',
-      body: clw,
-    })
-      .then(() => {
-        toast.add({
-          severity: 'success',
-          summary: `${clw.name} has been added to [${collection.name}].`,
-          life: 3000,
-        })
+  $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
+    method: 'post',
+    body: clw,
+  })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: `${clw.name} has been added to [${collection.name}].`,
+        life: 3000,
       })
-      .catch((error) => {
-        toast.add({ severity: 'error', summary: error.message, life: 3000 })
-      })
-  } else {
-    const collectionMap =
-      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || []
-
-    collectionMap.push(clw)
-
-    localStorage.setItem(
-      `Keebtalogue_${collection.id}`,
-      JSON.stringify(collectionMap),
-    )
-
-    toast.add({
-      severity: 'success',
-      summary: `${clw.name} has been added to [${collection.name}].`,
-      life: 3000,
     })
-  }
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
+    })
 }
 
 const copying = ref(false)
