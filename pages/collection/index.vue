@@ -6,6 +6,13 @@
   >
     <template #icons>
       <div class="flex gap-2">
+        <SelectButton
+          v-model="category"
+          :options="categories"
+          option-label="label"
+          option-value="value"
+        />
+
         <Button
           v-if="authenticated"
           icon="pi pi-folder-plus"
@@ -26,11 +33,11 @@
     </Dialog>
 
     <DataView
-      :value="collections"
+      :value="selectedCollections"
       layout="grid"
       paginator
       :rows="60"
-      :total-records="collections.length"
+      :total-records="selectedCollections.length"
       :always-show-paginator="false"
       :pt="{
         content: '!bg-transparent',
@@ -40,6 +47,16 @@
         },
       }"
     >
+      <template #empty>
+        <div class="flex flex-col items-center gap-8">
+          <NuxtImg class="w-1/3" src="/svg/empty.svg" alt="Empty" />
+
+          <div class="text-2xl">
+            It looks like your selection didn't yield any collections.
+          </div>
+        </div>
+      </template>
+
       <template #grid="{ items }">
         <div
           class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
@@ -94,4 +111,14 @@ const visible = ref(false)
 const toggleAddCollection = () => {
   visible.value = !visible.value
 }
+
+const category = ref('artisan')
+const categories = ref([
+  { label: 'Artisan', value: 'artisan' },
+  { label: 'Keycap', value: 'keycap' },
+])
+
+const selectedCollections = computed(() =>
+  collections.value.filter((c) => c.category === category.value),
+)
 </script>

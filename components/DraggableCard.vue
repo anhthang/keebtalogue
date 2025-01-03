@@ -35,8 +35,8 @@
             }"
           />
         </template>
-        <template #title>{{ element.name || '-' }}</template>
-        <template #subtitle>{{ element.sculpt_name }}</template>
+        <template #title>{{ element.artisan.name || '-' }}</template>
+        <template #subtitle>{{ element.artisan?.sculpt.name }}</template>
 
         <template #footer>
           <Button

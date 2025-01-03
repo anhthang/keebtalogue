@@ -90,8 +90,8 @@
                   class="h-full object-cover"
                 />
               </template>
-              <template #title>{{ colorway.name || '-' }}</template>
-              <template #subtitle>{{ colorway.sculpt_name }}</template>
+              <template #title>{{ colorway.artisan.name || '-' }}</template>
+              <template #subtitle>{{ colorway.artisan?.sculpt.name }}</template>
 
               <template #footer>
                 <div class="flex gap-2">
