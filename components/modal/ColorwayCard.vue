@@ -54,6 +54,7 @@
           severity="secondary"
           label="Edit"
           icon="pi pi-pen-to-square"
+          fluid
           @click="$emit('editColorway', colorway, true)"
         />
 
@@ -62,12 +63,15 @@
           severity="secondary"
           label="Copy Card"
           icon="pi pi-images"
+          fluid
           @click="copyColorwayCard"
         />
 
         <AddToCollectionPopup
-          :colorway="colorway"
+          v-if="authenticated"
+          :item="colorway"
           label="Add to Collection"
+          :fluid="true"
           @on-select="add2Collection"
         />
       </div>
@@ -87,7 +91,7 @@ const { colorway } = defineProps({
 
 const toast = useToast()
 const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
+const { authenticated, isEditor } = storeToRefs(userStore)
 
 const copying = ref(false)
 const copyColorwayCard = async () => {

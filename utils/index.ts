@@ -78,7 +78,7 @@ export const manufacturers = Object.values(keycapProfiles).reduce(
 )
 
 export const colorwayTitle = (colorway: any) =>
-  `${colorway.name} ${colorway.sculpt_name}`
+  `${colorway.name} ${colorway?.sculpt.name}`
 
 export const copyScreenshot = async (
   element: HTMLElement,

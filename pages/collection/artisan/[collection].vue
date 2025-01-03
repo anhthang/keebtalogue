@@ -72,8 +72,8 @@
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
           >
             <Card
-              v-for="colorway in items"
-              :key="colorway.id"
+              v-for="{ id, exchange, artisan } in items"
+              :key="id"
               class="flex items-center flex-1 overflow-hidden"
               :pt="{
                 header: 'h-44 md:h-60',
@@ -85,26 +85,24 @@
               <template #header>
                 <img
                   loading="lazy"
-                  :alt="colorway.name"
-                  :src="colorway.img"
+                  :alt="artisan.name"
+                  :src="artisan.img"
                   class="h-full object-cover"
                 />
               </template>
-              <template #title>{{ colorway.name || '-' }}</template>
-              <template #subtitle>{{ colorway.sculpt_name }}</template>
+              <template #title>{{ artisan.name || '-' }}</template>
+              <template #subtitle>{{ artisan?.sculpt.name }}</template>
 
               <template #footer>
                 <div class="flex gap-2">
                   <Button
                     v-if="authenticated && trading"
-                    v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
+                    v-tooltip.top="`Mark as ${changeTo(exchange)}`"
                     size="small"
                     text
-                    :severity="colorway.exchange ? 'secondary' : 'success'"
-                    :icon="
-                      colorway.exchange ? 'pi pi-circle' : 'pi pi-check-circle'
-                    "
-                    @click="changeExchangeStatus(colorway)"
+                    :severity="exchange ? 'secondary' : 'success'"
+                    :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
+                    @click="changeExchangeStatus({ id, exchange, artisan })"
                   />
                   <Button
                     v-tooltip.top="'Remove'"
@@ -112,7 +110,7 @@
                     text
                     severity="danger"
                     icon="pi pi-trash"
-                    @click="removeCap(colorway)"
+                    @click="remove(id, artisan)"
                   />
                 </div>
               </template>
@@ -144,8 +142,6 @@
 
 <script setup>
 import sortBy from 'lodash.sortby'
-import { useConfirm } from 'primevue/useconfirm'
-import { useToast } from 'primevue/usetoast'
 
 const breadcrumbs = computed(() => {
   return [
@@ -154,8 +150,8 @@ const breadcrumbs = computed(() => {
       route: '/',
     },
     {
-      label: 'Collections',
-      route: `/artisan/collection`,
+      label: 'My Collections',
+      route: `/collection`,
     },
   ]
 })
@@ -186,8 +182,6 @@ const sortOptions = computed(() => [
   },
 ])
 
-const localIds = ['buying', 'selling']
-
 const config = useRuntimeConfig()
 
 const userStore = useUserStore()
@@ -201,7 +195,7 @@ const { data, refresh } = await useAsyncData(() => {
     return $fetch(
       `/api/users/${user.value.uid}/collections/${route.params.collection}`,
     )
-  } else if (!localIds.includes(route.params.collection)) {
+  } else {
     return $fetch(`/api/collections/${route.params.collection}`)
   }
 })
@@ -216,22 +210,6 @@ const trading = [
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
-})
-
-onMounted(() => {
-  if (localIds.includes(route.params.collection)) {
-    const collection = collections.value.find(
-      (c) => c.id === route.params.collection,
-    )
-    const items = JSON.parse(
-      localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
-    )
-
-    data.value = {
-      ...collection,
-      items,
-    }
-  }
 })
 
 watchEffect(() => route.params.collection, refresh())
@@ -286,9 +264,10 @@ const changeTo = (exchange) => {
   return exchange ? 'sold' : 'available'
 }
 
-const changeExchangeStatus = (clw) => {
-  const title = colorwayTitle(clw)
-  const status = changeTo(clw.exchange)
+const changeExchangeStatus = (item) => {
+  const { id, exchange, artisan } = item
+  const title = colorwayTitle(artisan)
+  const status = changeTo(exchange)
 
   confirm.require({
     header: `Mark ${title} as...`,
@@ -302,8 +281,8 @@ const changeExchangeStatus = (clw) => {
     },
     accept: () => {
       $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-        { method: 'post', body: { exchange: !clw.exchange } },
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
+        { method: 'post', body: { exchange: !exchange } },
       )
         .then(() => {
           refresh()
@@ -320,10 +299,10 @@ const changeExchangeStatus = (clw) => {
   })
 }
 
-const removeCap = (clw) => {
+const remove = (id, colorway) => {
   confirm.require({
     header: 'Confirm to remove artisan',
-    message: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
+    message: `Are you sure you want to remove ${colorwayTitle(colorway)}?`,
     rejectProps: {
       size: 'small',
       label: 'Cancel',
@@ -335,38 +314,21 @@ const removeCap = (clw) => {
       severity: 'danger',
     },
     accept: () => {
-      if (authenticated.value) {
-        $fetch(
-          `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-          { method: 'delete' },
-        )
-          .then(() => {
-            refresh()
-            toast.add({
-              severity: 'success',
-              summary: `${colorwayTitle(clw)} was removed.`,
-              life: 3000,
-            })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
+        { method: 'delete' },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${colorwayTitle(colorway)} was removed.`,
+            life: 3000,
           })
-          .catch((error) => {
-            toast.add({ severity: 'error', summary: error.message, life: 3000 })
-          })
-      } else {
-        data.value.items = data.value.items.filter(
-          (c) => c.colorway_id !== clw.colorway_id,
-        )
-
-        localStorage.setItem(
-          `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(data.value.items),
-        )
-
-        toast.add({
-          severity: 'success',
-          summary: `${colorwayTitle(clw)} was removed.`,
-          life: 3000,
         })
-      }
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
     },
   })
 }

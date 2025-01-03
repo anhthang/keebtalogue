@@ -75,10 +75,10 @@
 
             <AvatarGroup>
               <Avatar
-                v-for="cap in firstChunk(item.items)"
-                :key="cap.id"
-                v-tooltip.top="colorwayTitle(cap)"
-                :image="cap.img"
+                v-for="{ artisan } in firstChunk(item.items)"
+                :key="artisan.id"
+                v-tooltip.top="colorwayTitle(artisan)"
+                :image="artisan.img"
                 shape="circle"
                 size="large"
               />
@@ -103,10 +103,10 @@
                   :key="idx"
                 >
                   <Avatar
-                    v-for="cap in pack"
-                    :key="cap.id"
-                    v-tooltip.top="colorwayTitle(cap)"
-                    :image="cap.img"
+                    v-for="{ artisan } in pack"
+                    :key="artisan.id"
+                    v-tooltip.top="colorwayTitle(artisan)"
+                    :image="artisan.img"
                     shape="circle"
                     size="large"
                   />

@@ -10,13 +10,14 @@ export default defineEventHandler(async (event) => {
     .from('user_collections')
     .select()
     .eq('published', true)
+    .eq('category', 'artisan')
     .in('type', ['to_buy', 'for_sale'])
     .order('created_at', { ascending: false })
 
   if (collections?.length) {
     const { data: items } = await client
       .from('user_collection_items')
-      .select()
+      .select('*, artisan:colorways(*, sculpt:sculpts(name))')
       .in(
         'collection_id',
         collections.map((c: any) => c.id),

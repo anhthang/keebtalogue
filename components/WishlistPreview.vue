@@ -146,31 +146,14 @@ const trading = computed(() => tradingCfg.value.type === 'trading')
 
 const { isDesktop } = useDevice()
 
-const { data: collections, refresh } = await useAsyncData(() => {
-  if (authenticated.value) {
-    return $fetch(`/api/users/${user.value.uid}/collection-items`).then(
-      (data) => groupBy(data, 'collection_id'),
-    )
-  } else {
-    return []
-  }
-})
-
-onMounted(() => {
-  if (!authenticated.value) {
-    const buying = JSON.parse(
-      localStorage.getItem('Keebtalogue_Buying') || '[]',
-    )
-    const selling = JSON.parse(
-      localStorage.getItem('Keebtalogue_Selling') || '[]',
-    )
-
-    collections.value = {
-      buying: Object.values(buying),
-      selling: Object.values(selling),
-    }
-  }
-})
+const { data: collections, refresh } = await useAsyncData(
+  () => $fetch(`/api/users/${user.value.uid}/collection-items`),
+  {
+    transform: (data) => {
+      return groupBy(data, 'collection_id')
+    },
+  },
+)
 
 const buyingItems = computed(
   () => collections.value[tradingCfg.value.buying.collection] || [],
