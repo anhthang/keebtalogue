@@ -54,6 +54,7 @@
           severity="secondary"
           label="Edit"
           icon="pi pi-pen-to-square"
+          fluid
           @click="$emit('editColorway', colorway, true)"
         />
 
@@ -62,13 +63,15 @@
           severity="secondary"
           label="Copy Card"
           icon="pi pi-images"
+          fluid
           @click="copyColorwayCard"
         />
 
         <AddToCollectionPopup
           v-if="authenticated"
-          :colorway="colorway"
+          :item="colorway"
           label="Add to Collection"
+          :fluid="true"
           @on-select="add2Collection"
         />
       </div>

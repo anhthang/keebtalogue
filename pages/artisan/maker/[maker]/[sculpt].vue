@@ -82,7 +82,7 @@
 
               <AddToCollectionPopup
                 v-if="authenticated"
-                :colorway="colorway"
+                :item="colorway"
                 :text="true"
                 @on-select="addToCollection"
               />
@@ -296,24 +296,20 @@ const toggleEditColorway = (clw, shouldRefresh) => {
 
 // add to collection
 const addToCollection = (collection, colorway) => {
-  const clw = {
-    colorway_id: colorway.colorway_id,
-    name: colorway.name,
-    img: colorway.img,
-    sculpt_name: colorway.sculpt_name || sculpt.value.name,
-    maker_id: colorway.maker_id,
+  const item = {
     uid: user.value.uid,
     collection_id: collection.id,
+    artisan_item_id: colorway.id,
   }
 
   $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
     method: 'post',
-    body: clw,
+    body: item,
   })
     .then(() => {
       toast.add({
         severity: 'success',
-        summary: `${clw.name} has been added to [${collection.name}].`,
+        summary: `${colorway.name} has been added to [${collection.name}].`,
         life: 3000,
       })
     })
