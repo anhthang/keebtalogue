@@ -7,7 +7,7 @@
     <template #icons>
       <div class="flex gap-2">
         <Button
-          v-if="user.email_verified"
+          v-if="authenticated"
           icon="pi pi-folder-plus"
           label="Add"
           @click="toggleAddCollection"
@@ -24,16 +24,6 @@
     >
       <ModalCollectionForm :uid="user.uid" @on-success="toggleAddCollection" />
     </Dialog>
-
-    <Message
-      v-if="!user.email_verified"
-      class="w-fit mx-auto mb-4"
-      severity="info"
-      icon="pi pi-info-circle"
-    >
-      Level up your experience! Login and unlock exclusive features, unlimited
-      collections, and enjoy seamless syncing across all your devices.
-    </Message>
 
     <DataView
       :value="collections"

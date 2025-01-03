@@ -78,6 +78,16 @@
       "
     />
   </Dialog>
+
+  <Dialog
+    v-model:visible="visible.login"
+    modal
+    class="w-[36rem]"
+    :closable="false"
+    dismissable-mask
+  >
+    <ModalLogin />
+  </Dialog>
 </template>
 
 <script setup>
@@ -85,6 +95,9 @@ const device = useDevice()
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
+
+const userStore = useUserStore()
+const { authenticated } = storeToRefs(userStore)
 
 const defaultMode = device.isMobileOrTablet ? 'collapsed' : 'expanded'
 
@@ -104,6 +117,7 @@ const onChangeMenu = ({ item }) => {
 const visible = ref({
   feedback: false,
   command: false,
+  login: false,
 })
 
 const megaMenu = computed(() => [
@@ -189,7 +203,11 @@ const megaMenu = computed(() => [
     icon: 'pi pi-book',
     route: '/collection',
     class: route.path.startsWith('/collection') && activeMenu,
-    command: onChangeMenu,
+    command: authenticated.value
+      ? onChangeMenu
+      : () => {
+          visible.value.login = true
+        },
   },
 ])
 
