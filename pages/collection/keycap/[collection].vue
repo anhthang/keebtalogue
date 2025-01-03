@@ -10,21 +10,6 @@
       <template #icons>
         <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <Button
-            v-if="shareable"
-            icon="pi pi-link"
-            label="Copy URL"
-            severity="secondary"
-            @click="copyShareUrl"
-          />
-
-          <SplitButton
-            :icon="sortItem.icon"
-            :label="sortItem.label"
-            severity="secondary"
-            :model="sortOptions"
-          />
-
-          <Button
             v-if="authenticated"
             icon="pi pi-pen-to-square"
             label="Edit"
@@ -69,50 +54,41 @@
       >
         <template #grid="{ items }">
           <div
-            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
           >
             <Card
-              v-for="{ id, exchange, artisan } in items"
-              :key="id"
-              class="flex items-center flex-1 overflow-hidden"
-              :pt="{
-                header: 'h-44 md:h-60',
-                body: 'items-center',
-                caption: 'flex items-center',
-                title: 'w-40 text-center truncate',
-              }"
+              v-for="{ id, keycap } in items"
+              :key="keycap.id"
+              class="flex flex-1 overflow-hidden"
+              pt:header:class="h-48 md:h-60"
+              pt:subtitle:class="flex justify-between"
             >
               <template #header>
                 <img
                   loading="lazy"
-                  :alt="artisan.name"
-                  :src="artisan.img"
+                  :alt="keycap.name"
+                  :src="keycap.img || keycap.render_img"
                   class="h-full object-cover"
                 />
               </template>
-              <template #title>{{ artisan.name || '-' }}</template>
-              <template #subtitle>{{ artisan?.sculpt.name }}</template>
+              <template #title>{{ keycap.name || '-' }}</template>
+              <template #subtitle>
+                <span>
+                  <i class="pi pi-palette" />
+                  {{ keycap.designer }}
+                </span>
+              </template>
 
               <template #footer>
-                <div class="flex gap-2">
-                  <Button
-                    v-if="authenticated && trading"
-                    v-tooltip.top="`Mark as ${changeTo(exchange)}`"
-                    size="small"
-                    text
-                    :severity="exchange ? 'secondary' : 'success'"
-                    :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
-                    @click="changeExchangeStatus({ id, exchange, artisan })"
-                  />
-                  <Button
-                    v-tooltip.top="'Remove'"
-                    size="small"
-                    text
-                    severity="danger"
-                    icon="pi pi-trash"
-                    @click="remove(id, artisan)"
-                  />
-                </div>
+                <Button
+                  size="small"
+                  text
+                  label="Remove"
+                  fluid
+                  severity="danger"
+                  icon="pi pi-trash"
+                  @click="remove(id, keycap)"
+                />
               </template>
             </Card>
           </div>
@@ -156,57 +132,17 @@ const breadcrumbs = computed(() => {
   ]
 })
 
-const confirm = useConfirm()
-const toast = useToast()
-
-const sort = ref('sculpt_name')
-const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
-const sortOptions = computed(() => [
-  {
-    label: 'Sort by Sculpt',
-    icon: 'pi pi-sort-alt',
-    class: sort.value === 'sculpt_name' && activePopMenu,
-    command: ({ item }) => {
-      sort.value = 'sculpt_name'
-      sortItem.value = item
-    },
-  },
-  {
-    label: 'Sort by Colorway',
-    icon: 'pi pi-sort-alpha-down',
-    class: sort.value === 'name' && activePopMenu,
-    command: ({ item }) => {
-      sort.value = 'name'
-      sortItem.value = item
-    },
-  },
-])
-
-const config = useRuntimeConfig()
-
 const userStore = useUserStore()
 const { authenticated, collections, user } = storeToRefs(userStore)
 
+const confirm = useConfirm()
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
 
-const { data, refresh } = await useAsyncData(() => {
-  if (authenticated.value) {
-    return $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-    )
-  } else {
-    return $fetch(`/api/collections/${route.params.collection}`)
-  }
-})
-
-const shareable = data.value?.published && data.value?.type === 'shareable'
-const trading = [
-  'to_buy',
-  'for_sale',
-  'personal_buy',
-  'personal_sell',
-].includes(data.value?.type)
+const { data, refresh } = await useAsyncData(() =>
+  $fetch(`/api/users/${user.value.uid}/collections/${route.params.collection}`),
+)
 
 useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
@@ -215,7 +151,7 @@ useSeoMeta({
 watchEffect(() => route.params.collection, refresh())
 
 const sortedCollections = computed(() => {
-  return sortBy(data.value?.items || [], ['maker_id', sort.value])
+  return sortBy(data.value?.items || [], ['keycap.name'])
 })
 
 const menu = ref()
@@ -230,12 +166,6 @@ const mobile = computed(() => {
       visible: authenticated,
       items: [
         {
-          label: 'Copy URL',
-          icon: 'pi pi-link',
-          visible: shareable,
-          command: copyShareUrl,
-        },
-        {
           label: 'Edit',
           icon: 'pi pi-pen-to-square',
           visible: authenticated.value,
@@ -249,60 +179,13 @@ const mobile = computed(() => {
         },
       ],
     },
-    {
-      label: 'Sorting',
-      items: sortOptions.value,
-    },
   ]
 })
 
-const changeTo = (exchange) => {
-  if (data.value.type === 'to_buy' || data.value.type === 'personal_buy') {
-    return exchange ? 'found' : 'wanted'
-  }
-
-  return exchange ? 'sold' : 'available'
-}
-
-const changeExchangeStatus = (item) => {
-  const { id, exchange, artisan } = item
-  const title = colorwayTitle(artisan)
-  const status = changeTo(exchange)
-
+const remove = (id, keycap) => {
   confirm.require({
-    header: `Mark ${title} as...`,
-    message: `Are you sure you want to mark this item as ${status}?`,
-    rejectProps: {
-      size: 'small',
-      severity: 'secondary',
-    },
-    acceptProps: {
-      size: 'small',
-    },
-    accept: () => {
-      $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
-        { method: 'post', body: { exchange: !exchange } },
-      )
-        .then(() => {
-          refresh()
-          toast.add({
-            severity: 'success',
-            summary: `${title} has been successfully marked as ${status}.`,
-            life: 3000,
-          })
-        })
-        .catch((error) => {
-          toast.add({ severity: 'error', summary: error.message, life: 3000 })
-        })
-    },
-  })
-}
-
-const remove = (id, colorway) => {
-  confirm.require({
-    header: 'Confirm to remove artisan',
-    message: `Are you sure you want to remove ${colorwayTitle(colorway)}?`,
+    header: 'Confirm to remove keycap',
+    message: `Are you sure you want to remove ${keycap.name}?`,
     rejectProps: {
       size: 'small',
       label: 'Cancel',
@@ -322,7 +205,7 @@ const remove = (id, colorway) => {
           refresh()
           toast.add({
             severity: 'success',
-            summary: `${colorwayTitle(colorway)} was removed.`,
+            summary: `${keycap.name} was removed.`,
             life: 3000,
           })
         })
@@ -370,15 +253,6 @@ const deleteCollection = () => {
           toast.add({ severity: 'error', summary: error.message, life: 3000 })
         })
     },
-  })
-}
-
-const copyShareUrl = () => {
-  navigator.clipboard.writeText(config.public.baseUrl + route.fullPath)
-  toast.add({
-    severity: 'success',
-    summary: 'Copied to clipboard!',
-    life: 3000,
   })
 }
 
