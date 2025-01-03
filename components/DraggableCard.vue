@@ -19,8 +19,8 @@
         <template #header>
           <img
             loading="lazy"
-            :alt="element.name"
-            :src="element.img"
+            :alt="element.artisan.name"
+            :src="element.artisan.img"
             class="h-full absolute inset-0 object-cover"
             :class="{
               grayscale: !element.exchange,
