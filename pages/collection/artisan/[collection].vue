@@ -165,18 +165,18 @@ const sortOptions = computed(() => [
   {
     label: 'Sort by Sculpt',
     icon: 'pi pi-sort-alt',
-    class: sort.value === 'sculpt_name' && activePopMenu,
+    class: sort.value === 'artisan.sculpt.name' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'sculpt_name'
+      sort.value = 'artisan.sculpt.name'
       sortItem.value = item
     },
   },
   {
     label: 'Sort by Colorway',
     icon: 'pi pi-sort-alpha-down',
-    class: sort.value === 'name' && activePopMenu,
+    class: sort.value === 'artisan.name' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'name'
+      sort.value = 'artisan.name'
       sortItem.value = item
     },
   },
@@ -200,6 +200,8 @@ const { data, refresh } = await useAsyncData(() => {
   }
 })
 
+console.log(data.value?.items)
+
 const shareable = data.value?.published && data.value?.type === 'shareable'
 const trading = [
   'to_buy',
@@ -215,7 +217,7 @@ useSeoMeta({
 watchEffect(() => route.params.collection, refresh())
 
 const sortedCollections = computed(() => {
-  return sortBy(data.value?.items || [], ['maker_id', sort.value])
+  return sortBy(data.value?.items || [], ['artisan.maker_id', sort.value])
 })
 
 const menu = ref()

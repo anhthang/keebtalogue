@@ -1,5 +1,11 @@
 <template>
-  <Fieldset legend="Pre-Order Keycaps" pt:legend:class="w-auto">
+  <Fieldset pt:legend:class="w-auto">
+    <template #legend>
+      <div class="flex items-center gap-2">
+        <span class="pi pi-sparkles" />
+        <span class="font-semibold"> Pre-Order Keycaps </span>
+      </div>
+    </template>
     <DataView
       :value="keycaps"
       paginator
