@@ -276,7 +276,6 @@ const toggleAddColorway = (clw, shouldRefresh) => {
 const selectedColorway = ref({})
 const setSelectedColorway = (clw) => {
   selectedColorway.value = clw
-  selectedColorway.value.sculpt_name = sculpt.value.name
 }
 
 const toggleColorwayCard = (clw) => {

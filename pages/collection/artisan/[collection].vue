@@ -67,6 +67,16 @@
           },
         }"
       >
+        <template v-if="!data" #empty>
+          <div class="flex flex-col items-center gap-8">
+            <NuxtImg class="w-1/3" src="/svg/cancel.svg" alt="Unauthorized" />
+
+            <div class="text-2xl">
+              You are not authorized to view this collection.
+            </div>
+          </div>
+        </template>
+
         <template #grid="{ items }">
           <div
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
@@ -159,7 +169,7 @@ const breadcrumbs = computed(() => {
 const confirm = useConfirm()
 const toast = useToast()
 
-const sort = ref('sculpt_name')
+const sort = ref('artisan.sculpt.name')
 const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
 const sortOptions = computed(() => [
   {
@@ -190,17 +200,9 @@ const { authenticated, collections, user } = storeToRefs(userStore)
 const route = useRoute()
 const router = useRouter()
 
-const { data, refresh } = await useAsyncData(() => {
-  if (authenticated.value) {
-    return $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-    )
-  } else {
-    return $fetch(`/api/collections/${route.params.collection}`)
-  }
-})
-
-console.log(data.value?.items)
+const { data, refresh } = await useAsyncData(() =>
+  $fetch(`/api/collections/${route.params.collection}`),
+)
 
 const shareable = data.value?.published && data.value?.type === 'shareable'
 const trading = [

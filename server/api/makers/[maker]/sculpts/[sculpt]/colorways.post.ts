@@ -6,7 +6,7 @@ const selfMakers = ['alpha-keycaps', 'gooey-keys']
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const { keycap, sculpt_name, ...rest } = await readBody(event)
+  const { keycap, ...rest } = await readBody(event)
 
   if (selfMakers.includes(rest.maker_id)) {
     const slug = slugify(rest.name, { lower: true })

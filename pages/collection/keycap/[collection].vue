@@ -141,7 +141,7 @@ const router = useRouter()
 const toast = useToast()
 
 const { data, refresh } = await useAsyncData(() =>
-  $fetch(`/api/users/${user.value.uid}/collections/${route.params.collection}`),
+  $fetch(`/api/collections/${route.params.collection}`),
 )
 
 useSeoMeta({
