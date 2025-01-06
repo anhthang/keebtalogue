@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${sculpt.maker_id}/${sculpt.sculpt_id}`">
     <Card
-      class="flex items-center flex-1 overflow-hidden"
+      class="flex flex-1 overflow-hidden"
       :pt="{
         root: 'h-full',
         header: 'w-full h-44 md:h-60',

@@ -8,7 +8,7 @@
     <template #item="{ element }">
       <Card
         :key="element.element_id"
-        class="flex items-center flex-1 overflow-hidden"
+        class="flex flex-1 overflow-hidden"
         :pt="{
           header: 'relative w-full h-44 md:h-60',
           body: 'items-center',
@@ -19,8 +19,8 @@
         <template #header>
           <img
             loading="lazy"
-            :alt="element.name"
-            :src="element.img"
+            :alt="element.artisan.name"
+            :src="element.artisan.img"
             class="h-full absolute inset-0 object-cover"
             :class="{
               grayscale: !element.exchange,
@@ -35,8 +35,8 @@
             }"
           />
         </template>
-        <template #title>{{ element.name || '-' }}</template>
-        <template #subtitle>{{ element.sculpt_name }}</template>
+        <template #title>{{ element.artisan.name || '-' }}</template>
+        <template #subtitle>{{ element.artisan?.sculpt.name }}</template>
 
         <template #footer>
           <Button

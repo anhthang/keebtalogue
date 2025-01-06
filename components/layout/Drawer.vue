@@ -25,6 +25,16 @@
       "
     />
   </Dialog>
+
+  <Dialog
+    v-model:visible="visible.login"
+    modal
+    class="w-[36rem]"
+    :closable="false"
+    dismissable-mask
+  >
+    <ModalLogin />
+  </Dialog>
 </template>
 
 <script setup>
@@ -33,6 +43,9 @@ const emit = defineEmits(['close'])
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
+
+const userStore = useUserStore()
+const { authenticated } = storeToRefs(userStore)
 
 const onChangeMenu = ({ item }) => {
   if (item?.route.startsWith('/')) {
@@ -44,6 +57,7 @@ const onChangeMenu = ({ item }) => {
 
 const visible = ref({
   feedback: false,
+  login: false,
 })
 
 const megaMenu = computed(() => [
@@ -59,13 +73,6 @@ const megaMenu = computed(() => [
     icon: 'pi pi-users',
     route: '/artisan/maker',
     class: route.path.startsWith('/artisan/maker') && activeMenu,
-    command: onChangeMenu,
-  },
-  {
-    label: 'Collections',
-    icon: 'pi pi-book',
-    route: '/artisan/collection',
-    class: route.path.startsWith('/artisan/collection') && activeMenu,
     command: onChangeMenu,
   },
   {
@@ -102,6 +109,17 @@ const megaMenu = computed(() => [
         }),
       }
     }),
+  },
+  {
+    label: 'My Collections',
+    icon: 'pi pi-book',
+    route: '/collection',
+    class: route.path.startsWith('/collection') && activeMenu,
+    command: authenticated.value
+      ? onChangeMenu
+      : () => {
+          visible.value.login = true
+        },
   },
   {
     label: 'About',

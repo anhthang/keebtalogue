@@ -41,8 +41,10 @@
             id="trading_collection"
             v-model="tradingConfig.buying.collection"
             :options="
-              collections.filter((c) =>
-                typeMap[tradingConfig.type].includes(c.type),
+              collections.filter(
+                (c) =>
+                  c.category === 'artisan' &&
+                  typeMap[tradingConfig.type].includes(c.type),
               )
             "
             option-label="name"
@@ -68,7 +70,10 @@
             id="trading_have_collection"
             v-model="tradingConfig.selling.collection"
             :options="
-              collections.filter((c) => typeMap.selling.includes(c.type))
+              collections.filter(
+                (c) =>
+                  c.category === 'artisan' && typeMap.selling.includes(c.type),
+              )
             "
             option-label="name"
             option-value="id"

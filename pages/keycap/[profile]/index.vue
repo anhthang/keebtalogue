@@ -55,6 +55,7 @@
               class="w-full h-full object-cover"
             />
           </template>
+
           <template #title>{{ keycap.name }}</template>
           <template #subtitle>
             <span>
@@ -72,6 +73,16 @@
               <i class="pi pi-clock" />
               {{ formatDateRange(keycap.start_date, keycap.end_date) }}
             </span>
+          </template>
+
+          <template v-if="authenticated" #footer>
+            <AddToCollectionPopup
+              :item="keycap"
+              category="keycap"
+              label="Add to Collection"
+              :fluid="true"
+              @on-select="addToCollection"
+            />
           </template>
         </Card>
       </nuxt-link>
@@ -108,7 +119,8 @@
 
 <script setup>
 const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
+const { authenticated, isEditor, user } = storeToRefs(userStore)
+const toast = useToast()
 
 const route = useRoute()
 const { profile } = route.params
@@ -164,5 +176,28 @@ const showAddKeycap = (shouldRefresh) => {
   if (shouldRefresh) {
     refresh()
   }
+}
+
+const addToCollection = (collection, keycap) => {
+  const item = {
+    uid: user.value.uid,
+    collection_id: collection.id,
+    keycap_item_id: keycap.profile_keycap_id,
+  }
+
+  $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
+    method: 'post',
+    body: item,
+  })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: `${keycap.name} has been added to [${collection.name}].`,
+        life: 3000,
+      })
+    })
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
+    })
 }
 </script>

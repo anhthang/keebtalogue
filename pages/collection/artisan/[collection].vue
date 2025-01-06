@@ -52,6 +52,16 @@
         <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
 
+      <Message
+        v-if="hasOutdated"
+        class="w-fit mx-auto mb-4"
+        severity="warn"
+        icon="pi pi-exclamation-triangle"
+      >
+        Outdated items found during database sync. Please remove and re-add from
+        the maker page if needed before deletion.
+      </Message>
+
       <DataView
         :value="sortedCollections"
         layout="grid"
@@ -67,17 +77,26 @@
           },
         }"
       >
+        <template v-if="!data" #empty>
+          <div class="flex flex-col items-center gap-8">
+            <NuxtImg class="w-1/3" src="/svg/cancel.svg" alt="Unauthorized" />
+
+            <div class="text-2xl">
+              You are not authorized to view this collection.
+            </div>
+          </div>
+        </template>
+
         <template #grid="{ items }">
           <div
             class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4"
           >
             <Card
-              v-for="colorway in items"
-              :key="colorway.id"
-              class="flex items-center flex-1 overflow-hidden"
+              v-for="{ id, exchange, artisan } in items"
+              :key="id"
+              class="flex flex-1 overflow-hidden"
               :pt="{
                 header: 'h-44 md:h-60',
-                body: 'items-center',
                 caption: 'flex items-center',
                 title: 'w-40 text-center truncate',
               }"
@@ -85,34 +104,47 @@
               <template #header>
                 <img
                   loading="lazy"
-                  :alt="colorway.name"
-                  :src="colorway.img"
+                  :alt="artisan.name"
+                  :src="artisan.img"
                   class="h-full object-cover"
+                  :class="{
+                    grayscale: artisan.deleted,
+                  }"
                 />
               </template>
-              <template #title>{{ colorway.name || '-' }}</template>
-              <template #subtitle>{{ colorway.sculpt_name }}</template>
+              <template #title>{{ artisan.name || '-' }}</template>
+              <template #subtitle>{{ artisan?.sculpt.name }}</template>
 
               <template #footer>
-                <div class="flex gap-2">
+                <Button
+                  v-if="artisan.deleted"
+                  size="small"
+                  text
+                  label="Clear Outdated"
+                  severity="warn"
+                  icon="pi pi-eraser"
+                  fluid
+                  @click="remove(id, artisan)"
+                />
+                <div v-else class="flex gap-2">
                   <Button
                     v-if="authenticated && trading"
-                    v-tooltip.top="`Mark as ${changeTo(colorway.exchange)}`"
                     size="small"
                     text
-                    :severity="colorway.exchange ? 'secondary' : 'success'"
-                    :icon="
-                      colorway.exchange ? 'pi pi-circle' : 'pi pi-check-circle'
-                    "
-                    @click="changeExchangeStatus(colorway)"
+                    label="Mark as..."
+                    :severity="exchange ? 'secondary' : 'success'"
+                    :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
+                    fluid
+                    @click="changeExchangeStatus({ id, exchange, artisan })"
                   />
                   <Button
-                    v-tooltip.top="'Remove'"
                     size="small"
                     text
+                    label="Remove"
                     severity="danger"
                     icon="pi pi-trash"
-                    @click="removeCap(colorway)"
+                    fluid
+                    @click="remove(id, artisan)"
                   />
                 </div>
               </template>
@@ -144,8 +176,6 @@
 
 <script setup>
 import sortBy from 'lodash.sortby'
-import { useConfirm } from 'primevue/useconfirm'
-import { useToast } from 'primevue/usetoast'
 
 const breadcrumbs = computed(() => {
   return [
@@ -154,8 +184,8 @@ const breadcrumbs = computed(() => {
       route: '/',
     },
     {
-      label: 'Collections',
-      route: `/artisan/collection`,
+      label: 'My Collections',
+      route: `/collection`,
     },
   ]
 })
@@ -163,30 +193,28 @@ const breadcrumbs = computed(() => {
 const confirm = useConfirm()
 const toast = useToast()
 
-const sort = ref('sculpt_name')
+const sort = ref('artisan.sculpt.name')
 const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
 const sortOptions = computed(() => [
   {
     label: 'Sort by Sculpt',
     icon: 'pi pi-sort-alt',
-    class: sort.value === 'sculpt_name' && activePopMenu,
+    class: sort.value === 'artisan.sculpt.name' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'sculpt_name'
+      sort.value = 'artisan.sculpt.name'
       sortItem.value = item
     },
   },
   {
     label: 'Sort by Colorway',
     icon: 'pi pi-sort-alpha-down',
-    class: sort.value === 'name' && activePopMenu,
+    class: sort.value === 'artisan.name' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'name'
+      sort.value = 'artisan.name'
       sortItem.value = item
     },
   },
 ])
-
-const localIds = ['buying', 'selling']
 
 const config = useRuntimeConfig()
 
@@ -196,15 +224,9 @@ const { authenticated, collections, user } = storeToRefs(userStore)
 const route = useRoute()
 const router = useRouter()
 
-const { data, refresh } = await useAsyncData(() => {
-  if (authenticated.value) {
-    return $fetch(
-      `/api/users/${user.value.uid}/collections/${route.params.collection}`,
-    )
-  } else if (!localIds.includes(route.params.collection)) {
-    return $fetch(`/api/collections/${route.params.collection}`)
-  }
-})
+const { data, refresh } = await useAsyncData(() =>
+  $fetch(`/api/collections/${route.params.collection}`),
+)
 
 const shareable = data.value?.published && data.value?.type === 'shareable'
 const trading = [
@@ -218,26 +240,13 @@ useSeoMeta({
   title: data.value?.name ? `${data.value.name} • Collection` : 'Collection',
 })
 
-onMounted(() => {
-  if (localIds.includes(route.params.collection)) {
-    const collection = collections.value.find(
-      (c) => c.id === route.params.collection,
-    )
-    const items = JSON.parse(
-      localStorage.getItem(`Keebtalogue_${route.params.collection}`) || '[]',
-    )
-
-    data.value = {
-      ...collection,
-      items,
-    }
-  }
-})
-
 watchEffect(() => route.params.collection, refresh())
 
+const hasOutdated = computed(() =>
+  (data.value?.items || []).some((i) => i.artisan?.deleted),
+)
 const sortedCollections = computed(() => {
-  return sortBy(data.value?.items || [], ['maker_id', sort.value])
+  return sortBy(data.value?.items || [], ['artisan.maker_id', sort.value])
 })
 
 const menu = ref()
@@ -286,9 +295,10 @@ const changeTo = (exchange) => {
   return exchange ? 'sold' : 'available'
 }
 
-const changeExchangeStatus = (clw) => {
-  const title = colorwayTitle(clw)
-  const status = changeTo(clw.exchange)
+const changeExchangeStatus = (item) => {
+  const { id, exchange, artisan } = item
+  const title = colorwayTitle(artisan)
+  const status = changeTo(exchange)
 
   confirm.require({
     header: `Mark ${title} as...`,
@@ -302,8 +312,8 @@ const changeExchangeStatus = (clw) => {
     },
     accept: () => {
       $fetch(
-        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-        { method: 'post', body: { exchange: !clw.exchange } },
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
+        { method: 'post', body: { exchange: !exchange } },
       )
         .then(() => {
           refresh()
@@ -320,10 +330,10 @@ const changeExchangeStatus = (clw) => {
   })
 }
 
-const removeCap = (clw) => {
+const remove = (id, colorway) => {
   confirm.require({
     header: 'Confirm to remove artisan',
-    message: `Are you sure you want to remove ${colorwayTitle(clw)}?`,
+    message: `Are you sure you want to remove ${colorwayTitle(colorway)}?`,
     rejectProps: {
       size: 'small',
       label: 'Cancel',
@@ -335,38 +345,21 @@ const removeCap = (clw) => {
       severity: 'danger',
     },
     accept: () => {
-      if (authenticated.value) {
-        $fetch(
-          `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${clw.id}`,
-          { method: 'delete' },
-        )
-          .then(() => {
-            refresh()
-            toast.add({
-              severity: 'success',
-              summary: `${colorwayTitle(clw)} was removed.`,
-              life: 3000,
-            })
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
+        { method: 'delete' },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${colorwayTitle(colorway)} was removed.`,
+            life: 3000,
           })
-          .catch((error) => {
-            toast.add({ severity: 'error', summary: error.message, life: 3000 })
-          })
-      } else {
-        data.value.items = data.value.items.filter(
-          (c) => c.colorway_id !== clw.colorway_id,
-        )
-
-        localStorage.setItem(
-          `Keebtalogue_${route.params.collection}`,
-          JSON.stringify(data.value.items),
-        )
-
-        toast.add({
-          severity: 'success',
-          summary: `${colorwayTitle(clw)} was removed.`,
-          life: 3000,
         })
-      }
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
     },
   })
 }

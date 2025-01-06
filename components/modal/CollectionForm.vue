@@ -29,6 +29,20 @@
     </div>
 
     <div class="flex flex-col gap-2">
+      <label for="collection_category">Category</label>
+      <SelectButton
+        v-model="collection.category"
+        name="category"
+        option-label="label"
+        option-value="value"
+        :options="[
+          { label: 'Artisan', value: 'artisan' },
+          { label: 'Keycap', value: 'keycap' },
+        ]"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
       <label for="collection_visibility">Visibility</label>
       <SelectButton
         v-model="collection.published"
@@ -173,6 +187,7 @@ const typeExtras = {
 
 const collection = ref({
   name: '',
+  category: 'artisan',
   published: false,
   type: 'personal',
   uid,
@@ -184,6 +199,7 @@ onBeforeMount(() => {
 
 const personalOrSharable = z.object({
   name: z.string().min(1),
+  category: z.enum(['artisan', 'keycap']),
   published: z.boolean(),
   type: z.enum(['shareable', 'personal', 'personal_buy', 'personal_sell']),
   contact: z.string().optional(),
@@ -192,6 +208,7 @@ const personalOrSharable = z.object({
 
 const trading = z.object({
   name: z.string().min(1),
+  category: z.enum(['artisan', 'keycap']),
   published: z.boolean(),
   type: z.enum(['to_buy', 'for_sale']),
   contact: z.string().min(1),

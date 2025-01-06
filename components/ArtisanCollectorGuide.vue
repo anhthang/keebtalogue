@@ -1,5 +1,11 @@
 <template>
-  <Fieldset legend="ArtisanCollector's Guides" pt:legend:class="w-auto">
+  <Fieldset pt:legend:class="w-auto">
+    <template #legend>
+      <div class="flex items-center gap-2">
+        <span class="pi pi-graduation-cap" />
+        <span class="font-semibold"> ArtisanCollector's Guides </span>
+      </div>
+    </template>
     <DataView
       :value="guides"
       paginator
@@ -16,7 +22,7 @@
           }"
         >
           <nuxt-link :to="guide.url" target="_blank" external>
-            <Card class="!shadow-none">
+            <Card class="!shadow-none" pt:body:class="!px-0">
               <template #title>{{ guide.title }}</template>
               <template #content>{{ guide.summary }}</template>
             </Card>

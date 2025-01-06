@@ -31,7 +31,7 @@
         <Card
           v-for="(colorway, idx) in sculpt.colorways"
           :key="colorway.colorway_id"
-          class="flex items-center flex-1 overflow-hidden colorway-card"
+          class="flex flex-1 overflow-hidden colorway-card"
           :pt="{
             header: 'w-full h-44 md:h-60',
             body: 'items-center',
@@ -81,7 +81,8 @@
               />
 
               <AddToCollectionPopup
-                :colorway="colorway"
+                v-if="authenticated"
+                :item="colorway"
                 :text="true"
                 @on-select="addToCollection"
               />
@@ -275,7 +276,6 @@ const toggleAddColorway = (clw, shouldRefresh) => {
 const selectedColorway = ref({})
 const setSelectedColorway = (clw) => {
   selectedColorway.value = clw
-  selectedColorway.value.sculpt_name = sculpt.value.name
 }
 
 const toggleColorwayCard = (clw) => {
@@ -295,48 +295,26 @@ const toggleEditColorway = (clw, shouldRefresh) => {
 
 // add to collection
 const addToCollection = (collection, colorway) => {
-  const clw = {
-    colorway_id: colorway.colorway_id,
-    name: colorway.name,
-    img: colorway.img,
-    sculpt_name: colorway.sculpt_name || sculpt.value.name,
-    maker_id: colorway.maker_id,
+  const item = {
     uid: user.value.uid,
     collection_id: collection.id,
+    artisan_item_id: colorway.id,
   }
 
-  if (authenticated.value) {
-    $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
-      method: 'post',
-      body: clw,
-    })
-      .then(() => {
-        toast.add({
-          severity: 'success',
-          summary: `${clw.name} has been added to [${collection.name}].`,
-          life: 3000,
-        })
+  $fetch(`/api/users/${user.value.uid}/collections/${collection.id}/items`, {
+    method: 'post',
+    body: item,
+  })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: `${colorway.name} has been added to [${collection.name}].`,
+        life: 3000,
       })
-      .catch((error) => {
-        toast.add({ severity: 'error', summary: error.message, life: 3000 })
-      })
-  } else {
-    const collectionMap =
-      JSON.parse(localStorage.getItem(`Keebtalogue_${collection.id}`)) || []
-
-    collectionMap.push(clw)
-
-    localStorage.setItem(
-      `Keebtalogue_${collection.id}`,
-      JSON.stringify(collectionMap),
-    )
-
-    toast.add({
-      severity: 'success',
-      summary: `${clw.name} has been added to [${collection.name}].`,
-      life: 3000,
     })
-  }
+    .catch((error) => {
+      toast.add({ severity: 'error', summary: error.message, life: 3000 })
+    })
 }
 
 const copying = ref(false)

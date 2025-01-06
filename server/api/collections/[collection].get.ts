@@ -5,7 +5,9 @@ export default defineEventHandler(async (event) => {
 
   const { data } = await client
     .from('user_collections')
-    .select('*, items:user_collection_items(*)')
+    .select(
+      '*, items:user_collection_items(*, artisan:colorways(*, sculpt:sculpts(name)), keycap:keycaps(*))',
+    )
     .eq('id', event.context.params?.collection)
     .single()
 
