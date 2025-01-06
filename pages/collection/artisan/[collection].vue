@@ -94,7 +94,7 @@
             <Card
               v-for="{ id, exchange, artisan } in items"
               :key="id"
-              class="flex items-center flex-1 overflow-hidden"
+              class="flex flex-1 overflow-hidden"
               :pt="{
                 header: 'h-44 md:h-60',
                 caption: 'flex items-center',
@@ -131,7 +131,7 @@
                     v-if="authenticated && trading"
                     size="small"
                     text
-                    label="Mark..."
+                    label="Mark as..."
                     :severity="exchange ? 'secondary' : 'success'"
                     :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
                     fluid

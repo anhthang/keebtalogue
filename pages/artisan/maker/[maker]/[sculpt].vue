@@ -31,7 +31,7 @@
         <Card
           v-for="(colorway, idx) in sculpt.colorways"
           :key="colorway.colorway_id"
-          class="flex items-center flex-1 overflow-hidden colorway-card"
+          class="flex flex-1 overflow-hidden colorway-card"
           :pt="{
             header: 'w-full h-44 md:h-60',
             body: 'items-center',

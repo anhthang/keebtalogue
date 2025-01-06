@@ -2,7 +2,7 @@
   <Fieldset pt:legend:class="w-auto">
     <template #legend>
       <div class="flex items-center gap-2">
-        <span class="pi pi-book" />
+        <span class="pi pi-graduation-cap" />
         <span class="font-semibold"> ArtisanCollector's Guides </span>
       </div>
     </template>

@@ -77,6 +77,10 @@
                   <i class="pi pi-palette" />
                   {{ keycap.designer }}
                 </span>
+                <span>
+                  <i class="pi pi-building" />
+                  {{ manufacturers[keycap.profile_id] }}
+                </span>
               </template>
 
               <template #footer>

@@ -8,7 +8,7 @@
     <template #item="{ element }">
       <Card
         :key="element.element_id"
-        class="flex items-center flex-1 overflow-hidden"
+        class="flex flex-1 overflow-hidden"
         :pt="{
           header: 'relative w-full h-44 md:h-60',
           body: 'items-center',
