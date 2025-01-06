@@ -52,6 +52,16 @@
         <Menu id="overlay_menu" ref="menu" :model="mobile" :popup="true" />
       </template>
 
+      <Message
+        v-if="hasOutdated"
+        class="w-fit mx-auto mb-4"
+        severity="warn"
+        icon="pi pi-exclamation-triangle"
+      >
+        Outdated items found during database sync. Please remove and re-add from
+        the maker page if needed before deletion.
+      </Message>
+
       <DataView
         :value="sortedCollections"
         layout="grid"
@@ -87,7 +97,6 @@
               class="flex items-center flex-1 overflow-hidden"
               :pt="{
                 header: 'h-44 md:h-60',
-                body: 'items-center',
                 caption: 'flex items-center',
                 title: 'w-40 text-center truncate',
               }"
@@ -98,28 +107,43 @@
                   :alt="artisan.name"
                   :src="artisan.img"
                   class="h-full object-cover"
+                  :class="{
+                    grayscale: artisan.deleted,
+                  }"
                 />
               </template>
               <template #title>{{ artisan.name || '-' }}</template>
               <template #subtitle>{{ artisan?.sculpt.name }}</template>
 
               <template #footer>
-                <div class="flex gap-2">
+                <Button
+                  v-if="artisan.deleted"
+                  size="small"
+                  text
+                  label="Clear Outdated"
+                  severity="warn"
+                  icon="pi pi-eraser"
+                  fluid
+                  @click="remove(id, artisan)"
+                />
+                <div v-else class="flex gap-2">
                   <Button
                     v-if="authenticated && trading"
-                    v-tooltip.top="`Mark as ${changeTo(exchange)}`"
                     size="small"
                     text
+                    label="Mark..."
                     :severity="exchange ? 'secondary' : 'success'"
                     :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
+                    fluid
                     @click="changeExchangeStatus({ id, exchange, artisan })"
                   />
                   <Button
-                    v-tooltip.top="'Remove'"
                     size="small"
                     text
+                    label="Remove"
                     severity="danger"
                     icon="pi pi-trash"
+                    fluid
                     @click="remove(id, artisan)"
                   />
                 </div>
@@ -218,6 +242,9 @@ useSeoMeta({
 
 watchEffect(() => route.params.collection, refresh())
 
+const hasOutdated = computed(() =>
+  (data.value?.items || []).some((i) => i.artisan?.deleted),
+)
 const sortedCollections = computed(() => {
   return sortBy(data.value?.items || [], ['artisan.maker_id', sort.value])
 })

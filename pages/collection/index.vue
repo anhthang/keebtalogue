@@ -104,6 +104,10 @@ useSeoMeta({
   title: 'My Collections',
 })
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const userStore = useUserStore()
 const { authenticated, user, collections } = storeToRefs(userStore)
 
