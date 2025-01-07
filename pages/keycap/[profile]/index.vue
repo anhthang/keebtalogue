@@ -43,7 +43,7 @@
         :to="`/keycap/${keycap.profile_keycap_id}`"
       >
         <Card
-          class="flex flex-1 overflow-hidden"
+          class="overflow-hidden"
           pt:header:class="h-48 md:h-60"
           pt:subtitle:class="flex justify-between"
         >

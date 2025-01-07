@@ -59,7 +59,7 @@
             <Card
               v-for="{ id, keycap } in items"
               :key="keycap.id"
-              class="flex flex-1 overflow-hidden"
+              class="overflow-hidden"
               pt:header:class="h-48 md:h-60"
               pt:subtitle:class="flex justify-between"
             >

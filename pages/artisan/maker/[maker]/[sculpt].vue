@@ -32,7 +32,7 @@
         <Card
           v-for="(colorway, idx) in sculpt.colorways"
           :key="colorway.colorway_id"
-          class="flex flex-1 overflow-hidden colorway-card"
+          class="overflow-hidden colorway-card"
           :pt="{
             header: 'w-full h-44 md:h-60',
             body: 'items-center',
@@ -45,7 +45,7 @@
               loading="lazy"
               :alt="colorway.name"
               :src="colorway.img"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover cursor-pointer"
               @click="toggleColorwayCard(colorway)"
             />
           </template>

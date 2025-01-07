@@ -1,8 +1,8 @@
 <template>
   <nuxt-link :to="`/artisan/maker/${maker.id}`">
     <Card
-      class="flex flex-1 h-full"
-      pt:header:class="flex items-center mx-5 h-44 md:h-60"
+      class="h-full"
+      pt:header:class="flex items-center mx-auto p-6 h-44 md:h-60"
       pt:body:class="items-center"
     >
       <template #header>

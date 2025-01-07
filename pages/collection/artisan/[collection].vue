@@ -94,7 +94,7 @@
             <Card
               v-for="{ id, exchange, artisan } in items"
               :key="id"
-              class="flex flex-1 overflow-hidden"
+              class="overflow-hidden"
               :pt="{
                 header: 'h-44 md:h-60',
                 caption: 'flex items-center',
