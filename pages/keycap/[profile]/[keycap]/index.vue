@@ -166,7 +166,7 @@ const route = useRoute()
 const userStore = useUserStore()
 
 const { profile, keycap } = route.params
-const editable = userStore.isEditable(`${profile}/${keycap}`)
+const editable = computed(() => userStore.isEditable(`${profile}/${keycap}`))
 
 const activeKey = ref(['description', 'specifications', 'kits', 'disclaimers'])
 
@@ -217,7 +217,7 @@ const mobile = computed(() => {
   return [
     {
       label: 'Editing',
-      visible: editable,
+      visible: editable.value,
       items: [
         {
           label: 'Manage Kits',
@@ -232,7 +232,7 @@ const mobile = computed(() => {
     },
     {
       separator: true,
-      visible: editable,
+      visible: editable.value,
     },
     {
       label: 'External Links',

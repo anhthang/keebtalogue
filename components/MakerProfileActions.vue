@@ -56,7 +56,7 @@ const { maker } = defineProps({
 const userStore = useUserStore()
 const { favorites } = storeToRefs(userStore)
 
-const editable = userStore.isEditable(maker.id)
+const editable = computed(() => userStore.isEditable(maker.id))
 
 const menu = ref()
 const toggleActions = (event) => {
@@ -135,7 +135,7 @@ const mobile = computed(() => {
   return [
     {
       label: 'Editing',
-      visible: editable,
+      visible: editable.value,
       items: [
         {
           label: 'Edit',
@@ -156,7 +156,7 @@ const mobile = computed(() => {
     },
     {
       separator: true,
-      visible: editable,
+      visible: editable.value,
     },
     {
       label: 'Social',

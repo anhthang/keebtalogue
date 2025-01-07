@@ -250,7 +250,7 @@ onMounted(() => {
 const userStore = useUserStore()
 const { authenticated, user } = storeToRefs(userStore)
 
-const editable = userStore.isEditable(sculpt.value.maker_id)
+const editable = computed(() => userStore.isEditable(sculpt.value.maker_id))
 
 const visible = ref({
   edit: false,
