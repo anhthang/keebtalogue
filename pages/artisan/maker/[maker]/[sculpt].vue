@@ -120,7 +120,7 @@
         modal
         :header="
           selectedColorway && selectedColorway.name
-            ? `Edit ${colorwayTitle}`
+            ? `Edit ${colorwayTitle(selectedColorway)}`
             : 'Add Colorway'
         "
         class="w-[36rem]"
@@ -280,17 +280,16 @@ const toggleAddColorway = (clw, shouldRefresh) => {
 // show colorway card popup
 const selectedColorway = ref({})
 const setSelectedColorway = (clw) => {
-  selectedColorway.value = clw
+  selectedColorway.value = {
+    ...clw,
+    sculpt: sculpt.value,
+  }
 }
 
 const toggleColorwayCard = (clw) => {
   setSelectedColorway(clw)
   visible.value.card = !visible.value.card
 }
-
-const colorwayTitle = computed(() => {
-  return `${selectedColorway.value.name} ${sculpt.value.name}`
-})
 
 // edit colorway
 const toggleEditColorway = (clw, shouldRefresh) => {
