@@ -20,6 +20,7 @@
       <template #icons>
         <SculptProfileActions
           :sculpt="sculpt"
+          :editable="editable"
           @on-edit="toggleEditSculpt"
           @on-sorting="onChangeSorting"
         />
@@ -53,7 +54,7 @@
           <template v-if="!copying" #footer>
             <div class="flex gap-2">
               <Button
-                v-if="isEditor"
+                v-if="editable"
                 v-tooltip.top="'Edit'"
                 text
                 size="small"
@@ -140,6 +141,8 @@
       >
         <ModalColorwayCard
           :colorway="selectedColorway"
+          :editable="editable"
+          :authenticated="authenticated"
           @edit-colorway="toggleEditColorway"
           @add-to-collection="addToCollection"
         />
@@ -245,7 +248,9 @@ onMounted(() => {
 })
 
 const userStore = useUserStore()
-const { authenticated, isEditor, user } = storeToRefs(userStore)
+const { authenticated, user } = storeToRefs(userStore)
+
+const editable = userStore.isEditable(sculpt.value.maker_id)
 
 const visible = ref({
   edit: false,

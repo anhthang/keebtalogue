@@ -1,7 +1,7 @@
 <template>
   <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
     <Button
-      v-if="isEditor"
+      v-if="editable"
       icon="pi pi-pen-to-square"
       label="Edit"
       severity="secondary"
@@ -41,15 +41,13 @@
 <script setup>
 const emit = defineEmits(['onEdit', 'onSorting'])
 
-const { sculpt } = defineProps({
+const { sculpt, editable } = defineProps({
   sculpt: {
     type: Object,
     default: () => ({}),
   },
+  editable: Boolean,
 })
-
-const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
 
 const menu = ref()
 const toggleActions = (event) => {
@@ -109,7 +107,7 @@ const mobile = computed(() => {
   return [
     {
       label: 'Editing',
-      visible: isEditor.value,
+      visible: editable,
       items: [
         {
           label: 'Edit',
@@ -122,7 +120,7 @@ const mobile = computed(() => {
     },
     {
       separator: true,
-      visible: isEditor.value,
+      visible: editable,
     },
     {
       label: 'Sorting',

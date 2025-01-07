@@ -6,7 +6,7 @@
   >
     <template #icons>
       <Button
-        v-if="isEditor"
+        v-if="isAdmin"
         label="Add"
         icon="pi pi-file-plus"
         @click="showAddKeycap"
@@ -119,7 +119,7 @@
 
 <script setup>
 const userStore = useUserStore()
-const { authenticated, isEditor, user } = storeToRefs(userStore)
+const { authenticated, isAdmin, user } = storeToRefs(userStore)
 const toast = useToast()
 
 const route = useRoute()

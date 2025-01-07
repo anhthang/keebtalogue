@@ -10,7 +10,7 @@
       <template #icons>
         <div v-if="$device.isDesktopOrTablet" class="flex gap-2">
           <nuxt-link
-            v-if="isEditor"
+            v-if="editable"
             :to="`/keycap/${data.profile_keycap_id}/kit`"
           >
             <Button
@@ -21,7 +21,7 @@
           </nuxt-link>
 
           <Button
-            v-if="isEditor"
+            v-if="editable"
             icon="pi pi-file-edit"
             label="Edit"
             severity="secondary"
@@ -162,14 +162,13 @@
 <script setup>
 import groupBy from 'lodash.groupby'
 
-const userStore = useUserStore()
-const { isEditor } = storeToRefs(userStore)
-
-const activeKey = ref(['description', 'specifications', 'kits', 'disclaimers'])
-
 const route = useRoute()
+const userStore = useUserStore()
 
 const { profile, keycap } = route.params
+const editable = userStore.isEditable(`${profile}/${keycap}`)
+
+const activeKey = ref(['description', 'specifications', 'kits', 'disclaimers'])
 
 const { data, refresh } = await useAsyncData(
   `keycap/${profile}/${keycap}`,
@@ -218,7 +217,7 @@ const mobile = computed(() => {
   return [
     {
       label: 'Editing',
-      visible: isEditor.value,
+      visible: editable,
       items: [
         {
           label: 'Manage Kits',
@@ -233,7 +232,7 @@ const mobile = computed(() => {
     },
     {
       separator: true,
-      visible: isEditor.value,
+      visible: editable,
     },
     {
       label: 'External Links',

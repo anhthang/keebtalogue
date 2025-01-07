@@ -4,8 +4,9 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {},
+    role: null,
     isAdmin: false,
-    isEditor: false,
+    assignments: null,
     collections: [],
     favorites: [],
     social: {},
@@ -50,11 +51,21 @@ export const useUserStore = defineStore('user', {
           qq: data.qq,
         }
 
+        this.role = data.role
+        this.assignments = data.assignments
+
         this.isAdmin = data.role === 'admin'
-        this.isEditor = ['admin', 'editor'].includes(data.role)
       } else {
         // console.error(uid, error)
       }
+    },
+    isEditable(page) {
+      const { role, assignments } = this
+      return (
+        role === 'admin' ||
+        (role === 'editor' && (!assignments || assignments?.includes(page))) ||
+        (role === 'maker' && assignments?.includes(page))
+      )
     },
   },
 })

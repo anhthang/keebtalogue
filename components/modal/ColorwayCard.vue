@@ -49,7 +49,7 @@
     <template v-if="!copying" #footer>
       <div class="flex gap-2">
         <Button
-          v-if="isEditor"
+          v-if="editable"
           size="small"
           severity="secondary"
           label="Edit"
@@ -82,16 +82,16 @@
 <script setup>
 const emit = defineEmits(['editColorway', 'addToCollection'])
 
-const { colorway } = defineProps({
+const { authenticated, colorway, editable } = defineProps({
   colorway: {
     type: Object,
     default: () => ({}),
   },
+  editable: Boolean,
+  authenticated: Boolean,
 })
 
 const toast = useToast()
-const userStore = useUserStore()
-const { authenticated, isEditor } = storeToRefs(userStore)
 
 const copying = ref(false)
 const copyColorwayCard = async () => {
