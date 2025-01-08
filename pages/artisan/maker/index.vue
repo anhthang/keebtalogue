@@ -54,7 +54,14 @@
         <div class="flex items-center justify-between">
           Other Makers
 
-          <ToggleButton v-model="showAll" size="small"> Show All </ToggleButton>
+          <ToggleButton
+            v-model="showAll"
+            size="small"
+            off-label="Show All"
+            off-icon="pi pi-angle-double-down"
+            on-label="Paginate"
+            on-icon="pi pi-angle-double-up"
+          />
         </div>
       </template>
       <template #grid="{ items }">

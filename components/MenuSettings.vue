@@ -20,7 +20,7 @@
     />
     <Avatar v-else icon="pi pi-user" size="large" shape="circle" />
     <div v-if="!slim">
-      <div class="text-lg font-medium text-color leading-'">
+      <div class="text-xl font-medium">
         {{ user.name || 'Login' }}
       </div>
     </div>

@@ -48,7 +48,7 @@
     "@nuxtjs/supabase": "1.4.5",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@primevue/nuxt-module": "^4.2.5",
-    "@tailwindcss/typography": "^0.5.15",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/lodash.groupby": "^4.6.9",
     "@types/lodash.keyby": "^4.6.9",
     "@types/lodash.omit": "^4.5.9",

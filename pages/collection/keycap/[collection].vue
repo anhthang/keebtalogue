@@ -73,11 +73,11 @@
               </template>
               <template #title>{{ keycap.name || '-' }}</template>
               <template #subtitle>
-                <span>
+                <span class="flex items-center gap-1">
                   <i class="pi pi-palette" />
                   {{ keycap.designer }}
                 </span>
-                <span>
+                <span class="flex items-center gap-1">
                   <i class="pi pi-building" />
                   {{ manufacturers[keycap.profile_id] }}
                 </span>

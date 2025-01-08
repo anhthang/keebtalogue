@@ -58,18 +58,24 @@
 
           <template #title>{{ keycap.name }}</template>
           <template #subtitle>
-            <span>
+            <span class="flex items-center gap-1">
               <i class="pi pi-palette" />
               {{ keycap.designer }}
             </span>
-            <span v-if="query.status === 'Interest Check'">
+            <span
+              v-if="query.status === 'Interest Check'"
+              class="flex items-center gap-1"
+            >
               <i class="pi pi-clock" /> {{ formatDate(keycap.ic_date) }}
             </span>
-            <span v-else-if="query.status === 'Live'">
+            <span
+              v-else-if="query.status === 'Live'"
+              class="flex items-center gap-1"
+            >
               <i class="pi pi-clock" />
               {{ formatDateRange(keycap.start_date, keycap.end_date) }}
             </span>
-            <span v-else>
+            <span v-else class="flex items-center gap-1">
               <i class="pi pi-clock" />
               {{ formatDateRange(keycap.start_date, keycap.end_date) }}
             </span>

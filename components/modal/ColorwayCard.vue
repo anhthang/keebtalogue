@@ -2,6 +2,7 @@
   <Card
     class="!shadow-none colorway-details-card"
     pt:content:class="text-justify"
+    pt:subtitle:class="flex items-center"
   >
     <template #header>
       <img
@@ -24,23 +25,12 @@
       </div>
     </template>
     <template #subtitle>
-      <div class="flex items-center">
-        <span v-if="colorway.release">
-          <i class="pi pi-calendar" /> {{ colorway.release }}
+      <template v-for="(extra, idx) in extras" :key="idx">
+        <span class="flex items-center gap-1">
+          <i :class="extra.icon" /> {{ extra.text }}
         </span>
-        <Divider
-          v-if="colorway.release && (colorway.qty || colorway.price)"
-          layout="vertical"
-        />
-        <span v-if="colorway.qty">
-          <i class="pi pi-hashtag" /> {{ colorway.qty }}
-        </span>
-        <Divider v-if="colorway.qty && colorway.price" layout="vertical" />
-        <span v-if="colorway.price">
-          <i class="pi pi-money-bill" />
-          {{ colorway.currency }} {{ colorway.price }}
-        </span>
-      </div>
+        <Divider v-if="idx < extras.length - 1" layout="vertical" />
+      </template>
     </template>
     <template #content>
       {{ colorway.description }}
@@ -90,6 +80,32 @@ const { authenticated, colorway, editable } = defineProps({
   editable: Boolean,
   authenticated: Boolean,
 })
+
+const extras = []
+if (colorway.release) {
+  extras.push({
+    icon: 'pi pi-calendar',
+    text: colorway.release,
+  })
+}
+if (colorway.qty) {
+  extras.push({
+    icon: 'pi pi-hashtag',
+    text: colorway.qty,
+  })
+}
+if (colorway.price) {
+  extras.push({
+    icon: 'pi pi-money-bill',
+    text: `${colorway.currency} ${colorway.price}`,
+  })
+}
+if (colorway.stem) {
+  extras.push({
+    icon: 'pi pi-plus-circle',
+    text: colorway?.stem.join(),
+  })
+}
 
 const toast = useToast()
 
