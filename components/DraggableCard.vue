@@ -45,7 +45,7 @@
             size="small"
             severity="danger"
             label="Remove"
-            @click="remove(element)"
+            @click="$emit('onRemove', element)"
           />
         </template>
       </Card>
@@ -57,6 +57,8 @@
 
 <script setup>
 import draggable from 'vuedraggable'
+
+defineEmits(['onRemove'])
 
 const wishlist = ref([])
 
@@ -80,26 +82,4 @@ watch(
     wishlist.value = data
   },
 )
-
-const confirm = useConfirm()
-
-const remove = (item) => {
-  confirm.require({
-    header: 'Confirm to remove artisan',
-    message: 'Are you sure you want to continue?',
-    rejectProps: {
-      size: 'small',
-      label: 'Cancel',
-      severity: 'secondary',
-    },
-    acceptProps: {
-      size: 'small',
-      label: 'Remove',
-      severity: 'danger',
-    },
-    accept: () => {
-      wishlist.value = wishlist.value.filter((c) => c.id !== item.id)
-    },
-  })
-}
 </script>
