@@ -1,5 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import Aura from '@primevue/themes/aura'
+import { execSync } from 'child_process'
+import { version } from './package.json'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -56,6 +58,8 @@ export default defineNuxtConfig({
       appDesc: process.env.APP_DESC,
       baseUrl: process.env.BASE_URL,
       donate: process.env.DONATE || 'https://www.buymeacoffee.com/anhthang',
+      version,
+      revision: execSync('git rev-parse --short HEAD').toString().trim(),
     },
   },
 

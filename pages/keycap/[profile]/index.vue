@@ -43,9 +43,9 @@
         :to="`/keycap/${keycap.profile_keycap_id}`"
       >
         <Card
-          class="overflow-hidden"
+          class="h-full overflow-hidden"
           pt:header:class="h-48 md:h-60"
-          pt:subtitle:class="flex justify-between"
+          pt:subtitle:class="flex justify-between gap-2"
         >
           <template #header>
             <img
@@ -56,7 +56,11 @@
             />
           </template>
 
-          <template #title>{{ keycap.name }}</template>
+          <template v-if="profile === 'tracker'" #title>
+            {{ manufacturers[keycap.profile_id] }} {{ keycap.name }}
+          </template>
+          <template v-else #title>{{ keycap.name }}</template>
+
           <template #subtitle>
             <span class="flex items-center gap-1">
               <i class="pi pi-palette" />

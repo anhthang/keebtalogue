@@ -9,7 +9,6 @@
         class="col-span-4 md:col-span-3 flex flex-col gap-4"
         :class="{
           'md:col-span-4': !data.makers.length && !data.keycaps.length,
-          'order-last': $device.isMobile,
         }"
       >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -34,12 +33,23 @@
           </Fieldset>
         </div>
 
-        <ArtisanCollectorGuide />
+        <ArtisanCollectorGuide
+          :class="{
+            hidden: $device.isMobile,
+          }"
+        />
       </div>
 
       <div class="col-span-4 md:col-span-1 flex flex-col gap-4">
         <LatestArtisans v-if="data.makers.length" :makers="data.makers" />
         <PreOrderKeycaps v-if="data.keycaps.length" :keycaps="data.keycaps" />
+      </div>
+
+      <div
+        class="col-span-4 md:col-span-4"
+        :class="{ hidden: $device.isDesktopOrTablet }"
+      >
+        <ArtisanCollectorGuide />
       </div>
     </div>
   </Panel>

@@ -36,6 +36,10 @@
             </div>
           </template>
           <LayoutDrawer @close="toggleDrawer" />
+
+          <template #footer>
+            <LayoutFooter />
+          </template>
         </Drawer>
       </template>
 
