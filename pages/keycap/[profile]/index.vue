@@ -45,6 +45,8 @@
         <Card
           class="h-full overflow-hidden"
           pt:header:class="h-48 md:h-60"
+          pt:body:class="flex-1"
+          pt:caption:class="flex-grow"
           pt:subtitle:class="flex justify-between gap-2"
         >
           <template #header>

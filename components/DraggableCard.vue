@@ -11,9 +11,9 @@
         class="overflow-hidden"
         :pt="{
           header: 'relative w-full h-44 md:h-60',
-          body: 'items-center',
-          caption: 'flex items-center',
-          title: 'w-40 text-center truncate',
+          body: 'flex-1 items-center',
+          caption: 'flex flex-1 items-center',
+          title: 'flex flex-grow text-center',
         }"
       >
         <template #header>
