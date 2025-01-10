@@ -102,12 +102,12 @@ const hasCancelled = data.value.kits.some((k) => k.cancelled)
 
 useSeoMeta({
   title: data.value
-    ? `${manufacturers[profile]} ${data.value.name} - Manage Kits`
+    ? `${data.value.profile.name} ${data.value.name} - Manage Kits`
     : manufacturers[profile],
 })
 
 defineOgImageComponent('Keycap', {
-  title: `${manufacturers[profile]} ${data.value.name}`,
+  title: `${data.value.profile.name} ${data.value.name}`,
   description: 'Manage and update keycap kit details.',
   manufacturerId: profile,
 })

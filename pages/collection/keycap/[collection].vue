@@ -71,15 +71,13 @@
                   class="h-full object-cover"
                 />
               </template>
-              <template #title>{{ keycap.name || '-' }}</template>
+              <template #title>
+                {{ `${keycap.profile.name} ${keycap.name}` || '-' }}
+              </template>
               <template #subtitle>
                 <span class="flex items-center gap-1">
                   <i class="pi pi-palette" />
                   {{ keycap.designer }}
-                </span>
-                <span class="flex items-center gap-1">
-                  <i class="pi pi-building" />
-                  {{ manufacturers[keycap.profile_id] }}
                 </span>
               </template>
 

@@ -31,7 +31,7 @@
               />
               <Card class="!shadow-none">
                 <template #title>{{
-                  `${manufacturers[keycap.profile_id]} ${keycap.name}`
+                  `${keycap.profile.name} ${keycap.name}`
                 }}</template>
                 <template #content>
                   {{ formatDateRange(keycap.start_date, keycap.end_date) }}

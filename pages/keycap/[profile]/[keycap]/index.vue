@@ -197,7 +197,7 @@ const breadcrumbs = computed(() => {
 
 useSeoMeta({
   title: data.value
-    ? `${manufacturers[profile]} ${data.value.name}`
+    ? `${data.value.profile.name} ${data.value.name}`
     : manufacturers[profile],
   description: data.value?.description,
   ogDescription: data.value?.description,

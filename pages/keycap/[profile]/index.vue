@@ -58,8 +58,8 @@
             />
           </template>
 
-          <template v-if="profile === 'tracker'" #title>
-            {{ manufacturers[keycap.profile_id] }} {{ keycap.name }}
+          <template v-if="keycap.profile" #title>
+            {{ keycap.profile.name }} {{ keycap.name }}
           </template>
           <template v-else #title>{{ keycap.name }}</template>
 

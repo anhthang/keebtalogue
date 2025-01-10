@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   const query = status
     ? client
         .from('keycaps')
-        .select('*', { count: 'exact' })
+        .select('*, profile:keycap_profiles(name)', { count: 'exact' })
         .eq('status', status)
         .order('ic_date', { ascending: false })
         .range(from, to)
