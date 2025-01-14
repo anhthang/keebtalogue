@@ -152,7 +152,7 @@ const onSubmit = async ({ valid }) => {
     .then(() => {
       toast.add({
         severity: 'success',
-        summary: 'Feedback submitted!',
+        summary: 'Feedback Submitted',
         detail:
           'Your feedback is valuable to us. We appreciate you taking the time to share it!',
         life: 3000,

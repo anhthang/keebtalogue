@@ -5,7 +5,6 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     user: {},
     role: null,
-    isAdmin: false,
     assignments: null,
     collections: [],
     favorites: [],
@@ -13,6 +12,7 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {
     authenticated: (state) => state.user && state.user.email_verified,
+    isAdmin: (state) => state.role === 'admin',
   },
   actions: {
     setCurrentUser(authUser) {
@@ -37,14 +37,15 @@ export const useUserStore = defineStore('user', {
         this.social.discord = discord.name
       }
 
-      this.getUserDocument(uid)
+      this.fetchUserPreferences(uid)
+      this.fetchUserCollections(uid)
     },
-    async getUserDocument(uid) {
+    async fetchUserPreferences(uid) {
       const { data } = await $fetch(`/api/users/${uid}`)
 
       if (data) {
         this.favorites = data.favorite_makers || {}
-        this.collections = sortBy(data.collections, 'name')
+
         this.social = {
           discord: data.discord,
           reddit: data.reddit,
@@ -53,16 +54,18 @@ export const useUserStore = defineStore('user', {
 
         this.role = data.role
         this.assignments = data.assignments
-
-        this.isAdmin = data.role === 'admin'
       } else {
         // console.error(uid, error)
       }
     },
+    async fetchUserCollections(uid) {
+      const collections = await $fetch(`/api/users/${uid}/collections`)
+      this.collections = sortBy(collections, 'name')
+    },
     isEditable(page) {
-      const { role, assignments } = this
+      const { role, assignments, isAdmin } = this
       return (
-        role === 'admin' ||
+        isAdmin ||
         (role === 'editor' && (!assignments || assignments?.includes(page))) ||
         (role === 'maker' && assignments?.includes(page))
       )

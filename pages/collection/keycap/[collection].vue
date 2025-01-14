@@ -245,7 +245,7 @@ const deleteCollection = () => {
 
           toast.add({
             severity: 'success',
-            detail: `Collection [${data.value.name}] was deleted.`,
+            summary: `Collection [${data.value.name}] was deleted.`,
             life: 3000,
           })
 

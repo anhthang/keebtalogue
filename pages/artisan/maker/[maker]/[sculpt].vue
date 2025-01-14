@@ -309,17 +309,17 @@ const addToCollection = (collection, colorway) => {
     method: 'post',
     body: item,
   })
-    .then(({ message }) => {
-      if (message) {
+    .then((data) => {
+      if (data?.message) {
         toast.add({
           severity: 'info',
-          summary: message,
+          summary: data.message,
           life: 3000,
         })
       } else {
         toast.add({
           severity: 'success',
-          summary: `${keycap.name} has been added to [${collection.name}].`,
+          summary: `${colorway.name} has been added to [${collection.name}].`,
           life: 3000,
         })
       }

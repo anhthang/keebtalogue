@@ -111,6 +111,10 @@ definePageMeta({
 const userStore = useUserStore()
 const { authenticated, user, collections } = storeToRefs(userStore)
 
+onBeforeMount(() => {
+  userStore.fetchUserCollections(user.value.uid)
+})
+
 const visible = ref(false)
 const toggleAddCollection = () => {
   visible.value = !visible.value

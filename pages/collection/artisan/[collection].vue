@@ -220,7 +220,7 @@ const sortOptions = computed(() => [
 const config = useRuntimeConfig()
 
 const userStore = useUserStore()
-const { authenticated, collections, user } = storeToRefs(userStore)
+const { authenticated, user } = storeToRefs(userStore)
 
 const route = useRoute()
 const router = useRouter()
@@ -384,15 +384,9 @@ const deleteCollection = () => {
         method: 'delete',
       })
         .then(() => {
-          collections.value = collections.value.filter(
-            (c) => c.id !== data.value.id,
-          )
-
-          userStore.$patch({ collections: collections.value })
-
           toast.add({
             severity: 'success',
-            detail: `Collection [${data.value.name}] was deleted.`,
+            summary: `Collection [${data.value.name}] was deleted.`,
             life: 3000,
           })
 

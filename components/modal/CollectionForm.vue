@@ -253,6 +253,6 @@ const onSubmit = async ({ valid }) => {
       toast.add({ severity: 'error', summary: error.message, life: 3000 })
     })
 
-  await userStore.getUserDocument(uid)
+  await userStore.fetchUserCollections(uid)
 }
 </script>
