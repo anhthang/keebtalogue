@@ -81,11 +81,11 @@
                 @click="toggleColorwayCard(colorway)"
               />
 
-              <AddToCollectionPopup
+              <SaveToCollection
                 v-if="authenticated"
                 :item="colorway"
                 :text="true"
-                @on-select="addToCollection"
+                @on-select="saveTo"
               />
             </div>
           </template>
@@ -144,7 +144,7 @@
           :editable="editable"
           :authenticated="authenticated"
           @edit-colorway="toggleEditColorway"
-          @add-to-collection="addToCollection"
+          @save-to="saveTo"
         />
       </Dialog>
 
@@ -298,7 +298,7 @@ const toggleEditColorway = (clw, shouldRefresh) => {
 }
 
 // add to collection
-const addToCollection = (collection, colorway) => {
+const saveTo = (collection, colorway) => {
   const item = {
     uid: user.value.uid,
     collection_id: collection.id,

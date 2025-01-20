@@ -88,12 +88,12 @@
           </template>
 
           <template v-if="authenticated" #footer>
-            <AddToCollectionPopup
+            <SaveToCollection
               :item="keycap"
               category="keycap"
-              label="Add to Collection"
+              label="Save"
               :fluid="true"
-              @on-select="addToCollection"
+              @on-select="saveTo"
             />
           </template>
         </Card>
@@ -190,7 +190,7 @@ const showAddKeycap = (shouldRefresh) => {
   }
 }
 
-const addToCollection = (collection, keycap) => {
+const saveTo = (collection, keycap) => {
   const item = {
     uid: user.value.uid,
     collection_id: collection.id,

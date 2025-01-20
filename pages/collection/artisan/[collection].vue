@@ -194,24 +194,26 @@ const breadcrumbs = computed(() => {
 const confirm = useConfirm()
 const toast = useToast()
 
-const sort = ref('artisan.sculpt.name')
+const sort = ref('artisan.maker_sculpt_id|artisan.name')
 const sortItem = ref({ label: 'Sort by Sculpt', icon: 'pi pi-sort-alt' })
 const sortOptions = computed(() => [
   {
     label: 'Sort by Sculpt',
     icon: 'pi pi-sort-alt',
-    class: sort.value === 'artisan.sculpt.name' && activePopMenu,
+    class:
+      sort.value === 'artisan.maker_sculpt_id|artisan.name' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'artisan.sculpt.name'
+      sort.value = 'artisan.maker_sculpt_id|artisan.name'
       sortItem.value = item
     },
   },
   {
     label: 'Sort by Colorway',
     icon: 'pi pi-sort-alpha-down',
-    class: sort.value === 'artisan.name' && activePopMenu,
+    class:
+      sort.value === 'artisan.name|artisan.maker_sculpt_id' && activePopMenu,
     command: ({ item }) => {
-      sort.value = 'artisan.name'
+      sort.value = 'artisan.name|artisan.maker_sculpt_id'
       sortItem.value = item
     },
   },
@@ -247,7 +249,10 @@ const hasOutdated = computed(() =>
   (data.value?.items || []).some((i) => i.artisan?.deleted),
 )
 const sortedCollections = computed(() => {
-  return sortBy(data.value?.items || [], ['artisan.maker_id', sort.value])
+  return sortBy(data.value?.items || [], [
+    'artisan.maker_id',
+    ...sort.value.split('|'),
+  ])
 })
 
 const menu = ref()

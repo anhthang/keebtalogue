@@ -1,6 +1,6 @@
 <template>
   <Button
-    v-tooltip.top="label ? false : 'Add to Collection'"
+    v-tooltip.top="label ? false : 'Save'"
     :text="text"
     size="small"
     :label="label"
@@ -17,7 +17,7 @@
     :popup="true"
     :model="[
       {
-        label: 'Select Collection',
+        label: 'Save to Collection',
         items: collections
           .filter((c) => c.category === category)
           .map((collection) => ({

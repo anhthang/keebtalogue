@@ -57,12 +57,12 @@
           @click="copyColorwayCard"
         />
 
-        <AddToCollectionPopup
+        <SaveToCollection
           v-if="authenticated"
           :item="colorway"
-          label="Add to Collection"
+          label="Save"
           :fluid="true"
-          @on-select="add2Collection"
+          @on-select="onSelectCollection"
         />
       </div>
     </template>
@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-const emit = defineEmits(['editColorway', 'addToCollection'])
+const emit = defineEmits(['editColorway', 'saveTo'])
 
 const { authenticated, colorway, editable } = defineProps({
   colorway: {
@@ -126,7 +126,7 @@ const copyColorwayCard = async () => {
   copying.value = false
 }
 
-const add2Collection = (collection, colorway) => {
-  emit('addToCollection', collection, colorway)
+const onSelectCollection = (collection, colorway) => {
+  emit('saveTo', collection, colorway)
 }
 </script>
