@@ -3,6 +3,8 @@ import Aura from '@primevue/themes/aura'
 import { execSync } from 'child_process'
 import { version } from './package.json'
 
+const revision = execSync('git rev-parse --short HEAD').toString().trim()
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 // https://nuxt.com/docs/api/nuxt-config
@@ -25,6 +27,14 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     'nuxt-og-image',
   ],
+
+  // just to bypass vercel deployment to use `pg` instead
+  content: {
+    database: {
+      type: 'd1',
+      binding: 'keebtalogue-db',
+    },
+  },
 
   fonts: {
     families: [{ name: 'Dosis', provider: 'google' }],
@@ -52,20 +62,20 @@ export default defineNuxtConfig({
     },
   },
 
+  buildId: `v${version} build ${revision}`,
+
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME,
       appDesc: process.env.APP_DESC,
       baseUrl: process.env.BASE_URL,
       donate: process.env.DONATE || 'https://www.buymeacoffee.com/anhthang',
-      version,
-      revision: execSync('git rev-parse --short HEAD').toString().trim(),
     },
   },
 
   routeRules: {
     // pages generated on demand once until next deployment, cached on CDN
-    '/about': { isr: true },
-    '/policy': { isr: true },
+    '/about': { prerender: true },
+    '/policy': { prerender: true },
   },
 })
