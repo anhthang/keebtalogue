@@ -1,14 +1,9 @@
 <template>
-  <Button
-    severity="secondary"
-    aria-haspopup="true"
-    aria-controls="overlay_menu"
-    fluid
-    outlined
-    class="!border-0"
-    pt:root:class="!justify-start"
+  <div
+    class="flex items-center gap-3 cursor-pointer"
     :class="{
-      '!pr-0': $device.isMobile,
+      'justify-start px-3 py-2 hover:bg-slate-100 dark:hover:bg-zinc-700 rounded':
+        $device.isDesktopOrTablet,
     }"
     @click="toggleProfileSettings"
   >
@@ -24,7 +19,7 @@
         {{ user.name || 'Login' }}
       </div>
     </div>
-  </Button>
+  </div>
   <Menu
     id="overlay_menu"
     ref="profileSettings"

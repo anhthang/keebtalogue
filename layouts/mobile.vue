@@ -30,7 +30,9 @@
                   "
                 />
               </div>
-              <div class="text-3xl font-medium">
+              <div
+                class="text-3xl font-medium bg-gradient-to-r from-blue-400 via-red-500 to-amber-400 dark:via-red-400 dark:to-amber-200 text-transparent bg-clip-text"
+              >
                 {{ $config.public.appName }}
               </div>
             </div>
@@ -44,7 +46,7 @@
       </template>
 
       <template #end>
-        <MenuSettings :slim="true" />
+        <ProfileMenu :slim="true" />
       </template>
     </Menubar>
 

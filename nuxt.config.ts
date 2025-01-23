@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     },
   },
 
-  buildId: `v${version} build ${revision}`,
+  buildId: `v${version} (${revision})`,
 
   runtimeConfig: {
     public: {

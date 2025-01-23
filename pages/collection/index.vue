@@ -74,18 +74,10 @@
                 {{ collection.name }}
 
                 <Message
-                  v-if="collection.published"
-                  size="small"
-                  variant="simple"
-                  severity="warn"
-                  icon="pi pi-unlock"
-                />
-                <Message
-                  v-else
                   size="small"
                   variant="simple"
                   severity="secondary"
-                  icon="pi pi-lock"
+                  :icon="collection.published ? 'pi pi-globe' : 'pi pi-lock'"
                 />
               </template>
               <template v-if="authenticated" #subtitle>

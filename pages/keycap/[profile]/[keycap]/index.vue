@@ -14,7 +14,7 @@
             :to="`/keycap/${data.profile_keycap_id}/kit`"
           >
             <Button
-              icon="pi pi-folder-plus"
+              icon="pi pi-th-large"
               label="Manage Kits"
               severity="secondary"
             />
@@ -221,7 +221,7 @@ const mobile = computed(() => {
       items: [
         {
           label: 'Manage Kits',
-          icon: 'pi pi-folder-plus',
+          icon: 'pi pi-th-large',
         },
         {
           label: 'Edit',

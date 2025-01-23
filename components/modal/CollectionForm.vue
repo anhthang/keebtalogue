@@ -90,12 +90,7 @@
               ]
         "
       />
-      <Message
-        v-if="collection.published"
-        severity="secondary"
-        size="small"
-        variant="simple"
-      >
+      <Message severity="secondary" size="small" variant="simple">
         {{ typeExtras[collection.type] }}
       </Message>
     </div>
@@ -179,10 +174,12 @@ const userStore = useUserStore()
 const toast = useToast()
 
 const typeExtras = {
-  shareable:
-    "Not listed in the marketplace, just for your eyes (and your friends') with link.",
-  buy: 'On the hunt! Any leads appreciated!',
-  sell: 'Up for grabs!',
+  personal: 'Just holding onto it for now.',
+  personal_buy: 'Looking to add to your collection. Got anything?',
+  personal_sell: 'Open to offers, but it needs to be the right fit.',
+  shareable: 'Exclusive, just for you (and your friends) via link.',
+  to_buy: 'On the hunt! Any leads appreciated!',
+  for_sale: 'Up for grabs!',
 }
 
 const collection = ref({
@@ -196,6 +193,17 @@ const collection = ref({
 onBeforeMount(() => {
   Object.assign(collection.value, metadata)
 })
+
+watch(
+  () => collection.value.published,
+  () => {
+    if (collection.value.published) {
+      collection.value.type = 'shareable'
+    } else {
+      collection.value.type = 'personal'
+    }
+  },
+)
 
 const personalOrSharable = z.object({
   name: z.string().min(1),
