@@ -1,11 +1,11 @@
 <template>
   <Button
-    v-tooltip.top="label ? false : 'Save'"
+    v-tooltip.top="label ? false : action"
     :text="text"
     size="small"
     :label="label"
     severity="secondary"
-    icon="pi pi-bookmark"
+    :icon="move ? 'pi pi-file-export' : 'pi pi-bookmark'"
     aria-haspopup="true"
     aria-controls="overlay_menu"
     :fluid="fluid"
@@ -17,7 +17,7 @@
     :popup="true"
     :model="[
       {
-        label: 'Save to Collection',
+        label: `${action} to Collection`,
         items: collections
           .filter((c) => c.category === category)
           .map((collection) => ({
@@ -34,7 +34,7 @@
 <script setup>
 defineEmits(['onSelect'])
 
-defineProps({
+const { move } = defineProps({
   item: {
     type: Object,
     default: () => ({}),
@@ -45,11 +45,14 @@ defineProps({
   },
   text: Boolean,
   fluid: Boolean,
+  move: Boolean,
   label: {
     type: String,
     default: undefined,
   },
 })
+
+const action = move ? 'Move' : 'Save'
 
 const userStore = useUserStore()
 const { collections } = storeToRefs(userStore)

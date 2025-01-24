@@ -96,8 +96,8 @@
               :key="id"
               class="overflow-hidden"
               :pt="{
-                header: 'h-44 md:h-60',
-                body: 'flex-1',
+                header: 'w-full h-44 md:h-60',
+                body: 'flex-1 items-center',
                 caption: 'flex flex-1 items-center',
                 title: 'flex flex-grow text-center',
               }"
@@ -129,19 +129,27 @@
                 />
                 <div v-else class="flex gap-2">
                   <Button
-                    v-if="authenticated && trading"
+                    v-if="trading"
+                    v-tooltip.top="`Mark as ${changeTo(exchange)}`"
                     size="small"
                     text
-                    label="Mark as..."
                     :severity="exchange ? 'secondary' : 'success'"
                     :icon="exchange ? 'pi pi-circle' : 'pi pi-check-circle'"
                     fluid
                     @click="changeExchangeStatus({ id, exchange, artisan })"
                   />
+
+                  <SaveToCollection
+                    :item="{ id, artisan }"
+                    :text="true"
+                    :move="true"
+                    @on-select="moveTo"
+                  />
+
                   <Button
+                    v-tooltip.top="'Remove'"
                     size="small"
                     text
-                    label="Remove"
                     severity="danger"
                     icon="pi pi-trash"
                     fluid
@@ -326,6 +334,47 @@ const changeExchangeStatus = (item) => {
           toast.add({
             severity: 'success',
             summary: `${title} has been successfully marked as ${status}.`,
+            life: 3000,
+          })
+        })
+        .catch((error) => {
+          toast.add({ severity: 'error', summary: error.message, life: 3000 })
+        })
+    },
+  })
+}
+
+const moveTo = (collection, item) => {
+  const { id, artisan } = item
+
+  confirm.require({
+    header: 'Confirm to move artisan',
+    message: `Are you sure you want to move ${colorwayTitle(artisan)} to [${collection.name}] collection?`,
+    rejectProps: {
+      size: 'small',
+      label: 'Cancel',
+      severity: 'secondary',
+    },
+    acceptProps: {
+      size: 'small',
+      label: 'Move',
+    },
+    accept: () => {
+      $fetch(
+        `/api/users/${user.value.uid}/collections/${route.params.collection}/items/${id}`,
+        {
+          method: 'post',
+          body: {
+            collection_id: collection.id,
+            exchange: false,
+          },
+        },
+      )
+        .then(() => {
+          refresh()
+          toast.add({
+            severity: 'success',
+            summary: `${colorwayTitle(artisan)} was moved to [${collection.name}] collection.`,
             life: 3000,
           })
         })
