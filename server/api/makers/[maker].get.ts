@@ -4,6 +4,43 @@ import keyBy from 'lodash.keyby'
 import sortBy from 'lodash.sortby'
 import { omitSensitive } from '~/utils'
 
+function sortSculpts(sculpts: any) {
+  const revisionMap: Record<string, any> = {}
+  let originals = []
+
+  for (const sculpt of sculpts) {
+    if (!sculpt.is_revision_of) {
+      originals.push(sculpt)
+    } else {
+      if (!revisionMap[sculpt.is_revision_of]) {
+        revisionMap[sculpt.is_revision_of] = []
+      }
+      revisionMap[sculpt.is_revision_of].push(sculpt)
+    }
+  }
+
+  // Sort originals by name, then collection + name
+  originals = sortBy(originals, (s) =>
+    s.collection ? s.collection + s.name : s.name,
+  )
+
+  const sortedSculpts = []
+  for (const original of originals) {
+    sortedSculpts.push(original)
+    if (revisionMap[original.maker_sculpt_id]) {
+      let revisions = revisionMap[original.maker_sculpt_id]
+      // Sort revisions by name, then collection + name
+      revisions = sortBy(revisions, (s) =>
+        s.collection ? s.collection + s.name : s.name,
+      )
+
+      sortedSculpts.push(...revisions)
+    }
+  }
+
+  return sortedSculpts
+}
+
 export default defineEventHandler(async (event) => {
   const makerId = event.context.params?.maker
   const query: Record<string, any> = getQuery(event)
@@ -38,7 +75,7 @@ export default defineEventHandler(async (event) => {
     return omitSensitive(sculpt)
   })
 
-  profile.sculpts = keyBy(sortBy(sculpts, 'name'), 'sculpt_id')
+  profile.sculpts = keyBy(sortSculpts(sculpts), 'sculpt_id')
 
   return omitSensitive(profile)
 })

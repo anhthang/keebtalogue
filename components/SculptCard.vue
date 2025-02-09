@@ -18,7 +18,13 @@
         />
       </template>
       <template #title>{{ sculpt.name }}</template>
-      <template #subtitle>{{ sculpt.total_colorways }} colorways</template>
+      <template v-if="sculpt.collection" #subtitle>
+        <Tag
+          severity="secondary"
+          :value="sculpt.collection"
+          pt:label:class="font-medium"
+        />
+      </template>
     </Card>
   </nuxt-link>
 </template>

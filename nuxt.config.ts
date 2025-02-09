@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   content: {
     database: {
       type: 'd1',
-      binding: 'keebtalogue-db',
+      bindingName: 'keebtalogue-db',
     },
   },
 
