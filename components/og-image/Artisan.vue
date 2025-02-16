@@ -53,7 +53,7 @@
         {{ title }}
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
-        {{ description || $config.public.appDesc }}
+        {{ description || $config.app.description }}
       </p>
     </div>
 
@@ -90,7 +90,6 @@ const { title, makerName } = defineProps({
 })
 
 const config = useRuntimeConfig()
-const { appName } = config.public
 
-const headline = makerName ? `/ ${makerName}` : appName
+const headline = makerName ? `/ ${makerName}` : config.app.name
 </script>

@@ -22,7 +22,7 @@ client.auth.getUser().then(({ data }) => {
   }
 })
 
-const { appName, appDesc, baseUrl } = config.public
+const { name, description, homepage } = config.app
 
 useHead({
   htmlAttrs: {
@@ -35,15 +35,15 @@ defineOgImage()
 
 useSeoMeta({
   titleTemplate: (chunk) => {
-    return chunk ? `${chunk} - ${appName}` : appName
+    return chunk ? `${chunk} - ${name}` : name
   },
-  description: appDesc,
+  description,
   ogType: 'website',
-  ogUrl: baseUrl,
-  ogTitle: appName,
-  ogDescription: appDesc,
+  ogUrl: homepage,
+  ogTitle: name,
+  ogDescription: description,
   twitterCard: 'summary_large_image',
-  twitterTitle: appName,
-  twitterDescription: appDesc,
+  twitterTitle: name,
+  twitterDescription: description,
 })
 </script>

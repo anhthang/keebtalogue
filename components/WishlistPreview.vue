@@ -123,7 +123,7 @@
         <template #icon>
           <NuxtImg
             class="h-8"
-            :alt="$config.public.appName"
+            :alt="$config.app.name"
             :src="
               $colorMode.value === 'dark'
                 ? '/logo-outlined.png'
@@ -131,7 +131,7 @@
             "
           />
         </template>
-        From {{ $config.public.appName }} with love
+        From {{ $config.app.name }} with love
       </Message>
     </div>
 

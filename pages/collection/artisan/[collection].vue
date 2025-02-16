@@ -454,7 +454,7 @@ const deleteCollection = () => {
 }
 
 const copyShareUrl = () => {
-  navigator.clipboard.writeText(config.public.baseUrl + route.fullPath)
+  navigator.clipboard.writeText(config.app.homepage + route.fullPath)
   toast.add({
     severity: 'success',
     summary: 'Copied to clipboard!',

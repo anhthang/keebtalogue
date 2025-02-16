@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import Aura from '@primevue/themes/aura'
 import { execSync } from 'child_process'
-import { version } from './package.json'
+import app from './package.json'
 
 const revision = execSync('git rev-parse --short HEAD').toString().trim()
 
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   content: {
     database: {
       type: 'd1',
-      bindingName: 'keebtalogue-db',
+      bindingName: app.name,
     },
   },
 
@@ -62,14 +62,16 @@ export default defineNuxtConfig({
     },
   },
 
-  buildId: `v${version} (${revision})`,
+  buildId: `v${app.version} (${revision})`,
 
   runtimeConfig: {
+    app: {
+      name: app.displayName,
+      description: app.description,
+      homepage: app.homepage,
+    },
     public: {
-      appName: process.env.APP_NAME,
-      appDesc: process.env.APP_DESC,
-      baseUrl: process.env.BASE_URL,
-      donate: process.env.DONATE || 'https://www.buymeacoffee.com/anhthang',
+      donate: app.funding.url,
     },
   },
 

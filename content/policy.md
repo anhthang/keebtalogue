@@ -4,11 +4,11 @@ title: Privacy Policy
 
 **Your Privacy Matters**
 
-At Keebtalogue, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and disclose your personal information when you use our services.
+At Keebdex, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and disclose your personal information when you use our services.
 
 **Information We Collect**
 
-When you use Keebtalogue, we may collect the following information:
+When you use Keebdex, we may collect the following information:
 
 - **Personal Information:** This includes information you provide directly, such as your name and email address when you log in with Google or Discord.
 
@@ -21,6 +21,6 @@ We use your personal information to:
 
 **Changes to This Privacy Policy**
 
-We may update this Privacy Policy from time to time. You can view the latest changes to our Privacy Policy on our [GitHub repository](https://github.com/anhthang/keebtalogue).
+We may update this Privacy Policy from time to time. You can view the latest changes to our Privacy Policy on our [GitHub repository](https://github.com/anhthang/keebdex).
 
-**By using Keebtalogue, you consent to the collection and use of your information as described in this Privacy Policy.**
+**By using Keebdex, you consent to the collection and use of your information as described in this Privacy Policy.**

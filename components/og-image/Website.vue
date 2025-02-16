@@ -47,11 +47,11 @@
         v-if="title"
         class="text-[36px] text-[#FEC476] font-semibold text-left"
       >
-        {{ $config.public.appName }}
+        {{ $config.app.name }}
       </h1>
 
       <h1 class="w-[600px] m-0 text-[72px] font-semibold text-white">
-        {{ title || $config.public.appName }}
+        {{ title || $config.app.name }}
       </h1>
       <p class="text-[24px] text-[#E4E4E7] font-medium leading-tight">
         {{ description }}
@@ -61,7 +61,7 @@
     <img
       class="absolute my-auto right-[120px]"
       loading="lazy"
-      :alt="$config.public.appName"
+      :alt="$config.app.name"
       :src="`/logo-filled.png`"
       width="240"
     />

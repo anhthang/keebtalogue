@@ -89,7 +89,6 @@ const { title, manufacturerName } = defineProps({
 })
 
 const config = useRuntimeConfig()
-const { appName } = config.public
 
-const headline = manufacturerName ? `/ ${manufacturerName}` : appName
+const headline = manufacturerName ? `/ ${manufacturerName}` : config.app.name
 </script>

@@ -52,7 +52,7 @@
     </div>
 
     <Divider align="center" pt:content:class="text-xl">
-      <b>Help us make {{ $config.public.appName }} amazing!</b>
+      <b>Help us make {{ $config.app.name }} amazing!</b>
     </Divider>
 
     We welcome your contributions! If you encounter any issues or have
@@ -64,7 +64,7 @@
         <InputIcon class="pi pi-github" />
         <InputText
           id="feedback_github"
-          value="https://github.com/anhthang/keebtalogue"
+          value="https://github.com/anhthang/keebdex"
           type="text"
           fluid
           disabled
@@ -72,7 +72,7 @@
         <InputIcon>
           <template #default>
             <NuxtLink
-              to="https://github.com/anhthang/keebtalogue"
+              to="https://github.com/anhthang/keebdex"
               target="_blank"
               external
             >

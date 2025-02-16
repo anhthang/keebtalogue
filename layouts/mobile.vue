@@ -8,7 +8,7 @@
           @click="toggleDrawer"
         >
           <NuxtImg
-            :alt="$config.public.appName"
+            :alt="$config.app.name"
             :src="
               $colorMode.value === 'dark'
                 ? '/logo-outlined.png'
@@ -22,7 +22,7 @@
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 flex items-center justify-center">
                 <NuxtImg
-                  :alt="$config.public.appName"
+                  :alt="$config.app.name"
                   :src="
                     $colorMode.value === 'dark'
                       ? '/logo-outlined.png'
@@ -33,7 +33,7 @@
               <div
                 class="text-3xl font-medium bg-gradient-to-r from-blue-400 via-red-500 to-amber-400 dark:via-red-400 dark:to-amber-200 text-transparent bg-clip-text"
               >
-                {{ $config.public.appName }}
+                {{ $config.app.name }}
               </div>
             </div>
           </template>

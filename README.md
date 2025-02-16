@@ -1,5 +1,6 @@
-# Keebtalogue
-**Driven by a passion for artisan keycaps and keyboards, Keebtalogue is a project designed for enthusiasts like you.**
+# Keebdex
+
+**Driven by a passion for artisan keycaps and mechanical keyboards, Keebdex is a modern, user-friendly platform designed to revolutionize how enthusiasts manage, discover, and collect everything keyboard-related.**
 
 # Development
 
